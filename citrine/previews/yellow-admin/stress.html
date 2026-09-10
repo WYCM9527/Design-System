@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>黄色中后台 · 页面类型压力测试</title>
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="stress.css">
+<link rel="stylesheet" href="../../seeds/brand-yellow-e/bridge/iconpark.css">
+<link id="tokens-base" rel="stylesheet" href="tokens-base.css">
+<link id="tokens" rel="stylesheet" href="tokens-e.css">
+<script>
+(function () {
+  var plans = {
+    d: { file: "tokens-d.css", name: "方案 D · 深色侧栏" },
+    e: { file: "tokens-e.css", name: "方案 E · 浅色侧栏" },
+    s: { file: "tokens-seed.css", name: "方案 S · 全部来自种子构建产物", standalone: true }
+  };
+  var query = new URLSearchParams(location.search);
+  var plan = plans[query.get("plan")] ? query.get("plan") : "s";
+  document.getElementById("tokens").href = plans[plan].file;
+  if (plans[plan].standalone) document.getElementById("tokens-base").remove();
+  if (query.get("dark") === "1") document.documentElement.classList.add("dark");
+  if (query.get("compact") === "1") document.documentElement.classList.add("compact");
+  function syncLinks() {
+    var dark = document.documentElement.classList.contains("dark");
+    var compact = document.documentElement.classList.contains("compact");
+    var q = function (p) { return "stress.html?plan=" + p + (dark ? "&dark=1" : "") + (compact ? "&compact=1" : ""); };
+    document.querySelectorAll("[data-plan]").forEach(function (a) { a.classList.toggle("cur", a.dataset.plan === plan); a.href = q(a.dataset.plan); });
+    document.getElementById("dark-toggle").textContent = dark ? "☀ 亮色" : "☾ 暗色";
+    document.getElementById("compact-toggle").textContent = compact ? "☷ 舒适" : "☰ 紧凑";
+    document.getElementById("to-admin").href = "admin.html?plan=" + plan + (dark ? "&dark=1" : "") + (compact ? "&compact=1" : "");
+  }
+  window.toggleDark = function () { document.documentElement.classList.toggle("dark"); syncLinks(); };
+  window.toggleCompact = function () { document.documentElement.classList.toggle("compact"); syncLinks(); };
+  document.addEventListener("DOMContentLoaded", function () { document.getElementById("plan-name").textContent = plans[plan].name; syncLinks(); });
+})();
+</script>
+</head>
+<body>
+<div class="main">
+  <header class="topbar">
+    <span class="crumb">压力测试 / <b>页面类型 × 组件状态</b></span>
+    <div class="preview-bar">
+      <a data-plan="s" href="stress.html?plan=s">S 种子构建</a>
+      <a data-plan="e" href="stress.html?plan=e">E</a>
+      <a data-plan="d" href="stress.html?plan=d">D</a>
+      <a id="dark-toggle" href="#" onclick="toggleDark(); return false;">☾ 暗色</a>
+      <a id="compact-toggle" href="#" onclick="toggleCompact(); return false;">☰ 紧凑</a>
+      <a id="to-admin" href="admin.html">← 工作台预览</a>
+    </div>
+    <span class="tag" id="plan-name" style="margin-left:auto"></span>
+  </header>
+
+  <div class="stress">
+
+    <h2 class="sec-title">1 · 登录页 <small>bg.brand · text.hero · control.height.lg · layout.auth.card-width</small></h2>
+    <div class="card auth">
+      <div class="auth-brand">
+        <span class="logo">Y</span>
+        <div>
+          <h1>黄金后台<br>让每一单都被看见</h1>
+          <p>统一的商户、订单与骑手运营平台。品牌黄在这里可以大面积出现——这是整个系统里唯一允许的一次。</p>
+        </div>
+        <span class="num" style="font-size:var(--text-small-size)">v2.4.0 · © 2026</span>
+      </div>
+      <div class="auth-card">
+        <h2>登录</h2>
+        <p class="sub">使用企业账号登录，或通过企业微信扫码。</p>
+        <div class="field"><label>账号</label><input class="input input-lg" value="wangxm@company.com"></div>
+        <div class="field"><label>密码</label><input class="input input-lg" type="password" value="••••••••"></div>
+        <button class="btn btn-primary btn-lg">登 录</button>
+        <div class="auth-foot"><span class="row" style="gap:var(--spacing-1-5)"><span class="checkbox on"></span>记住我</span><a class="link" href="#">忘记密码</a></div>
+      </div>
+    </div>
+
+    <h2 class="sec-title">2 · 列表页 <small>筛选栏 · 已选筹码 · 批量操作条 · 排序 · 固定列 · 斑马纹 · 等宽数字 · 分页尺寸</small></h2>
+    <div class="card">
+      <div class="card-head"><div><div class="crumbs">运营 <i>/</i> 订单 <i>/</i> <b>全部订单</b></div></div><div class="right"><button class="btn btn-secondary btn-sm"><span class="i-icon i-icon--sm"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M42 27C42 33 38 43 24 43C10 43 6 33 6 27" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M24.0078 5.10059V33.0001" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 17L24 5L36 17" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span>导出</button><button class="btn btn-primary btn-sm"><span class="i-icon i-icon--sm"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24.0605 10L24.0239 38" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 24L38 24" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span>新建订单</button></div></div>
+      <div class="filter">
+        <span class="search" style="margin:0;width:220px"><span class="i-icon i-icon--sm"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 38C30.3888 38 38 30.3888 38 21C38 11.6112 30.3888 4 21 4C11.6112 4 4 11.6112 4 21C4 30.3888 11.6112 38 21 38Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linejoin="round"/><path d="M26.657 14.3431C25.2093 12.8954 23.2093 12 21.0001 12C18.791 12 16.791 12.8954 15.3433 14.3431" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M33.2216 33.2217L41.7069 41.707" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span>订单号 / 商户 / 手机号</span>
+        <select class="input"><option>全部状态</option></select>
+        <span class="range"><input class="input" value="2026-09-01"><i>→</i><input class="input" value="2026-09-08"></span>
+        <div class="seg"><a class="on" href="#">全部</a><a href="#">我负责的</a><a href="#">已收藏</a></div>
+        <button class="btn btn-primary">查询</button><button class="btn btn-ghost">重置</button>
+      </div>
+      <div class="chips"><span class="chip">状态：配送中 <span class="x"><span class="i-icon i-icon--xs"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 8L40 40" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 40L40 8" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="chip">城市：北京 <span class="x"><span class="i-icon i-icon--xs"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 8L40 40" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 40L40 8" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="chip">金额 ≥ ¥50 <span class="x"><span class="i-icon i-icon--xs"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 8L40 40" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 40L40 8" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span></div>
+      <div class="batch" style="margin-top:var(--spacing-3)">已选 <b class="num">3</b> 项<a class="link" href="#">取消选择</a><div class="right"><button class="btn btn-secondary btn-sm">批量改派</button><button class="btn btn-secondary btn-sm">导出所选</button><button class="btn btn-danger btn-sm">批量取消</button></div></div>
+      <div class="scroll-x"><table class="tbl-zebra wide">
+        <thead><tr><th class="fixed-col"><span class="checkbox on"></span></th><th class="fixed-col" style="left:52px">订单号</th><th>商户</th><th>城市</th><th>金额 <span class="sort"><i class="up"></i><i class="down on"></i></span></th><th>下单时间 <span class="sort"><i class="up"></i><i class="down"></i></span></th><th>状态</th><th>骑手</th><th>配送时长</th><th>评分</th><th>操作</th></tr></thead>
+        <tbody>
+          <tr class="selected"><td class="fixed-col"><span class="checkbox on"></span></td><td class="fixed-col mono" style="left:52px">20260908-0412</td><td>川味小馆（望京店）</td><td>北京</td><td class="num">¥ 1,286.00</td><td class="num">2026-09-08 14:02</td><td><span class="badge badge-info">配送中</span></td><td>李明</td><td class="num">32 min</td><td class="num">4.9</td><td><a href="#">详情</a> · <a href="#">改派</a></td></tr>
+          <tr><td class="fixed-col"><span class="checkbox"></span></td><td class="fixed-col mono" style="left:52px">20260908-0411</td><td>鲜果时光</td><td>上海</td><td class="num">¥ 42.50</td><td class="num">2026-09-08 13:58</td><td><span class="badge badge-warning">待接单</span></td><td>—</td><td class="num">—</td><td class="num">—</td><td><a href="#">详情</a> · <a href="#">催单</a></td></tr>
+          <tr class="selected"><td class="fixed-col"><span class="checkbox on"></span></td><td class="fixed-col mono" style="left:52px">20260908-0409</td><td>老北京炸酱面</td><td>北京</td><td class="num">¥ 28.00</td><td class="num">2026-09-08 13:41</td><td><span class="badge badge-success">已完成</span></td><td>王芳</td><td class="num">27 min</td><td class="num">5.0</td><td><a href="#">详情</a></td></tr>
+          <tr><td class="fixed-col"><span class="checkbox"></span></td><td class="fixed-col mono" style="left:52px">20260908-0407</td><td>星光甜品</td><td>广州</td><td class="num">¥ 59.90</td><td class="num">2026-09-08 13:30</td><td><span class="badge badge-neutral">草稿</span></td><td>—</td><td class="num">—</td><td class="num">—</td><td><a href="#">编辑</a></td></tr>
+          <tr class="selected"><td class="fixed-col"><span class="checkbox on"></span></td><td class="fixed-col mono" style="left:52px">20260908-0403</td><td>湘辣小厨</td><td>深圳</td><td class="num">¥ 112.00</td><td class="num">2026-09-08 13:12</td><td><span class="badge badge-error">已取消</span></td><td>赵磊</td><td class="num">—</td><td class="num">—</td><td><a href="#">详情</a> · <a href="#">退款</a></td></tr>
+        </tbody>
+      </table></div>
+      <div class="pager"><span>共 <b class="num">128</b> 条</span><select class="size"><option>20 条 / 页</option></select><a href="#">‹</a><a class="cur" href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">…</a><a href="#">7</a><a href="#">›</a></div>
+    </div>
+    <div class="two">
+      <div class="card"><div class="card-head"><h2>空状态</h2></div><div class="empty"><div class="illu"><span class="i-icon i-icon--2xl"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M33.0499 7H38C39.1046 7 40 7.89543 40 9V42C40 43.1046 39.1046 44 38 44H10C8.89543 44 8 43.1046 8 42L8 9C8 7.89543 8.89543 7 10 7H16H17V10H31V7H33.0499Z" fill="var(--color-icon-two-tone)" stroke="var(--color-icon-brand)" stroke-width="var(--icon-stroke-width)" stroke-linejoin="round"/><rect x="17" y="4" width="14" height="6" stroke="var(--color-icon-brand)" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M26.9996 19L19 27.0012H29.004L21.0003 35.0018" stroke="var(--color-icon-brand)" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><b>还没有符合条件的订单</b><span>试试放宽筛选条件，或 <a class="link" href="#">新建一个订单</a></span></div></div>
+      <div class="card"><div class="card-head"><h2>加载中 · 骨架屏</h2><div class="right"><span class="spin"></span></div></div><div class="skeleton"><div class="sk t"></div><div class="sk"></div><div class="sk" style="width:85%"></div><div class="sk" style="width:92%"></div><div class="sk" style="width:60%"></div></div></div>
+    </div>
+
+    <h2 class="sec-title">3 · 表单页 <small>两列横向 · 只读 · 分段选择 · 单选 · 数字步进 · 上传 · 滑杆 · 可删标签 · 表单最大宽度</small></h2>
+    <div class="card form-page">
+      <div class="card-head"><h2>新建商户</h2><span class="tag">layout.form.max-width</span></div>
+      <form class="form form-h" onsubmit="return false">
+        <div class="form-grid">
+          <div class="field"><label>商户名称<span>*</span></label><input class="input" value="川味小馆（望京店）"></div>
+          <div class="field"><label>商户编号</label><input class="input readonly mono" readonly value="M-2026-000412"></div>
+          <div class="field"><label>经营类型<span>*</span></label><div><span class="radio"><i class="on"></i>餐饮</span><span class="radio"><i></i>生鲜</span><span class="radio"><i></i>零售</span></div></div>
+          <div class="field"><label>结算周期</label><div class="seg"><a href="#">T+1</a><a class="on" href="#">T+7</a><a href="#">月结</a></div></div>
+          <div class="field"><label>配送半径</label><div class="slider"><span class="track"></span><span class="fill" style="width:62%"></span><span class="knob" style="left:62%"></span></div></div>
+          <div class="field"><label>起送金额</label><div class="stepper"><b>−</b><span>¥ 20</span><b>＋</b></div></div>
+          <div class="field span2"><label>经营标签</label><div class="tags"><span class="tag">川菜<span class="x"><span class="i-icon i-icon--xs"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 8L40 40" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 40L40 8" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tag">夜宵<span class="x"><span class="i-icon i-icon--xs"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 8L40 40" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 40L40 8" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tag">高评分<span class="x"><span class="i-icon i-icon--xs"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 8L40 40" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 40L40 8" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></span><span class="tag" style="border-style:dashed">＋ 添加</span></div></div>
+          <div class="field span2"><label>营业执照<span>*</span></label><div class="upload over"><span class="i-icon i-icon--xl"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="icon-0ab77c77f10b972" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48" style="mask-type: alpha"><path d="M48 0H0V48H48V0Z" fill="currentColor"/></mask><g mask="url(#icon-0ab77c77f10b972)"><path d="M6 24.0083V42H42V24" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M33 15L24 6L15 15" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M23.9917 32V6" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></g></svg></span><br><b>拖拽文件到这里</b>，或点击上传 · 支持 JPG / PNG / PDF，单个不超过 10 MB</div></div>
+          <div class="field span2"><label>备注</label><textarea class="input" placeholder="给审核同事的说明（选填）"></textarea><div class="help">审核通过后商户即可上线，预计 1 个工作日。</div></div>
+        </div>
+        <div class="form-foot"><button class="btn btn-secondary">保存草稿</button><button class="btn btn-primary">提交审核</button></div>
+      </form>
+    </div>
+
+    <h2 class="sec-title">4 · 详情页 <small>描述列表 · 步骤条 · 时间线 · 涨跌数字</small></h2>
+    <div class="card">
+      <div class="card-head"><h2>订单 <span class="mono">20260908-0412</span></h2><span class="badge badge-info">配送中</span><div class="right"><button class="btn btn-secondary btn-sm"><span class="i-icon i-icon--sm"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M37 32H11V44H37V32Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linejoin="round"/><path fill-rule="evenodd" clip-rule="evenodd" d="M4 20H44V38H37.0173V32H10.9805V38H4V20Z" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M38 4H10V20H38V4Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linejoin="round"/></svg></span>打印</button><button class="btn btn-danger btn-sm">取消订单</button></div></div>
+      <div class="steps">
+        <div class="step done"><i><span class="i-icon i-icon--sm"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M43 11L16.875 37L5 25.1818" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span></i>已下单<span class="line"></span></div>
+        <div class="step done"><i><span class="i-icon i-icon--sm"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M43 11L16.875 37L5 25.1818" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span></i>商户接单<span class="line"></span></div>
+        <div class="step cur"><i>3</i>配送中<span class="line"></span></div>
+        <div class="step"><i>4</i>已送达</div>
+      </div>
+      <div class="two" style="padding:0 var(--spacing-5) var(--spacing-5)">
+        <dl class="desc">
+          <dt>商户</dt><dd>川味小馆（望京店）</dd><dt>城市</dt><dd>北京 · 朝阳</dd>
+          <dt>金额</dt><dd class="num">¥ 1,286.00</dd><dt>较上单</dt><dd class="num" style="color:var(--color-data-increase)">▲ 12.4%</dd>
+          <dt>骑手</dt><dd>李明 · 138****2211</dd><dt>预计送达</dt><dd class="num">14:35</dd>
+          <dt>用户备注</dt><dd style="grid-column:2 / -1">不要辣，放门口即可，谢谢。这是一条比较长的备注，用来看多行时描述列表的对齐。</dd>
+        </dl>
+        <ul class="timeline">
+          <li><i class="cur"></i>骑手已取餐，正在配送<span class="t num">14:20 · 李明</span></li>
+          <li><i class="ok"></i>商户接单，预计 15 分钟出餐<span class="t num">14:05 · 川味小馆</span></li>
+          <li><i class="warn"></i>用户修改了收货地址<span class="t num">14:03 · 用户</span></li>
+          <li><i></i>订单创建，在线支付成功<span class="t num">14:02 · 系统</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 class="sec-title">5 · 反馈与浮层 <small>结果页 · 通知卡 · Toast · 抽屉</small></h2>
+    <div class="three">
+      <div class="card result"><div class="code">403</div><h3>没有访问权限</h3><p>当前账号无权查看财务结算数据。你可以向管理员申请「结算查看」权限，通常在一个工作日内处理。</p><button class="btn btn-primary">申请权限</button> <button class="btn btn-secondary">返回首页</button></div>
+      <div class="pad" style="display:flex;flex-direction:column;gap:var(--spacing-3)">
+        <div class="notice"><div><b>导出完成</b>订单报表（128 条）已生成，<a class="link" href="#">下载</a>。</div><span class="x"><span class="i-icon i-icon--sm"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 8L40 40" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 40L40 8" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></div>
+        <div class="notice ok"><div><b>商户审核通过</b>川味小馆（望京店）已上线。</div><span class="x"><span class="i-icon i-icon--sm"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 8L40 40" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 40L40 8" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></div>
+        <div class="notice warn"><div><b>3 个资质即将过期</b>请在 7 天内通知商户更新。</div><span class="x"><span class="i-icon i-icon--sm"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 8L40 40" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 40L40 8" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></div>
+        <div><span class="toast"><span class="spin" style="width:var(--icon-size-sm);height:var(--icon-size-sm)"></span>正在保存…</span> <span class="toast">已复制订单号</span></div>
+      </div>
+      <div class="card stage-wide" style="background:var(--color-bg-page)">
+        <span class="ghost" style="position:absolute;left:var(--spacing-3);top:var(--spacing-3);width:40%;height:var(--spacing-2);border-radius:var(--radius-sm);background:var(--color-border-default)"></span>
+        <div class="drawer"><div class="hd">改派骑手<span class="x"><span class="i-icon i-icon--sm"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 8L40 40" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 40L40 8" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></div><div class="bd">从附近 6 位空闲骑手中选择，系统会按距离与评分排序。</div><div class="ft"><button class="btn btn-secondary btn-sm">取消</button><button class="btn btn-primary btn-sm">确认改派</button></div></div>
+      </div>
+    </div>
+
+    <h2 class="sec-title">6 · 折叠侧栏 <small>layout.sidebar.collapsed-width · icon.size.lg</small></h2>
+    <div class="card rail-stage">
+      <nav class="rail"><span class="logo">Y</span><a class="active" href="#"><span class="i-icon i-icon--lg"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18V42H39V18L24 6L9 18Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 29V42H29V29H19Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linejoin="round"/><path d="M9 42H39" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/></svg></span></a><a href="#"><span class="i-icon i-icon--lg"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6V42H42" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 30V34" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 22V34" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 6V34" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M38 14V34" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a href="#"><span class="i-icon i-icon--lg"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M33.0499 7H38C39.1046 7 40 7.89543 40 9V42C40 43.1046 39.1046 44 38 44H10C8.89543 44 8 43.1046 8 42L8 9C8 7.89543 8.89543 7 10 7H16H17V10H31V7H33.0499Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linejoin="round"/><rect x="17" y="4" width="14" height="6" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M26.9996 19L19 27.0012H29.004L21.0003 35.0018" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a href="#"><span class="i-icon i-icon--lg"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12H44V20L42.6015 20.8391C40.3847 22.1692 37.6153 22.1692 35.3985 20.8391L34 20L32.6015 20.8391C30.3847 22.1692 27.6153 22.1692 25.3985 20.8391L24 20L22.6015 20.8391C20.3847 22.1692 17.6153 22.1692 15.3985 20.8391L14 20L12.6015 20.8391C10.3847 22.1692 7.61531 22.1692 5.39853 20.8391L4 20V12Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 22.4889V44H40V22" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 11.8222V4H40V12" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><rect x="19" y="32" width="10" height="12" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></nav>
+      <div class="ghosts"><i style="width:30%"></i><i></i><i style="width:80%"></i><i style="width:60%"></i></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,5 @@
+/* 方案 S · 由 skill 构建产物驱动
+   seed-dist/ 是 design-system-steward build-tokens.mjs 从 DTCG 种子生成的 dist，
+   这里没有一行手写样式值：颜色、字体、尺寸、间距、阴影全部来自构建产物。 */
+@import url("seed-dist/index.css");
+

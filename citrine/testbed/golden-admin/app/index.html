@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>黄金后台 · 运营平台</title>
+    <script>
+      // Theme 激活方式来自 design-system/theme-map.json：<html> 上的 class dark / compact。
+      // 首屏前读 URL 与 localStorage，避免闪烁；截图脚本靠 ?theme=dark&density=compact 直达。
+      (function () {
+        var q = new URLSearchParams(location.search);
+        var theme = q.get('theme') || localStorage.getItem('ga-theme');
+        var density = q.get('density') || localStorage.getItem('ga-density');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        if (density === 'compact') document.documentElement.classList.add('compact');
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

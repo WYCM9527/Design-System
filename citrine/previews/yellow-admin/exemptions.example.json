@@ -1,0 +1,189 @@
+{
+  "$comment": "预览页 admin.css / admin.html 里有意不纳管的字面量。这是 design-system-steward 的 exemptions.json 示例：复制到目标项目 design-system/ 后请把 path 改成项目内的真实路径。",
+  "version": 1,
+  "exemptions": [
+    {
+      "path": "admin.css",
+      "value": "4.5px",
+      "reason": "勾选框对勾的几何位置，随 16px 控件尺寸手工校准，不是规范值"
+    },
+    {
+      "path": "admin.css",
+      "value": "1.5px",
+      "reason": "勾选框对勾的几何位置（top）"
+    },
+    {
+      "path": "admin.css",
+      "value": "4px",
+      "reason": "对勾短边宽度；不是间距"
+    },
+    {
+      "path": "admin.css",
+      "value": "8px",
+      "reason": "对勾长边高度；不是间距"
+    },
+    {
+      "path": "admin.css",
+      "value": "2px",
+      "reason": "对勾线宽、开关滑块内边距、徽标上下 padding 等组件内部 1～2px 微调"
+    },
+    {
+      "path": "admin.css",
+      "value": "1px",
+      "reason": "徽标/标签 1px 垂直 padding、tabs 与边线重叠的 -1px 修正"
+    },
+    {
+      "path": "admin.css",
+      "value": "18px",
+      "reason": "开关打开时滑块位移 = 36 - 16 - 2，派生几何"
+    },
+    {
+      "path": "admin.css",
+      "value": "36px",
+      "reason": "开关轨道宽度，与 20px 高度成 1.8:1 的组件内固定比例"
+    },
+    {
+      "path": "admin.css",
+      "value": "20px",
+      "reason": "开关轨道高度（组件几何）"
+    },
+    {
+      "path": "admin.css",
+      "value": "16px",
+      "reason": "开关滑块直径（组件几何）"
+    },
+    {
+      "path": "admin.css",
+      "value": "6px",
+      "reason": "徽标状态圆点直径、进度条高度"
+    },
+    {
+      "path": "admin.css",
+      "value": "10px",
+      "reason": "图例色块边长"
+    },
+    {
+      "path": "admin.css",
+      "value": "7px",
+      "reason": "侧栏计数徽标横向 padding，比 spacing-2 少 1px 以配合 11px 字号"
+    },
+    {
+      "path": "admin.css",
+      "value": "9px",
+      "reason": "预览控制条按钮 padding（非产品 UI）"
+    },
+    {
+      "path": "admin.css",
+      "value": "110px",
+      "reason": "演示进度条宽度，随演示数据"
+    },
+    {
+      "path": "admin.css",
+      "value": "150px",
+      "reason": "演示柱状图高度，随演示数据"
+    },
+    {
+      "path": "admin.css",
+      "value": "rgba(0,0,0,.2)",
+      "reason": "开关滑块投影；shadow 不在当前 CSS Profile 内，与 --shadow-sm 一并留在项目 CSS"
+    },
+    {
+      "path": "admin.html",
+      "reason": "HTML 文本里的色值字符串（方案名称、订单号 #20260908-…）是内容不是样式；预览切换脚本不是产品代码"
+    },
+    {
+      "path": "admin.css",
+      "value": "168px",
+      "reason": "浮层示例：下拉菜单最小宽度，演示尺寸"
+    },
+    {
+      "path": "admin.css",
+      "value": "128px",
+      "reason": "浮层示例：为静态展开的菜单预留的占位高度，演示尺寸"
+    },
+    {
+      "path": "admin.css",
+      "value": "176px",
+      "reason": "浮层示例：弹窗演示舞台高度，演示尺寸"
+    },
+    {
+      "path": "stress.css",
+      "value": "4px",
+      "reason": "排序三角、滑杆轨道粗细、时间线定位——组件内部几何"
+    },
+    {
+      "path": "stress.css",
+      "value": "8px",
+      "reason": "单选按钮内点直径（组件几何）"
+    },
+    {
+      "path": "stress.css",
+      "value": "6px",
+      "reason": "表格状态圆点直径（组件几何）"
+    },
+    {
+      "path": "stress.css",
+      "value": "1px",
+      "reason": "排序三角间距、时间线连线定位"
+    },
+    {
+      "path": "stress.css",
+      "value": "2px",
+      "reason": "分段选择器内边距、时间线微调"
+    },
+    {
+      "path": "stress.css",
+      "value": "14px",
+      "reason": "时间线连线起点，随 11px 圆点手工校准"
+    },
+    {
+      "path": "stress.css",
+      "value": "11px",
+      "reason": "时间线圆点直径（组件几何）"
+    },
+    {
+      "path": "stress.css",
+      "value": "5px",
+      "reason": "时间线连线横向定位 = (11 - 1) / 2"
+    },
+    {
+      "path": "stress.css",
+      "value": "132px",
+      "reason": "筛选栏日期输入框宽度（演示尺寸）"
+    },
+    {
+      "path": "stress.css",
+      "value": "180px",
+      "reason": "筛选栏输入框宽度（演示尺寸）"
+    },
+    {
+      "path": "stress.css",
+      "value": "1400px",
+      "reason": "固定列演示用的超宽表格最小宽度（演示尺寸）"
+    },
+    {
+      "path": "stress.css",
+      "value": "72px",
+      "reason": "数字步进器数值区最小宽度（组件几何）"
+    },
+    {
+      "path": "stress.css",
+      "value": "220px",
+      "reason": "抽屉演示舞台高度（演示尺寸）"
+    },
+    {
+      "path": "stress.css",
+      "value": "240px",
+      "reason": "折叠侧栏演示舞台高度（演示尺寸）"
+    },
+    {
+      "path": "stress.css",
+      "value": "360px",
+      "reason": "登录页演示最小高度（演示尺寸）"
+    },
+    {
+      "path": "stress.html",
+      "reason": "压力页文本与内联演示数据（订单号、宽度百分比）不是样式"
+    }
+  ]
+}

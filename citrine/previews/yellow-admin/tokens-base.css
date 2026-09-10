@@ -1,0 +1,156 @@
+/* 结构层 token（字体、尺寸、布局、线宽、动效、透明度、层级）
+   参考方案 A～E 共用这一份手写版本；方案 S 不加载它，全部由 seed-dist/ 的构建产物提供。
+   变量名与 skill 生成的 dist/tokens.css 完全一致，方便对照。 */
+:root {
+  --font-family-body: -apple-system, BlinkMacSystemFont, "PingFang SC", "Segoe UI", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, "Noto Sans CJK SC", sans-serif;
+  --font-family-code: "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  --text-caption-size: 12px;
+  --text-small-size: 12px;
+  --text-body-sm-size: 13px;
+  --text-body-size: 14px;
+  --text-body-line-height: 1.6;
+  --text-title-sm-size: 15px;
+  --text-title-size: 16px;
+  --text-heading-size: 20px;
+  --text-heading-line-height: 1.25;
+  --text-hero-size: 32px;
+  --text-hero-line-height: 1.25;
+  --text-paragraph-line-height: 1.7;
+  --text-numeric-variant: tabular-nums;
+  --text-display-size: 32px;
+  --text-display-line-height: 1.25;
+  --text-display-weight: 700;
+  --text-display-tracking: -0.01em;
+  --text-tracking-caps: 0.06em;
+  --font-weight-regular: 400; --font-weight-medium: 500;   /* 与 seed-dist 的 primitive 变量名对齐，供骨架样式引用 */
+  --text-weight-label: 500;
+  --text-weight-strong: 600;
+  --text-weight-brand: 700;
+  --text-weight-logo: 700;
+  --text-link-decoration: underline;
+  --text-link-style: italic;
+
+  --spacing-1: 4px; --spacing-1-5: 6px; --spacing-2: 8px; --spacing-2-5: 10px; --spacing-3: 12px; --spacing-3-5: 14px;
+  --spacing-4: 16px; --spacing-5: 20px; --spacing-6: 24px; --spacing-8: 32px; --spacing-10: 40px;
+  --space-inline: var(--spacing-2);
+  --space-stack: var(--spacing-5);
+  --space-gutter: var(--spacing-8);
+  --space-card: var(--spacing-6);
+
+  --radius-full: 999px;
+  --radius-xs: 4px;
+  --radius-xl: 16px;
+
+  /* 两个在所有方案、所有 Theme 下都恒为白色的语义色 */
+  --color-text-on-danger: #FFFFFF;
+  --color-control-knob: #FFFFFF;
+
+  --control-height-sm: 28px; --control-hit-min: 24px; --control-segmented-inset: 2px;
+  --control-height-md: 34px;
+  --control-height-lg: 40px;
+  --icon-size-xs: 12px;
+  --icon-size-sm: 14px;
+  --icon-size-md: 16px;
+  --icon-size-lg: 20px;
+  --icon-size-xl: 24px;
+  --icon-size-2xl: 32px;
+  --icon-stroke-width: 4;
+  --icon-stroke-width-small: 4;
+  --illustration-size-md: 120px;
+  --avatar-size-sm: 28px;
+  --avatar-size-md: 32px;
+  --layout-sidebar-width: 200px;
+  --layout-topbar-height: 56px;
+  --layout-search-width: 240px;
+  --layout-sidebar-collapsed-width: 64px;
+  --layout-form-label-width: 112px;
+  --table-cell-padding-y: 14px;
+  --table-cell-padding-x: 20px;
+  --layout-modal-width-sm: 420px;
+  --layout-modal-width-md: 640px;
+  --layout-drawer-width: 480px;
+  --layout-form-max-width: 720px;
+  --layout-auth-card-width: 400px;
+
+  --border-width-default: 0.6px;
+  --border-width-control: 1.5px;
+  --border-width-active: 2px;
+  --border-width-indicator: 3px;
+  --focus-ring-width: 3px;
+
+  --motion-duration-fast: 150ms;
+  --motion-duration-normal: 200ms;
+  --motion-duration-slow: 300ms;
+  --motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-easing-enter: cubic-bezier(0, 0, 0.2, 1);
+  --motion-easing-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  --elevation-card-y: 4px;    --elevation-card-blur: 16px;
+  --elevation-popover-y: 8px; --elevation-popover-blur: 24px;
+  --elevation-modal-y: 16px;  --elevation-modal-blur: 48px;
+
+  --opacity-disabled: 0.45;
+  --opacity-icon-placeholder: 0.5;
+  --opacity-on-primary-muted: 0.78;
+
+  --layer-sticky: 2;
+  --layer-dropdown: 10;
+  --layer-modal: 100;
+  --layer-toast: 1000;
+
+  /* 参考方案 A～D 的回退：把新增角色派生到它们已有的变量上。D／E 在各自文件里给出精确值并覆盖这里。 */
+  --color-text-placeholder: var(--color-text-muted);
+  --color-text-link-hover: var(--color-text-primary);
+  --color-status-neutral: var(--color-text-secondary);
+  --color-status-neutral-bg: var(--color-bg-hover);
+  --color-data-increase: var(--color-status-success);
+  --color-data-decrease: var(--color-status-error);
+  --color-bg-brand: var(--color-action-primary);
+  --color-text-on-brand: var(--color-text-on-primary);
+  --color-bg-skeleton: var(--color-border-default);
+  --color-bg-skeleton-highlight: var(--color-bg-subtle);
+  --color-bg-readonly: var(--color-bg-subtle);
+  --color-icon-default: var(--color-text-secondary);
+  --color-icon-muted: var(--color-text-muted);
+  --color-icon-brand: var(--color-text-selected);
+  --color-icon-two-tone: var(--color-action-primary);
+  --color-border-input: var(--color-border-strong);
+  --color-action-secondary-hover: var(--color-bg-hover);
+  --color-action-danger: var(--color-status-error);
+  --color-action-danger-hover: var(--color-status-error);
+  --color-action-danger-active: var(--color-status-error);
+  --color-bg-selected-hover: var(--color-bg-selected);
+  --color-bg-selected-subtle: var(--color-bg-selected);
+  --color-text-brand: var(--color-text-selected);
+  --color-action-selected: var(--color-bg-sidebar-selected);
+  --color-border-current: var(--color-text-primary);
+  --color-text-on-selected: var(--color-text-sidebar-selected);
+  --color-bg-elevated: var(--color-bg-surface);
+  --color-bg-overlay: #11182773;
+  --color-bg-mask: #FFFFFFE6;
+  --color-bg-inverse: var(--color-text-primary);
+  --color-text-inverse: var(--color-bg-surface);
+  --color-chart-1: var(--color-action-primary);
+  --color-chart-sequential-1: var(--color-bg-selected);
+  --elevation-card-color: #1118270F;
+  --elevation-popover-color: #1118271A;
+  --elevation-modal-color: #11182729;
+}
+/* compact Theme：只收紧尺寸与间距，可与 .dark 叠加（与 seed-dist/themes/compact.css 一致） */
+.compact {
+  --control-height-md: 28px;
+  --control-height-sm: 24px;
+  --space-gutter: var(--spacing-4);
+  --space-stack: var(--spacing-3);
+  --space-card: var(--spacing-4);
+  --table-cell-padding-x: var(--spacing-3);
+  --table-cell-padding-y: var(--spacing-2);
+}
+.dark {
+  --color-bg-overlay: #080F1CA6;
+  --color-bg-mask: #151D2CE6;
+  --elevation-card-color: #00000000;
+  --elevation-popover-color: #0000004D;
+  --elevation-modal-color: #00000080;
+}

@@ -1,0 +1,114 @@
+/* 方案 D · 品牌色 #F9CF00 · 深色侧栏
+   色阶以 #F9CF00 为 500 锚点推导；加深时色相向橙微移，避免变成芥末/橄榄。
+   白底上可读的黄：800 #7A5B00（6.4:1）。黄底文字一律近黑（11.6:1）。 */
+:root {
+  /* brand 色阶（primitive，供参考） */
+  --brand-500: #F9CF00; /* 唯一品牌黄：延伸色已全部删除（实测反馈显脏） */
+
+  --color-action-primary: var(--brand-500);
+  --color-action-primary-hover: var(--brand-500);
+  --color-action-primary-active: var(--brand-500);
+  --color-text-on-primary: #1A1A1A;
+  --color-brand-indicator: var(--brand-500);
+
+  --color-text-link: #374151; --color-text-link-hover: #111827;
+  --color-text-primary: #111827;
+  --color-text-secondary: #4B5563;
+  --color-text-muted: #666D7B;
+  --color-text-selected: #111827;
+
+  --color-bg-page: #F3F4F6;
+  --color-bg-surface: #FFFFFF;
+  --color-bg-subtle: #F9FAFB;
+  --color-bg-hover: #F3F4F6;
+  --color-bg-input: #FFFFFF;
+  --color-bg-selected: #F3F4F6;
+
+  --color-bg-sidebar: #18181A;
+  --color-bg-sidebar-hover: #26262A;
+  --color-bg-sidebar-selected: #364050; /* 深侧栏上的反转块提亮一档 */
+  --color-text-sidebar: #C9C9CC;
+  --color-text-sidebar-strong: #FFFFFF;
+  --color-text-sidebar-muted: #909096; /* QA：原 #7E7E83 在 #18181A 上 4.39:1，12px 文字不达 AA */
+  --color-text-sidebar-selected: #FFFFFF;
+  --color-border-sidebar: #29292D;
+
+  --color-border-default: #E5E7EB;
+  --color-border-strong: #D1D5DB;
+  --color-border-focus: #111827;
+  --color-focus-ring: #11182729;
+
+  --color-status-success: #0B9E74; --color-status-success-bg: #DAF5E8;
+  --color-status-warning: #D76712; --color-status-warning-bg: #FFF1D8;
+  --color-status-error: #EE484B;   --color-status-error-bg: #FFE2E3;
+  --color-status-info: #007C8D;    --color-status-info-bg: #ECFDFF;
+  --color-status-neutral: #4B5563; --color-status-neutral-bg: #F3F4F6;
+  --color-data-increase: #0B9E74; --color-data-decrease: #EE484B; --color-text-danger: #EE484B; --color-chart-area: #9CA3AF24;
+  --color-bg-brand: var(--brand-500); --color-text-on-brand: #111827;
+  --color-bg-skeleton: #E5E7EB; --color-bg-skeleton-highlight: #F3F4F6; --color-bg-readonly: #F9FAFB;
+  --color-icon-default: #4B5563; --color-icon-muted: #666D7B; --color-icon-brand: #111827; --color-icon-two-tone: var(--brand-500);
+
+  --radius-xs: 4px; --radius-sm: 6px; --radius-md: 8px; --radius-lg: 12px; --radius-xl: 16px; /* 实测反馈：整体放大一档 */
+
+  /* 第二、三批新增角色（与种子 dist 完全一致） */
+  --color-text-placeholder: #9CA3AF;
+  --color-border-input: #D1D5DB;
+  --color-action-secondary-hover: #F3F4F6;
+  --color-action-quiet: #E5E7EB; --color-action-quiet-hover: #D1D5DB; --color-action-danger: #EE484B; --color-action-danger-hover: #DC353C; --color-action-danger-active: #CA1E2D;
+  --color-bg-selected-subtle: #F3F4F6; --color-bg-selected-hover: #E5E7EB; --color-text-brand: #111827;
+  --color-action-selected: #111827; --color-text-on-selected: #FFFFFF; --color-border-current: #111827;
+  --color-bg-elevated: #FFFFFF;
+  --color-bg-overlay: #11182773;
+  --color-bg-mask: #FFFFFFE6;
+  --color-bg-inverse: #111827;
+  --color-text-inverse: #FFFFFF;
+  --elevation-card-color: #1118270F; --elevation-popover-color: #1118271A; --elevation-modal-color: #11182729;
+  --color-chart-1: var(--brand-500); --color-chart-2: #4F7DF7; --color-chart-3: #0E8A9B; --color-chart-4: #8B5CF6; --color-chart-5: #666D7B; --color-chart-6: #1F2937;
+  --color-chart-sequential-1: #F3F4F6; --color-chart-sequential-2: #D1D5DB; --color-chart-sequential-3: #666D7B; --color-chart-sequential-4: #374151; --color-chart-sequential-5: var(--brand-500);
+}
+
+.dark {
+  --color-text-link: #D1D5DB; --color-text-link-hover: #F3F4F6;
+  --color-text-primary: #F3F4F6;
+  --color-text-secondary: #9CA3AF;
+  --color-text-muted: #9CA3AF;
+  --color-text-selected: #F3F4F6;
+
+  --color-bg-page: #080F1C;
+  --color-bg-surface: #111827;
+  --color-bg-subtle: #151D2C;
+  --color-bg-hover: #1A2331;
+  --color-bg-input: #141416;
+  --color-bg-selected: #1E2836;
+
+  --color-bg-sidebar: #111113;
+  --color-bg-sidebar-hover: #151D2C;
+  --color-border-sidebar: #232326;
+
+  --color-border-default: #1E2836;
+  --color-border-strong: #364050;
+
+  --color-status-success: #00A56E; --color-status-success-bg: #0F2C31;
+  --color-status-warning: #CB7E00; --color-status-warning-bg: #2B2622;
+  --color-status-error: #EB6378;   --color-status-error-bg: #302232;
+  --color-status-info: #009FB5;    --color-status-info-bg: #0F2B3B;
+  --color-status-neutral: #9CA3AF; --color-status-neutral-bg: #242B3A;
+  --color-data-increase: #00A56E; --color-data-decrease: #EB6378; --color-text-danger: #EB6378;
+  --color-bg-skeleton: #1E2836; --color-bg-skeleton-highlight: #1A2331; --color-bg-readonly: #151D2C;
+  --color-icon-default: #9CA3AF; --color-icon-muted: #666D7B; --color-icon-brand: #F3F4F6; --color-icon-two-tone: var(--brand-500);
+
+  --color-text-placeholder: #666D7B;
+  --color-border-focus: #F3F4F6; --color-focus-ring: #FFFFFF33;
+  --color-border-input: #364050;
+  --color-action-secondary-hover: #1A2331; --color-action-quiet: #1E2836; --color-action-quiet-hover: #364050;
+  --color-bg-selected-subtle: #1E2836; --color-bg-selected-hover: #364050; --color-text-brand: var(--brand-500);
+  --color-action-selected: #364050; --color-text-on-selected: #F3F4F6; --color-border-current: #F3F4F6;
+  --color-bg-elevated: #1A2331;
+  --color-bg-overlay: #080F1CA6;
+  --color-bg-mask: #151D2CE6;
+  --color-bg-inverse: #F3F4F6;
+  --color-text-inverse: #111827;
+  --elevation-card-color: #00000000; --elevation-popover-color: #0000004D; --elevation-modal-color: #00000080;
+  --color-chart-2: #7DA0FC; --color-chart-3: #009FB5; --color-chart-4: #8B5CF6; --color-chart-5: #9CA3AF; --color-chart-6: #D1D5DB;
+  --color-chart-sequential-1: #1E2836; --color-chart-sequential-2: #364050; --color-chart-sequential-4: #D1D5DB;
+}

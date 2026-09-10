@@ -1,0 +1,14 @@
+/* 旧变量名保留为别名，全部指向设计系统 token（migrate adopt 阶段的思路：老页面不改也能拿到新值）。
+   旧值 → 新角色的对照见 ../../README.md「迁移排练」。新代码直接用 --color-* / --space-* 等 token，不再用这些别名。 */
+:root {
+  --brand: var(--color-action-primary);
+  --brand-dark: var(--color-action-primary-hover);
+  --text: var(--color-text-primary);
+  --text-muted: var(--color-text-muted);
+  --border: var(--color-border-default);
+  --bg: var(--color-bg-page);
+  --danger: var(--color-action-danger);
+  --ok: var(--color-status-success);
+  --radius: var(--radius-md);
+  --gap: var(--space-stack);
+}

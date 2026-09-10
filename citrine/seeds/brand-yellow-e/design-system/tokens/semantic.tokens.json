@@ -1,0 +1,914 @@
+{
+  "color": {
+    "action": {
+      "primary": {
+        "$type": "color",
+        "$value": "{color.brand.500}"
+      },
+      "primary-hover": {
+        "$type": "color",
+        "$value": "{color.brand.500}",
+        "$description": "hover 不换色（延伸色显脏），反馈靠边线变黑（border.current）。"
+      },
+      "primary-active": {
+        "$type": "color",
+        "$value": "{color.brand.500}",
+        "$description": "active 同上；进度条 / 滑杆填充也用它，纯黄。"
+      },
+      "danger": {
+        "$type": "color",
+        "$value": "{color.red.700}",
+        "$description": "危险按钮填充。亮暗两个 Theme 都保持深红，白字 ≥ 4.5:1；不要复用 status.error（它在暗色下会变浅）。"
+      },
+      "danger-hover": {
+        "$type": "color",
+        "$value": "{color.red.800}"
+      },
+      "danger-active": {
+        "$type": "color",
+        "$value": "{color.red.900}"
+      },
+      "secondary-hover": {
+        "$type": "color",
+        "$value": "{color.neutral.100}"
+      },
+      "selected": {
+        "$type": "color",
+        "$value": "{color.neutral.900}",
+        "$description": "选中态填充：分段选择器、视图切换、状态切换等「选项卡式按钮」的当前项。不用品牌黄——黄色只表达主操作，不表达选中。"
+      },
+      "quiet": {
+        "$type": "color",
+        "$value": "{color.neutral.200}",
+        "$description": "文字按钮（quiet）的静息浅底。用户规则（rc.23）：按钮类内容不能无框架直接放在背景上，至少要有浅色底或描边——quiet 选浅底。取 200 而不是 100：100 与白卡片只有 1.04:1，肉眼不可辨。"
+      },
+      "quiet-hover": {
+        "$type": "color",
+        "$value": "{color.neutral.300}",
+        "$description": "quiet 按钮 hover / active 的底色，升一档。"
+      }
+    },
+    "brand": {
+      "indicator": {
+        "$type": "color",
+        "$value": "{color.brand.500}"
+      }
+    },
+    "text": {
+      "on-primary": {
+        "$type": "color",
+        "$value": "{color.neutral.900}",
+        "$description": "黄底永远深字：#F9CF00 上白字 1.5:1，近黑 11:1。"
+      },
+      "link": {
+        "$type": "color",
+        "$value": "{color.neutral.700}",
+        "$description": "品牌决定：链接不用色相，靠下划线 + 斜体识别；neutral.700 白底 10:1。"
+      },
+      "primary": {
+        "$type": "color",
+        "$value": "{color.neutral.900}"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "{color.neutral.600}"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.neutral.500}",
+        "$description": "帮助文字、表格副行。neutral.500：白底 5.2:1，neutral.100（页面底、选中行）上 4.7:1；neutral.400 只有 2.5:1，不能承载文字。"
+      },
+      "selected": {
+        "$type": "color",
+        "$value": "{color.neutral.900}"
+      },
+      "sidebar": {
+        "$type": "color",
+        "$value": "{color.neutral.700}"
+      },
+      "sidebar-strong": {
+        "$type": "color",
+        "$value": "{color.neutral.900}"
+      },
+      "sidebar-muted": {
+        "$type": "color",
+        "$value": "{color.neutral.500}"
+      },
+      "sidebar-selected": {
+        "$type": "color",
+        "$value": "{color.white}"
+      },
+      "on-danger": {
+        "$type": "color",
+        "$value": "{color.white}",
+        "$description": "危险按钮红底上的文字。"
+      },
+      "placeholder": {
+        "$type": "color",
+        "$value": "{color.neutral.400}",
+        "$description": "仅输入框占位符可以这么浅；正式文字用 text.muted。"
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{color.white}"
+      },
+      "link-hover": {
+        "$type": "color",
+        "$value": "{color.neutral.900}"
+      },
+      "on-brand": {
+        "$type": "color",
+        "$value": "{color.neutral.900}"
+      },
+      "brand": {
+        "$type": "color",
+        "$value": "{color.neutral.900}",
+        "$description": "结果页代码等品牌强调大字：亮色下近黑（黄字白底不可读，深金显脏），暗色下才是纯黄。"
+      },
+      "on-selected": {
+        "$type": "color",
+        "$value": "{color.white}"
+      },
+      "danger": {
+        "$type": "color",
+        "$value": "{color.red.700}",
+        "$description": "危险文字（下拉菜单的删除项、危险链接、行内警示）。与 action.danger 同值但语义不同：填充在亮暗两个 Theme 都保持深红，文字在暗色下必须换成 red.500（rose-400）才读得清——直接拿 action.danger 当文字色，暗色浮层上不到 4.5:1。"
+      }
+    },
+    "bg": {
+      "page": {
+        "$type": "color",
+        "$value": "{color.neutral.100}"
+      },
+      "surface": {
+        "$type": "color",
+        "$value": "{color.white}"
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{color.neutral.50}"
+      },
+      "hover": {
+        "$type": "color",
+        "$value": "{color.neutral.100}"
+      },
+      "input": {
+        "$type": "color",
+        "$value": "{color.white}"
+      },
+      "selected": {
+        "$type": "color",
+        "$value": "{color.neutral.100}",
+        "$description": "筹码、批量条、幽灵按钮 hover、进度轨道：暖灰，不再用黄色浅调。"
+      },
+      "sidebar": {
+        "$type": "color",
+        "$value": "{color.white}"
+      },
+      "sidebar-hover": {
+        "$type": "color",
+        "$value": "{color.neutral.100}"
+      },
+      "sidebar-selected": {
+        "$type": "color",
+        "$value": "{color.neutral.900}",
+        "$description": "侧栏选中项：深黑色反转块，白字 17:1；黄色只留给左侧指示条。"
+      },
+      "selected-hover": {
+        "$type": "color",
+        "$value": "{color.neutral.200}",
+        "$description": "已选中的行再被悬停：从 selected-subtle 升一档。"
+      },
+      "elevated": {
+        "$type": "color",
+        "$value": "{color.white}",
+        "$description": "下拉菜单、弹窗表面。暗色下必须比 surface 亮一档，否则浮层和底板分不开。"
+      },
+      "overlay": {
+        "$type": "color",
+        "$value": "{color.neutral.scrim}"
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{color.neutral.900}",
+        "$description": "Tooltip、深色 Toast 的底。"
+      },
+      "brand": {
+        "$type": "color",
+        "$value": "{color.brand.500}",
+        "$description": "大面积品牌面（登录页品牌区、欢迎横幅）。与 action.primary 同值但语义不同：以后品牌面想换更浅的黄，不影响按钮。"
+      },
+      "skeleton": {
+        "$type": "color",
+        "$value": "{color.neutral.200}",
+        "$description": "骨架屏底色。"
+      },
+      "skeleton-highlight": {
+        "$type": "color",
+        "$value": "{color.neutral.100}",
+        "$description": "骨架屏流光高亮色。"
+      },
+      "readonly": {
+        "$type": "color",
+        "$value": "{color.neutral.50}",
+        "$description": "只读字段底色：可读、不可编辑，与禁用（opacity）区分。"
+      },
+      "selected-subtle": {
+        "$type": "color",
+        "$value": "{color.neutral.100}",
+        "$description": "表格选中行：暖灰；选中状态同时由勾选框表达。"
+      },
+      "mask": {
+        "$type": "color",
+        "$value": "{color.neutral.mask}",
+        "$description": "局部加载遮罩（v-loading、表格加载）。Element 默认把它接到 --el-mask-color；不要拿 bg.overlay（全页弹窗遮罩）顶替，那会把一张卡片压成一块黑。"
+      }
+    },
+    "border": {
+      "default": {
+        "$type": "color",
+        "$value": "{color.neutral.200}",
+        "$description": "普通边线：卡片外框、表格行分隔、分隔线。外框颜色必须与页面底色（neutral.100）可区分，所以最浅只能到 neutral.200；分层靠它 + elevation.card 的软阴影一起完成。"
+      },
+      "strong": {
+        "$type": "color",
+        "$value": "{color.neutral.300}"
+      },
+      "sidebar": {
+        "$type": "color",
+        "$value": "{color.neutral.200}"
+      },
+      "focus": {
+        "$type": "color",
+        "$value": "{color.neutral.900}",
+        "$description": "焦点边线：近黑。黄色边线在白底上 1.5:1 不可见，深金又显脏。"
+      },
+      "input": {
+        "$type": "color",
+        "$value": "{color.neutral.300}",
+        "$description": "输入框、搜索框边线；比 border.default 实一档，卡片边线不变。"
+      },
+      "current": {
+        "$type": "color",
+        "$value": "{color.neutral.900}",
+        "$description": "当前位置指示线（标签页下划线等）：深黑细线，不用品牌黄。分页当前页保留黄色（用户决定：页面上唯一的黄色定位点）。"
+      }
+    },
+    "focus": {
+      "ring": {
+        "$type": "color",
+        "$value": "{color.neutral.ring}"
+      }
+    },
+    "status": {
+      "success": {
+        "$type": "color",
+        "$value": "{color.green.700}"
+      },
+      "success-bg": {
+        "$type": "color",
+        "$value": "{color.green.50}"
+      },
+      "warning": {
+        "$type": "color",
+        "$value": "{color.orange.700}"
+      },
+      "warning-bg": {
+        "$type": "color",
+        "$value": "{color.orange.50}"
+      },
+      "error": {
+        "$type": "color",
+        "$value": "{color.red.700}"
+      },
+      "error-bg": {
+        "$type": "color",
+        "$value": "{color.red.50}"
+      },
+      "info": {
+        "$type": "color",
+        "$value": "{color.cyan.700}",
+        "$description": "info 是青（公司调色板 Info · Cyan），不是蓝：蓝在本系统里只做图表分类色。"
+      },
+      "info-bg": {
+        "$type": "color",
+        "$value": "{color.cyan.50}"
+      },
+      "neutral": {
+        "$type": "color",
+        "$value": "{color.neutral.600}",
+        "$description": "草稿、已过期、已停用等无倾向状态。"
+      },
+      "neutral-bg": {
+        "$type": "color",
+        "$value": "{color.neutral.100}"
+      }
+    },
+    "control": {
+      "knob": {
+        "$type": "color",
+        "$value": "{color.white}",
+        "$description": "开关滑块；亮暗两个 Theme 都保持白色。"
+      }
+    },
+    "chart": {
+      "1": {
+        "$type": "color",
+        "$value": "{color.brand.500}",
+        "$description": "分类色：品牌黄领衔，其后是公司调色板的蓝 / 青 / 紫，再是浅灰、深灰；不用 warning 橙、error 红、success 绿，避免图表和状态语义打架。"
+      },
+      "2": {
+        "$type": "color",
+        "$value": "{color.blue.500}"
+      },
+      "3": {
+        "$type": "color",
+        "$value": "{color.cyan.600}"
+      },
+      "4": {
+        "$type": "color",
+        "$value": "{color.purple.500}"
+      },
+      "5": {
+        "$type": "color",
+        "$value": "{color.neutral.500}"
+      },
+      "6": {
+        "$type": "color",
+        "$value": "{color.neutral.800}"
+      },
+      "sequential": {
+        "1": {
+          "$type": "color",
+          "$value": "{color.neutral.100}",
+          "$description": "顺序色：灰阶四档 + 纯黄封顶，按离散分段使用；不要在灰与黄之间做连续插值，中间值是橄榄色。"
+        },
+        "2": {
+          "$type": "color",
+          "$value": "{color.neutral.300}"
+        },
+        "3": {
+          "$type": "color",
+          "$value": "{color.neutral.500}"
+        },
+        "4": {
+          "$type": "color",
+          "$value": "{color.neutral.700}"
+        },
+        "5": {
+          "$type": "color",
+          "$value": "{color.brand.500}"
+        }
+      },
+      "area": {
+        "$type": "color",
+        "$value": "{color.neutral.wash}",
+        "$description": "折线图面积填充：半透明暖灰，网格线透得出来。不要用 sequential.1 这类实色，暗色下会变成一整块灰。"
+      }
+    },
+    "data": {
+      "increase": {
+        "$type": "color",
+        "$value": "{color.green.700}",
+        "$description": "公司约定：涨用绿、跌用红（与 A 股「红涨绿跌」相反）。要切换方向只改这两个别名，不要在页面里硬编码。"
+      },
+      "decrease": {
+        "$type": "color",
+        "$value": "{color.red.700}"
+      }
+    },
+    "icon": {
+      "default": {
+        "$type": "color",
+        "$value": "{color.neutral.600}",
+        "$description": "独立图标（工具栏、表格操作）的默认色，与 text.secondary 同值；随文字出现的图标直接继承 currentColor。"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.neutral.500}",
+        "$description": "装饰性、次要图标。UI 组件需 ≥ 3:1，所以不能再浅。"
+      },
+      "brand": {
+        "$type": "color",
+        "$value": "{color.neutral.900}",
+        "$description": "two-tone 图标的描边：近黑。"
+      },
+      "two-tone": {
+        "$type": "color",
+        "$value": "{color.brand.500}",
+        "$description": "two-tone 图标的填充：纯黄。黑描边 + 纯黄填充是品牌插图的固定配方。"
+      }
+    }
+  },
+  "space": {
+    "inline": {
+      "$type": "dimension",
+      "$value": "{spacing.2}"
+    },
+    "stack": {
+      "$type": "dimension",
+      "$value": "{spacing.5}",
+      "$description": "卡片之间的纵向 / 网格间距：20px（原 16）。"
+    },
+    "gutter": {
+      "$type": "dimension",
+      "$value": "{spacing.8}",
+      "$description": "内容区四周与顶栏左右内边距：32px（原 24，实测反馈偏紧）。"
+    },
+    "card": {
+      "$type": "dimension",
+      "$value": "{spacing.6}",
+      "$description": "卡片、弹窗、抽屉的内边距：24px。compact 下收到 16。"
+    }
+  },
+  "font": {
+    "family": {
+      "body": {
+        "$type": "fontFamily",
+        "$value": "{font.family.sans}"
+      },
+      "code": {
+        "$type": "fontFamily",
+        "$value": "{font.family.mono}",
+        "$description": "订单号、ID、金额等需要对齐的等宽内容。"
+      }
+    }
+  },
+  "text": {
+    "caption": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.xs}",
+        "$description": "国内中后台中文字号下限 12px；分组标题、计数徽标不再用 11px。"
+      }
+    },
+    "small": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.xs}"
+      }
+    },
+    "body-sm": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.sm}"
+      }
+    },
+    "body": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.md}"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": "{font.line-height.normal}"
+      }
+    },
+    "title-sm": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.lg}"
+      }
+    },
+    "title": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.xl}"
+      }
+    },
+    "heading": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.2xl}"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": "{font.line-height.tight}"
+      }
+    },
+    "display": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.4xl}",
+        "$description": "统计卡数字。实测反馈 26px 没有重点感（rc.25），升到 32：数据数字是 KPI 卡的主角，要一眼压住标签与涨跌。与 hero 同尺寸但语义不同——hero 是结果页大字。"
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "{font.letter-spacing.tight}"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": "{font.line-height.tight}",
+        "$description": "数据大字用紧行高：1.6 的正文行高会让数字上下浮空、不成块。"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.bold}",
+        "$description": "数据大字 700：重点感的另一半来自字重；正文强调仍是 600。"
+      }
+    },
+    "weight": {
+      "label": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.medium}",
+        "$description": "标签类文字：按钮、表头、徽标 / 状态胶囊、表单标签、菜单项、标签页默认项、描述列表标签、面包屑。实测反馈 400 的标签在 Mac 上太细（rc.16），改为 500；正文与表格单元格仍是 400。"
+      },
+      "strong": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}",
+        "$description": "强调。雅黑上 600 渲染为粗体，与 700 无差别，所以强调不能只靠字重表达。"
+      },
+      "brand": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.bold}"
+      },
+      "logo": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.bold}"
+      }
+    },
+    "tracking": {
+      "caps": {
+        "$type": "dimension",
+        "$value": "{font.letter-spacing.wide}",
+        "$description": "全大写小字（分组标题）需要放宽字距。"
+      }
+    },
+    "link": {
+      "decoration": {
+        "$type": "string",
+        "$value": "underline",
+        "$description": "链接常态就带下划线，不是 hover 才出现。"
+      },
+      "style": {
+        "$type": "string",
+        "$value": "italic",
+        "$description": "注意：中文字体没有真斜体，浏览器会合成假斜体；这是品牌决定，不适用于导航、标签页、分页等组件型链接。"
+      }
+    },
+    "hero": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.4xl}",
+        "$description": "登录页标题、结果页（403/404/500）标题；正文页面不用。"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": "{font.line-height.tight}"
+      }
+    },
+    "paragraph": {
+      "line-height": {
+        "$type": "number",
+        "$value": "{font.line-height.relaxed}",
+        "$description": "成段说明文字（帮助中心、公告）的行高；表格与表单仍用 body 的 1.5。"
+      }
+    },
+    "numeric": {
+      "variant": {
+        "$type": "string",
+        "$value": "tabular-nums",
+        "$description": "金额、订单号、统计数字用等宽数字对齐：font-variant-numeric。"
+      }
+    }
+  },
+  "control": {
+    "height": {
+      "sm": {
+        "$type": "dimension",
+        "$value": "{size.control.sm}"
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": "{size.control.md}"
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": "{size.control.lg}",
+        "$description": "登录按钮、页面级主操作、触屏场景。"
+      }
+    },
+    "hit-min": {
+      "$type": "dimension",
+      "$value": "{size.control.xs}",
+      "$description": "图标类控件（关闭 ×、更多 ⋯、箭头、表格操作链接）的最小命中区 24×24，视觉尺寸可以更小，命中区不能。"
+    },
+    "segmented-inset": {
+      "$type": "dimension",
+      "$value": "{spacing.0-5}",
+      "$description": "分段选择器：外胶囊到选中内胶囊的内缩。外壳高 = control.height.*，内胶囊高 = 外壳 − 2 × inset − 2 × 发丝线。"
+    }
+  },
+  "icon": {
+    "size": {
+      "md": {
+        "$type": "dimension",
+        "$value": "{size.icon.md}"
+      },
+      "xs": {
+        "$type": "dimension",
+        "$value": "{size.icon.xs}"
+      },
+      "sm": {
+        "$type": "dimension",
+        "$value": "{size.icon.sm}"
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": "{size.icon.lg}"
+      },
+      "xl": {
+        "$type": "dimension",
+        "$value": "{size.icon.xl}"
+      },
+      "2xl": {
+        "$type": "dimension",
+        "$value": "{size.icon.2xl}",
+        "$description": "结果页与提示卡里的大图标。"
+      }
+    },
+    "library": {
+      "$type": "string",
+      "$value": "IconPark",
+      "$description": "字节跳动 IconPark（iconpark.oceanengine.com），Apache-2.0；React 用 @icon-park/react，Vue3 用 @icon-park/vue-next，静态页用 @icon-park/svg。"
+    },
+    "stroke": {
+      "width": {
+        "$type": "number",
+        "$value": "{stroke-width.4}",
+        "$description": "统一描边 4：实测 3 在 Mac 上被反馈太细；4 在 16px 下约 1.33px，各尺寸屏都可接受。"
+      },
+      "width-small": {
+        "$type": "number",
+        "$value": "{stroke-width.4}",
+        "$description": "与默认相同，保留角色名以便日后小图标单独调整。"
+      },
+      "linecap": {
+        "$type": "string",
+        "$value": "round"
+      },
+      "linejoin": {
+        "$type": "string",
+        "$value": "round"
+      }
+    },
+    "theme": {
+      "default": {
+        "$type": "string",
+        "$value": "outline",
+        "$description": "默认线性（outline）。"
+      },
+      "active": {
+        "$type": "string",
+        "$value": "outline",
+        "$description": "选中态不换图标风格：靠底色反转（sidebar-selected 深黑）+ 左侧品牌色指示条表达，图标保持线性。"
+      }
+    }
+  },
+  "avatar": {
+    "size": {
+      "sm": {
+        "$type": "dimension",
+        "$value": "{size.avatar.sm}"
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": "{size.avatar.md}"
+      }
+    }
+  },
+  "layout": {
+    "sidebar": {
+      "width": {
+        "$type": "dimension",
+        "$value": "{size.sidebar}"
+      },
+      "collapsed-width": {
+        "$type": "dimension",
+        "$value": "{size.sidebar-collapsed}",
+        "$description": "侧栏折叠后只剩图标时的宽度。"
+      }
+    },
+    "topbar": {
+      "height": {
+        "$type": "dimension",
+        "$value": "{size.topbar}"
+      }
+    },
+    "search": {
+      "width": {
+        "$type": "dimension",
+        "$value": "{size.search}"
+      }
+    },
+    "form": {
+      "label-width": {
+        "$type": "dimension",
+        "$value": "{size.form-label}",
+        "$description": "横向表单（左标签右输入）的标签列宽，全站统一，不按页面手调。"
+      },
+      "max-width": {
+        "$type": "dimension",
+        "$value": "{size.form-max}",
+        "$description": "单列表单页的内容最大宽度，避免超宽屏上输入框拉成一条线。"
+      }
+    },
+    "modal": {
+      "width": {
+        "sm": {
+          "$type": "dimension",
+          "$value": "{size.modal.sm}",
+          "$description": "确认类弹窗。"
+        },
+        "md": {
+          "$type": "dimension",
+          "$value": "{size.modal.md}",
+          "$description": "带表单的弹窗。"
+        }
+      }
+    },
+    "drawer": {
+      "width": {
+        "$type": "dimension",
+        "$value": "{size.drawer}"
+      }
+    },
+    "auth": {
+      "card-width": {
+        "$type": "dimension",
+        "$value": "{size.auth-card}",
+        "$description": "登录卡片宽度。"
+      }
+    }
+  },
+  "border": {
+    "width": {
+      "default": {
+        "$type": "dimension",
+        "$value": "{border.width.thin}"
+      },
+      "control": {
+        "$type": "dimension",
+        "$value": "{border.width.medium}",
+        "$description": "勾选框等小控件边线，1px 在高对比度黄色旁边显得太弱。"
+      },
+      "active": {
+        "$type": "dimension",
+        "$value": "{border.width.thick}",
+        "$description": "选中标签页下划线、焦点外框。"
+      },
+      "indicator": {
+        "$type": "dimension",
+        "$value": "{border.width.bar}",
+        "$description": "侧栏选中项左侧品牌色指示条。"
+      }
+    }
+  },
+  "motion": {
+    "duration": {
+      "fast": {
+        "$type": "duration",
+        "$value": "{duration.fast}",
+        "$description": "hover/active 等即时反馈。"
+      },
+      "normal": {
+        "$type": "duration",
+        "$value": "{duration.normal}",
+        "$description": "下拉、Tooltip 出现。"
+      },
+      "slow": {
+        "$type": "duration",
+        "$value": "{duration.slow}",
+        "$description": "弹窗、抽屉。"
+      }
+    },
+    "easing": {
+      "standard": {
+        "$type": "cubicBezier",
+        "$value": "{easing.standard}"
+      },
+      "enter": {
+        "$type": "cubicBezier",
+        "$value": "{easing.enter}",
+        "$description": "进场减速。"
+      },
+      "exit": {
+        "$type": "cubicBezier",
+        "$value": "{easing.exit}",
+        "$description": "退场加速。"
+      }
+    }
+  },
+  "opacity": {
+    "disabled": {
+      "$type": "number",
+      "$value": "{opacity.45}"
+    },
+    "icon-placeholder": {
+      "$type": "number",
+      "$value": "{opacity.50}"
+    },
+    "on-primary-muted": {
+      "$type": "number",
+      "$value": "{opacity.78}",
+      "$description": "黄底高亮卡上的次要文字：不用换色，用透明度压一档。"
+    }
+  },
+  "layer": {
+    "sticky": {
+      "$type": "number",
+      "$value": "{z.2}"
+    },
+    "dropdown": {
+      "$type": "number",
+      "$value": "{z.10}",
+      "$description": "下拉菜单、Tooltip、Popover。"
+    },
+    "modal": {
+      "$type": "number",
+      "$value": "{z.100}",
+      "$description": "弹窗与抽屉（含遮罩）。"
+    },
+    "toast": {
+      "$type": "number",
+      "$value": "{z.1000}",
+      "$description": "Toast、全局通知：永远在弹窗之上。"
+    }
+  },
+  "focus": {
+    "ring": {
+      "width": {
+        "$type": "dimension",
+        "$value": "{border.width.bar}",
+        "$description": "焦点环粗细；与侧栏指示条同为 3px，黄色在白底上需要足够宽才可见。"
+      }
+    }
+  },
+  "elevation": {
+    "card": {
+      "y": {
+        "$type": "dimension",
+        "$value": "{shadow.y.1}"
+      },
+      "blur": {
+        "$type": "dimension",
+        "$value": "{shadow.blur.1}"
+      },
+      "color": {
+        "$type": "color",
+        "$value": "{color.neutral.shadow-1}",
+        "$description": "用法：box-shadow: 0 var(--elevation-card-y) var(--elevation-card-blur) var(--elevation-card-color)。"
+      }
+    },
+    "popover": {
+      "y": {
+        "$type": "dimension",
+        "$value": "{shadow.y.2}"
+      },
+      "blur": {
+        "$type": "dimension",
+        "$value": "{shadow.blur.2}"
+      },
+      "color": {
+        "$type": "color",
+        "$value": "{color.neutral.shadow-2}"
+      }
+    },
+    "modal": {
+      "y": {
+        "$type": "dimension",
+        "$value": "{shadow.y.3}"
+      },
+      "blur": {
+        "$type": "dimension",
+        "$value": "{shadow.blur.3}"
+      },
+      "color": {
+        "$type": "color",
+        "$value": "{color.neutral.shadow-3}"
+      }
+    }
+  },
+  "table": {
+    "cell": {
+      "padding-y": {
+        "$type": "dimension",
+        "$value": "{spacing.3-5}",
+        "$description": "表格单元格纵向内边距 14px（原 12）；compact 下 8。"
+      },
+      "padding-x": {
+        "$type": "dimension",
+        "$value": "{spacing.5}"
+      }
+    }
+  },
+  "illustration": {
+    "size": {
+      "md": {
+        "$type": "dimension",
+        "$value": "{size.illustration}",
+        "$description": "空状态、结果页插图的边长。"
+      }
+    }
+  }
+}

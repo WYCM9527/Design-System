@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>黄色中后台预览</title>
+<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="../../seeds/brand-yellow-e/bridge/iconpark.css">
+<link id="tokens-base" rel="stylesheet" href="tokens-base.css">
+<link id="tokens" rel="stylesheet" href="tokens-d.css">
+<script>
+(function () {
+  var plans = {
+    d: { file: "tokens-d.css", name: "方案 D · 你的品牌色 #F9CF00 · 深色侧栏" },
+    e: { file: "tokens-e.css", name: "方案 E · 你的品牌色 #F9CF00 · 浅色侧栏" },
+    s: { file: "tokens-seed.css", name: "方案 S · 同 E，但颜色与字体、尺寸、间距全部来自 skill 构建的 dist/（DTCG 种子 → Style Dictionary）", standalone: true }
+  };
+  var query = new URLSearchParams(location.search);
+  var plan = plans[query.get("plan")] ? query.get("plan") : "d";
+  document.getElementById("tokens").href = plans[plan].file;
+  // 方案 S 不加载手写的结构层：字体、尺寸、间距也全部由 seed-dist/ 提供
+  if (plans[plan].standalone) document.getElementById("tokens-base").remove();
+  if (query.get("dark") === "1") document.documentElement.classList.add("dark");
+  if (query.get("compact") === "1") document.documentElement.classList.add("compact");
+  function syncLinks() {
+    var dark = document.documentElement.classList.contains("dark");
+    var compact = document.documentElement.classList.contains("compact");
+    document.querySelectorAll("[data-plan]").forEach(function (a) {
+      a.classList.toggle("cur", a.dataset.plan === plan);
+      a.href = "admin.html?plan=" + a.dataset.plan + (dark ? "&dark=1" : "") + (compact ? "&compact=1" : "");
+    });
+    document.getElementById("dark-toggle").textContent = dark ? "☀ 亮色" : "☾ 暗色";
+    document.getElementById("compact-toggle").textContent = compact ? "☷ 舒适" : "☰ 紧凑";
+  }
+  window.toggleDark = function () { document.documentElement.classList.toggle("dark"); syncLinks(); };
+  window.toggleCompact = function () { document.documentElement.classList.toggle("compact"); syncLinks(); };
+  document.addEventListener("DOMContentLoaded", function () {
+    document.title = plans[plan].name + " · 黄色中后台预览";
+    document.getElementById("plan-name").textContent = plans[plan].name;
+    syncLinks();
+  });
+})();
+</script>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><span class="logo">Y</span>黄金后台 Admin</div>
+    <nav class="nav">
+      <div class="nav-group">概览</div>
+      <a class="active" href="#"><span class="i-icon"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18V42H39V18L24 6L9 18Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 29V42H29V29H19Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linejoin="round"/><path d="M9 42H39" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round"/></svg></span>工作台</a>
+      <a href="#"><span class="i-icon"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6V42H42" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 30V34" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 22V34" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 6V34" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M38 14V34" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span>数据看板</a>
+      <div class="nav-group">业务</div>
+      <a href="#"><span class="i-icon"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M33.0499 7H38C39.1046 7 40 7.89543 40 9V42C40 43.1046 39.1046 44 38 44H10C8.89543 44 8 43.1046 8 42L8 9C8 7.89543 8.89543 7 10 7H16H17V10H31V7H33.0499Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linejoin="round"/><rect x="17" y="4" width="14" height="6" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M26.9996 19L19 27.0012H29.004L21.0003 35.0018" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span>订单管理</a>
+      <a href="#"><span class="i-icon"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12H44V20L42.6015 20.8391C40.3847 22.1692 37.6153 22.1692 35.3985 20.8391L34 20L32.6015 20.8391C30.3847 22.1692 27.6153 22.1692 25.3985 20.8391L24 20L22.6015 20.8391C20.3847 22.1692 17.6153 22.1692 15.3985 20.8391L14 20L12.6015 20.8391C10.3847 22.1692 7.61531 22.1692 5.39853 20.8391L4 20V12Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 22.4889V44H40V22" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 11.8222V4H40V12" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><rect x="19" y="32" width="10" height="12" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span>商户审核</a>
+      <a href="#"><span class="i-icon"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M33 14C35.7614 14 38 11.7614 38 9C38 6.23858 35.7614 4 33 4C30.2386 4 28 6.23858 28 9C28 11.7614 30.2386 14 33 14Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-miterlimit="2"/><path d="M40.0002 22.9998H32.3702C31.8102 22.9998 31.2702 22.7598 30.8902 22.3498L25.5502 16.5698C24.9002 15.8598 23.8402 15.7098 23.0202 16.2098L15.5702 20.7898C14.9402 21.1798 14.9402 22.0998 15.5702 22.4898L23.0302 27.0598C23.6202 27.4198 23.9902 28.0698 23.9902 28.7698L24.0002 37.9998" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-miterlimit="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="36.5" cy="36.5" r="7.5" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/><circle cx="11.5" cy="36.5" r="7.5" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)"/></svg></span>骑手调度</a>
+      <a href="#"><span class="i-icon"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 19.313V9H44V19.313C41.8815 20.068 40.3636 22.1053 40.3636 24.5C40.3636 26.8947 41.8815 28.932 44 29.687V40H4V29.687C6.11853 28.932 7.63636 26.8947 7.63636 24.5C7.63636 22.1053 6.11853 20.068 4 19.313Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linejoin="round"/><path d="M19 16L24 21L29 16" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 22H30" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 28.1667H30" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 22V34" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span>营销活动</a>
+      <div class="nav-group">系统</div>
+      <a href="#"><span class="i-icon"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 20C22.866 20 26 16.866 26 13C26 9.13401 22.866 6 19 6C15.134 6 12 9.13401 12 13C12 16.866 15.134 20 19 20Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M32.6077 7C34.6405 8.2249 36.0001 10.4537 36.0001 13C36.0001 15.5463 34.6405 17.7751 32.6077 19" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 40.8V42H34V40.8C34 36.3196 34 34.0794 33.1281 32.3681C32.3611 30.8628 31.1372 29.6389 29.6319 28.8719C27.9206 28 25.6804 28 21.2 28H16.8C12.3196 28 10.0794 28 8.36808 28.8719C6.86278 29.6389 5.63893 30.8628 4.87195 32.3681C4 34.0794 4 36.3196 4 40.8Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M43.9999 42.0001V40.8001C43.9999 36.3197 43.9999 34.0795 43.128 32.3682C42.361 30.8629 41.1371 29.6391 39.6318 28.8721" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span>成员与权限</a>
+      <a href="#"><span class="i-icon"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M36.686 15.171C37.9364 16.9643 38.8163 19.0352 39.2147 21.2727H44V26.7273H39.2147C38.8163 28.9648 37.9364 31.0357 36.686 32.829L40.0706 36.2137L36.2137 40.0706L32.829 36.686C31.0357 37.9364 28.9648 38.8163 26.7273 39.2147V44H21.2727V39.2147C19.0352 38.8163 16.9643 37.9364 15.171 36.686L11.7863 40.0706L7.92939 36.2137L11.314 32.829C10.0636 31.0357 9.18372 28.9648 8.78533 26.7273H4V21.2727H8.78533C9.18372 19.0352 10.0636 16.9643 11.314 15.171L7.92939 11.7863L11.7863 7.92939L15.171 11.314C16.9643 10.0636 19.0352 9.18372 21.2727 8.78533V4H26.7273V8.78533C28.9648 9.18372 31.0357 10.0636 32.829 11.314L36.2137 7.92939L40.0706 11.7863L36.686 15.171Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linejoin="round"/><path d="M24 29C26.7614 29 29 26.7614 29 24C29 21.2386 26.7614 19 24 19C21.2386 19 19 21.2386 19 24C19 26.7614 21.2386 29 24 29Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linejoin="round"/></svg></span>系统设置</a>
+    </nav>
+    <div class="sidebar-foot">v2.4.0 · 设计系统预览</div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <span class="crumb">概览 / <b>工作台</b></span>
+      <div class="preview-bar">
+        <span>品牌色：</span>
+        <a data-plan="d" href="admin.html?plan=d">D 深侧栏</a>
+        <a data-plan="e" href="admin.html?plan=e">E 浅侧栏</a>
+        <a data-plan="s" href="admin.html?plan=s" title="颜色全部来自 skill 构建产物">S 种子构建</a>
+        <a id="dark-toggle" href="#" onclick="toggleDark(); return false;">☾ 暗色</a>
+        <a id="compact-toggle" href="#" onclick="toggleCompact(); return false;" title="compact Theme：只收紧尺寸与间距">☰ 紧凑</a>
+      </div>
+      <div class="search"><span class="i-icon i-icon--sm"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 38C30.3888 38 38 30.3888 38 21C38 11.6112 30.3888 4 21 4C11.6112 4 4 11.6112 4 21C4 30.3888 11.6112 38 21 38Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linejoin="round"/><path d="M26.657 14.3431C25.2093 12.8954 23.2093 12 21.0001 12C18.791 12 16.791 12.8954 15.3433 14.3431" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M33.2216 33.2217L41.7069 41.707" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span>搜索订单、商户、骑手…</div>
+      <button class="btn btn-primary"><span class="i-icon i-icon--sm"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24.0605 10L24.0239 38" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 24L38 24" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span>新建活动</button>
+      <div class="avatar">W</div>
+    </header>
+
+    <div class="content">
+      <div class="page-head">
+        <div><h1>工作台</h1><p id="plan-name"></p></div>
+        <div class="actions">
+          <button class="btn btn-secondary"><span class="i-icon i-icon--sm"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M42 27C42 33 38 43 24 43C10 43 6 33 6 27" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M24.0078 5.10059V33.0001" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 17L24 5L36 17" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span>导出报表</button>
+          <button class="btn btn-primary">发布配置</button>
+        </div>
+      </div>
+
+      <div class="alert alert-warning"><span class="i-icon"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C29.5228 44 34.5228 41.7614 38.1421 38.1421C41.7614 34.5228 44 29.5228 44 24C44 18.4772 41.7614 13.4772 38.1421 9.85786C34.5228 6.23858 29.5228 4 24 4C18.4772 4 13.4772 6.23858 9.85786 9.85786C6.23858 13.4772 4 18.4772 4 24C4 29.5228 6.23858 34.5228 9.85786 38.1421C13.4772 41.7614 18.4772 44 24 44Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linejoin="round"/><path fill-rule="evenodd" clip-rule="evenodd" d="M24 37C25.3807 37 26.5 35.8807 26.5 34.5C26.5 33.1193 25.3807 32 24 32C22.6193 32 21.5 33.1193 21.5 34.5C21.5 35.8807 22.6193 37 24 37Z" fill="currentColor"/><path d="M24 12V28" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>3 个商户资质将在 7 天内过期</b>，请及时通知商户更新证照。<a href="#">查看列表 →</a></div>
+
+      <section class="stats">
+        <div class="card stat hi"><div class="label">今日订单</div><div class="value">12,480</div><div class="delta">较昨日 +8.2%</div></div>
+        <div class="card stat"><div class="label">GMV（元）</div><div class="value">¥ 386,210</div><div class="delta up">▲ 12.4% 较上周</div></div>
+        <div class="card stat"><div class="label">待审核商户</div><div class="value">47</div><div class="delta down">▼ 需在 24h 内处理</div></div>
+        <div class="card stat"><div class="label">骑手在线</div><div class="value">1,032</div><div class="delta">高峰期覆盖率 96%</div></div>
+      </section>
+
+      <div class="grid2">
+        <div class="card">
+          <div class="card-head"><h2>订单趋势</h2><span class="tag">近 14 天</span><div class="right"><span class="badge badge-brand">实时</span></div></div>
+          <div class="bars">
+            <i style="height:40%"></i><i style="height:55%"></i><i style="height:48%"></i><i style="height:70%"></i><i style="height:62%"></i><i style="height:80%"></i><i style="height:74%"></i>
+            <i class="dim" style="height:44%"></i><i class="dim" style="height:58%"></i><i class="dim" style="height:52%"></i><i class="dim" style="height:66%"></i><i class="dim" style="height:60%"></i><i class="dim" style="height:78%"></i><i style="height:90%"></i>
+          </div>
+          <div class="legend"><span><i style="background:var(--color-chart-1)"></i>本周</span><span><i style="background:var(--color-chart-sequential-1)"></i>上周</span></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h2>组件状态</h2></div>
+          <div class="form" style="gap:12px">
+            <div class="row" style="flex-wrap:wrap;gap:8px">
+              <button class="btn btn-primary btn-sm">主要</button>
+              <button class="btn btn-secondary btn-sm">次要</button>
+              <button class="btn btn-ghost btn-sm">文字</button>
+              <button class="btn btn-danger btn-sm">危险</button>
+              <button class="btn btn-primary btn-sm" disabled>禁用</button>
+            </div>
+            <div class="row" style="flex-wrap:wrap;gap:8px">
+              <span class="badge badge-success">已完成</span>
+              <span class="badge badge-info">进行中</span>
+              <span class="badge badge-warning">待审核</span>
+              <span class="badge badge-error">已取消</span>
+              <span class="badge badge-brand">置顶</span>
+              <span class="badge badge-neutral">草稿</span>
+            </div>
+            <div class="row"><span class="switch on"></span><span>开启自动派单</span><span class="switch" style="margin-left:12px"></span><span>夜间模式</span></div>
+            <div class="row"><span class="checkbox on"></span><span>已选 3 项</span><span class="progress" style="margin-left:auto"><i style="width:64%"></i></span><span style="color:var(--color-text-secondary);font-size:12px">64%</span></div>
+            <div class="alert alert-info"><span class="i-icon"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C29.5228 44 34.5228 41.7614 38.1421 38.1421C41.7614 34.5228 44 29.5228 44 24C44 18.4772 41.7614 13.4772 38.1421 9.85786C34.5228 6.23858 29.5228 4 24 4C18.4772 4 13.4772 6.23858 9.85786 9.85786C6.23858 13.4772 4 18.4772 4 24C4 29.5228 6.23858 34.5228 9.85786 38.1421C13.4772 41.7614 18.4772 44 24 44Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linejoin="round"/><path fill-rule="evenodd" clip-rule="evenodd" d="M24 11C25.3807 11 26.5 12.1193 26.5 13.5C26.5 14.8807 25.3807 16 24 16C22.6193 16 21.5 14.8807 21.5 13.5C21.5 12.1193 22.6193 11 24 11Z" fill="currentColor"/><path d="M24.5 34V20H23.5H22.5" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 34H28" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span>黄色只出现在主按钮、选中态与进度上。</div>
+            <div class="alert alert-error"><span class="i-icon"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linejoin="round"/><path d="M29.6567 18.3432L18.343 29.6569" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.3433 18.3432L29.657 29.6569" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span>错误语义保持红色，与主色互不干扰。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <div class="card-head"><h2>待处理订单</h2><div class="right"><button class="btn btn-secondary btn-sm"><span class="i-icon i-icon--sm"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 9L20.4 25.8178V38.4444L27.6 42V25.8178L42 9H6Z" fill="none" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linejoin="round"/></svg></span>筛选</button><button class="btn btn-primary btn-sm">批量派单</button></div></div>
+          <div class="tabs"><a class="active" href="#">全部 128</a><a href="#">待接单 12</a><a href="#">配送中 43</a><a href="#">异常 3</a></div>
+          <table>
+            <thead><tr><th><span class="checkbox"></span></th><th>订单号</th><th>商户</th><th>金额</th><th>状态</th><th>进度</th><th>操作</th></tr></thead>
+            <tbody>
+              <tr class="selected"><td><span class="checkbox on"></span></td><td>#20260908-0412<span class="sub">14:02 · 骑手 李明</span></td><td>川味小馆（望京店）</td><td>¥ 86.00</td><td><span class="badge badge-info">配送中</span></td><td><span class="progress"><i style="width:70%"></i></span></td><td><a href="#">详情</a> · <a href="#">改派</a></td></tr>
+              <tr><td><span class="checkbox"></span></td><td>#20260908-0411<span class="sub">13:58 · 待接单</span></td><td>鲜果时光</td><td>¥ 42.50</td><td><span class="badge badge-warning">待接单</span></td><td><span class="progress"><i style="width:10%"></i></span></td><td><a href="#">详情</a> · <a href="#">催单</a></td></tr>
+              <tr><td><span class="checkbox"></span></td><td>#20260908-0409<span class="sub">13:41 · 骑手 王芳</span></td><td>老北京炸酱面</td><td>¥ 28.00</td><td><span class="badge badge-success">已完成</span></td><td><span class="progress"><i style="width:100%"></i></span></td><td><a href="#">详情</a></td></tr>
+              <tr><td><span class="checkbox"></span></td><td>#20260908-0407<span class="sub">13:30 · 用户取消</span></td><td>星光甜品</td><td>¥ 59.90</td><td><span class="badge badge-error">已取消</span></td><td><span class="progress"><i style="width:0"></i></span></td><td><a href="#">详情</a> · <a href="#">退款</a></td></tr>
+              <tr><td><span class="checkbox"></span></td><td>#20260908-0403<span class="sub">13:12 · 骑手 赵磊</span></td><td>湘辣小厨</td><td>¥ 112.00</td><td><span class="badge badge-info">配送中</span></td><td><span class="progress"><i style="width:45%"></i></span></td><td><a href="#">详情</a> · <a href="#">改派</a></td></tr>
+            </tbody>
+          </table>
+          <div class="pager"><span>共 128 条</span><a href="#">‹</a><a class="cur" href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">…</a><a href="#">13</a><a href="#">›</a></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h2>新建营销活动</h2></div>
+          <form class="form form-h" onsubmit="return false">
+            <div class="field"><label>活动名称<span>*</span></label><input class="input" value="周末满减 · 9 月第二周"></div>
+            <div class="field"><label>活动类型</label><select class="input"><option>满减券</option><option>折扣</option></select></div>
+            <div class="field"><label>预算上限（元）<span>*</span></label><input class="input error" value="-500"><div class="help err">预算必须为正数</div></div>
+            <div class="field"><label>投放范围</label><input class="input" placeholder="选择城市或商圈"><div class="help">留空则全量投放</div></div>
+            <div class="row"><span class="checkbox on"></span><span>同步到 App 首页 Banner</span></div>
+            <div class="row"><span class="switch on"></span><span>活动结束自动下线</span></div>
+            <div class="form-foot"><button class="btn btn-secondary">保存草稿</button><button class="btn btn-primary">提交审核</button></div>
+          </form>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>浮层与层级</h2><span class="tag">bg.elevated · bg.overlay · bg.inverse · elevation.*</span></div>
+        <div class="layers">
+          <div class="layer-demo">
+            <span class="cap">下拉菜单 · elevated 表面 + popover 阴影</span>
+            <div class="menu-anchor">
+              <button class="btn btn-secondary btn-sm">更多操作<span class="i-icon i-icon--sm"><svg aria-hidden="true" focusable="false" width="1em" height="1em" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M36 18L24 30L12 18" stroke="currentColor" stroke-width="var(--icon-stroke-width)" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+              <div class="menu">
+                <a href="#">导出 CSV</a>
+                <a class="hover" href="#">复制订单号</a>
+                <a href="#">加入置顶</a>
+                <div class="sep"></div>
+                <a class="danger" href="#">取消订单</a>
+              </div>
+            </div>
+            <div class="menu-space"></div>
+          </div>
+          <div class="layer-demo">
+            <span class="cap">Tooltip · inverse 底色；禁用输入框 · opacity.disabled</span>
+            <div class="tip-anchor" style="margin-top:36px">
+              <span class="tooltip">仅管理员可见此操作</span>
+              <button class="btn btn-ghost btn-sm">权限说明 ?</button>
+            </div>
+            <input class="input" disabled value="创建人：王小明（不可修改）">
+            <input class="input" placeholder="占位符用 text.placeholder">
+          </div>
+          <div class="layer-demo">
+            <span class="cap">弹窗 · overlay 遮罩 + modal 阴影 + action.danger</span>
+            <div class="stage">
+              <span class="ghost" style="top:14px;width:40%"></span><span class="ghost" style="top:34px"></span><span class="ghost" style="top:54px;width:70%"></span><span class="ghost" style="top:74px"></span>
+              <div class="scrim">
+                <div class="dialog">
+                  <h3>取消 3 个订单？</h3>
+                  <p>已派单的订单会通知骑手返回，退款将在 1–3 个工作日内原路返回。</p>
+                  <div class="row"><button class="btn btn-secondary btn-sm">再想想</button><button class="btn btn-danger btn-sm">确认取消</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

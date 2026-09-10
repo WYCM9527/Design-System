@@ -1,0 +1,128 @@
+/* shadcn/ui + Tailwind v4 桥接：把 shadcn 的契约变量全部指向设计系统的语义 token。
+   放进 app/globals.css。不需要再写 .dark 块——dist/themes/dark.css 一变，这里全部跟着变。
+   紧凑密度：在 <html> 上加 class compact 即可，dist/themes/compact.css 只覆写尺寸与间距。 */
+@import "tailwindcss";
+@import "../design-system/dist/index.css"; /* 路径按项目实际调整；由 skill 的 integrate 写入 */
+
+:root {
+  --background: var(--color-bg-page);
+  --foreground: var(--color-text-primary);
+  --card: var(--color-bg-surface);
+  --card-foreground: var(--color-text-primary);
+  --popover: var(--color-bg-elevated);
+  --popover-foreground: var(--color-text-primary);
+
+  --primary: var(--color-action-primary);
+  --primary-foreground: var(--color-text-on-primary);
+  --secondary: var(--color-bg-hover);
+  --secondary-foreground: var(--color-text-primary);
+  --muted: var(--color-bg-subtle);
+  --muted-foreground: var(--color-text-secondary);
+  --accent: var(--color-bg-selected);
+  --accent-foreground: var(--color-text-selected);
+  --destructive: var(--color-action-danger);
+  --destructive-foreground: var(--color-text-on-danger);
+  /* 非 shadcn 契约、但业务常用的角色，直接透出 */
+  --status-neutral: var(--color-status-neutral);
+  --status-neutral-bg: var(--color-status-neutral-bg);
+  --data-increase: var(--color-data-increase);
+  --data-decrease: var(--color-data-decrease);
+
+  --border: var(--color-border-default);
+  --input: var(--color-border-input);
+  --ring: var(--color-border-focus);
+
+  --sidebar: var(--color-bg-sidebar);
+  --sidebar-foreground: var(--color-text-sidebar);
+  --sidebar-primary: var(--color-action-primary);
+  --sidebar-primary-foreground: var(--color-text-on-primary);
+  --sidebar-accent: var(--color-bg-sidebar-selected);
+  --sidebar-accent-foreground: var(--color-text-sidebar-selected);
+  --sidebar-border: var(--color-border-sidebar);
+  --sidebar-ring: var(--color-border-focus);
+
+  --chart-1: var(--color-chart-1);
+  --chart-2: var(--color-chart-2);
+  --chart-3: var(--color-chart-3);
+  --chart-4: var(--color-chart-4);
+  --chart-5: var(--color-chart-5);
+
+  --radius: var(--radius-md);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-status-neutral: var(--status-neutral);
+  --color-status-neutral-bg: var(--status-neutral-bg);
+  --color-data-increase: var(--data-increase);
+  --color-data-decrease: var(--data-decrease);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  /* shadcn 的派生圆角刚好等于种子的 radius.sm / md / lg / xl（6 / 8 / 12 / 16）；@theme inline 不会输出同名变量，与 dist 里的 --radius-* 不冲突 */
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 8px);
+
+  /* 结构层：字体与字号阶梯。注意这是中后台密度——text-sm 是 13px、text-base 是 14px，比 Tailwind 默认各小 1～2px */
+  --font-sans: var(--font-family-body);
+  --font-mono: var(--font-family-code);
+  --text-xs: var(--text-small-size);
+  --text-sm: var(--text-body-sm-size);
+  --text-base: var(--text-body-size);
+  --text-lg: var(--text-title-size);
+  --text-xl: var(--text-heading-size);
+  --text-2xl: var(--text-display-size);
+
+  /* 动效 */
+  --ease-standard: var(--motion-easing-standard);
+  --ease-enter: var(--motion-easing-enter);
+  --ease-exit: var(--motion-easing-exit);
+  --default-transition-duration: var(--motion-duration-fast);
+  --default-transition-timing-function: var(--motion-easing-standard);
+
+  /* 阴影：拆分式 elevation token 组合成 Tailwind 的 shadow-sm / md / lg */
+  --shadow-sm: 0 var(--elevation-card-y) var(--elevation-card-blur) var(--elevation-card-color);
+  --shadow-md: 0 var(--elevation-popover-y) var(--elevation-popover-blur) var(--elevation-popover-color);
+  --shadow-lg: 0 var(--elevation-modal-y) var(--elevation-modal-blur) var(--elevation-modal-color);
+}
+
+/* 键盘焦点兜底与减少动态效果，与 element-plus.css 同一份约定 */
+:where(a, button, [role="button"], [role="menuitem"], [role="tab"], summary, [tabindex]:not([tabindex="-1"])):focus-visible { outline: var(--border-width-active) solid var(--color-border-focus); outline-offset: 1px; }
+@media (prefers-reduced-motion: reduce) {
+  :root { --motion-duration-fast: 0ms; --motion-duration-normal: 0ms; --motion-duration-slow: 0ms; }
+  *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+}
+
+/* 文字渲染基线，与 element-plus.css 同一份约定：不要给 body 加 Tailwind 的 antialiased（Mac 上把中文削细一档）；表单控件继承字体 */
+html { -webkit-font-smoothing: auto; -moz-osx-font-smoothing: auto; }
+button, input, select, textarea { font-family: inherit; }

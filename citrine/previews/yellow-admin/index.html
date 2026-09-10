@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>黄色中后台 · 方案预览</title>
+<style>
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Segoe UI", sans-serif; background: #f4f4f5; color: #18181b; padding: 28px; }
+  h1 { margin: 0 0 6px; font-size: 22px; }
+  p.lead { margin: 0 0 20px; color: #52525b; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+  .card { background: #fff; border: 1px solid #e4e4e7; border-radius: 12px; padding: 16px 18px; text-decoration: none; color: inherit; display: block; }
+  .card:hover { border-color: #a1a1aa; }
+  .card h2 { margin: 0 0 4px; font-size: 16px; }
+  .card p { margin: 0 0 12px; color: #52525b; font-size: 13px; line-height: 1.55; }
+  .sw { display: flex; gap: 4px; }
+  .sw i { flex: 1; height: 22px; border-radius: 5px; display: block; }
+  .frames { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .frame { background: #fff; border: 1px solid #e4e4e7; border-radius: 12px; overflow: hidden; }
+  .frame header { padding: 10px 14px; font-size: 13px; font-weight: 600; border-bottom: 1px solid #e4e4e7; display: flex; justify-content: space-between; }
+  .frame header a { font-weight: 500; color: #2563eb; text-decoration: none; }
+  .frame .vp { width: 100%; aspect-ratio: 1440 / 960; overflow: hidden; position: relative; }
+  .frame iframe { border: 0; width: 1440px; height: 960px; transform-origin: 0 0; position: absolute; left: 0; top: 0; }
+  .notes { background: #fff; border: 1px solid #e4e4e7; border-radius: 12px; padding: 16px 18px; margin-top: 24px; font-size: 14px; line-height: 1.8; }
+  .notes h3 { margin: 0 0 6px; font-size: 15px; }
+  code { background: #f4f4f5; padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  @media (max-width: 1100px) { .cards, .frames { grid-template-columns: 1fr; } }
+</style>
+<script>
+  function fit() {
+    document.querySelectorAll(".frame .vp").forEach(function (vp) {
+      vp.querySelector("iframe").style.transform = "scale(" + (vp.clientWidth / 1440) + ")";
+    });
+  }
+  window.addEventListener("resize", fit);
+  window.addEventListener("load", fit);
+</script>
+</head>
+<body>
+<h1>黄色主色中后台 · 视觉预览</h1>
+<p class="lead">同一套页面骨架（admin.css）+ 多份 token 文件。点卡片进入全屏预览；页面右上角可切换方案、暗色与紧凑密度。另有 <a href="stress.html?plan=s">页面类型压力测试</a>：登录、列表、表单、详情、反馈、折叠侧栏六类页面，全部由种子构建产物驱动。</p>
+
+<h2 style="font-size:17px;margin:0 0 10px">你的品牌色 #F9CF00</h2>
+<div class="cards" style="grid-template-columns:repeat(2,1fr)">
+  <a class="card" href="admin.html?plan=d">
+    <h2>方案 D · 品牌色 · 深色侧栏</h2>
+    <p>以 #F9CF00 为 500 锚点推导十级色阶；黄底黑字（11.6:1）；白底链接用 800 #7A5B00（6.4:1）。深侧栏把品牌黄衬成唯一焦点。</p>
+    <div class="sw"><i style="background:#FFF7CC"></i><i style="background:#FFDD33"></i><i style="background:#F9CF00"></i><i style="background:#E0BA00"></i><i style="background:#7A5B00"></i><i style="background:#18181A"></i></div>
+  </a>
+  <a class="card" href="admin.html?plan=e">
+    <h2>方案 E · 品牌色 · 浅色侧栏</h2>
+    <p>与 D 完全同一套色阶和语义，只换侧栏一组 token：更轻、更“工具化”，黄色的存在感相应降低。用来做单变量对比。</p>
+    <div class="sw"><i style="background:#FFF7CC"></i><i style="background:#FFDD33"></i><i style="background:#F9CF00"></i><i style="background:#E0BA00"></i><i style="background:#7A5B00"></i><i style="background:#FFFFFF;border:1px solid #e4e4e7"></i></div>
+  </a>
+</div>
+<div class="frames" style="grid-template-columns:repeat(2,1fr);margin-bottom:28px">
+  <div class="frame"><header>D · 品牌色 · 深侧栏 <a href="admin.html?plan=d">全屏 →</a></header><div class="vp"><iframe src="admin.html?plan=d"></iframe></div></div>
+  <div class="frame"><header>E · 品牌色 · 浅侧栏 <a href="admin.html?plan=e">全屏 →</a></header><div class="vp"><iframe src="admin.html?plan=e"></iframe></div></div>
+</div>
+
+<div class="notes">
+  <h3>看什么</h3>
+  1. 主按钮上的文字是否清楚——黄底一律深字，想象一下换成白字会怎样。<br>
+  2. 表格里「待接单」（warning）和主色黄能不能一眼分开——这是黄色系统最容易翻车的地方。<br>
+  3. 侧栏选中态、表格选中行、进度条：黄色是否只在“该被注意的地方”出现，其余 90% 面积是否保持中性。<br>
+  4. 点右上角「☾ 暗色」：黄色在深底上反而最舒服，看看哪个方案的暗色最顺眼。<br>
+  （参考方案 A / B / C 已在选定方案后移除，见 git 历史。）每个 <code>tokens-*.css</code> 的变量名就是 skill 会生成的 <code>dist/tokens.css</code> 形态，选定后可直接转成 DTCG 种子。<br>
+  方案 E 已经转成种子（<code>../../seeds/brand-yellow-e/</code>）。全屏页里的「S 种子构建」不加载任何手写 token：颜色、字体、尺寸、间距、阴影全部来自种子构建出的 <code>seed-dist/</code>，与 E 逐像素一致；<code>admin.css</code> 里剩下的少量字面量是组件几何，登记在 <code>exemptions.example.json</code>。全屏页底部的「浮层与层级」展示下拉、Tooltip、弹窗遮罩与危险按钮——这些角色是体检后补进种子的，D／E 的 muted 文字、四个状态色和亮色焦点色也随体检结果加深过。右上角「☰ 紧凑」切换 compact Theme（只收紧尺寸与间距，可与暗色叠加）。链接已按公司决定改为无色系 + 下划线 + 斜体，涨跌数字用 data.increase / decrease（涨绿跌红）。
+</div>
+</body>
+</html>
