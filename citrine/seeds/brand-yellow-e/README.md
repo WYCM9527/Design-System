@@ -2,7 +2,7 @@
 
 > 种子目录代号仍是 `brand-yellow-e`（脚本与文档中的路径不变）；系统名称 Citrine（黄晶）见仓库根 README。
 
-版本 1.1.2 · 公司级中后台设计规范（单品牌线）· 变更见 [CHANGELOG.md](CHANGELOG.md)
+版本 1.1.3 · 公司级中后台设计规范（单品牌线）· 变更见 [CHANGELOG.md](CHANGELOG.md)
 
 一套已通过 `design-system-steward` `validate-system` / `build-tokens` / `guard` 的 DTCG 设计系统起点。复制进任何项目就是 Core + dark / compact 两个 Theme；视觉效果见 `../../previews/yellow-admin/`：`admin.html` 是工作台，`stress.html` 是登录、列表、表单、详情、反馈、折叠侧栏六类页面的压力测试（方案 S 全部由构建产物驱动）。
 
@@ -69,7 +69,7 @@ node <skill>/scripts/guard.mjs --project /path/to/project            # 应为 cu
 - 阴影写法固定：`box-shadow: 0 var(--elevation-card-y) var(--elevation-card-blur) var(--elevation-card-color)`，三层 card / popover / modal；暗色下卡片阴影色透明、浮层换黑色半透明。
 - 浮层三件：`bg.elevated`（暗色比 surface 亮一档）、`bg.overlay`、`bg.inverse` + `text.inverse`。组件与 token 的完整对照见 `design-system/DESIGN.md` 的「组件配方」。
 - 字号是 8 档离散阶梯（12～32px），`text.body.size` 14px 是根字号；中文不低于 12px，不在阶梯外取值。字重 400 / 500 / 600 / 700：标签类文字（按钮、表头、表单标签）用 500；徽标 / 状态胶囊 400（浅底已提供识别）；侧栏菜单项与分段选择器默认 400、选中 500（反转块组件不叠 600），雅黑上退回常规、600 等于加粗。不要 `-webkit-font-smoothing: antialiased`，Mac 上会把中文削细一档。
-- 横向表单标签列宽 `layout.form.label-width`（112px，容纳 7 个中文字 + 星号）；表格单元格内边距 `table.cell.padding-y / -x`；侧栏折叠宽 `layout.sidebar.collapsed-width`；图标六档 `icon.size.xs…2xl`；页面级宽度 `layout.form.max-width / modal.width.sm·md / drawer.width / auth.card-width`。
+- 横向表单标签列宽 `layout.form.label-width`（112px，容纳 6 个汉字 + 必填星号）；表格单元格内边距 `table.cell.padding-y / -x`；侧栏折叠宽 `layout.sidebar.collapsed-width`；图标六档 `icon.size.xs…2xl`；页面级宽度 `layout.form.max-width / modal.width.sm·md / drawer.width / auth.card-width`。
 - 黄色表达主操作、不表达选中：分段选择、视图 / 状态切换、侧栏当前项都用深黑反转块 `action.selected` + `text.on-selected`。表格选中行 `bg.selected-subtle` 与筹码、批量条的 `bg.selected` 都是冷灰——选中态里没有黄色。大面积品牌黄只允许出现在登录页 `bg.brand`；白底黄色文字只有 `text.brand` 一个角色且仅限 ≥ 20px。
 - 图标库是字节 IconPark：线性、圆头、描边 4、尺寸走 font-size；选中项图标不换风格（靛黑反转块 + 品牌色竖条表达选中）；需要面性外观时用 multi-color 而不是 filled（后者镂空写死白色）；颜色角色 `icon.default / muted / brand / two-tone`。
 

@@ -14,6 +14,7 @@ const routes = [
       { path: 'refunds', name: 'refunds', component: () => import('./pages/Refunds.vue'), meta: { title: '退款审核', menu: 'refunds', crumbs: ['业务'] } },
       { path: 'merchants', name: 'merchants', component: () => import('./pages/Merchants.vue'), meta: { title: '商户管理', menu: 'merchants', crumbs: ['业务'] } },
       { path: 'merchants/new', name: 'merchant-new', component: () => import('./pages/MerchantForm.vue'), meta: { title: '新建商户', menu: 'merchants', crumbs: ['业务', '商户管理'] } },
+      { path: 'merchants/apply', name: 'merchant-apply', component: () => import('./pages/MerchantApply.vue'), meta: { title: '入驻申请', menu: 'merchants', crumbs: ['业务', '商户管理'] } },
       { path: 'merchants/:id/edit', name: 'merchant-edit', component: () => import('./pages/MerchantForm.vue'), meta: { title: '编辑商户', menu: 'merchants', crumbs: ['业务', '商户管理'] } },
       { path: 'campaigns', name: 'campaigns', component: () => import('./pages/Campaigns.vue'), meta: { title: '营销活动', menu: 'campaigns', crumbs: ['业务'] } },
       { path: 'members', name: 'members', component: () => import('./pages/Members.vue'), meta: { title: '成员与角色', menu: 'members', crumbs: ['系统'] } },

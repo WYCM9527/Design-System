@@ -4,7 +4,7 @@
 
 | 设计系统 | 定位 | 版本 |
 | --- | --- | --- |
-| [**Citrine · 黄晶**](citrine/) | 中后台 · 品牌黄唯一焦点 + 冷灰骨架 · 亮 / 暗 / 紧凑 · Element Plus 与 shadcn/ui 桥接 · 给编码 Agent 的配方与验收基线 | 1.1.2 |
+| [**Citrine · 黄晶**](citrine/) | 中后台 · 品牌黄唯一焦点 + 冷灰骨架 · 亮 / 暗 / 紧凑 · Element Plus 与 shadcn/ui 桥接 · 给编码 Agent 的配方与验收基线 | 1.1.3 |
 
 [![Citrine](citrine/docs/screenshots/hero.png)](citrine/)
 

@@ -35,6 +35,8 @@ URL 形如 `index.html?theme=dark&density=compact&state=empty#/orders`：
 
 验收基线（阈值与已批准的例外）以种子 `design-system/DESIGN.md` 的「验收基线」一节为准。每次 token / 桥接改动后跑一遍全量：31 个页面状态 × 亮 / 暗 / 紧凑的自动扫描（对比度、可访问名称、命中区、溢出、截断）、1366px 窄屏、Tab 键焦点遍历、预览 E 与 S 的像素一致。结果记进 [FINDINGS.md](FINDINGS.md)。
 
+`#/merchants/apply`（入驻申请，三步表单）是第二轮盲测产物，同样只凭文档完成后保留为常规页面。
+
 `#/refunds`（退款审核）是盲测产物：由一个只读过 `AGENTS.md` 与 DESIGN.md、禁止看其他页面源码的 Agent 完成，之后按补全的配方对齐（筛选栏形态、操作列按钮、批量条），保留为常规页面参与回归。
 
 `#/kitchen` 是组件走查页：Element Plus 全部组件的静息 / 选中 / 禁用 / 出错状态铺在一页（浮层与弹层带 `data-ks-open` / `data-ks-modal` 标记供脚本逐个打开），用于桥接覆盖率扫描——三模式下对每个交互元素强制 hover / focus-visible，看是否新引入黄色、对比是否掉档、颜色是否都来自 token。不是业务页面，不进侧栏。

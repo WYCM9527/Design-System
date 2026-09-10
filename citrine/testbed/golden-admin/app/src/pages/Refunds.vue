@@ -1,7 +1,6 @@
 <script setup>
 // 退款审核：筛选 + 多选表格 + 批量条 + 通过 / 拒绝 + 详情抽屉。视觉全部走 DESIGN.md 配方与 app.css 公共类
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Inbox, Search } from '@icon-park/vue-next'
 import { refunds, REFUND_STATUS, yen } from '../mock/data'
@@ -24,9 +23,8 @@ const COLS = [
 ]
 const SKELETON_ROWS = Array.from({ length: PAGE_SIZE }, (_, i) => ({ id: `sk-${i}` }))
 
-// ?state=empty / ?state=loading：截图脚本用它强制空态 / 加载态
-const route = useRoute()
-const forced = computed(() => route.query.state)
+// ?state=empty / ?state=loading：截图脚本用它强制空态 / 加载态（项目约定：参数放在 # 之前，读 location.search）
+const forced = computed(() => new URLSearchParams(location.search).get('state'))
 
 const rows = reactive(refunds)   // 直接代理演示数据：本次会话内的审核结果在页面之间保留
 const loading = ref(true)
