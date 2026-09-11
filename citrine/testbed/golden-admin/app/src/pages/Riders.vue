@@ -29,11 +29,11 @@ const initials = (n) => n.slice(0, 1)
     <div class="actions"><el-radio-group v-model="status"><el-radio-button value="">全部</el-radio-button><el-radio-button value="在线">在线</el-radio-button><el-radio-button value="忙碌">忙碌</el-radio-button><el-radio-button value="离线">离线</el-radio-button></el-radio-group></div>
   </div>
 
-  <section class="stats">
-    <el-card v-for="(n, k) in counts" :key="k" class="stat" shadow="always" @click="status = status === k ? '' : k">
-      <div class="label"><span class="dot" :class="tone(k)"></span>{{ k }}</div><div class="value num">{{ n }}</div>
-    </el-card>
-  </section>
+  <div class="stat-strip" role="group" aria-label="按状态筛选">
+    <button v-for="(n, k) in counts" :key="k" type="button" class="cell is-clickable" :class="{ 'is-active': status === k }" :aria-pressed="status === k" @click="status = status === k ? '' : k">
+      <span class="dot" :class="tone(k)"></span>{{ k }}<span class="value">{{ n }}</span>
+    </button>
+  </div>
 
   <el-card class="flat" shadow="always">
     <el-table :data="rows" style="width: 100%">
@@ -47,7 +47,7 @@ const initials = (n) => n.slice(0, 1)
         <template #default="{ row }">
           <a class="link">查看</a>
           <template v-if="can('order.reassign') && row.status !== '离线'"> · <a class="link" @click="openDispatch(row)">派单</a></template>
-          <template v-if="can('order.reassign') && row.status !== '离线'"> · <a class="link" @click="forceOffline(row)">强制下线</a></template>
+          <template v-if="can('order.reassign') && row.status !== '离线'"> · <a class="link danger" @click="forceOffline(row)">强制下线</a></template>
         </template>
       </el-table-column>
     </el-table>
@@ -63,10 +63,6 @@ const initials = (n) => n.slice(0, 1)
 </template>
 
 <style scoped>
-.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-stack); }
-.stat { --el-card-padding: var(--spacing-4) var(--space-card); cursor: pointer; }
-.stat .label { color: var(--color-text-secondary); font-size: var(--text-body-sm-size); display: flex; align-items: center; gap: var(--spacing-2); }
-.stat .value { font-size: var(--text-display-size); font-weight: var(--text-display-weight); line-height: var(--text-display-line-height); margin-top: var(--spacing-1); letter-spacing: var(--text-display-tracking); }
 /* 指示灯语义：骑手在线状态允许用圆点（见 DESIGN.md 状态一节） */
 .dot { width: 8px; height: 8px; border-radius: var(--radius-full); display: inline-block; }
 .dot.success { background: var(--color-status-success); } .dot.warning { background: var(--color-status-warning); } .dot.neutral { background: var(--color-status-neutral); }

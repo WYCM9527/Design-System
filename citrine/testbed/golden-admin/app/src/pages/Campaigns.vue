@@ -42,7 +42,7 @@ function toggle(c) {
   <el-card v-if="view === 'list'" class="flat" shadow="always">
     <el-table :data="campaigns" style="width: 100%">
       <el-table-column label="活动" min-width="240"><template #default="{ row }"><a class="link">{{ row.name }}</a><span class="sub">{{ row.type }} · {{ row.scope.join('、') }}</span></template></el-table-column>
-      <el-table-column label="预算 / 已用" min-width="220"><template #default="{ row }"><div class="budget"><el-progress :percentage="pct(row)" :show-text="false" :stroke-width="6" /><span class="num sub-inline">{{ yuan(row.used) }} / {{ yuan(row.budget) }}</span></div></template></el-table-column>
+      <el-table-column label="预算 / 已用" min-width="220"><template #default="{ row }"><div class="budget"><el-progress :percentage="pct(row)" :show-text="false" :stroke-width="6" :class="{ 'is-muted': row.status !== '进行中' }" /><span class="num sub-inline">{{ yuan(row.used) }} / {{ yuan(row.budget) }}</span></div></template></el-table-column>
       <el-table-column label="活动时间" width="230"><template #default="{ row }"><span class="num">{{ row.range }}</span></template></el-table-column>
       <el-table-column label="状态" width="110"><template #default="{ row }"><span class="status" :class="tone(row.status)">{{ row.status }}</span></template></el-table-column>
       <el-table-column label="首页 Banner" width="110"><template #default="{ row }"><el-switch v-model="row.banner" size="small" :disabled="!can('campaign.edit')" /></template></el-table-column>
@@ -55,7 +55,7 @@ function toggle(c) {
       <div class="camp-head"><span class="badge" :class="tone(c.status)">{{ c.status }}</span><el-tag size="small" type="info">{{ c.type }}</el-tag></div>
       <h3>{{ c.name }}</h3>
       <div class="camp-meta">{{ c.scope.join('、') }} · <span class="num">{{ c.range }}</span></div>
-      <el-progress :percentage="pct(c)" :stroke-width="6" :format="(p) => `${p}%`" />
+      <el-progress :percentage="pct(c)" :stroke-width="6" :format="(p) => `${p}%`" :class="{ 'is-muted': c.status !== '进行中' }" />
       <div class="camp-foot"><span class="num sub-inline">{{ yuan(c.used) }} / {{ yuan(c.budget) }}</span><span><a class="link">编辑</a> · <a class="link">复制</a></span></div>
     </el-card>
   </div>

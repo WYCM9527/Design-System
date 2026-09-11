@@ -74,7 +74,7 @@ async function submit(draft) {
     </el-form>
     <div class="form-foot">
       <el-button @click="router.push('/merchants')">{{ readonly ? '返回' : '取消' }}</el-button>
-      <template v-if="!readonly"><el-button @click="submit(true)">保存草稿</el-button><el-button type="primary" @click="submit(false)">提交审核</el-button></template>
+      <template v-if="!readonly"><el-button text @click="submit(true)">保存草稿</el-button><el-button type="primary" @click="submit(false)">提交审核</el-button></template>
     </div>
   </el-card>
 </template>

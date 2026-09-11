@@ -67,7 +67,7 @@ const initials = (n) => n.slice(0, 1)
       <el-table-column label="角色" width="140"><template #default="{ row }"><span class="badge" :class="row.role === 'admin' ? 'brand' : 'neutral'">{{ ROLES[row.role].label }}</span></template></el-table-column>
       <el-table-column label="状态" width="120"><template #default="{ row }"><el-switch :model-value="row.status === '启用'" size="small" :disabled="!can('member.edit') || row.account === 'wangxm'" @change="(v) => (row.status = v ? '启用' : '已停用')" /></template></el-table-column>
       <el-table-column label="最近登录" width="180"><template #default="{ row }"><span class="num">{{ row.last }}</span></template></el-table-column>
-      <el-table-column label="操作" width="230" fixed="right" class-name="nowrap"><template #default="{ row }"><a class="link" @click="editRole(row)">编辑角色</a> · <a class="link">重置密码</a> · <a class="link" @click="remove(row)">移除</a></template></el-table-column>
+      <el-table-column label="操作" width="230" fixed="right" class-name="nowrap"><template #default="{ row }"><a class="link" @click="editRole(row)">编辑角色</a> · <a class="link">重置密码</a> · <a class="link danger" @click="remove(row)">移除</a></template></el-table-column>
     </el-table>
   </el-card>
 

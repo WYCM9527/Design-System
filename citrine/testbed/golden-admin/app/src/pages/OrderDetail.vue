@@ -89,7 +89,7 @@ const timeline = [
 <style scoped>
 .page-head h1 .badge { vertical-align: middle; margin-left: var(--spacing-2); }
 .steps { padding: var(--space-card) var(--space-card) var(--spacing-2); }
-.two { display: grid; grid-template-columns: 3fr 2fr; gap: var(--space-gutter); padding: var(--spacing-3) var(--space-card) var(--space-card); align-items: start; }
+.two { display: grid; grid-template-columns: 3fr 2fr; gap: var(--space-gutter); padding: var(--spacing-3) var(--space-card) var(--spacing-4); align-items: start; }
 .sub-inline { color: var(--color-text-muted); }
 .tabs { padding: 0 var(--space-card) var(--spacing-3); }
 .pad { padding: var(--spacing-3) 0; }

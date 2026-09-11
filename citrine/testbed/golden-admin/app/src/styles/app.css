@@ -5,6 +5,9 @@ body { margin: 0; background: var(--color-bg-page); color: var(--color-text-prim
 a { color: inherit; text-decoration: none; }
 .link, td .link { color: var(--color-text-link); text-decoration: var(--text-link-decoration); font-style: var(--text-link-style); cursor: pointer; }
 .link:hover { color: var(--color-text-link-hover); }
+.link.danger, td .link.danger { color: var(--color-text-danger); }   /* 危险动作的内容型链接：白底上红字，与普通链接分开；hover 不变色 */
+.link.danger:hover { color: var(--color-text-danger); }
+.link.mono, .mono.link { font-style: normal; }   /* 等宽数字型链接（订单号、单号）不斜体：数字斜体显歪 */
 /* 表格、卡片页脚、提示条里的操作链接不是句中链接，命中区不低于 control.hit-min；视觉字号不变 */
 td .link, .card-head .link, .tip .link, .camp-foot .link, .batch .link, .empty .link, .more-link { display: inline-flex; align-items: center; min-height: var(--control-hit-min); }
 .more-link { min-width: var(--control-hit-min); justify-content: center; }
@@ -26,7 +29,7 @@ td .link, .card-head .link, .tip .link, .camp-foot .link, .batch .link, .empty .
 .topbar .iconbtn { position: relative; width: var(--control-height-md); height: var(--control-height-md); border-radius: var(--radius-md); display: grid; place-items: center; color: var(--color-icon-default); cursor: pointer; background: transparent; border: 0; }
 .topbar .iconbtn:hover { background: var(--color-bg-hover); color: var(--color-text-primary); }
 .topbar .iconbtn.is-on { background: var(--color-bg-selected); color: var(--color-text-selected); }
-.avatar { width: var(--avatar-size-md); height: var(--avatar-size-md); border-radius: var(--radius-full); background: var(--color-action-primary); color: var(--color-text-on-primary); display: grid; place-items: center; font-weight: var(--text-weight-brand); font-size: var(--text-body-sm-size); cursor: pointer; }
+.avatar { width: var(--avatar-size-md); height: var(--avatar-size-md); border-radius: var(--radius-full); background: var(--color-bg-selected); color: var(--color-text-selected); display: grid; place-items: center; font-weight: var(--text-weight-brand); font-size: var(--text-body-sm-size); cursor: pointer; }
 .content { padding: var(--space-gutter); display: flex; flex-direction: column; gap: var(--space-stack); }
 
 /* 页头 */
@@ -48,7 +51,7 @@ td .link, .card-head .link, .tip .link, .camp-foot .link, .batch .link, .empty .
 .status.error, .badge.error { color: var(--color-status-error); background: var(--color-status-error-bg); }
 .status.info, .badge.info { color: var(--color-status-info); background: var(--color-status-info-bg); }
 .status.neutral, .badge.neutral { color: var(--color-status-neutral); background: var(--color-status-neutral-bg); }
-.badge.brand { color: var(--color-text-on-primary); background: var(--color-action-primary); }  /* 品牌徽标：纯黄底深字，不用浅调 */
+.badge.brand { color: var(--color-text-on-selected); background: var(--color-action-selected); }  /* 强调徽标（置顶、管理员）：反转块，不用黄——黄不表达强调 */
 .sub { display: block; font-size: var(--text-small-size); color: var(--color-text-muted); }
 .up { color: var(--color-data-increase); } .down { color: var(--color-data-decrease); }
 
@@ -96,3 +99,11 @@ td .link, .card-head .link, .tip .link, .camp-foot .link, .batch .link, .empty .
 /* 图表容器高度用 token 表达（控件高度 × 7），紧凑模式下自动变矮；不写死像素 */
 .chart { height: calc(var(--control-height-md) * 7); width: 100%; }
 .chart.tall { height: calc(var(--control-height-md) * 9); }
+
+/* 状态条：只有一个数字的统计不拉满一行（同侧栏的"宽度浪费"），紧凑成一行等高格子；可点击时作为筛选 */
+.stat-strip { display: inline-flex; flex-wrap: wrap; gap: var(--space-inline); margin-bottom: var(--space-stack); }
+.stat-strip .cell { display: inline-flex; align-items: center; gap: var(--spacing-2); height: var(--control-height-lg); padding: 0 var(--spacing-4); background: var(--color-bg-surface); border: var(--border-width-default) solid var(--color-border-default); border-radius: var(--radius-md); color: var(--color-text-secondary); font-size: var(--text-body-sm-size); }
+.stat-strip .cell.is-clickable { cursor: pointer; }
+.stat-strip .cell.is-clickable:hover { background: var(--color-bg-hover); }
+.stat-strip .cell.is-active { border-color: var(--color-border-focus); color: var(--color-text-primary); }
+.stat-strip .cell .value { font-size: var(--text-title-size); font-weight: var(--text-weight-strong); color: var(--color-text-primary); font-variant-numeric: var(--text-numeric-variant); }

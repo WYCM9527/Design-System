@@ -260,7 +260,7 @@ onMounted(async () => {
         </template>
         <template v-else>
           <el-button :disabled="step === 1" @click="prev">上一步</el-button>
-          <el-button v-if="step === 3" @click="saveDraft">保存草稿</el-button>
+          <el-button v-if="step === 3" text @click="saveDraft">保存草稿</el-button>
           <el-button v-if="step < 3" type="primary" @click="next">下一步</el-button>
           <el-button v-else type="primary" :loading="submitting" @click="submit">提交申请</el-button>
         </template>

@@ -6,7 +6,7 @@
 
 做页面时只需要这一屏 + 下面的「组件配方」表；其余章节是规则的理由，遇到配方没覆盖的情况再读。
 
-1. 黄只做主操作面：主按钮、进度 / 滑杆填充、勾选 / 开关选中、当前步骤、分页当前页。**选中、当前、强调一律用深黑反转块或近黑文字**，不用黄。
+1. 黄只做主操作面：主按钮、进行中的进度 / 滑杆填充、勾选 / 开关选中、当前步骤、分页当前页、品牌 logo。**选中、当前、强调一律用深黑反转块或近黑文字**，不用黄——头像、角色 / 置顶徽标、已结束的进度条都不是黄。
 2. 黄底深字、白底无黄字、任何 hover / focus 不出现黄。
 3. 状态色只做"文字 + 同色浅底"胶囊；实底按钮只有主（黄）与危险（红底白字）；`type=success / warning / info` 按钮不用。
 4. 按钮不能裸放：有描边（次要）或浅底（quiet 文字按钮）。表格操作列 = small quiet 文字按钮，危险动作 = 红字 + 浅红底成对（彩色文字不落在灰底上）；查看 / 跳转类用内容型链接。
@@ -22,7 +22,7 @@
 - 品牌是一个高饱和的正黄（`color.brand.500`），中后台里它只做「唯一焦点」：主按钮、进度 / 强度、指示条（含数据卡的左描边点缀）。**黄色表达"主操作"，不表达"选中"**：分段选择器、视图 / 状态切换、侧栏当前项这类选中态一律用深黑反转块（`color.action.selected` + `color.text.on-selected`），黄色最多留给旁边的指示条。页面 90% 以上面积保持冷灰白中性色，黄色出现的地方就是该被注意的地方。
 - 黄底永远深字。品牌黄上白字对比度只有约 1.5:1，`color.text.on-primary` 固定为近黑；任何在黄色上放浅色文字的写法都不合规。
 - 品牌黄只有一个值 `brand.500`，**没有延伸色**：不做浅调（奶油黄）、不做深金、不做半透明洗色——实测发现它们在界面里显脏。需要层次时用无色系：冷灰（`neutral.*`）做底与分隔，近黑（`neutral.900`，#111827 带一丝深蓝）做选中块、焦点边线、品牌插图的描边。白底上没有任何黄色文字：黄字白底 1.5:1 不可读，品牌强调靠「黑 + 纯黄」的对比而不是金色文字。
-- 链接不用色相（品牌决定）：`color.text.link` 是中性深灰，靠常态下划线（`text.link.decoration`）和斜体（`text.link.style`）识别，hover 加深到 `color.text.link-hover`。这条只适用于正文、表格、提示条里的内容型链接；导航、标签页、分页、菜单是组件型链接，各有自己的颜色规则。注意中文字体没有真斜体，浏览器合成的假斜体在雅黑上可读性略降，所以链接文字宜短。
+- 链接不用色相（品牌决定）：`color.text.link` 是中性深灰，靠常态下划线（`text.link.decoration`）和斜体（`text.link.style`）识别，hover 加深到 `color.text.link-hover`。这条只适用于正文、表格、提示条里的内容型链接；导航、标签页、分页、菜单是组件型链接，各有自己的颜色规则。注意中文字体没有真斜体，浏览器合成的假斜体在雅黑上可读性略降，所以链接文字宜短；**等宽数字型链接（订单号、单号）不斜体**，只保留下划线——数字斜体显歪。危险动作的内容型链接用 `text.danger` 红字（白底上），与普通链接分开。
 - 亲和感与层次感来自灰、黑、黄三者的配比：黄只以纯色小面积出现（主按钮、进度填充、指示条、品牌徽标、two-tone 插图的填充），灰承担 90% 的面积与所有中间层次，黑承担选中与强调。hover / active 不换黄色的深浅（延伸色显脏），用边线变黑、内阴影表达。
 - 中性色是冷灰（gray 族），暗色深底与它同族。冷灰让品牌黄与深蓝近黑形成互补对比，黄更跳；暖灰会让整个界面显黄、显脏（「黄的淡色落在冷灰上变橄榄」的顾虑只在黄有延伸色时成立，本系统没有延伸色）。弱化文字（`color.text.muted`）最浅只到 neutral.500（白底 5.2:1、页面底上 4.7:1）；neutral.400 只允许出现在输入框占位符（`color.text.placeholder`）上，且占位符永远不能是字段唯一的标签——有可见标签的字段（含必填项）可以用占位符给格式或示例提示。
 - 状态色与图表色以公司调色板为**色相参考**（Success Green / Warning Orange / Danger Red / Info Cyan / Purple / Primary Blue），让多条产品线的状态语义看起来是一家的；具体值按对比度与冷暖调校，公司原值保留在 token 描述里。本系统主色是黄，所以调色板里的 Primary Blue 只做图表分类色，链接、焦点、选中态一律无色系。warning 是橙不是黄，与品牌黄靠色相区分——「主操作」和「警告」必须一眼分开；info 是青不是蓝。
@@ -118,6 +118,7 @@
 | --- | --- | --- |
 | 页头（所有页面） | 标题 `text.heading.size` + `text.weight.strong`；一句说明 `text.secondary`；右侧页面级操作区（主按钮至多一个，其余次要 / quiet） | 与内容区间距 `space.stack` |
 | 列表页 | 页头 → 筛选卡 → 表格卡（批量操作条、表格、分页在同一张卡里） | 见「筛选栏」「表格」「已选筹码 / 批量操作条」配方 |
+| 统计卡 vs 状态条 | 带趋势 / 对比的指标用统计卡（数据大字 + 涨跌）；**只有一个数字的计数不拉满一行**，做成状态条：一行等高格子（`control.height.lg`），左点右数，可点击时作筛选 | 同侧栏的"宽度浪费"规则：内容撑不起的容器不要拉满 |
 | 表单页 | 一张卡，宽度 ≤ `layout.form.max-width`；卡内两列网格（列间距 `spacing.6`），地址、多行文本、上传等长字段跨两列；标签列宽 `layout.form.label-width`、右对齐；页脚按钮行右对齐、顶部发丝线，主操作在最右，其左依次次要（取消 / 上一步）、quiet（保存草稿） | 帮助文字 `text.small.size` + `text.muted`，在控件下方 `spacing.1`；出错时错误文案（`status.error`）占同一位置，不叠加。单位后缀（km、元）用 `text.secondary` 文字跟在控件后，间距 `space.inline` |
 | 分步流程 | 顶部步骤条 + 每步一张表单卡；「上一步 / 下一步」在页脚；最后一步是只读汇总（描述列表，标签列宽同表单）+ 协议勾选 + 提交主按钮 | 完成步骤图标 `status.success`、标题 `text.secondary`；当前步骤 `action.primary`（不必传 `finish-status`，桥接已把完成态与 success 态都映射好） |
 | 详情页 | 页头 → 描述列表卡（分组小标题 `text.title-sm.size` + `text.weight.label`）→ 时间线 / 关联列表；次级详情用右侧抽屉 | — |
@@ -132,12 +133,12 @@
 | 主按钮 | `action.primary` / `-hover` / `-active` | `text.on-primary` | 高度 `control.height.md`，圆角 `radius.md` |
 | 次要按钮 | `bg.surface`，hover `action.secondary-hover` | `text.primary` | `border.strong` |
 | 文字按钮（quiet） | 静息 `action.quiet` 浅底，hover / active `action.quiet-hover` | `text.link` / hover `text.link-hover` | 无边线；**按钮类内容不能无框架直接放在背景上**（用户规则）：要么描边（次要按钮），要么浅底（quiet），不允许裸文字当按钮 |
-| 内容型链接 | — | `text.link`，hover `text.link-hover` | `text.link.decoration` + `text.link.style` |
+| 内容型链接 | — | `text.link`，hover `text.link-hover`；危险动作 `text.danger`（hover 不变色） | `text.link.decoration` + `text.link.style`；等宽数字型链接不斜体 |
 | 危险按钮 | `action.danger` / `-hover` / `-active` | `text.on-danger` | — |
 | 禁用态（任何控件） | 不换色 | 不换色 | `opacity.disabled` |
 | 输入框 / 搜索框 | `bg.input` | `text.primary`，占位符 `text.placeholder` | `border.input`；聚焦 `border.focus` + `focus.ring` × `focus.ring.width`；出错 `status.error` |
 | 卡片 | `bg.surface` | — | `border.default`，`radius.lg`，`elevation.card.*`，内边距 `space.card` |
-| 表格 | 表头 `bg.subtle`；斑马纹 `bg.subtle`；行 hover `bg.hover`；选中 `bg.selected-subtle`；选中 + hover `bg.selected-hover` | 表头 `text.secondary`（`text.small.size`），副行 `text.muted`，数字列 `text.numeric.variant` | 行分隔 `border.default`；单元格内边距 `table.cell.padding-y / -x`；排序激活 `text.selected`；固定列右缘 `elevation.popover.*`。**操作列**：查看 / 进入详情用内容型链接；改变状态的动作用 small quiet 文字按钮（`text` + `size="small"`），危险动作 `type="danger" text`（`text.danger` 红字 + `status.error-bg` 浅红底成对，hover 加同色发丝边——不是灰底红字）；一行最多 3 个动作，更多收进下拉「更多」；不可操作的行放 `text.muted` 的「—」；不用描边次要按钮排成一列 |
+| 表格 | 表头 `bg.subtle`；斑马纹 `bg.subtle`；行 hover `bg.hover`；选中 `bg.selected-subtle`；选中 + hover `bg.selected-hover` | 表头 `text.secondary`（`text.small.size`），副行 `text.muted`，数字列 `text.numeric.variant` | 行分隔 `border.default`；单元格内边距 `table.cell.padding-y / -x`；排序激活 `text.selected`；固定列右缘 `elevation.popover.*`。**操作列**：查看 / 进入详情用内容型链接；改变状态的动作用 small quiet 文字按钮（`text` + `size="small"`），危险动作 `type="danger" text`（`text.danger` 红字 + `status.error-bg` 浅红底成对，hover 加同色发丝边——不是灰底红字），操作列是链接串时危险项用 `text.danger` 红字链接；无论哪种形态，**危险动作不得与普通动作同色**；一行最多 3 个动作，更多收进下拉「更多」；不可操作的行放 `text.muted` 的「—」；不用描边次要按钮排成一列 |
 | 筛选栏 | 条件区无底；控件不带可见标签，靠 `aria-label` 命名（筛选栏是紧凑形态，占位符规则在这里的例外只有关键词框：占位符列出可搜字段，且带 `aria-label` 与清除按钮） | 下拉默认值是真实选项「全部…」，用正文色 | 条件区 / 动作区两组；动作区「查询」主按钮 +「重置」quiet 文字按钮，`margin-left: auto`，折行时整体换行右对齐；关键词框宽 `layout.search-width`，其余控件按内容定宽 |
 | 已选筹码 / 批量操作条 | `bg.selected` | 「已选 N 项」`text.selected` + `text.weight.strong`；带「取消选择」内容型链接 | 按钮 small：普通批量为次要按钮，破坏性批量为实底危险按钮；条随勾选出现，位于表格上方 |
 | 选项卡片（改派骑手、派单选单） | 默认 `bg.surface`；hover `bg.hover`；选中 `bg.selected-subtle` | `text.primary`，meta `text.muted` | 边线 `border.default`，选中 `border.focus`；卡片撑满容器宽度（radio-group 默认 align-items:center 会把它挤成内容宽） |
@@ -158,7 +159,7 @@
 | 徽标 / 提示条 | `status.<x>-bg`（x = success / warning / error / info / neutral） | `status.<x>` | 徽标 `radius.full`，提示条 `radius.md` |
 | 横向表单 | — | 标签 `text.body-sm.size`，右对齐 | 标签列宽 `layout.form.label-width`，标签与输入间距 `spacing.3` |
 | 涨跌数字 | — | `data.increase` / `data.decrease` | — |
-| 品牌徽标（置顶等） | `bg.selected` | `text.selected` | — |
+| 强调徽标（置顶、管理员等角色） | `action.selected` 反转块 | `text.on-selected` | 不用黄底：徽标是强调不是主操作 |
 | 标签页 | — | 默认 `text.secondary`，选中 `text.primary` | 选中下划线 `border.current` × `border.width.active`（深黑，不用黄） |
 | 分页 | 当前页 `action.primary`（保留黄色，用户决定——它和主按钮一样是静息的主色面，不与「查询」主按钮冲突），hover `bg.hover` | 当前页 `text.on-primary` | 尺寸 `control.height.sm`，`radius.sm` |
 | 勾选框 / 开关 | 选中 `action.primary`；开关轨道未选中 `border.strong`；滑块 `control.knob` | 对勾 `text.on-primary` | 勾选框边线 `border.strong` × `border.width.control` |
@@ -168,9 +169,9 @@
 | 弹窗 | 遮罩 `bg.overlay`；面板 `bg.elevated` | `text.primary` / `text.secondary` | `radius.lg`，`elevation.modal.*`，进出用 `motion.duration.slow` + `motion.easing.enter` / `exit` |
 | Tooltip / 深色 Toast | `bg.inverse` | `text.inverse` | `radius.sm`，`text.small.size` |
 | 统计卡（高亮） | 同普通卡（`bg.surface`）；**数据色卡禁止大面积黄色**（用户规则），高亮 = 左侧 `brand.indicator` × `border.width.indicator` 描边点缀 | 同普通卡；涨跌照用 `data.increase / decrease` | 数字 `text.display.size`（32px）+ `.weight`（700）+ `.line-height`（1.25 紧行高）+ `.tracking`；数据数字是卡片主角，必须一眼压住标签与涨跌 |
-| 进度条 / 进度环 / 仪表盘 | 轨道 `bg.selected` | 内嵌百分比 `text.on-primary`（不用白字） | 填充 `action.primary-active`，`radius.full`；status 变体用 `status.*`；不接受自定义进度色 |
+| 进度条 / 进度环 / 仪表盘 | 轨道 `bg.selected` | 内嵌百分比 `text.on-primary`（不用白字） | 填充 `action.primary-active`，`radius.full`；**颜色跟状态走**：只有进行中是黄，已结束 / 已下线 / 草稿等非进行中用 `border.strong` 灰（桥接约定类 `is-muted`）——一屏十几张卡全黄就不是焦点了；status 变体用 `status.*`；不接受自定义进度色 |
 | 评分 | — | 文案 `text.secondary` | 实星 `action.selected`（填充是选中语义，不用金黄），空星 `border.strong`；焦点 `border.focus` |
-| 头像（字母 / 占位） | `bg.selected` | `text.selected` | 组件库默认的灰底白字暗色下不到 3:1 |
+| 头像（字母 / 占位，含顶栏与个人中心） | `bg.selected` | `text.selected` | 不用品牌黄——头像不是主操作面；组件库默认的灰底白字暗色下不到 3:1 |
 | 可勾选标签（check-tag） | 未选 `status.neutral-bg`；选中 `action.selected` | 未选 `status.neutral`；选中 `text.on-selected` | `radius.full`；同分段选择器的"选中 = 反转块" |
 | 局部加载（v-loading、表格加载） | 遮罩 `bg.mask`（surface 90%，内容隐约透出） | 加载文字 `text.secondary` | 转圈 `action.primary-active`；不要拿 `bg.overlay` 当加载遮罩，那会把一张卡片压成黑块 |
 | 锚点导航 | — | 默认 `text.secondary`，当前 `text.selected` | 标记条 `brand.indicator`（指示条语义，允许黄）；焦点 `border.focus` |
