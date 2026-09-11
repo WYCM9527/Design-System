@@ -16,6 +16,8 @@ a { color: inherit; text-decoration: none; }
 .act.danger, .act.danger:hover { color: var(--color-text-danger); }
 .act.danger:hover { background: var(--color-status-error-bg); }
 .act + .act { margin-left: var(--space-inline); }
+button.act { background: transparent; font: inherit; }   /* 用 <button> 承载时去掉浏览器默认外观；<a> 与 <button> 同形 */
+.act:disabled, .act.is-disabled { opacity: var(--opacity-disabled); cursor: not-allowed; pointer-events: none; }   /* 不可用的动作保留位置、压淡，不隐藏——列宽不跳 */
 /* 导览链接（查看全部 / 查看列表）：不是动作而是"去另一处看"，文字 + 右箭头图标引导，不描边不斜体；只有图标时（列表项右侧的 ›）用 icon.muted */
 .go { display: inline-flex; align-items: center; gap: var(--spacing-1); color: var(--color-text-link); font-weight: var(--text-weight-label); text-decoration: none; font-style: normal; cursor: pointer; min-height: var(--control-hit-min); }
 .go:hover { color: var(--color-text-link-hover); }

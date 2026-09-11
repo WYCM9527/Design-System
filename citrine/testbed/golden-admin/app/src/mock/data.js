@@ -179,3 +179,95 @@ export const refunds = Array.from({ length: 40 }, (_, i) => {
     rejectReason: status === 'rejected' ? REJECT_REASONS[seq(i, 4)] : null
   }
 })
+
+// ---- 第四轮：商户详情 ----
+// 列表里的四种审核 / 上线状态收成详情页的三态：已驳回的商户仍在审核流程里（需重新提交资质），按「待审核」展示
+export const MERCHANT_STATE = {
+  open: { label: '营业中', tone: 'success' },
+  pending: { label: '待审核', tone: 'warning' },
+  disabled: { label: '已停用', tone: 'neutral' }
+}
+export const merchantState = (status) => (status === '已上线' ? 'open' : status === '已停用' ? 'disabled' : 'pending')
+export const LOG_TYPE = { profile: '资料变更', audit: '审核', status: '状态变更', settlement: '结算' }
+export const QUAL_STATUS = {
+  approved: { label: '已通过', tone: 'success' },
+  pending: { label: '待审核', tone: 'warning' },
+  rejected: { label: '已驳回', tone: 'error' }
+}
+export const SETTLEMENT_STATUS = {
+  settled: { label: '已结算', tone: 'success' },
+  pending: { label: '待结算', tone: 'warning' },
+  disputed: { label: '有争议', tone: 'error' }
+}
+export const URGE_REASONS = ['用户来电催促', '骑手长时间未接单', '预计送达时间已超', '商户出餐缓慢', '其他']
+
+const DISTRICTS = ['朝阳区', '浦东新区', '天河区', '南山区', '西湖区', '武侯区']
+const STREETS = ['望京东路', '张江路', '体育西路', '科技园南路', '文三路', '人民南路']
+const BUSINESS_HOURS = ['09:00–22:00', '10:00–21:30', '07:00–20:00', '11:00–23:30']
+const OPERATORS = ['王小明', '李雪', '张伟', '刘婷', '吴磊']
+// [类型, 动作, 备注, 时间线节点语义]
+const LOG_EVENTS = [
+  ['profile', '修改了营业时间', '由 09:00–21:00 调整为 09:00–22:00', 'info'],
+  ['audit', '审核通过资质更新', '营业执照有效期已更新', 'success'],
+  ['settlement', '完成结算打款', '本期结算已打款至商户账户', 'success'],
+  ['profile', '更新了联系电话', '联系人电话已变更', 'info'],
+  ['status', '停用了商户', '原因：连续 3 次超时出餐投诉', 'warning'],
+  ['settlement', '标记结算争议', '商户对本期订单数存在异议', 'warning'],
+  ['status', '恢复了营业', '整改完成，恢复接单', 'success'],
+  ['audit', '驳回了资质更新', '门头照不清晰，需重新上传', 'error'],
+  ['profile', '调整了配送范围', '配送半径由 3 km 扩大到 5 km', 'info'],
+  ['settlement', '发起本期结算', '结算周期 T+7，等待财务确认', 'info']
+]
+const DEMO_TODAY = new Date(2026, 8, 8)   // 演示"今天"，与订单日期一致
+const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+const ymd = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
+const parseYmd = (s) => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d) }
+const monthsBetween = (from, to) => (to.getFullYear() - from.getFullYear()) * 12 + to.getMonth() - from.getMonth()
+
+function buildMerchantDetail(m, i) {
+  const baseName = MERCHANT_NAMES[i % 12]
+  // 每四家有一家合同已到期（合同期早于入驻日期一年签），供演示"进度不再进行中"
+  const expired = seq(i, 4) === 3
+  const start = expired ? new Date(2025, 6 + (i % 3), 1) : parseYmd(m.joined)
+  const months = expired ? 12 : [24, 36, 24][seq(i, 3)]
+  const end = new Date(start); end.setMonth(end.getMonth() + months); end.setDate(end.getDate() - 1)
+  const fulfilled = Math.min(months, Math.max(0, monthsBetween(start, DEMO_TODAY)))
+  const orders30 = 620 + seq(i, 900)
+  const gmv = orders30 * (38 + seq(i, 40))
+  const uploadedAt = (k) => `2026-0${1 + (i + k) % 8}-${pad(1 + (i * 5 + k * 7) % 28)} ${pad(9 + (i + k) % 9)}:${pad(seq(i + k, 60))}`
+  return {
+    address: `${m.city}市${DISTRICTS[seq(i, 6)]}${STREETS[seq(i + 1, 6)]}${12 + seq(i, 180)} 号`,
+    hours: BUSINESS_HOURS[seq(i, 4)],
+    contract: { start: ymd(start), end: ymd(end), months, fulfilled },
+    stats: {
+      orders: orders30, ordersDelta: `${(3 + seq(i, 20) / 2).toFixed(1)}%`, ordersUp: seq(i, 5) !== 2,
+      gmv, gmvDelta: `${(2 + seq(i, 30) / 2).toFixed(1)}%`, gmvUp: seq(i, 5) !== 2,
+      avg: gmv / orders30, avgDelta: `${(0.5 + seq(i, 10) / 2).toFixed(1)}%`, avgUp: seq(i, 3) !== 1,
+      cancelRate: `${(1.2 + seq(i, 40) / 10).toFixed(1)}%`, cancelDelta: `${(0.2 + seq(i, 10) / 10).toFixed(1)} 个百分点`, cancelUp: seq(i, 3) === 1
+    },
+    // 最近订单直接取订单表里该商户（按基础名匹配）的前 10 条，订单号能点进真实的订单详情
+    orders: orders.filter((o) => o.merchant === baseName).slice(0, 10),
+    quals: [
+      { key: 'license', name: '营业执照', file: `营业执照_${m.id}.jpg`, uploadedAt: uploadedAt(0), status: 'approved' },
+      { key: 'storefront', name: '门头照', file: seq(i, 5) === 2 ? null : `门头照_${m.id}.jpg`, uploadedAt: uploadedAt(1), status: seq(i, 4) === 0 ? 'rejected' : 'approved' },
+      { key: 'permit', name: '经营许可证', file: seq(i, 3) === 1 ? null : `经营许可证_${m.id}.pdf`, uploadedAt: uploadedAt(2), status: seq(i, 2) === 0 ? 'pending' : 'approved' }
+    ].map((q) => (q.file ? q : { ...q, uploadedAt: null, status: null })),
+    logs: Array.from({ length: 20 }, (_, k) => {
+      const [type, action, note, tone] = LOG_EVENTS[seq(i + k, 10)]
+      return { id: `${m.id}-L${pad(k + 1)}`, type, action, note, tone, operator: OPERATORS[seq(i * 3 + k, 5)], time: `2026-09-${pad(8 - Math.floor(k / 3))} ${pad(20 - (k % 3) * 4)}:${pad(seq(i + k, 60))}` }
+    }),
+    // 半月一期、共 6 期，最近一期（8 月下）待结算，其余至少一期有争议
+    settlements: Array.from({ length: 6 }, (_, k) => {
+      const idx = 16 - k, month = Math.ceil(idx / 2), firstHalf = idx % 2 === 1
+      const period = firstHalf ? `2026-${pad(month)}-01 ~ 2026-${pad(month)}-15` : `2026-${pad(month)}-16 ~ 2026-${pad(month)}-${DAYS_IN_MONTH[month - 1]}`
+      const count = 260 + seq(i * 7 + k, 300)
+      const amount = count * (36 + seq(i + k, 30))
+      const status = k === 0 ? 'pending' : seq(i + k, 4) === 1 ? 'disputed' : 'settled'
+      return {
+        id: `ST-${m.id}-${pad(idx)}`, period, orders: count, amount, fee: Math.round(amount * 0.06), status,
+        settledAt: status === 'settled' ? (firstHalf ? `2026-${pad(month)}-18 10:00` : `2026-${pad(month + 1)}-03 10:00`) : null
+      }
+    })
+  }
+}
+export const merchantDetails = Object.fromEntries(merchants.map((m, i) => [m.id, buildMerchantDetail(m, i)]))

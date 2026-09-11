@@ -11,6 +11,7 @@
 - 链接分四层：内容型 `.link`（订单号 / 名称：斜体下划线）、操作型 `.act`（编辑 / 详情 / 改派等动词：同色胶囊描边，相邻直接并排不加「·」，危险加 `danger`）、导览型 `.go`（查看全部 / 查看列表：文字 + `<Right class="i-icon--sm" />`）、标题型（待办 / 公告标题）；不要把动词写成 `.link`。
 - 样式只引用 `design-system/dist` 生成的 CSS 变量（`--color-*`、`--space-*`、`--text-*`、`--control-*`、`--radius-*`、`--elevation-*`…），不写色值、像素字面量；页面级公共类在 `src/styles/app.css`。
 - 组件库是 Element Plus，已由 `src/styles/bridge/element-plus.css` 接到 token；不要改桥接、不要引 Element 的 dark css-vars。统计卡用 `components/StatCard.vue`（label / value / delta / up / positive / note，左描边自带），图表用 `components/EChart.vue`（主题来自 `src/styles/bridge/echarts.js`），option 里只写数据与布局，不写颜色、线型。
+- IconPark 图标尺寸类六档 `i-icon--xs|sm|md|lg|xl|2xl`（桥接 `iconpark.css`），不在图标上写 font-size。
 - 路由 `src/router.js`（hash 路由，`meta.menu` 对应侧栏项与角色权限），侧栏与顶栏在 `src/layouts/AdminLayout.vue`，角色与权限在 `src/store.js`，演示数据在 `src/mock/data.js`。
-- 演示状态参数（`?state=empty|loading|error|invalid|success`、`?step=2`、`?role=`、`?theme=`）放在 `#` **之前**，页面用 `new URLSearchParams(location.search)` 读取（截图脚本依赖这一约定，不要用 `useRoute().query`）。
+- 演示状态参数（`?state=empty|loading|error|invalid|success|disabled|missing`、`?step=2`、`?tab=`、`?role=`、`?theme=`）放在 `#` **之前**，页面用 `new URLSearchParams(location.search)` 读取（截图脚本依赖这一约定，不要用 `useRoute().query`）。
 - 改完 UI 运行 `node ../../../../skills/design-system-steward/scripts/guard.mjs --project "$PWD"`，应为 `current`。

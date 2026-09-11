@@ -7,6 +7,7 @@ export const PAGES = [
   ['order-detail', '#/orders/20260908-0412'], ['order-reassign', '#/orders/20260908-0412?reassign=1'],
   ['merchants', '#/merchants'], ['merchants-audit', '?audit=1#/merchants'],
   ['merchant-new', '#/merchants/new'], ['merchant-invalid', '?state=invalid#/merchants/new'], ['merchant-edit-auditor', '?role=auditor#/merchants/m1/edit'],
+  ['merchant-detail', '#/merchants/M-2026-000400'], ['merchant-detail-quals', '?tab=quals#/merchants/M-2026-000400'], ['merchant-detail-logs', '?tab=logs#/merchants/M-2026-000400'], ['merchant-detail-settlement', '?tab=settlement#/merchants/M-2026-000400'], ['merchant-detail-disabled', '?state=disabled#/merchants/M-2026-000400'], ['merchant-detail-empty', '?state=empty&tab=logs#/merchants/M-2026-000400'], ['merchant-detail-missing', '?state=missing#/merchants/M-2026-000400'],
   ['apply', '#/merchants/apply'], ['apply-invalid', '?state=invalid#/merchants/apply'], ['apply-step2', '?step=2#/merchants/apply'], ['apply-step3', '?step=3#/merchants/apply'], ['apply-success', '?state=success#/merchants/apply'],
   ['campaigns', '#/campaigns'], ['campaigns-card', '?view=card#/campaigns'], ['campaigns-dialog', '?dialog=1#/campaigns'],
   ['members', '#/members'], ['analytics', '#/analytics'], ['analytics-settle', '?tab=settlement#/analytics'],

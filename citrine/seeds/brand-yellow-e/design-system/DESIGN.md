@@ -22,7 +22,7 @@
 - 品牌是一个高饱和的正黄（`color.brand.500`），中后台里它只做「唯一焦点」：主按钮、进度 / 强度、指示条（含数据卡的左描边点缀）。**黄色表达"主操作"，不表达"选中"**：分段选择器、视图 / 状态切换、侧栏当前项这类选中态一律用深黑反转块（`color.action.selected` + `color.text.on-selected`），黄色最多留给旁边的指示条。页面 90% 以上面积保持冷灰白中性色，黄色出现的地方就是该被注意的地方。
 - 黄底永远深字。品牌黄上白字对比度只有约 1.5:1，`color.text.on-primary` 固定为近黑；任何在黄色上放浅色文字的写法都不合规。
 - 品牌黄只有一个值 `brand.500`，**没有延伸色**：不做浅调（奶油黄）、不做深金、不做半透明洗色——实测发现它们在界面里显脏。需要层次时用无色系：冷灰（`neutral.*`）做底与分隔，近黑（`neutral.900`，#111827 带一丝深蓝）做选中块、焦点边线、品牌插图的描边。白底上没有任何黄色文字：黄字白底 1.5:1 不可读，品牌强调靠「黑 + 纯黄」的对比而不是金色文字。
-- 链接不用色相（品牌决定），分三层：**内容型链接**——正文、表格单元格里指向另一处内容的文字（订单号、商户名、活动名、公告正文里的链接），`color.text.link` 中性深灰 + 常态下划线（`text.link.decoration`）+ 斜体（`text.link.style`），hover 加深到 `text.link-hover`；**操作链接**——动词（编辑 / 复制 / 详情 / 改派 / 催单 / 取消选择 / 忘记密码），出现在操作列、卡片页脚、提示条、批量条里，形态是**同色胶囊描边**：`text.link` + `text.weight.label`（500），文字与描边同色（currentColor）、发丝线、`radius.full`、高 `control.height.sm`、无填充，**不斜体不下划线**，hover 换 `bg.hover` 底色；危险动作 `text.danger` 红字红边，hover `status.error-bg`；相邻胶囊间距 `space.inline`，不用「·」分隔——把动词排成斜体下划线像被强调的正文，是错的；与按钮的区别是不填充、描边是发丝线而不是 `border.strong`；**导览链接**——「查看全部」「查看列表」这类"去另一处看"的入口，不是动作也不是内容：`text.link` + 500，**文字 + 右箭头图标**（`icon.size.sm`）引导，不描边不斜体，hover 箭头右移 `spacing.0-5`；只有图标的版本（列表项右侧的 ›）用 `icon.muted`；**标题型链接**——列表项标题（待办、公告）本身可点，`text.primary` + 500，hover 出下划线。导航、标签页、分页、菜单是组件型链接，各有自己的颜色规则。注意中文字体没有真斜体，浏览器合成的假斜体在雅黑上可读性略降，所以链接文字宜短；**等宽数字型链接（订单号、单号）不斜体**，只保留下划线——数字斜体显歪。危险动作的内容型链接用 `text.danger` 红字（白底上），与普通链接分开。
+- 链接不用色相（品牌决定），分四层：**内容型链接**——正文、表格单元格里指向另一处内容的文字（订单号、商户名、活动名、公告正文里的链接），`color.text.link` 中性深灰 + 常态下划线（`text.link.decoration`）+ 斜体（`text.link.style`），hover 加深到 `text.link-hover`；**操作链接**——动词（编辑 / 复制 / 详情 / 改派 / 催单 / 取消选择 / 忘记密码），出现在操作列、卡片页脚、提示条、批量条里，形态是**同色胶囊描边**：`text.link` + `text.weight.label`（500），文字与描边同色（currentColor）、发丝线、`radius.full`、高 `control.height.sm`、无填充，**不斜体不下划线**，hover 换 `bg.hover` 底色；危险动作 `text.danger` 红字红边，hover `status.error-bg`；相邻胶囊间距 `space.inline`，不用「·」分隔——把动词排成斜体下划线像被强调的正文，是错的；与按钮的区别是不填充、描边是发丝线而不是 `border.strong`；**导览链接**——「查看全部」「查看列表」这类"去另一处看"的入口，不是动作也不是内容：`text.link` + 500，**文字 + 右箭头图标**（`icon.size.sm`）引导，不描边不斜体，hover 箭头右移 `spacing.0-5`；只有图标的版本（列表项右侧的 ›）用 `icon.muted`；**标题型链接**——列表项标题（待办、公告）本身可点，`text.primary` + 500，hover 出下划线。导航、标签页、分页、菜单是组件型链接，各有自己的颜色规则。注意中文字体没有真斜体，浏览器合成的假斜体在雅黑上可读性略降，所以链接文字宜短；**等宽数字型链接（订单号、单号）不斜体**，只保留下划线——数字斜体显歪。危险动作的内容型链接用 `text.danger` 红字（白底上），与普通链接分开。
 - 亲和感与层次感来自灰、黑、黄三者的配比：黄只以纯色小面积出现（主按钮、进度填充、指示条、品牌徽标、two-tone 插图的填充），灰承担 90% 的面积与所有中间层次，黑承担选中与强调。hover / active 不换黄色的深浅（延伸色显脏），用边线变黑、内阴影表达。
 - 中性色是冷灰（gray 族），暗色深底与它同族。冷灰让品牌黄与深蓝近黑形成互补对比，黄更跳；暖灰会让整个界面显黄、显脏（「黄的淡色落在冷灰上变橄榄」的顾虑只在黄有延伸色时成立，本系统没有延伸色）。弱化文字（`color.text.muted`）最浅只到 neutral.500（白底 5.2:1、页面底上 4.7:1）；neutral.400 只允许出现在输入框占位符（`color.text.placeholder`）上，且占位符永远不能是字段唯一的标签——有可见标签的字段（含必填项）可以用占位符给格式或示例提示。
 - 状态色与图表色以公司调色板为**色相参考**（Success Green / Warning Orange / Danger Red / Info Cyan / Purple / Primary Blue），让多条产品线的状态语义看起来是一家的；具体值按对比度与冷暖调校，公司原值保留在 token 描述里。本系统主色是黄，所以调色板里的 Primary Blue 只做图表分类色，链接、焦点、选中态一律无色系。warning 是橙不是黄，与品牌黄靠色相区分——「主操作」和「警告」必须一眼分开；info 是青不是蓝。
@@ -60,7 +60,7 @@
 ## 布局与响应式
 
 - 经典中后台骨架：固定宽度浅色侧栏（`layout.sidebar.width`）+ 顶栏（`layout.topbar.height`）+ 内容区。侧栏与顶栏都是 sticky。层级只有四档：`layer.sticky`（侧栏、顶栏、表格固定表头）、`layer.dropdown`（下拉、Tooltip、Popover）、`layer.modal`（弹窗、抽屉及其遮罩）、`layer.toast`（全局通知，永远在弹窗之上）；不手写 z-index 数字。
-- 间距走 4px 基础阶梯（`spacing.*`），其中 6 / 10 / 14 三个半步只用于控件内部的紧凑留白。页面级留白用四个语义间距：`space.gutter`（32）是内容区四周与顶栏左右内边距，`space.stack`（20）是卡片之间的纵向 / 网格间距，`space.card`（24）是卡片、弹窗、抽屉的内边距，`space.inline`（8）是同一行内相邻元素的间距；compact Theme 下四者分别收到 16 / 12 / 16 / 8。
+- 间距走 4px 基础阶梯（`spacing.*`），其中 6 / 10 / 14 三个半步只用于控件内部与单元格内边距。页面级留白用四个语义间距：`space.gutter`（32）是内容区四周与顶栏左右内边距，`space.stack`（20）是卡片之间的纵向 / 网格间距，`space.card`（24）是卡片、弹窗、抽屉的内边距，`space.inline`（8）是同一行内相邻元素的间距；compact Theme 下四者分别收到 16 / 12 / 16 / 8。
 - 圆角五档，按容器层级递减：`radius.xl` 弹窗、抽屉（露出的两角）、登录卡等最外层容器；`radius.lg` 卡片、面板、统计卡；`radius.md` 按钮、输入框、菜单项、下拉浮层、提示条、侧栏选中块；`radius.sm` 标签、分页项、分段选择器内项、骨架条；`radius.xs` 勾选框等 ≤ 16px 的元素；胶囊与圆形一律 `radius.full`。**嵌套规则**：内元素的圆角必须小于外框，相邻嵌套层级至少差一档（弹窗 xl → 内部卡片 lg → 按钮 md → 标签 sm → 勾选框 xs）；同一层级的并列元素用同一档。
 - 密度只有舒适一档（品牌决定；2.0.0 起不再提供紧凑 Theme——实测项目里它从未被真正需要，却让每条规则都要多验一种模式）。个别高密度表格用组件的 `size="small"`（控件 sm 档）解决，不做全局密度开关。
 - 横向表单（左标签右输入）是国内中后台的默认形态，标签列宽全站统一用 `layout.form.label-width`，不按页面手调；纵向表单只用于筛选区和窄卡片。标签文案不超过 6 个汉字（`layout.form.label-width` 112px 在 13px 字号下容纳 6 个汉字 + 必填星号；无星号可到 7 字），说明性内容放帮助文字，不放标签。描述列表（详情页的键值对）的标签列也用同一个宽度。
@@ -116,13 +116,13 @@
 
 | 形态 | 骨架 | 说明 |
 | --- | --- | --- |
-| 页头（所有页面） | 标题 `text.heading.size` + `text.weight.strong`；一句说明 `text.secondary`；右侧页面级操作区（主按钮至多一个，其余次要 / quiet） | 与内容区间距 `space.stack` |
+| 页头（所有页面） | 标题 `text.heading.size` + `text.weight.strong`（详情页在标题后跟状态胶囊）；一句说明 `text.secondary`；右侧页面级操作区：主按钮 = 最常用的正向动作（编辑 / 新建），可逆的状态变更（停用 / 恢复、上线 / 下线）= 次要按钮，不可逆或危险的（删除）收进「更多」下拉的 `is-danger` 项，都要二次确认 | 与内容区间距 `space.stack` |
 | 列表页 | 页头 → 筛选卡 → 表格卡（批量操作条、表格、分页在同一张卡里） | 见「筛选栏」「表格」「已选筹码 / 批量操作条」配方 |
 | 统计卡 vs 状态条 | 带趋势 / 对比的指标用统计卡（数据大字 + 涨跌，左侧品牌指示条是固定特征）；**只有一个数字的计数不拉满一行**，做成状态条：一行等高格子（`control.height.lg`），左点右数，可点击时作筛选 | 同侧栏的"宽度浪费"规则：内容撑不起的容器不要拉满。**统计卡封装成一个项目组件复用**（golden-admin：`components/StatCard.vue`），不要每页复制一份样式——两页各写一份迟早漂移 |
 | 表单页 | 一张卡，宽度 ≤ `layout.form.max-width`；卡内两列网格（列间距 `spacing.6`），地址、多行文本、上传等长字段跨两列；标签列宽 `layout.form.label-width`、右对齐；页脚按钮行右对齐、顶部发丝线，主操作在最右，其左依次次要（取消 / 上一步）、quiet（保存草稿） | 帮助文字 `text.small.size` + `text.muted`，在控件下方 `spacing.1`；出错时错误文案（`status.error`）占同一位置，不叠加。单位后缀（km、元）用 `text.secondary` 文字跟在控件后，间距 `space.inline` |
 | 分步流程 | 顶部步骤条 + 每步一张表单卡；「上一步 / 下一步」在页脚；最后一步是只读汇总（描述列表，标签列宽同表单）+ 协议勾选 + 提交主按钮 | 完成步骤图标 `status.success`、标题 `text.secondary`；当前步骤 `action.primary`（不必传 `finish-status`，桥接已把完成态与 success 态都映射好） |
-| 详情页 | 页头 → 描述列表卡（分组小标题 `text.title-sm.size` + `text.weight.label`）→ 时间线 / 关联列表；次级详情用右侧抽屉 | — |
-| 结果页 | 内容区垂直居中；插图底 `bg.subtle` + `border.strong` 虚线；标题 `text.title.size` + strong；说明 `text.secondary` + `text.paragraph.line-height`；操作居中：主按钮 + 次要 | 系统结果（403 / 404 / 500）用 two-tone 品牌插图 + `text.brand` 大字代码；**操作结果**（提交成功 / 失败）用 `status.success / error` 的线性图标 `icon.size.2xl` |
+| 详情页 | 页头（标题 + 状态胶囊 + 概要）→ 数据卡一行 → **一张卡内的页签**（概览 / 资质 / 日志 / 结算这类维度），每个页签内用分区小标题（`text.title-sm.size` + `text.weight.label`）+ 发丝线分隔多个板块；概览页签 = 描述列表 + 进度 / 状态 + 关联列表（带「查看全部」导览）；卡内多栏网格间距 `spacing.4`；次级详情 / 小表单用右侧抽屉，不开第二层弹窗；`?tab=` 直达页签 | 页签放卡内而不是卡外：卡外页签会让每个页签各成一张卡，页面被切碎 |
+| 结果页 | 内容区垂直居中；插图底 `bg.subtle` + `border.strong` 虚线；标题 `text.title.size` + strong；说明 `text.secondary` + `text.paragraph.line-height`；操作居中：主按钮 + 次要 | 系统结果（403 / 404 / 500）用 two-tone 品牌插图 + `text.brand` 大字代码；**操作结果**（提交成功 / 失败）用 `status.success / error` 的线性图标 `icon.size.2xl`；**内容级不存在**（记录已删除、链接有误）用 `icon.muted` 线性图标 + 说明 + 「返回列表」主按钮，不用品牌插图——那是系统级页面 |
 
 ## 组件配方
 
@@ -134,7 +134,7 @@
 | 次要按钮 | `bg.surface`，hover `action.secondary-hover` | `text.primary` | `border.strong` |
 | 文字按钮（quiet） | 静息 `action.quiet` 浅底，hover / active `action.quiet-hover` | `text.link` / hover `text.link-hover` | 无边线；**按钮类内容不能无框架直接放在背景上**（用户规则）：要么描边（次要按钮），要么浅底（quiet），不允许裸文字当按钮 |
 | 内容型链接（订单号、名称、正文里的链接） | — | `text.link`，hover `text.link-hover` | `text.link.decoration` + `text.link.style`；等宽数字型链接不斜体 |
-| 操作链接（编辑 / 复制 / 详情 / 改派 / 催单 / 取消选择…） | 无填充；hover `bg.hover`（危险 `status.error-bg`） | `text.link` + `text.weight.label`；危险动作 `text.danger`（hover 不变色） | **同色胶囊描边**：`border.width.default` × currentColor，`radius.full`，高 `control.height.sm`，左右内边距 `spacing.2-5`；不斜体不下划线；相邻胶囊间距 `space.inline`，一行最多 3 个，其余收进「⋯」图标胶囊 |
+| 操作链接（编辑 / 复制 / 详情 / 改派 / 催单 / 取消选择…） | 无填充；hover `bg.hover`（危险 `status.error-bg`） | `text.link` + `text.weight.label`；危险动作 `text.danger`（hover 不变色） | **同色胶囊描边**：`border.width.default` × currentColor，`radius.full`，高 `control.height.sm`，左右内边距 `spacing.2-5`；不斜体不下划线；相邻胶囊间距 `space.inline`，一行最多 3 个，其余收进「⋯」图标胶囊；导航用 `<a>`、不导航的动作用 `<button>`，二者同形；**不可用时保留位置、`opacity.disabled` 压淡**，不隐藏（列宽不跳） |
 | 导览链接（查看全部 / 查看列表） | — | `text.link` + `text.weight.label`，hover `text.link-hover` | 文字 + 右箭头 `icon.size.sm`，hover 箭头右移 `spacing.0-5`；不描边不斜体；只有图标时（列表项右侧 ›）`icon.muted`，命中区 ≥ `control.hit-min` |
 | 标题型链接（待办、公告的标题） | — | `text.primary` + `text.weight.label`，hover `text.link-hover` + 下划线 | 不斜体、常态无下划线 |
 | 危险按钮 | `action.danger` / `-hover` / `-active` | `text.on-danger` | — |
@@ -150,8 +150,9 @@
 | 只读 / 禁用输入框 | 只读 `bg.readonly` | 只读 `text.secondary` | 禁用整体 `opacity.disabled` |
 | 单选 / 滑杆 / 数字步进 / 上传 | 滑杆轨道 `bg.selected`，填充 `action.primary-active`；上传区 `bg.subtle`，拖入 `bg.selected` | — | 单选选中 `action.primary-active`；上传虚线 `border.strong`，拖入 `border.focus` |
 | 描述列表 | 标签列 `bg.subtle` | 标签 `text.secondary`，值 `text.primary` | 标签列宽 `layout.form.label-width`，行分隔 `border.default` |
+| 附件 / 资质卡 | 缩略图占位 `bg.subtle` + `border.default` 虚线 + `icon.muted` 图标，比例 4:3、宽随栅格 | 文件名 `text.body-sm.size`，元信息（上传时间）`text.muted`，审核状态胶囊 | 操作胶囊「下载 / 预览」；缺失项：状态胶囊「未上传」+ 说明 + `text.muted`「—」占位 |
 | 步骤条 | 完成 `status.success`，当前 `action.primary` | 当前 `text.primary` 加粗，其余 `text.muted` | 连线 `border.default`，完成段 `status.success`。**流程中止**（取消、驳回）：当前步改为 `status.error`（Element `process-status="error"`），标题改成中止原因，后续步骤保持待办灰——不能让已取消的单子还亮着一个黄色进行中 |
-| 时间线 | 节点按事件语义取 `status.*`（完成 success、失败 / 取消 error、告警 warning）；当前进行中 `action.primary`；**未发生的步骤空心节点 `border.strong`** | 标题 `text.body-sm.size` + `text.primary`，说明与时间 `text.muted` | 连线 `border.default` |
+| 时间线 | 节点按事件语义取 `status.*`（完成 success、失败 / 取消 error、告警 warning）；当前进行中 `action.primary`；**未发生的步骤空心节点 `border.strong`**；中性 / 记录类事件（资料变更、备注）不传 type，用默认灰节点——只有带语义的事件上色 | 标题 `text.body-sm.size` + `text.primary`，说明与时间 `text.muted` | 连线 `border.default` |
 | 登录页 | 品牌区 `bg.brand`；表单卡 `bg.surface` | 品牌区 `text.on-brand` + `text.hero.size`；卡片标题 `text.heading.size` | 卡宽 `layout.auth.card-width`，按钮/输入 `control.height.lg` |
 | 结果页（403 / 404 / 500） | 插图底 `bg.subtle` + `border.strong` 虚线 | 代码 `text.brand` + `text.hero.size`；说明 `text.secondary` + `text.paragraph.line-height` | 内容在内容区里**垂直居中**（min-height = 视口 − 顶栏 − 上下 gutter），不贴顶；插图 `illustration.size.md`，用 two-tone 图标（`icon.brand` 描边 + `icon.two-tone` 填充） |
 | 通知卡 | `bg.elevated` | `text.primary` / `text.secondary` | `border.default` + 左侧 `status.*` × `border.width.indicator`，`elevation.popover.*` |
@@ -172,7 +173,7 @@
 | 弹窗 | 遮罩 `bg.overlay`；面板 `bg.elevated` | `text.primary` / `text.secondary` | `radius.lg`，`elevation.modal.*`，进出用 `motion.duration.slow` + `motion.easing.enter` / `exit` |
 | Tooltip / 深色 Toast | `bg.inverse` | `text.inverse` | `radius.sm`，`text.small.size` |
 | 统计卡（数据卡） | 同普通卡（`bg.surface`）+ **左侧 `brand.indicator` × `border.width.indicator` 描边**——这是数据卡的固定特征，所有同类卡都带，不是高亮；**数据色卡禁止大面积黄色**（用户规则），黄只出现在这一条描边上 | 同普通卡；涨跌照用 `data.increase / decrease` | 数字 `text.display.size`（32px）+ `.weight`（700）+ `.line-height`（1.25 紧行高）+ `.tracking`；数据数字是卡片主角，必须一眼压住标签与涨跌 |
-| 进度条 / 进度环 / 仪表盘 | 轨道 `bg.selected` | 内嵌百分比 `text.on-primary`（不用白字） | 填充 `action.primary-active`，`radius.full`；**颜色跟状态走**：只有进行中是黄，已结束 / 已下线 / 草稿等非进行中用 `data.inactive` 灰（桥接约定类 `is-muted`；不用 `border.strong`，它与轨道几乎同色）——一屏十几张卡全黄就不是焦点了；status 变体用 `status.*`；不接受自定义进度色 |
+| 进度条 / 进度环 / 仪表盘 | 轨道 `bg.selected` | 内嵌百分比 `text.on-primary`（不用白字） | 填充 `action.primary-active`，`radius.full`；**颜色跟状态走**：只有进行中是黄，已结束 / 已下线 / 草稿等非进行中用 `data.inactive` 灰（桥接约定类 `is-muted`；不用 `border.strong`，它与轨道几乎同色），并在旁边用 `status.neutral` 胶囊说明状态（已到期 / 已暂停）——一屏十几张卡全黄就不是焦点了；status 变体用 `status.*`；不接受自定义进度色 |
 | 评分 | — | 文案 `text.secondary` | 实星 `action.selected`（填充是选中语义，不用金黄），空星 `border.strong`；焦点 `border.focus` |
 | 头像（字母 / 占位，含顶栏与个人中心） | `bg.selected` | `text.selected` | 不用品牌黄——头像不是主操作面；组件库默认的灰底白字暗色下不到 3:1 |
 | 可勾选标签（check-tag） | 未选 `status.neutral-bg`；选中 `action.selected` | 未选 `status.neutral`；选中 `text.on-selected` | `radius.full`；同分段选择器的"选中 = 反转块" |

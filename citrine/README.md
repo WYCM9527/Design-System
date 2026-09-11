@@ -4,7 +4,7 @@
 
 ![Citrine · 实测项目「黄金后台」亮 / 暗模式](docs/screenshots/hero.png)
 
-版本 **2.1.2** · Core 314 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
+版本 **2.1.3** · Core 314 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
 
 ---
 
@@ -41,7 +41,7 @@ citrine/
 │   ├── README.md                #   用法、硬规则、从旧规范迁移的角色对照
 │   └── CHANGELOG.md             #   rc.1 → 1.1.3 每一条决定的来历
 ├── previews/yellow-admin/       # 静态预览：手写 token（E）与构建产物（S）逐像素一致的两套页面
-├── testbed/golden-admin/        # 实测项目一「黄金后台」：Vue 3 + Element Plus，17 个页面 × 亮 / 暗 + 全组件走查页
+├── testbed/golden-admin/        # 实测项目一「黄金后台」：Vue 3 + Element Plus，18 个页面 × 亮 / 暗 + 全组件走查页
 │   ├── PRD.md · FINDINGS.md     #   需求与 56 条实测发现（每条对应一次系统级修正）
 │   └── app/                     #   AGENTS.md 是编码 Agent 的规则入口
 ├── testbed/legacy-shop/         # 实测项目二：暖灰旧规范的遗留后台，排练 audit → migrate → guard 的迁移路径
