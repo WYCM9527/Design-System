@@ -263,6 +263,10 @@
       "decrease": {
         "$type": "color",
         "$value": "{color.red.500}"
+      },
+      "inactive": {
+        "$type": "color",
+        "$value": "{color.neutral.500}"
       }
     },
     "icon": {

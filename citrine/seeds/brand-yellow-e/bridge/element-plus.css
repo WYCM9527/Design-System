@@ -228,7 +228,7 @@
 .el-progress-bar__inner { background-color: var(--color-action-primary-active); }
 .el-progress-bar__outer { background-color: var(--color-bg-selected); }
 /* 进度条颜色跟状态走：黄只给"正在发生"的；已结束 / 已下线 / 草稿等非进行中用桥接约定类 is-muted 变灰 */
-.el-progress.is-muted .el-progress-bar__inner, .el-progress.is-muted .el-progress-circle__path { background-color: var(--color-border-strong); stroke: var(--color-border-strong); }
+.el-progress.is-muted .el-progress-bar__inner, .el-progress.is-muted .el-progress-circle__path { background-color: var(--color-data-inactive); stroke: var(--color-data-inactive); }
 
 /* ---- 表格 ---- */
 .el-table {

@@ -169,7 +169,7 @@
 | 弹窗 | 遮罩 `bg.overlay`；面板 `bg.elevated` | `text.primary` / `text.secondary` | `radius.lg`，`elevation.modal.*`，进出用 `motion.duration.slow` + `motion.easing.enter` / `exit` |
 | Tooltip / 深色 Toast | `bg.inverse` | `text.inverse` | `radius.sm`，`text.small.size` |
 | 统计卡（数据卡） | 同普通卡（`bg.surface`）+ **左侧 `brand.indicator` × `border.width.indicator` 描边**——这是数据卡的固定特征，所有同类卡都带，不是高亮；**数据色卡禁止大面积黄色**（用户规则），黄只出现在这一条描边上 | 同普通卡；涨跌照用 `data.increase / decrease` | 数字 `text.display.size`（32px）+ `.weight`（700）+ `.line-height`（1.25 紧行高）+ `.tracking`；数据数字是卡片主角，必须一眼压住标签与涨跌 |
-| 进度条 / 进度环 / 仪表盘 | 轨道 `bg.selected` | 内嵌百分比 `text.on-primary`（不用白字） | 填充 `action.primary-active`，`radius.full`；**颜色跟状态走**：只有进行中是黄，已结束 / 已下线 / 草稿等非进行中用 `border.strong` 灰（桥接约定类 `is-muted`）——一屏十几张卡全黄就不是焦点了；status 变体用 `status.*`；不接受自定义进度色 |
+| 进度条 / 进度环 / 仪表盘 | 轨道 `bg.selected` | 内嵌百分比 `text.on-primary`（不用白字） | 填充 `action.primary-active`，`radius.full`；**颜色跟状态走**：只有进行中是黄，已结束 / 已下线 / 草稿等非进行中用 `data.inactive` 灰（桥接约定类 `is-muted`；不用 `border.strong`，它与轨道几乎同色）——一屏十几张卡全黄就不是焦点了；status 变体用 `status.*`；不接受自定义进度色 |
 | 评分 | — | 文案 `text.secondary` | 实星 `action.selected`（填充是选中语义，不用金黄），空星 `border.strong`；焦点 `border.focus` |
 | 头像（字母 / 占位，含顶栏与个人中心） | `bg.selected` | `text.selected` | 不用品牌黄——头像不是主操作面；组件库默认的灰底白字暗色下不到 3:1 |
 | 可勾选标签（check-tag） | 未选 `status.neutral-bg`；选中 `action.selected` | 未选 `status.neutral`；选中 `text.on-selected` | `radius.full`；同分段选择器的"选中 = 反转块" |

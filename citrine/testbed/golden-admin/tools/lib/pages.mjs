@@ -1,7 +1,7 @@
 // 实测项目的页面状态清单：名字 → 「?查询串#路由」。查询串里的 state / step / view / dialog 等是演示参数（放在 # 之前，页面用 location.search 读）。
 // 新增页面时在这里登记，验收才会覆盖它。
 export const PAGES = [
-  ['login', '?theme=light#/login'], ['login-error', '?state=error#/login'],
+  ['login', '#/login'], ['login-error', '?state=error#/login'],
   ['dashboard', '#/'], ['dashboard-empty', '?state=empty#/'], ['dashboard-loading', '?state=loading#/'],
   ['orders', '#/orders'], ['orders-empty', '?state=empty#/orders'], ['orders-error', '?state=error#/orders'], ['orders-loading', '?state=loading#/orders'],
   ['order-detail', '#/orders/20260908-0412'], ['order-reassign', '#/orders/20260908-0412?reassign=1'],

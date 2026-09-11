@@ -58,6 +58,7 @@
   --color-bg-elevated: #FFFFFF;
   --color-bg-overlay: #11182773;
   --color-bg-mask: #FFFFFFE6;
+  --color-data-inactive: #9CA3AF;
   --color-bg-inverse: #111827;
   --color-text-inverse: #FFFFFF;
   --elevation-card-color: #1118270F; --elevation-popover-color: #1118271A; --elevation-modal-color: #11182729;
@@ -109,6 +110,7 @@
   --color-bg-elevated: #1A2331;
   --color-bg-overlay: #080F1CA6;
   --color-bg-mask: #151D2CE6;
+  --color-data-inactive: #666D7B;
   --color-bg-inverse: #F3F4F6;
   --color-text-inverse: #111827;
   --elevation-card-color: #00000000; --elevation-popover-color: #0000004D; --elevation-modal-color: #00000080;

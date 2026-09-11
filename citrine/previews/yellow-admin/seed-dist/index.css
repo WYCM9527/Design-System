@@ -87,6 +87,8 @@
   --color-cyan-700: #007C8D;
   --color-cyan-wash: #0F2B3B;
   --color-data-decrease: var(--color-red-700);
+  --color-neutral-400: #9CA3AF;
+  --color-data-inactive: var(--color-neutral-400);
   --color-green-700: #0B9E74;
   --color-data-increase: var(--color-green-700);
   --color-neutral-ring: #11182729;
@@ -109,7 +111,6 @@
   --color-icon-default: var(--color-neutral-600);
   --color-icon-muted: var(--color-neutral-500);
   --color-icon-two-tone: var(--color-brand-500);
-  --color-neutral-400: #9CA3AF;
   --color-neutral-shadow-1: #1118270F;
   --color-neutral-shadow-2: #1118271A;
   --color-neutral-shadow-3: #11182729;
@@ -351,6 +352,7 @@
   --color-chart-sequential-2: var(--color-graphite-600);
   --color-chart-sequential-4: var(--color-neutral-300);
   --color-data-decrease: var(--color-red-500);
+  --color-data-inactive: var(--color-neutral-500);
   --color-data-increase: var(--color-green-500);
   --color-focus-ring: var(--color-graphite-ring);
   --color-icon-brand: var(--color-neutral-100);

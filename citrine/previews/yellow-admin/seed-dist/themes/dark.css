@@ -35,6 +35,7 @@
   --color-chart-sequential-2: var(--color-graphite-600);
   --color-chart-sequential-4: var(--color-neutral-300);
   --color-data-decrease: var(--color-red-500);
+  --color-data-inactive: var(--color-neutral-500);
   --color-data-increase: var(--color-green-500);
   --color-focus-ring: var(--color-graphite-ring);
   --color-icon-brand: var(--color-neutral-100);

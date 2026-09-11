@@ -23,6 +23,7 @@
 - 选中态（筹码、表格行、侧栏）用 graphite 梯度反转，文字近白；`text.brand`（结果页大字）在暗色下才是纯黄——深底上纯黄 11:1，这是黄色文字唯一合法的场合。
 - 状态色在暗色下用各族的 500 档做文字，统一压到 graphite.850 上 5.5–5.6:1（wash 浅底上 4.6+）——亮色的鲜亮值直接搬进暗色会刺眼；浅底改为同色 14% 叠在 graphite.850 上**预混的实色 wash**（`*.wash`、`neutral.wash-dark`），让徽标、提示条在深底上不发脏；实色而不是半透明，是因为半透明落在选中行 / 悬停行上会随底色变浅，文字掉到 4.1:1 以下。
 - 局部加载遮罩 `bg.mask` 用 graphite.800（surface）90%，与亮色"白 90%"同一语义。
+- `data.inactive`（非进行中的数据填充）换成 neutral.500：在 graphite 轨道上 2.6:1，看得见但不抢。
 - `text.danger` 换成 `red.500`；`action.danger` 仍是深红——文字与填充在暗色下必须分道。
 - 字体、尺寸、间距、线宽、动效等结构层 Token 不随 Theme 变化，dark 不覆写它们。
 - 优先覆写 Core Semantic token；Component token 仅用于已批准的组件例外。

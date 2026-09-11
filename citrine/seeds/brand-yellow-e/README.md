@@ -2,7 +2,7 @@
 
 > 种子目录代号仍是 `brand-yellow-e`（脚本与文档中的路径不变）；系统名称 Citrine（黄晶）见仓库根 README。
 
-版本 2.0.0 · 公司级中后台设计规范（单品牌线）· 变更见 [CHANGELOG.md](CHANGELOG.md)
+版本 2.1.0 · 公司级中后台设计规范（单品牌线）· 变更见 [CHANGELOG.md](CHANGELOG.md)
 
 一套已通过 `design-system-steward` `validate-system` / `build-tokens` / `guard` 的 DTCG 设计系统起点。复制进任何项目就是 Core + dark Theme；视觉效果见 `../../previews/yellow-admin/`：`admin.html` 是工作台，`stress.html` 是登录、列表、表单、详情、反馈、折叠侧栏六类页面的压力测试（方案 S 全部由构建产物驱动）。
 
@@ -18,7 +18,7 @@ design-system/
 ├── tokens/semantic.tokens.json     # 用途：color.action(primary/danger/secondary-hover)、text(含 placeholder/inverse)、bg(含 elevated/overlay/inverse/selected-hover)、
 │                                   #     border(含 input/focus)、status、chart.*；text.*、control.height.*、icon/avatar.size.*、layout.*、border.width.*、
 │                                   #     elevation.card/popover/modal.*、motion.*、opacity.*、layer.*、focus.ring.width、space.*
-├── themes/dark/                    # 相对 Core 的 69 条 delta（颜色、浮层、阴影色、图表、骨架/只读、图标）+ THEME.md；激活方式 :root.dark（唯一的 Theme）
+├── themes/dark/                    # 相对 Core 的 70 条 delta（颜色、浮层、阴影色、图表、骨架/只读、图标）+ THEME.md；激活方式 :root.dark（唯一的 Theme）
 ├── theme-map.json                  # defaultTheme: light，activation: class；登记 dark
 ├── scope-map.json                  # 空；局部规范在目标项目里按证据登记
 ├── style-dictionary.config.mjs
@@ -30,7 +30,7 @@ bridge/iconpark.css                 # IconPark 图标桥接：尺寸六档、角
 bridge/iconpark.config.ts           # IconPark 全局配置片段 + 激活态 / two-tone 的颜色数组（React / Vue 3 / @icon-park/svg 三种接法）
 ```
 
-Core 共 313 个 token，构建后 `dist/tokens.css` 的变量名就是 `--color-action-primary`、`--text-body-size`、`--control-height-md`、`--layout-form-label-width`、`--elevation-card-color` 这类形态；`dist/index.css` 把 Core 与两个 Theme 合成一个文件。
+Core 共 314 个 token，构建后 `dist/tokens.css` 的变量名就是 `--color-action-primary`、`--text-body-size`、`--control-height-md`、`--layout-form-label-width`、`--elevation-card-color` 这类形态；`dist/index.css` 把 Core 与两个 Theme 合成一个文件。
 
 ## 用法
 

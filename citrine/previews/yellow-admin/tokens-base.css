@@ -129,6 +129,7 @@
   --color-bg-elevated: var(--color-bg-surface);
   --color-bg-overlay: #11182773;
   --color-bg-mask: #FFFFFFE6;
+  --color-data-inactive: #9CA3AF;
   --color-bg-inverse: var(--color-text-primary);
   --color-text-inverse: var(--color-bg-surface);
   --color-chart-1: var(--color-action-primary);
@@ -140,6 +141,7 @@
 .dark {
   --color-bg-overlay: #080F1CA6;
   --color-bg-mask: #151D2CE6;
+  --color-data-inactive: #666D7B;
   --elevation-card-color: #00000000;
   --elevation-popover-color: #0000004D;
   --elevation-modal-color: #00000080;
