@@ -1,10 +1,10 @@
 # Citrine Design System
 
-**黄晶 · 公司级中后台设计系统** — 一个以品牌黄为唯一焦点、冷灰为骨架的 Web 中后台设计系统：DTCG 令牌单一来源、亮 / 暗 / 紧凑三种模式、Element Plus、shadcn/ui 与 ECharts 三条桥接、给编码 Agent 的组件配方，以及一套可复跑的验收基线。
+**黄晶 · 公司级中后台设计系统** — 一个以品牌黄为唯一焦点、冷灰为骨架的 Web 中后台设计系统：DTCG 令牌单一来源、亮 / 暗两种模式、Element Plus、shadcn/ui 与 ECharts 三条桥接、给编码 Agent 的组件配方，以及一套可复跑的验收基线。
 
 ![Citrine · 实测项目「黄金后台」亮 / 暗模式](docs/screenshots/hero.png)
 
-版本 **1.3.3** · Core 313 个 token · dark 69 条 / compact 8 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
+版本 **2.0.0** · Core 313 个 token · dark 69 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
 
 ---
 
@@ -13,8 +13,8 @@
 中后台项目的样式失控通常不是缺规范，而是规范活在文档里、代码里各写各的。Citrine 把"设计决定"收进一个可构建、可校验、可守卫的令牌系统，让人和 AI 编码 Agent 都只从同一个地方取值：
 
 - **一个来源**：颜色、字体、字号阶梯、控件高度、间距、圆角、线宽、阴影、动效、层级、图表色全部是 DTCG 格式的 token，构建成 CSS 变量；页面不写任何色值与像素字面量。
-- **三种模式零重复**：`dark` 只覆写颜色与浮层层，`compact` 只收紧尺寸与间距，两者正交、可叠加；品牌黄一个字节不动。
-- **组件库不再"自带主见"**：Element Plus 桥接把 `--el-*` 全部指向 token，并按 Element 2.14 **全部组件**走查逐条接管它写死的主色、焦点环、色表和高度——hover 与 focus 不会再冒出一个黄色，`compact` 对全部控件生效。
+- **暗色零重复**：`dark` 只覆写颜色与浮层层，尺寸、字体、间距一律不动；品牌黄一个字节不动。密度只有舒适一档，不做全局密度开关。
+- **组件库不再"自带主见"**：Element Plus 桥接把 `--el-*` 全部指向 token，并按 Element 2.14 **全部组件**走查逐条接管它写死的主色、焦点环、色表和高度——hover 与 focus 不会再冒出一个黄色，按钮与输入框第一次真正同高。
 - **给 Agent 的配方，而不是给人的论文**：`DESIGN.md` 顶部十条速查 + 一张"组件 → token"配方表；一个从未看过项目源码的编码 Agent 只凭它做出的页面，通过了全部自动验收。
 - **验收基线是规范的一部分**：对比度阈值与已批准例外、可访问名称、命中区、溢出、键盘焦点、窄屏、构建一致性、全组件走查——每次改动都以此复跑。
 
@@ -36,12 +36,12 @@
 ```text
 citrine/
 ├── seeds/brand-yellow-e/        # 设计系统种子（复制进项目即用）
-│   ├── design-system/           #   DESIGN.md（速查 + 规则 + 配方 + 验收基线）、tokens/、themes/dark|compact/、theme-map.json
+│   ├── design-system/           #   DESIGN.md（速查 + 规则 + 配方 + 验收基线）、tokens/、themes/dark/、theme-map.json
 │   ├── bridge/                  #   element-plus.css · shadcn-globals.css · echarts.js · iconpark.css / iconpark.config.ts
 │   ├── README.md                #   用法、硬规则、从旧规范迁移的角色对照
 │   └── CHANGELOG.md             #   rc.1 → 1.1.3 每一条决定的来历
 ├── previews/yellow-admin/       # 静态预览：手写 token（E）与构建产物（S）逐像素一致的两套页面
-├── testbed/golden-admin/        # 实测项目一「黄金后台」：Vue 3 + Element Plus，17 个页面 × 亮 / 暗 / 紧凑 + 全组件走查页
+├── testbed/golden-admin/        # 实测项目一「黄金后台」：Vue 3 + Element Plus，17 个页面 × 亮 / 暗 + 全组件走查页
 │   ├── PRD.md · FINDINGS.md     #   需求与 56 条实测发现（每条对应一次系统级修正）
 │   └── app/                     #   AGENTS.md 是编码 Agent 的规则入口
 ├── testbed/legacy-shop/         # 实测项目二：暖灰旧规范的遗留后台，排练 audit → migrate → guard 的迁移路径
@@ -63,15 +63,15 @@ node <Design-System>/skills/design-system-steward/scripts/build-tokens.mjs --pro
 node <Design-System>/skills/design-system-steward/scripts/guard.mjs --project "$PWD"          # 应为 current
 ```
 
-样式入口按顺序引入：组件库基础样式 → `design-system/dist/index.css` → 对应桥接（`bridge/element-plus.css` 或把 `shadcn-globals.css` 并进 `globals.css`）。暗色在 `<html>` 上加 `dark`，紧凑加 `compact`。项目规则写进 `AGENTS.md`（见 `testbed/golden-admin/app/AGENTS.md`）。
+样式入口按顺序引入：组件库基础样式 → `design-system/dist/index.css` → 对应桥接（`bridge/element-plus.css` 或把 `shadcn-globals.css` 并进 `globals.css`）。暗色在 `<html>` 上加 `dark`。项目规则写进 `AGENTS.md`（见 `testbed/golden-admin/app/AGENTS.md`）。
 
 已有旧规范的项目：先 `audit` 看只读报告，`migrate --phase adopt / replace` 自动处理无歧义项，其余按种子 README「从旧规范迁移」的**角色对照**手工映射，最后 `settle → guard / status` 两绿。排练记录见 `testbed/legacy-shop/README.md`。
 
 ## 实测项目
 
-| 「黄金后台」订单管理 · 亮色 | 订单管理 · 暗色 + 紧凑 |
+| 「黄金后台」订单管理 · 亮色 | 订单管理 · 暗色 |
 | --- | --- |
-| ![](docs/screenshots/admin-orders-light.png) | ![](docs/screenshots/admin-orders-compact-dark.png) |
+| ![](docs/screenshots/admin-orders-light.png) | ![](docs/screenshots/admin-orders-dark.png) |
 
 | 数据看板 | 订单详情 · 暗色 |
 | --- | --- |

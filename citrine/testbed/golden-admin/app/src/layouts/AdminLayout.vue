@@ -4,7 +4,7 @@ const vAriaLabel = { mounted: (el, b) => el.setAttribute('aria-label', b.value),
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Home, ChartHistogram, Order, Expenses, Shop, Coupon, Riding, Remind, Peoples, User, Search, Moon, Sunny, MenuFold, MenuUnfold, Down } from '@icon-park/vue-next'
-import { store, roleInfo, canSee, setRole, toggleTheme, toggleDensity, ROLES } from '../store'
+import { store, roleInfo, canSee, setRole, toggleTheme, ROLES } from '../store'
 
 const route = useRoute(); const router = useRouter()
 const groups = [
@@ -65,9 +65,6 @@ function onCommand(cmd) {
         <button class="iconbtn" :class="{ 'is-on': store.theme === 'dark' }" :title="store.theme === 'dark' ? '切换亮色' : '切换暗色'" @click="toggleTheme">
           <component :is="store.theme === 'dark' ? Sunny : Moon" class="i-icon--lg" />
         </button>
-        <el-tooltip :content="store.density === 'compact' ? '紧凑密度（点击切回舒适）' : '舒适密度（点击切到紧凑）'" placement="bottom">
-          <button class="iconbtn density" :class="{ 'is-on': store.density === 'compact' }" :aria-label="store.density === 'compact' ? '切换为舒适密度' : '切换为紧凑密度'" :aria-pressed="store.density === 'compact'" @click="toggleDensity"><span class="density-glyph"></span></button>
-        </el-tooltip>
         <el-dropdown trigger="click" @command="onCommand">
           <span class="user"><span class="avatar">王</span><span class="user-name">王小明 · {{ roleInfo.label }}</span><Down class="i-icon--sm i-icon--muted" /></span>
           <template #dropdown>
@@ -91,5 +88,4 @@ function onCommand(cmd) {
 .user { display: inline-flex; align-items: center; gap: var(--spacing-2); cursor: pointer; padding: var(--spacing-1) var(--spacing-1) var(--spacing-1) var(--spacing-1); border-radius: var(--radius-md); }
 .user:hover { background: var(--color-bg-hover); }
 .user-name { font-size: var(--text-body-sm-size); color: var(--color-text-primary); }
-.density-glyph { display: block; width: var(--icon-size-md); height: var(--icon-size-md); border-radius: var(--radius-sm); background: repeating-linear-gradient(to bottom, currentColor 0 2px, transparent 2px 5px); opacity: var(--opacity-on-primary-muted); }
 </style>

@@ -21,18 +21,14 @@
   document.getElementById("tokens").href = plans[plan].file;
   if (plans[plan].standalone) document.getElementById("tokens-base").remove();
   if (query.get("dark") === "1") document.documentElement.classList.add("dark");
-  if (query.get("compact") === "1") document.documentElement.classList.add("compact");
   function syncLinks() {
     var dark = document.documentElement.classList.contains("dark");
-    var compact = document.documentElement.classList.contains("compact");
-    var q = function (p) { return "stress.html?plan=" + p + (dark ? "&dark=1" : "") + (compact ? "&compact=1" : ""); };
+    var q = function (p) { return "stress.html?plan=" + p + (dark ? "&dark=1" : ""); };
     document.querySelectorAll("[data-plan]").forEach(function (a) { a.classList.toggle("cur", a.dataset.plan === plan); a.href = q(a.dataset.plan); });
     document.getElementById("dark-toggle").textContent = dark ? "☀ 亮色" : "☾ 暗色";
-    document.getElementById("compact-toggle").textContent = compact ? "☷ 舒适" : "☰ 紧凑";
-    document.getElementById("to-admin").href = "admin.html?plan=" + plan + (dark ? "&dark=1" : "") + (compact ? "&compact=1" : "");
+    document.getElementById("to-admin").href = "admin.html?plan=" + plan + (dark ? "&dark=1" : "");
   }
   window.toggleDark = function () { document.documentElement.classList.toggle("dark"); syncLinks(); };
-  window.toggleCompact = function () { document.documentElement.classList.toggle("compact"); syncLinks(); };
   document.addEventListener("DOMContentLoaded", function () { document.getElementById("plan-name").textContent = plans[plan].name; syncLinks(); });
 })();
 </script>
@@ -46,7 +42,6 @@
       <a data-plan="e" href="stress.html?plan=e">E</a>
       <a data-plan="d" href="stress.html?plan=d">D</a>
       <a id="dark-toggle" href="#" onclick="toggleDark(); return false;">☾ 暗色</a>
-      <a id="compact-toggle" href="#" onclick="toggleCompact(); return false;">☰ 紧凑</a>
       <a id="to-admin" href="admin.html">← 工作台预览</a>
     </div>
     <span class="tag" id="plan-name" style="margin-left:auto"></span>

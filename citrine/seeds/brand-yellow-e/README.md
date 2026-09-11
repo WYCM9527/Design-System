@@ -2,11 +2,11 @@
 
 > 种子目录代号仍是 `brand-yellow-e`（脚本与文档中的路径不变）；系统名称 Citrine（黄晶）见仓库根 README。
 
-版本 1.3.3 · 公司级中后台设计规范（单品牌线）· 变更见 [CHANGELOG.md](CHANGELOG.md)
+版本 2.0.0 · 公司级中后台设计规范（单品牌线）· 变更见 [CHANGELOG.md](CHANGELOG.md)
 
-一套已通过 `design-system-steward` `validate-system` / `build-tokens` / `guard` 的 DTCG 设计系统起点。复制进任何项目就是 Core + dark / compact 两个 Theme；视觉效果见 `../../previews/yellow-admin/`：`admin.html` 是工作台，`stress.html` 是登录、列表、表单、详情、反馈、折叠侧栏六类页面的压力测试（方案 S 全部由构建产物驱动）。
+一套已通过 `design-system-steward` `validate-system` / `build-tokens` / `guard` 的 DTCG 设计系统起点。复制进任何项目就是 Core + dark Theme；视觉效果见 `../../previews/yellow-admin/`：`admin.html` 是工作台，`stress.html` 是登录、列表、表单、详情、反馈、折叠侧栏六类页面的压力测试（方案 S 全部由构建产物驱动）。
 
-它不只是一套颜色：字体、字号阶梯、控件高度、布局尺寸、间距、圆角、线宽、阴影（拆分式）、动效、透明度、层级、浮层、图表调色板都已纳管。预览页的方案 S 没有一行手写样式值，全部来自这套种子的构建产物，并与手写的方案 E 逐像素一致。文字 / 底色配对在亮暗两个 Theme 下通过 WCAG AA，已批准的例外（三个状态色的品牌值、占位符、装饰性边线）逐条列在 `DESIGN.md` 的「验收基线」。已按国内中后台环境修正：微软雅黑显式入栈、中文字号下限 12px、字重三档、密度默认舒适 + 可选 compact Theme。
+它不只是一套颜色：字体、字号阶梯、控件高度、布局尺寸、间距、圆角、线宽、阴影（拆分式）、动效、透明度、层级、浮层、图表调色板都已纳管。预览页的方案 S 没有一行手写样式值，全部来自这套种子的构建产物，并与手写的方案 E 逐像素一致。文字 / 底色配对在亮暗两个 Theme 下通过 WCAG AA，已批准的例外（三个状态色的品牌值、占位符、装饰性边线）逐条列在 `DESIGN.md` 的「验收基线」。已按国内中后台环境修正：微软雅黑显式入栈、中文字号下限 12px、字重三档、密度只有舒适一档。
 
 ## 里面有什么
 
@@ -18,14 +18,13 @@ design-system/
 ├── tokens/semantic.tokens.json     # 用途：color.action(primary/danger/secondary-hover)、text(含 placeholder/inverse)、bg(含 elevated/overlay/inverse/selected-hover)、
 │                                   #     border(含 input/focus)、status、chart.*；text.*、control.height.*、icon/avatar.size.*、layout.*、border.width.*、
 │                                   #     elevation.card/popover/modal.*、motion.*、opacity.*、layer.*、focus.ring.width、space.*
-├── themes/dark/                    # 相对 Core 的 69 条 delta（颜色、浮层、阴影色、图表、骨架/只读、图标）+ THEME.md；激活方式 :root.dark
-├── themes/compact/                 # 8 条尺寸/间距 delta + THEME.md；激活方式 :root.compact，可与 dark 叠加
-├── theme-map.json                  # defaultTheme: light（舒适密度），activation: class；登记 dark 与 compact
+├── themes/dark/                    # 相对 Core 的 69 条 delta（颜色、浮层、阴影色、图表、骨架/只读、图标）+ THEME.md；激活方式 :root.dark（唯一的 Theme）
+├── theme-map.json                  # defaultTheme: light，activation: class；登记 dark
 ├── scope-map.json                  # 空；局部规范在目标项目里按证据登记
 ├── style-dictionary.config.mjs
 └── dist/                           # 空，在目标项目里构建
 bridge/shadcn-globals.css           # 可选：shadcn/ui + Tailwind v4 的契约变量桥接（颜色、图表、圆角、字体、字号阶梯、过渡、shadow-sm/md/lg）
-bridge/element-plus.css             # Element Plus 桥接：--el-* 全部指向 token；按 Element 2.14 全部组件走查逐条接管主色 / 焦点 / 写死色表与写死高度（compact 因此对全部控件生效），与实测项目 #/kitchen 走查页配套
+bridge/element-plus.css             # Element Plus 桥接：--el-* 全部指向 token；按 Element 2.14 全部组件走查逐条接管主色 / 焦点 / 写死色表与写死高度，与实测项目 #/kitchen 走查页配套
 bridge/echarts.js                   # ECharts 桥接：运行时读 token 生成主题（轴 / 网格 / 图例 / 提示框 / 折线 / 柱 / 饼默认形态）与趋势折线、面积渐变配方；亮暗切换后重注册
 bridge/iconpark.css                 # IconPark 图标桥接：尺寸六档、角色色、小图标粗描边（预览页直接引用这份）
 bridge/iconpark.config.ts           # IconPark 全局配置片段 + 激活态 / two-tone 的颜色数组（React / Vue 3 / @icon-park/svg 三种接法）
@@ -58,7 +57,7 @@ node <skill>/scripts/guard.mjs --project /path/to/project            # 应为 cu
 - 单品牌线：这套就是公司中后台的唯一规范，不做多品牌拆分。
 - 链接无色系：`color.text.link` 是中性深灰，靠常态下划线 + 斜体识别（`text.link.decoration / style`）；只适用于内容型链接。中文假斜体可读性略降，链接文字宜短。
 - 财务涨跌 = 涨绿跌红：`color.data.increase / decrease`，与 A 股惯例相反；改约定只改这两个别名。
-- 密度默认舒适：`compact` 是可选 Theme，只收紧尺寸与间距。
+- 密度只有舒适一档：不提供紧凑 Theme（2.0.0 起移除）。
 
 已知且有意保留的两处：占位符 2.5:1（所以占位符不能是字段唯一的标签）；卡片 / 输入框边线 1.3–1.5:1（与 Tailwind、AntD、shadcn 默认值同一水平）。
 

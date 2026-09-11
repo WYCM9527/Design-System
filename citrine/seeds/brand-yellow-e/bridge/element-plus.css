@@ -96,7 +96,7 @@
   --el-overlay-color-lighter: var(--color-bg-overlay);
   --el-mask-color: var(--color-bg-mask);   /* 局部加载遮罩是"变淡"不是"压暗"：接 bg.mask（surface 90%），不是弹窗的 bg.overlay */
 
-  /* 控件尺寸：Element 默认 40 / 32 / 24；我们 40 / 34 / 28，随 compact Theme 收紧 */
+  /* 控件尺寸：Element 默认 40 / 32 / 24；我们 40 / 34 / 28 */
   --el-component-size-large: var(--control-height-lg);
   --el-component-size: var(--control-height-md);
   --el-component-size-small: var(--control-height-sm);
@@ -567,8 +567,8 @@ button, input, select, textarea { font-family: inherit; }
 
 /* ---- 控件高度真正共用 control.height.*（1.1.2，盲测发现）----
    Element 只有输入类组件读 --el-component-size；按钮、下拉、级联、取色器、单选、开关、滑杆、评分、表单标签行高、分段器、分页的高度
-   是各尺寸类自己写死的 32 / 24 / 40。结果是默认密度下按钮 32 vs 输入框 34，compact 主题对这些组件完全不生效。
-   按其原选择器同形逐条接回 token；compact 主题从此对整套控件生效。 */
+   是各尺寸类自己写死的 32 / 24 / 40。结果是按钮 32 vs 输入框 34，规则"共用 control.height"一直没真正成立。
+   按其原选择器同形逐条接回 token。 */
 .el-button { --el-button-size: var(--control-height-md); height: var(--el-button-size); }
 .el-button--large { --el-button-size: var(--control-height-lg); }
 .el-button--small { --el-button-size: var(--control-height-sm); }

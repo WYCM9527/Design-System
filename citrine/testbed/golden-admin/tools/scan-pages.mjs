@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// 页面验收扫描：全部页面状态 × 亮 / 暗 / 紧凑，检查对比度、可访问名称、命中区、溢出、截断、重复 id，并逐页截图。
-// 用法：node tools/scan-pages.mjs [--modes light,dark,compact|all] [--only kitchen,apply-*] [--no-shots]
+// 页面验收扫描：全部页面状态 × 亮 / 暗，检查对比度、可访问名称、命中区、溢出、截断、重复 id，并逐页截图。
+// 用法：node tools/scan-pages.mjs [--modes light,dark|all] [--only kitchen,apply-*] [--no-shots]
 // 退出码：有未批准的低对比 / 无名称 / 溢出 / 重复 id 时为 1（截断与小命中区只提示：句中链接与伪元素外扩的图标按基线允许）。
 import { writeFileSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';

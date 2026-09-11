@@ -15,7 +15,6 @@ export const store = reactive({
   role: ROLES[query.get('role')] ? query.get('role') : saved('ga-role', 'admin'),   // ?role=finance 供截图直达无权态
   collapsed: typeof matchMedia !== 'undefined' && matchMedia('(max-width: 1440px)').matches,   // PRD：≤1440 侧栏默认折叠
   theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light',
-  density: document.documentElement.classList.contains('compact') ? 'compact' : 'comfortable',
   unread: 5
 })
 
@@ -28,9 +27,4 @@ export function toggleTheme() {
   store.theme = store.theme === 'dark' ? 'light' : 'dark'
   document.documentElement.classList.toggle('dark', store.theme === 'dark')
   localStorage.setItem('ga-theme', store.theme)
-}
-export function toggleDensity() {
-  store.density = store.density === 'compact' ? 'comfortable' : 'compact'
-  document.documentElement.classList.toggle('compact', store.density === 'compact')
-  localStorage.setItem('ga-density', store.density)
 }

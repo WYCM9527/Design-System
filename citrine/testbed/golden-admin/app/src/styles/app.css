@@ -96,7 +96,7 @@ td .link, .card-head .link, .tip .link, .camp-foot .link, .batch .link, .empty .
   .badge, .chip, .batch { background: transparent !important; border: var(--border-width-default) solid currentColor; }
 }
 
-/* 图表容器高度用 token 表达（控件高度 × 7），紧凑模式下自动变矮；不写死像素 */
+/* 图表容器高度用 token 表达（控件高度 × 7）；不写死像素 */
 .chart { height: calc(var(--control-height-md) * 7); width: 100%; }
 .chart.tall { height: calc(var(--control-height-md) * 9); }
 

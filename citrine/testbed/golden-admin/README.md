@@ -22,9 +22,9 @@ node $SKILL/status.mjs --project "$PWD"          # 应为 unified 100%
 
 ## 直达任意页面与状态（截图脚本用同一套参数）
 
-URL 形如 `index.html?theme=dark&density=compact&state=empty#/orders`：
+URL 形如 `index.html?theme=dark&state=empty#/orders`：
 
-- `theme=light|dark`、`density=comfortable|compact`：三种模式
+- `theme=light|dark`：亮 / 暗两种模式
 - `role=admin|ops|auditor|finance`：以某个角色进入（财务访问订单即 403；审核员打开商户编辑即只读）
 - `state=loading|empty|error`（订单列表 / 工作台）、`state=error`（登录）、`state=invalid`（商户表单三种错误同屏）
 - `audit=1`（商户审核弹窗）、`dialog=1`（新建活动弹窗，含负数校验）、`view=card`（活动卡片视图）
@@ -33,7 +33,7 @@ URL 形如 `index.html?theme=dark&density=compact&state=empty#/orders`：
 
 ## 验收
 
-验收基线（阈值与已批准的例外）以种子 `design-system/DESIGN.md` 的「验收基线」一节为准。工具在 [`tools/`](tools/)，在 `app/` 目录 `npm run accept` 一键跑完：全部页面状态 × 亮 / 暗 / 紧凑的自动扫描（对比度、可访问名称、命中区、溢出、截断、重复 id）、全组件走查（hover / focus 不新引入黄色、悬停不掉对比、无外来颜色）、1366px 窄屏、Tab 键焦点遍历、预览 E 与 S 的像素一致。只需 Node ≥ 22 与 Chrome。结果记进 [FINDINGS.md](FINDINGS.md)。
+验收基线（阈值与已批准的例外）以种子 `design-system/DESIGN.md` 的「验收基线」一节为准。工具在 [`tools/`](tools/)，在 `app/` 目录 `npm run accept` 一键跑完：全部页面状态 × 亮 / 暗的自动扫描（对比度、可访问名称、命中区、溢出、截断、重复 id）、全组件走查（hover / focus 不新引入黄色、悬停不掉对比、无外来颜色）、1366px 窄屏、Tab 键焦点遍历、预览 E 与 S 的像素一致。只需 Node ≥ 22 与 Chrome。结果记进 [FINDINGS.md](FINDINGS.md)。
 
 `#/merchants/apply`（入驻申请，三步表单）是第二轮盲测产物，同样只凭文档完成后保留为常规页面。
 
@@ -51,8 +51,8 @@ app/
 ├── src/layouts/AdminLayout.vue
 ├── src/pages/                # P0：Login / Dashboard / Orders / OrderDetail / Merchants / MerchantForm / Campaigns / Members
 │                             # P1：Analytics / Riders / Notices / NoticeDetail / Profile；异常页 Forbidden / NotFound / ServerError
-├── src/components/EChart.vue       # 通用 ECharts 容器：option 工厂 + token 读取器；高度由 .chart 类用 token 表达，随密度变化
+├── src/components/EChart.vue       # 通用 ECharts 容器：option 工厂 + token 读取器；高度由 .chart 类用 token 表达
 ├── src/components/TrendChart.vue   # 工作台折线（第一轮写法，保留对照）
 ├── src/mock/data.js          # 确定性模拟数据
-└── src/store.js              # 角色 / 主题 / 密度 / 折叠
+└── src/store.js              # 角色 / 主题 / 折叠
 ```

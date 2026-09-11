@@ -11,7 +11,7 @@ echarts.use([LineChart, BarChart, PieChart, HeatmapChart, GridComponent, Tooltip
 
 // 通用图表容器：option 是一个函数，参数是图表 token（见桥接 chartTokens）与 echarts 实例（供 areaGradient 等配方使用）。
 // 轴、网格、图例、提示框、折线 / 柱 / 饼的默认形态来自桥接主题（运行时读 token），页面只写数据与布局。
-// 亮 / 暗切换后主题要重新注册并重建实例（ECharts 的主题在 init 时定格）。高度由外层 .chart 类用 token 表达，紧凑模式下自动变矮。
+// 亮 / 暗切换后主题要重新注册并重建实例（ECharts 的主题在 init 时定格）。高度由外层 .chart 类用 token 表达。
 const props = defineProps({ option: { type: Function, required: true } })
 const el = ref(); let chart
 
@@ -24,7 +24,7 @@ function render() {
 }
 let ro
 onMounted(() => { render(); ro = new ResizeObserver(() => chart && chart.resize()); ro.observe(el.value) })
-watch(() => [store.theme, store.density], () => requestAnimationFrame(render))
+watch(() => store.theme, () => requestAnimationFrame(render))
 onBeforeUnmount(() => { ro && ro.disconnect(); chart && chart.dispose() })
 </script>
 

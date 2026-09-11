@@ -1,6 +1,6 @@
 /* shadcn/ui + Tailwind v4 桥接：把 shadcn 的契约变量全部指向设计系统的语义 token。
    放进 app/globals.css。不需要再写 .dark 块——dist/themes/dark.css 一变，这里全部跟着变。
-   紧凑密度：在 <html> 上加 class compact 即可，dist/themes/compact.css 只覆写尺寸与间距。 */
+   暗色：在 <html> 上加 class dark。 */
 @import "tailwindcss";
 @import "../design-system/dist/index.css"; /* 路径按项目实际调整；由 skill 的 integrate 写入 */
 

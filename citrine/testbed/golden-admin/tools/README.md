@@ -7,7 +7,7 @@ DESIGN.md「验收基线」的执行者。全部基于无头 Chrome + 原生 CDP
 | 命令 | 检查什么 | 失败条件（退出码 1） |
 | --- | --- | --- |
 | `npm run accept` | 构建 + 下面全部 | 任一项失败 |
-| `npm run scan:pages -- [--modes all\|light,dark] [--only kitchen,apply-*] [--no-shots]` | `lib/pages.mjs` 登记的全部页面状态 × 三模式：对比度（含底色合成）、可访问名称、命中区、横向溢出、nowrap 截断、重复 id、无 alt 图片；逐页截图 | 未批准的低对比、无名称、溢出、重复 id。已批准例外单列为 `approved`；截断与小命中区只提示 |
+| `npm run scan:pages -- [--modes all\|light,dark] [--only kitchen,apply-*] [--no-shots]` | `lib/pages.mjs` 登记的全部页面状态 × 亮 / 暗两种模式：对比度（含底色合成）、可访问名称、命中区、横向溢出、nowrap 截断、重复 id、无 alt 图片；逐页截图 | 未批准的低对比、无名称、溢出、重复 id。已批准例外单列为 `approved`；截断与小命中区只提示 |
 | `npm run scan:components -- [--modes all]` | `#/kitchen` 全组件页：对 600+ 个交互元素连同祖先链强制 `:hover` / `:focus-visible`，浮层与弹层逐个点开 | 状态切换新引入品牌黄、悬停后文字对比掉档、不来自 token 的颜色、浮层 / 弹层打不开 |
 | `npm run check:narrow` | 1366px：侧栏默认折叠、页面与内容区无横向溢出 | 任一页未折叠或溢出 |
 | `npm run check:focus -- [--page orders,apply] [--steps 80]` | 真实 Tab 键遍历，每个停靠元素都要有可见焦点环 | 出现 `NO RING` |

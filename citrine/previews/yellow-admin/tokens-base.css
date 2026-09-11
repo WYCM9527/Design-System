@@ -137,16 +137,6 @@
   --elevation-popover-color: #1118271A;
   --elevation-modal-color: #11182729;
 }
-/* compact Theme：只收紧尺寸与间距，可与 .dark 叠加（与 seed-dist/themes/compact.css 一致） */
-.compact {
-  --control-height-md: 28px;
-  --control-height-sm: 24px;
-  --space-gutter: var(--spacing-4);
-  --space-stack: var(--spacing-3);
-  --space-card: var(--spacing-4);
-  --table-cell-padding-x: var(--spacing-3);
-  --table-cell-padding-y: var(--spacing-2);
-}
 .dark {
   --color-bg-overlay: #080F1CA6;
   --color-bg-mask: #151D2CE6;

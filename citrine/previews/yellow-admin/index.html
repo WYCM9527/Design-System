@@ -38,7 +38,7 @@
 </head>
 <body>
 <h1>黄色主色中后台 · 视觉预览</h1>
-<p class="lead">同一套页面骨架（admin.css）+ 多份 token 文件。点卡片进入全屏预览；页面右上角可切换方案、暗色与紧凑密度。另有 <a href="stress.html?plan=s">页面类型压力测试</a>：登录、列表、表单、详情、反馈、折叠侧栏六类页面，全部由种子构建产物驱动。</p>
+<p class="lead">同一套页面骨架（admin.css）+ 多份 token 文件。点卡片进入全屏预览；页面右上角可切换方案与暗色。另有 <a href="stress.html?plan=s">页面类型压力测试</a>：登录、列表、表单、详情、反馈、折叠侧栏六类页面，全部由种子构建产物驱动。</p>
 
 <h2 style="font-size:17px;margin:0 0 10px">你的品牌色 #F9CF00</h2>
 <div class="cards" style="grid-template-columns:repeat(2,1fr)">
@@ -65,7 +65,7 @@
   3. 侧栏选中态、表格选中行、进度条：黄色是否只在“该被注意的地方”出现，其余 90% 面积是否保持中性。<br>
   4. 点右上角「☾ 暗色」：黄色在深底上反而最舒服，看看哪个方案的暗色最顺眼。<br>
   （参考方案 A / B / C 已在选定方案后移除，见 git 历史。）每个 <code>tokens-*.css</code> 的变量名就是 skill 会生成的 <code>dist/tokens.css</code> 形态，选定后可直接转成 DTCG 种子。<br>
-  方案 E 已经转成种子（<code>../../seeds/brand-yellow-e/</code>）。全屏页里的「S 种子构建」不加载任何手写 token：颜色、字体、尺寸、间距、阴影全部来自种子构建出的 <code>seed-dist/</code>，与 E 逐像素一致；<code>admin.css</code> 里剩下的少量字面量是组件几何，登记在 <code>exemptions.example.json</code>。全屏页底部的「浮层与层级」展示下拉、Tooltip、弹窗遮罩与危险按钮——这些角色是体检后补进种子的，D／E 的 muted 文字、四个状态色和亮色焦点色也随体检结果加深过。右上角「☰ 紧凑」切换 compact Theme（只收紧尺寸与间距，可与暗色叠加）。链接已按公司决定改为无色系 + 下划线 + 斜体，涨跌数字用 data.increase / decrease（涨绿跌红）。
+  方案 E 已经转成种子（<code>../../seeds/brand-yellow-e/</code>）。全屏页里的「S 种子构建」不加载任何手写 token：颜色、字体、尺寸、间距、阴影全部来自种子构建出的 <code>seed-dist/</code>，与 E 逐像素一致；<code>admin.css</code> 里剩下的少量字面量是组件几何，登记在 <code>exemptions.example.json</code>。全屏页底部的「浮层与层级」展示下拉、Tooltip、弹窗遮罩与危险按钮——这些角色是体检后补进种子的，D／E 的 muted 文字、四个状态色和亮色焦点色也随体检结果加深过。链接已按公司决定改为无色系 + 下划线 + 斜体，涨跌数字用 data.increase / decrease（涨绿跌红）。
 </div>
 </body>
 </html>

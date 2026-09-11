@@ -314,17 +314,6 @@
   --text-weight-strong: var(--font-weight-semibold);
 }
 
-:root.compact {
-  --control-height-lg: var(--size-control-md);
-  --control-height-md: var(--size-control-sm);
-  --control-height-sm: var(--size-control-xs);
-  --space-card: var(--spacing-4);
-  --space-gutter: var(--spacing-4);
-  --space-stack: var(--spacing-3);
-  --table-cell-padding-x: var(--spacing-3);
-  --table-cell-padding-y: var(--spacing-2);
-}
-
 :root.dark {
   --color-action-quiet: var(--color-graphite-700);
   --color-action-quiet-hover: var(--color-graphite-600);

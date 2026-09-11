@@ -28,6 +28,6 @@ export function args(argv = process.argv.slice(2)) {
   return out;
 }
 
-export const MODES = ['light', 'dark', 'compact'];
+export const MODES = ['light', 'dark'];
 export function parseModes(v) { if (!v || v === 'all') return MODES; return String(v).split(',').filter((m) => MODES.includes(m)); }
-export function modeQuery(mode) { return mode === 'dark' ? 'theme=dark' : mode === 'compact' ? 'density=compact' : 'theme=light'; }
+export function modeQuery(mode) { return mode === 'dark' ? 'theme=dark' : 'theme=light'; }

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-// 全组件走查：#/kitchen 页铺开 Element Plus 全部组件，三模式下对每个交互元素（连同祖先链）强制 :hover 与 :focus-visible，
+// 全组件走查：#/kitchen 页铺开 Element Plus 全部组件，亮 / 暗两种模式下对每个交互元素（连同祖先链）强制 :hover 与 :focus-visible，
 // 只报三类硬问题：状态切换新引入的品牌黄、悬停后文字对比掉档、页面上不来自 token 的颜色（外来颜色）。浮层（data-ks-open）与弹层（data-ks-modal）逐个打开扫描。
-// 用法：node tools/scan-components.mjs [--modes light,dark,compact|all]   退出码：有发现为 1。
+// 用法：node tools/scan-components.mjs [--modes light,dark|all]   退出码：有发现为 1。
 import { writeFileSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { launch, sleep } from './lib/cdp.mjs';

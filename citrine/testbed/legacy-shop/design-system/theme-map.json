@@ -10,13 +10,6 @@
       "runtimeOwner": "宿主应用在 <html> 上切换 class dark（如 next-themes）。",
       "source": "yellow-admin 预览 tokens-e.css 的 .dark 块。",
       "status": "active"
-    },
-    {
-      "id": "compact",
-      "reason": "高密度表格页与大屏运营后台需要更紧的控件与间距；默认 Theme 保持舒适密度。",
-      "runtimeOwner": "宿主应用在 <html> 上切换 class compact，可与 dark 叠加。",
-      "source": "公司级设计规范决定（2026-09-08）：密度默认舒适，紧凑为可选。",
-      "status": "active"
     }
   ],
   "version": 1

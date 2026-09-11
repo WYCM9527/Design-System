@@ -418,7 +418,7 @@
     "card": {
       "$type": "dimension",
       "$value": "{spacing.6}",
-      "$description": "卡片、弹窗、抽屉的内边距：24px。compact 下收到 16。"
+      "$description": "卡片、弹窗、抽屉的内边距：24px。"
     }
   },
   "font": {
@@ -894,7 +894,7 @@
       "padding-y": {
         "$type": "dimension",
         "$value": "{spacing.3-5}",
-        "$description": "表格单元格纵向内边距 14px（原 12）；compact 下 8。"
+        "$description": "表格单元格纵向内边距 14px（原 12）。"
       },
       "padding-x": {
         "$type": "dimension",

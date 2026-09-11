@@ -59,7 +59,7 @@ export async function launch({ width = 1600, height = 1000, scale = 1, port = 92
       await send('Page.navigate', { url });
       await waitFor(async () => { const ok = await evalJs(ready); if (!ok) throw new Error('not ready'); return true; });
     },
-    /** 清掉持久化的角色 / 主题 / 密度，保证每个状态从干净的 storage 开始 */
+    /** 清掉持久化的角色 / 主题，保证每个状态从干净的 storage 开始 */
     resetStorage: async (originUrl) => { await send('Page.navigate', { url: originUrl }); await sleep(200); try { await evalJs('localStorage.clear(); sessionStorage.clear(); "ok"'); } catch {} await send('Page.navigate', { url: 'about:blank' }); await sleep(80); },
     screenshot: async (opts = {}) => Buffer.from((await send('Page.captureScreenshot', { format: 'png', ...opts })).result.data, 'base64'),
     close: () => { try { ws.close(); } catch {} try { chrome.kill(); } catch {} },
