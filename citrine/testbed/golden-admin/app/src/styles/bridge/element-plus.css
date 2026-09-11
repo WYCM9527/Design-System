@@ -299,6 +299,9 @@
 .el-menu--collapse > .el-menu-item, .el-menu--collapse > .el-sub-menu > .el-sub-menu__title, .el-menu--collapse > .el-menu-item-group > ul > .el-menu-item, .el-menu--collapse > .el-menu-item-group > ul > .el-sub-menu > .el-sub-menu__title { width: var(--control-height-lg); margin: 0 auto; padding: 0; justify-content: center; }
 .el-menu--collapse .el-menu-item-group__title { display: none; }
 .el-menu--collapse .el-menu-item .el-icon, .el-menu--collapse .el-sub-menu__title .el-icon { font-size: var(--icon-size-lg); width: var(--icon-size-lg); height: var(--icon-size-lg); margin: 0; }   /* 折叠后只剩图标，升一档到 icon.size.lg */
+.el-menu--collapse .el-menu-item .el-icon .i-icon, .el-menu--collapse .el-sub-menu__title .el-icon .i-icon { font-size: inherit; }   /* IconPark 的 .i-icon 自带 md 字号，折叠时随 .el-icon 升到 lg */
+/* Element 折叠时把内容包进 .el-menu-tooltip__trigger（绝对定位铺满、左右各 12px 内边距）：40px 方块只剩 16px 内容区，20px 图标放不下就偏右 2px。内边距清零、居中 */
+.el-menu--collapse .el-menu-item .el-menu-tooltip__trigger, .el-menu--collapse .el-sub-menu__title .el-menu-tooltip__trigger { padding: 0; justify-content: center; }
 .el-menu--collapse .el-menu-item.is-active::before { left: calc((var(--control-height-lg) - var(--layout-sidebar-collapsed-width)) / 2); }
 
 /* ---- 其他：标签、分页、步骤、标签页、提示、消息 ---- */

@@ -1152,9 +1152,9 @@
       "$type": "dimension",
       "$value": {
         "unit": "px",
-        "value": 200
+        "value": 168
       },
-      "$description": "实测反馈 232 留白过多；200 是国内中后台的常见值（AntD Pro 208、Element Admin 200）。"
+      "$description": "中文菜单项 3～5 个汉字，200 时色块右侧大量空余（用户反馈）。168 = 两侧 8px 外边距 + 152px 色块，容纳 12px 内边距 + 16px 图标 + 6 个汉字 + 12px 内边距；侧栏标签因此不超过 6 个汉字。"
     },
     "topbar": {
       "$type": "dimension",

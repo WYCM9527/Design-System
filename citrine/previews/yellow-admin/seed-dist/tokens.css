@@ -249,7 +249,7 @@
   --layout-search-width: var(--size-search);
   --size-sidebar-collapsed: 64px;
   --layout-sidebar-collapsed-width: var(--size-sidebar-collapsed);
-  --size-sidebar: 200px;
+  --size-sidebar: 168px;
   --layout-sidebar-width: var(--size-sidebar);
   --size-topbar: 56px;
   --layout-topbar-height: var(--size-topbar);
