@@ -2,7 +2,7 @@
 
 > 种子目录代号仍是 `brand-yellow-e`（脚本与文档中的路径不变）；系统名称 Citrine（黄晶）见仓库根 README。
 
-版本 2.1.0 · 公司级中后台设计规范（单品牌线）· 变更见 [CHANGELOG.md](CHANGELOG.md)
+版本 2.1.1 · 公司级中后台设计规范（单品牌线）· 变更见 [CHANGELOG.md](CHANGELOG.md)
 
 一套已通过 `design-system-steward` `validate-system` / `build-tokens` / `guard` 的 DTCG 设计系统起点。复制进任何项目就是 Core + dark Theme；视觉效果见 `../../previews/yellow-admin/`：`admin.html` 是工作台，`stress.html` 是登录、列表、表单、详情、反馈、折叠侧栏六类页面的压力测试（方案 S 全部由构建产物驱动）。
 
@@ -55,7 +55,7 @@ node <skill>/scripts/guard.mjs --project /path/to/project            # 应为 cu
 ## 四项公司级品牌决定（2026-09-08）
 
 - 单品牌线：这套就是公司中后台的唯一规范，不做多品牌拆分。
-- 链接无色系：`color.text.link` 是中性深灰，靠常态下划线 + 斜体识别（`text.link.decoration / style`）；只适用于内容型链接。中文假斜体可读性略降，链接文字宜短。
+- 链接无色系：`color.text.link` 是中性深灰。内容型链接（订单号、名称）靠常态下划线 + 斜体识别；操作链接（编辑 / 详情 / 改派等动词）不斜体不下划线，靠 500 字重与所在位置识别、hover 出下划线；标题型链接近黑 + 500。中文假斜体可读性略降，内容型链接文字宜短。
 - 财务涨跌 = 涨绿跌红：`color.data.increase / decrease`，与 A 股惯例相反；改约定只改这两个别名。
 - 密度只有舒适一档：不提供紧凑 Theme（2.0.0 起移除）。
 

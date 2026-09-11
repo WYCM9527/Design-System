@@ -8,6 +8,9 @@ a { color: inherit; text-decoration: none; }
 /* 内容型链接：无色系 + 下划线 + 斜体（品牌决定）；导航、标签页、分页、菜单是组件型链接，不套这条 */
 td a, p a, .alert a, .help a, .link { color: var(--color-text-link); text-decoration: var(--text-link-decoration); font-style: var(--text-link-style); }
 td a:hover, p a:hover, .alert a:hover, .help a:hover, .link:hover { color: var(--color-text-link-hover); }
+/* 操作链接（动词）：不斜体不下划线，500 字重，hover 出下划线；内容型链接（订单号、名称）保留斜体 + 下划线 */
+.act, td a.act, .alert a.act, p a.act { color: var(--color-text-link); font-weight: var(--text-weight-label); text-decoration: none; font-style: normal; }
+.act:hover, td a.act:hover { color: var(--color-text-link-hover); text-decoration: var(--text-link-decoration); }
 button { font: inherit; cursor: pointer; }
 
 .app { display: grid; grid-template-columns: var(--layout-sidebar-width) 1fr; min-height: 100vh; }

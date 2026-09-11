@@ -55,9 +55,9 @@ function toggleActive(row) {
       <el-table-column label="入驻时间" width="130"><template #default="{ row }"><span class="num">{{ row.joined }}</span></template></el-table-column>
       <el-table-column label="操作" width="180" fixed="right">
         <template #default="{ row }">
-          <router-link class="link" :to="`/merchants/${row.id}/edit`">{{ can('merchant.edit') ? '编辑' : '查看' }}</router-link>
-          <template v-if="can('merchant.audit') && row.status === '待审核'"> · <a class="link" @click="openAudit(row)">审核</a></template>
-          <template v-if="can('merchant.edit')"> · <a class="link" @click="toggleActive(row)">{{ row.status === '已停用' ? '恢复' : '停用' }}</a></template>
+          <router-link class="act" :to="`/merchants/${row.id}/edit`">{{ can('merchant.edit') ? '编辑' : '查看' }}</router-link>
+          <template v-if="can('merchant.audit') && row.status === '待审核'"> · <a class="act" @click="openAudit(row)">审核</a></template>
+          <template v-if="can('merchant.edit')"> · <a class="act" @click="toggleActive(row)">{{ row.status === '已停用' ? '恢复' : '停用' }}</a></template>
         </template>
       </el-table-column>
     </el-table>
@@ -68,7 +68,7 @@ function toggleActive(row) {
     <el-descriptions v-if="audit.row" :column="2" border size="small" class="summary">
       <el-descriptions-item label="商户">{{ audit.row.name }}</el-descriptions-item><el-descriptions-item label="编号"><span class="mono">{{ audit.row.id }}</span></el-descriptions-item>
       <el-descriptions-item label="类型">{{ audit.row.type }}</el-descriptions-item><el-descriptions-item label="城市">{{ audit.row.city }}</el-descriptions-item>
-      <el-descriptions-item label="联系人">{{ audit.row.contact }} <span class="num">{{ audit.row.phone }}</span></el-descriptions-item><el-descriptions-item label="营业执照"><a class="link">查看附件</a></el-descriptions-item>
+      <el-descriptions-item label="联系人">{{ audit.row.contact }} <span class="num">{{ audit.row.phone }}</span></el-descriptions-item><el-descriptions-item label="营业执照"><a class="act">查看附件</a></el-descriptions-item>
     </el-descriptions>
     <el-form ref="auditRef" :model="audit" :rules="auditRules" label-position="right" class="audit-form">
       <el-form-item label="审核结论" required><el-radio-group v-model="audit.result"><el-radio value="pass">通过</el-radio><el-radio value="reject">驳回</el-radio></el-radio-group></el-form-item>

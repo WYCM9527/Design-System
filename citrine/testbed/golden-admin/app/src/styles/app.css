@@ -8,6 +8,10 @@ a { color: inherit; text-decoration: none; }
 .link.danger, td .link.danger { color: var(--color-text-danger); }   /* 危险动作的内容型链接：白底上红字，与普通链接分开；hover 不变色 */
 .link.danger:hover { color: var(--color-text-danger); }
 .link.mono, .mono.link { font-style: normal; }   /* 等宽数字型链接（订单号、单号）不斜体：数字斜体显歪 */
+/* 操作链接（动词：编辑 / 复制 / 详情 / 改派 / 催单…）：不是内容型链接，不斜体不下划线；靠 500 字重与所在位置（操作列、卡片页脚、提示条、批量条）识别，hover 出下划线。危险动作红字 */
+.act, td .act { color: var(--color-text-link); font-weight: var(--text-weight-label); text-decoration: none; font-style: normal; cursor: pointer; display: inline-flex; align-items: center; min-height: var(--control-hit-min); }
+.act:hover { color: var(--color-text-link-hover); text-decoration: var(--text-link-decoration); }
+.act.danger, .act.danger:hover { color: var(--color-text-danger); }
 /* 表格、卡片页脚、提示条里的操作链接不是句中链接，命中区不低于 control.hit-min；视觉字号不变 */
 td .link, .card-head .link, .tip .link, .camp-foot .link, .batch .link, .empty .link, .more-link { display: inline-flex; align-items: center; min-height: var(--control-hit-min); }
 .more-link { min-width: var(--control-hit-min); justify-content: center; }

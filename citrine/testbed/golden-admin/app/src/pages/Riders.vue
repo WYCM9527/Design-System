@@ -45,9 +45,9 @@ const initials = (n) => n.slice(0, 1)
       <el-table-column label="最近活跃" width="120"><template #default="{ row }"><span class="num">{{ row.active }}</span></template></el-table-column>
       <el-table-column label="操作" width="200" fixed="right">
         <template #default="{ row }">
-          <a class="link">查看</a>
-          <template v-if="can('order.reassign') && row.status !== '离线'"> · <a class="link" @click="openDispatch(row)">派单</a></template>
-          <template v-if="can('order.reassign') && row.status !== '离线'"> · <a class="link danger" @click="forceOffline(row)">强制下线</a></template>
+          <a class="act">查看</a>
+          <template v-if="can('order.reassign') && row.status !== '离线'"> · <a class="act" @click="openDispatch(row)">派单</a></template>
+          <template v-if="can('order.reassign') && row.status !== '离线'"> · <a class="act danger" @click="forceOffline(row)">强制下线</a></template>
         </template>
       </el-table-column>
     </el-table>

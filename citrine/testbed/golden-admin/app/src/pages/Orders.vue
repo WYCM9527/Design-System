@@ -68,7 +68,7 @@ const rowClass = ({ row }) => (selected.value.includes(row) ? 'is-selected' : ''
     </div>
 
     <div v-if="selected.length && state === 'normal'" class="batch">
-      已选 <b class="num">{{ selected.length }}</b> 项<a class="link" @click="tableRef.clearSelection()">取消选择</a>
+      已选 <b class="num">{{ selected.length }}</b> 项<a class="act" @click="tableRef.clearSelection()">取消选择</a>
       <div class="right">
         <el-button size="small" :disabled="!can('order.reassign')">批量改派</el-button>
         <el-button size="small">导出所选</el-button>
@@ -78,7 +78,7 @@ const rowClass = ({ row }) => (selected.value.includes(row) ? 'is-selected' : ''
 
     <TableSkeleton v-if="state === 'loading'" :rows="8" :cols="[48, 200, 190, 90, 130, 170, 110, 100]" />
     <div v-else-if="state === 'error'" class="error-box"><Close class="i-icon--md" />订单列表加载失败：网关超时（504）。<el-button size="small" @click="state = 'normal'"><Refresh class="i-icon--sm" />重试</el-button></div>
-    <div v-else-if="!rows.length" class="empty"><div class="illu"><OrderIcon class="i-icon--2xl" theme="two-tone" :fill="['var(--color-icon-brand)', 'var(--color-icon-two-tone)']" /></div><b>还没有符合条件的订单</b><span>试试放宽筛选条件，或 <a class="link" @click="reset(); state = 'normal'">清空筛选</a></span></div>
+    <div v-else-if="!rows.length" class="empty"><div class="illu"><OrderIcon class="i-icon--2xl" theme="two-tone" :fill="['var(--color-icon-brand)', 'var(--color-icon-two-tone)']" /></div><b>还没有符合条件的订单</b><span>试试放宽筛选条件，或 <a class="act" @click="reset(); state = 'normal'">清空筛选</a></span></div>
 
     <template v-else>
       <el-table ref="tableRef" :data="rows" :row-class-name="rowClass" style="width: 100%" @selection-change="(v) => (selected = v)" @vue:mounted="onReady">
@@ -94,10 +94,10 @@ const rowClass = ({ row }) => (selected.value.includes(row) ? 'is-selected' : ''
         <el-table-column label="评分" width="80"><template #default="{ row }"><span class="num">{{ row.rating || '—' }}</span></template></el-table-column>
         <el-table-column label="操作" width="170" fixed="right">
           <template #default="{ row }">
-            <router-link class="link" :to="`/orders/${row.id}`">详情</router-link>
-            <template v-if="can('order.reassign')"> · <a class="link" @click="router.push(`/orders/${row.id}?reassign=1`)">改派</a></template>
+            <router-link class="act" :to="`/orders/${row.id}`">详情</router-link>
+            <template v-if="can('order.reassign')"> · <a class="act" @click="router.push(`/orders/${row.id}?reassign=1`)">改派</a></template>
             <el-dropdown trigger="click" class="more" @command="(c) => c === 'cancel' && cancelOrder(row)">
-              <a class="link more-link" role="button" aria-label="更多操作" tabindex="0"><MoreOne class="i-icon--sm" /></a>
+              <a class="act more-link" role="button" aria-label="更多操作" tabindex="0"><MoreOne class="i-icon--sm" /></a>
               <template #dropdown><el-dropdown-menu><el-dropdown-item command="remind">催单</el-dropdown-item><el-dropdown-item command="cancel" :disabled="!can('order.cancel')" class="is-danger">取消订单</el-dropdown-item></el-dropdown-menu></template>
             </el-dropdown>
           </template>

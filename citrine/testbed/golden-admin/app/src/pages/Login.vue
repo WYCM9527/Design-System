@@ -44,8 +44,8 @@ async function submit() {
         <el-button type="primary" size="large" class="submit" :loading="loading" native-type="submit">{{ loading ? '登录中…' : '登 录' }}</el-button>
         <el-button size="large" class="submit secondary"><Wechat class="i-icon--md" />企业微信登录</el-button>
       </el-form>
-      <div class="auth-foot"><el-checkbox v-model="form.remember">记住我</el-checkbox><a class="link" href="#">忘记密码</a></div>
-      <div class="auth-tools"><a class="link" @click="toggleTheme">{{ store.theme === 'dark' ? '切到亮色' : '切到暗色' }}</a></div>
+      <div class="auth-foot"><el-checkbox v-model="form.remember">记住我</el-checkbox><a class="act" href="#">忘记密码</a></div>
+      <div class="auth-tools"><a class="act" @click="toggleTheme">{{ store.theme === 'dark' ? '切到亮色' : '切到暗色' }}</a></div>
     </section>
   </div>
 </template>

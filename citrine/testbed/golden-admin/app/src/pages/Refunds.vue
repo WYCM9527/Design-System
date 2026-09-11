@@ -152,7 +152,7 @@ const timeline = computed(() => {
     <!-- 批量操作条：勾选后出现 -->
     <div v-if="selected.length" class="batch">
       <span>已选 <b class="num">{{ selected.length }}</b> 项</span>
-      <a class="link" href="#" @click.prevent="clearSelection">取消选择</a>
+      <a class="act" href="#" @click.prevent="clearSelection">取消选择</a>
       <div class="right">
         <el-button size="small" @click="approve(selected)">批量通过</el-button>
         <el-button size="small" type="danger" @click="openReject(selected)">批量拒绝</el-button>
@@ -177,7 +177,7 @@ const timeline = computed(() => {
       <div class="illu"><Inbox theme="two-tone" :fill="['var(--color-icon-brand)', 'var(--color-icon-two-tone)']" class="illu-icon" /></div>
       <b>没有符合条件的退款单</b>
       <span>换个状态或申请日期范围再试试。</span>
-      <a v-if="hasFilter" class="link" href="#" @click.prevent="reset">清空筛选条件</a>
+      <a v-if="hasFilter" class="act" href="#" @click.prevent="reset">清空筛选条件</a>
     </div>
 
     <template v-else>
