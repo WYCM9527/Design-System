@@ -6,7 +6,7 @@
 
 做页面时只需要这一屏 + 下面的「组件配方」表；其余章节是规则的理由，遇到配方没覆盖的情况再读。
 
-1. 黄只做主操作面：主按钮、进行中的进度 / 滑杆填充、勾选 / 开关选中、当前步骤、分页当前页、品牌 logo。**选中、当前、强调一律用深黑反转块或近黑文字**，不用黄——头像、角色 / 置顶徽标、已结束的进度条都不是黄。
+1. 黄只做主操作面：主按钮、进行中的进度 / 滑杆填充、勾选 / 开关选中、当前步骤、分页当前页、品牌 logo、数据卡左描边。**选中、当前、强调一律用深黑反转块或近黑文字**，不用黄——头像、角色 / 置顶徽标、已结束的进度条都不是黄。
 2. 黄底深字、白底无黄字、任何 hover / focus 不出现黄。
 3. 状态色只做"文字 + 同色浅底"胶囊；实底按钮只有主（黄）与危险（红底白字）；`type=success / warning / info` 按钮不用。
 4. 按钮不能裸放：有描边（次要）或浅底（quiet 文字按钮）。表格操作列 = small quiet 文字按钮，危险动作 = 红字 + 浅红底成对（彩色文字不落在灰底上）；查看 / 跳转类用内容型链接。
@@ -118,7 +118,7 @@
 | --- | --- | --- |
 | 页头（所有页面） | 标题 `text.heading.size` + `text.weight.strong`；一句说明 `text.secondary`；右侧页面级操作区（主按钮至多一个，其余次要 / quiet） | 与内容区间距 `space.stack` |
 | 列表页 | 页头 → 筛选卡 → 表格卡（批量操作条、表格、分页在同一张卡里） | 见「筛选栏」「表格」「已选筹码 / 批量操作条」配方 |
-| 统计卡 vs 状态条 | 带趋势 / 对比的指标用统计卡（数据大字 + 涨跌，高亮 = 左侧品牌指示条）；**只有一个数字的计数不拉满一行**，做成状态条：一行等高格子（`control.height.lg`），左点右数，可点击时作筛选 | 同侧栏的"宽度浪费"规则：内容撑不起的容器不要拉满。**统计卡封装成一个项目组件复用**（golden-admin：`components/StatCard.vue`），不要每页复制一份样式——两页各写一份迟早漂移 |
+| 统计卡 vs 状态条 | 带趋势 / 对比的指标用统计卡（数据大字 + 涨跌，左侧品牌指示条是固定特征）；**只有一个数字的计数不拉满一行**，做成状态条：一行等高格子（`control.height.lg`），左点右数，可点击时作筛选 | 同侧栏的"宽度浪费"规则：内容撑不起的容器不要拉满。**统计卡封装成一个项目组件复用**（golden-admin：`components/StatCard.vue`），不要每页复制一份样式——两页各写一份迟早漂移 |
 | 表单页 | 一张卡，宽度 ≤ `layout.form.max-width`；卡内两列网格（列间距 `spacing.6`），地址、多行文本、上传等长字段跨两列；标签列宽 `layout.form.label-width`、右对齐；页脚按钮行右对齐、顶部发丝线，主操作在最右，其左依次次要（取消 / 上一步）、quiet（保存草稿） | 帮助文字 `text.small.size` + `text.muted`，在控件下方 `spacing.1`；出错时错误文案（`status.error`）占同一位置，不叠加。单位后缀（km、元）用 `text.secondary` 文字跟在控件后，间距 `space.inline` |
 | 分步流程 | 顶部步骤条 + 每步一张表单卡；「上一步 / 下一步」在页脚；最后一步是只读汇总（描述列表，标签列宽同表单）+ 协议勾选 + 提交主按钮 | 完成步骤图标 `status.success`、标题 `text.secondary`；当前步骤 `action.primary`（不必传 `finish-status`，桥接已把完成态与 success 态都映射好） |
 | 详情页 | 页头 → 描述列表卡（分组小标题 `text.title-sm.size` + `text.weight.label`）→ 时间线 / 关联列表；次级详情用右侧抽屉 | — |
@@ -168,7 +168,7 @@
 | 下拉菜单 | `bg.elevated`；项 hover `bg.hover`；危险项 hover `status.error-bg` | `text.primary`；危险项 `text.danger`（桥接约定类 `is-danger`） | `border.default`，`elevation.popover.*`，出现用 `motion.duration.normal` + `motion.easing.enter` |
 | 弹窗 | 遮罩 `bg.overlay`；面板 `bg.elevated` | `text.primary` / `text.secondary` | `radius.lg`，`elevation.modal.*`，进出用 `motion.duration.slow` + `motion.easing.enter` / `exit` |
 | Tooltip / 深色 Toast | `bg.inverse` | `text.inverse` | `radius.sm`，`text.small.size` |
-| 统计卡（高亮） | 同普通卡（`bg.surface`）；**数据色卡禁止大面积黄色**（用户规则），高亮 = 左侧 `brand.indicator` × `border.width.indicator` 描边点缀 | 同普通卡；涨跌照用 `data.increase / decrease` | 数字 `text.display.size`（32px）+ `.weight`（700）+ `.line-height`（1.25 紧行高）+ `.tracking`；数据数字是卡片主角，必须一眼压住标签与涨跌 |
+| 统计卡（数据卡） | 同普通卡（`bg.surface`）+ **左侧 `brand.indicator` × `border.width.indicator` 描边**——这是数据卡的固定特征，所有同类卡都带，不是高亮；**数据色卡禁止大面积黄色**（用户规则），黄只出现在这一条描边上 | 同普通卡；涨跌照用 `data.increase / decrease` | 数字 `text.display.size`（32px）+ `.weight`（700）+ `.line-height`（1.25 紧行高）+ `.tracking`；数据数字是卡片主角，必须一眼压住标签与涨跌 |
 | 进度条 / 进度环 / 仪表盘 | 轨道 `bg.selected` | 内嵌百分比 `text.on-primary`（不用白字） | 填充 `action.primary-active`，`radius.full`；**颜色跟状态走**：只有进行中是黄，已结束 / 已下线 / 草稿等非进行中用 `border.strong` 灰（桥接约定类 `is-muted`）——一屏十几张卡全黄就不是焦点了；status 变体用 `status.*`；不接受自定义进度色 |
 | 评分 | — | 文案 `text.secondary` | 实星 `action.selected`（填充是选中语义，不用金黄），空星 `border.strong`；焦点 `border.focus` |
 | 头像（字母 / 占位，含顶栏与个人中心） | `bg.selected` | `text.selected` | 不用品牌黄——头像不是主操作面；组件库默认的灰底白字暗色下不到 3:1 |

@@ -63,7 +63,7 @@ button { font: inherit; cursor: pointer; }
 .stat .delta.up { color: var(--color-data-increase); }
 .stat .delta.down { color: var(--color-data-decrease); }
 /* 高亮统计卡：数据色卡禁止大面积黄色（rc.24），黄只做左描边点缀 */
-.stat.hi { border-left: var(--border-width-indicator) solid var(--color-brand-indicator); }
+.stat { border-left: var(--border-width-indicator) solid var(--color-brand-indicator); }
 .grid2 { display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-stack); align-items: start; }
 .card-head { display: flex; align-items: center; gap: var(--spacing-3); padding: var(--spacing-4) var(--space-card); border-bottom: var(--border-width-default) solid var(--color-border-default); }
 .card-head h2 { margin: 0; font-size: var(--text-title-sm-size); font-weight: var(--text-weight-strong); }

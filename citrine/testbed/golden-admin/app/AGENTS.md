@@ -9,7 +9,7 @@
 ## 项目接线
 
 - 样式只引用 `design-system/dist` 生成的 CSS 变量（`--color-*`、`--space-*`、`--text-*`、`--control-*`、`--radius-*`、`--elevation-*`…），不写色值、像素字面量；页面级公共类在 `src/styles/app.css`。
-- 组件库是 Element Plus，已由 `src/styles/bridge/element-plus.css` 接到 token；不要改桥接、不要引 Element 的 dark css-vars。统计卡用 `components/StatCard.vue`（label / value / delta / up / positive / note / hi），图表用 `components/EChart.vue`（主题来自 `src/styles/bridge/echarts.js`），option 里只写数据与布局，不写颜色、线型。
+- 组件库是 Element Plus，已由 `src/styles/bridge/element-plus.css` 接到 token；不要改桥接、不要引 Element 的 dark css-vars。统计卡用 `components/StatCard.vue`（label / value / delta / up / positive / note，左描边自带），图表用 `components/EChart.vue`（主题来自 `src/styles/bridge/echarts.js`），option 里只写数据与布局，不写颜色、线型。
 - 路由 `src/router.js`（hash 路由，`meta.menu` 对应侧栏项与角色权限），侧栏与顶栏在 `src/layouts/AdminLayout.vue`，角色与权限在 `src/store.js`，演示数据在 `src/mock/data.js`。
 - 演示状态参数（`?state=empty|loading|error|invalid|success`、`?step=2`、`?role=`、`?theme=`、`?density=`）放在 `#` **之前**，页面用 `new URLSearchParams(location.search)` 读取（截图脚本依赖这一约定，不要用 `useRoute().query`）。
 - 改完 UI 运行 `node ../../../../skills/design-system-steward/scripts/guard.mjs --project "$PWD"`，应为 `current`。

@@ -10,7 +10,7 @@ const loading = ref(q.get('state') === 'loading')   // ?state=loading 截图表�
 const emptyTodos = q.get('state') === 'empty'        // ?state=empty 截待办空态
 const showTip = ref(true)
 const stats = [
-  { label: '今日订单', value: '12,480', delta: '+8.2%', up: true, hi: true },
+  { label: '今日订单', value: '12,480', delta: '+8.2%', up: true },
   { label: 'GMV（元）', value: '¥ 386,210', delta: '+12.4%', up: true },
   { label: '待审核商户', value: '47', delta: '-3 家', up: false, note: '需在 24h 内处理' },
   { label: '骑手在线', value: '1,032', delta: '+2.1%', up: true, note: '高峰期覆盖率 96%' }
@@ -32,7 +32,7 @@ const recent = orders.filter((o) => o.status === '待接单' || o.status === '�
   </div>
 
   <section class="stats">
-    <StatCard v-for="s in stats" :key="s.label" :label="s.label" :value="s.value" :delta="s.delta" :up="s.up" :note="s.note || '较昨日'" :hi="s.hi" />
+    <StatCard v-for="s in stats" :key="s.label" :label="s.label" :value="s.value" :delta="s.delta" :up="s.up" :note="s.note || '较昨日'" />
   </section>
 
   <div class="grid2">
