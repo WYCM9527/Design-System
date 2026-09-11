@@ -4,7 +4,7 @@
 
 ![Citrine · 实测项目「黄金后台」亮 / 暗模式](docs/screenshots/hero.png)
 
-版本 **1.1.3** · Core 313 个 token · dark 69 条 / compact 8 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
+版本 **1.1.4** · Core 313 个 token · dark 69 条 / compact 8 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
 
 ---
 
@@ -93,7 +93,7 @@ node <Design-System>/skills/design-system-steward/scripts/guard.mjs --project "$
 
 ## 验收基线
 
-每次改 token 或桥接都复跑（详见 `DESIGN.md`「验收基线」）：
+每次改 token 或桥接都复跑（详见 `DESIGN.md`「验收基线」；工具在 `testbed/golden-admin/tools/`，`npm run accept` 一键执行，只需 Node ≥ 22 与 Chrome）：
 
 - 对比度：正文 ≥ 4.5:1，大字与图标 ≥ 3:1，连底色一起算；已批准的品牌例外逐条列出（三对状态色、危险按钮白字、占位符），扫描单列统计而不算失败。
 - 可访问名称、无重复 id、图标控件命中区 ≥ 24px、任何模式无横向溢出与截断。
@@ -113,7 +113,6 @@ patch 只改描述、文档，以及让组件库遵守既有规则的桥接修�
 - shadcn/ui 桥接只做了变量级验证（90 个引用全部可解析），尚未在 React 项目里渲染验证。
 - 只确认了桌面宽度（≥ 1280px）的布局；断点规则等真实需求出现时再作为提案加入。
 - 走查页未铺 Tour、Watermark、Affix、Backtop、InfiniteScroll、TableV2 等依赖滚动或运行时的组件。
-- 验收扫描器目前由维护者运行，尚未随仓库发布。
 
 ## 方法
 

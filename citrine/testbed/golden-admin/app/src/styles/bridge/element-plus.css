@@ -353,6 +353,8 @@
 :where(a, button, [role="button"], [role="menuitem"], [role="tab"], summary, [tabindex]:not([tabindex="-1"])):focus-visible {
   outline: var(--border-width-active) solid var(--color-border-focus); outline-offset: 1px;
 }
+/* Chrome 把可滚动容器也纳入 Tab 序列（keyboard-focusable scrollers），默认画浏览器蓝色焦点环；Element 的滚动容器统一改为近黑、内缩 */
+.el-scrollbar__wrap:focus-visible, .el-textarea__inner:focus-visible { outline: var(--border-width-active) solid var(--color-border-focus); outline-offset: -2px; }
 .el-menu-item:focus-visible, .el-sub-menu__title:focus-visible, .el-tabs__item:focus-visible, .el-dropdown-menu__item:focus-visible, .el-select-dropdown__item:focus-visible {
   outline: var(--border-width-active) solid var(--color-border-focus); outline-offset: -2px; box-shadow: none;   /* 标签页的焦点 Element 还用主色 inset 阴影画了一遍 */
 }
