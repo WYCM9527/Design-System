@@ -5,7 +5,7 @@
 //   const name = registerTheme(echarts)              // 每次亮 / 暗切换后重新调用，再 dispose + init(el, name)
 //   const chart = echarts.init(el, name)
 //   chart.setOption(trendLine({ days, series: [{ name: '本周', data }, { name: '上周', data }] }))
-// 规则见 DESIGN.md「数据可视化」：趋势折线 y 轴贴数据（不强制从 0）、平滑 ≤ 0.3、不显示数据点、多序列不填面积；柱状图必须从 0 开始。
+// 规则见 DESIGN.md「数据可视化」：趋势折线 y 轴贴数据（不强制从 0）、平滑 0.5 + smoothMonotone、不常显数据点、多序列不填面积；柱状图必须从 0 开始。
 
 const read = (name, el = document.documentElement) => getComputedStyle(el).getPropertyValue(name).trim();
 
@@ -35,7 +35,8 @@ export function theme(el = document.documentElement) {
     tooltip: { backgroundColor: t.inverseBg, borderWidth: 0, padding: [6, 10], textStyle: { color: t.inverseText, fontSize: t.font }, axisPointer: { lineStyle: { color: t.strong }, shadowStyle: { color: t.area } } },
     categoryAxis: { axisLine: { lineStyle: { color: t.line } }, axisTick: { show: false }, axisLabel: { color: t.muted, fontSize: t.font }, splitLine: { show: false } },
     valueAxis: { axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: t.muted, fontSize: t.font }, splitLine: { lineStyle: { color: t.line } } },
-    line: { smooth: 0.3, symbol: 'circle', symbolSize: 6, showSymbol: false, lineStyle: { width: 2 }, emphasis: { focus: 'series' } },
+    // 平滑 0.5 + smoothMonotone 'x'：曲线丝滑但不越过数据点（只用 0.3 会在数据点处显硬；不加 monotone 则会在点之间鼓包）；线端与拐角圆头
+    line: { smooth: 0.5, smoothMonotone: 'x', symbol: 'circle', symbolSize: 6, showSymbol: false, lineStyle: { width: 2, cap: 'round', join: 'round' }, emphasis: { focus: 'series' } },
     bar: { barMaxWidth: 24, itemStyle: { borderRadius: t.radius } },
     pie: { itemStyle: { borderColor: t.surface, borderWidth: 2 }, label: { color: t.text } },
   };
