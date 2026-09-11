@@ -55,7 +55,7 @@ export function areaGradient(echarts, el = document.documentElement) {
 }
 
 /**
- * 趋势折线配方：类目 x 轴无留白，y 轴贴数据范围（scale），主序列 3px、其余 2px，无面积；图例右上。
+ * 趋势折线配方：类目 x 轴无留白，y 轴贴数据范围（scale），所有序列统一 2px 细线（主序列靠品牌黄区分，不靠粗细——浅色下粗黄条突兀），无面积；图例右上。
  * @param {{ days: string[], series: { name: string, data: number[] }[], area?: object }} p  area 只在单序列时传 areaGradient(echarts)
  */
 export function trendLine({ days, series, area }) {
@@ -65,6 +65,6 @@ export function trendLine({ days, series, area }) {
     tooltip: { trigger: 'axis' },
     xAxis: { type: 'category', data: days, boundaryGap: false },
     yAxis: { type: 'value', scale: true, splitNumber: 4 },
-    series: series.map((s, i) => ({ name: s.name, type: 'line', data: s.data, lineStyle: { width: i === 0 ? 3 : 2 }, areaStyle: area && series.length === 1 ? area : undefined })),
+    series: series.map((s) => ({ name: s.name, type: 'line', data: s.data, areaStyle: area && series.length === 1 ? area : undefined })),   // 线宽走主题（2px），不按序列加粗
   };
 }
