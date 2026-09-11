@@ -50,7 +50,7 @@ export function registerTheme(echarts, name = 'citrine', el = document.documentE
 /** 单序列折线的面积：从 chart.area 到透明的纵向渐变；多序列对比不要用面积 */
 export function areaGradient(echarts, el = document.documentElement) {
   const t = chartTokens(el);
-  return { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: t.area }, { offset: 1, color: 'rgba(0,0,0,0)' }]) };
+  return { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: t.area }, { offset: 1, color: 'transparent' }]) };
 }
 
 /**
