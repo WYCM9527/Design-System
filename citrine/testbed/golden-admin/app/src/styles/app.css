@@ -100,6 +100,9 @@ td .link, .card-head .link, .tip .link, .camp-foot .link, .batch .link, .empty .
 .chart { height: calc(var(--control-height-md) * 7); width: 100%; }
 .chart.tall { height: calc(var(--control-height-md) * 9); }
 
+/* 统计卡网格（卡片本身是 components/StatCard.vue） */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-stack); }
+
 /* 状态条：只有一个数字的统计不拉满一行（同侧栏的"宽度浪费"），紧凑成一行等高格子；可点击时作为筛选 */
 .stat-strip { display: inline-flex; flex-wrap: wrap; gap: var(--space-inline); margin-bottom: var(--space-stack); }
 .stat-strip .cell { display: inline-flex; align-items: center; gap: var(--spacing-2); height: var(--control-height-lg); padding: 0 var(--spacing-4); background: var(--color-bg-surface); border: var(--border-width-default) solid var(--color-border-default); border-radius: var(--radius-md); color: var(--color-text-secondary); font-size: var(--text-body-sm-size); }

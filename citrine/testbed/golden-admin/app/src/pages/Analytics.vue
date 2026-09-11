@@ -4,6 +4,7 @@ import { Export } from '@icon-park/vue-next'
 import { analytics, yen } from '../mock/data'
 import { can } from '../store'
 import EChart from '../components/EChart.vue'
+import StatCard from '../components/StatCard.vue'
 
 const range = ref('7d'); const city = ref('all'); const tab = ref(new URLSearchParams(location.search).get('tab') === 'settlement' && can('finance.view') ? 'settlement' : 'overview')
 // up 决定箭头方向，positive 决定颜色：取消率下降是好事，箭头向下但用"涨"的绿色
@@ -64,10 +65,7 @@ const summary = ({ columns }) => columns.map((c, i) => i === 0 ? '合计' : c.pr
   <el-tabs v-model="tab" class="board-tabs">
     <el-tab-pane label="经营" name="overview">
       <section class="stats">
-        <el-card v-for="s in stats" :key="s.label" class="stat" shadow="always">
-          <div class="label">{{ s.label }}</div><div class="value num">{{ s.value }}</div>
-          <div class="delta num" :class="s.positive ? 'up' : 'down'">{{ s.up ? '▲' : '▼' }} {{ s.delta }} <span class="note">· 较上周</span></div>
-        </el-card>
+        <StatCard v-for="s in stats" :key="s.label" :label="s.label" :value="s.value" :delta="s.delta" :up="s.up" :positive="s.positive" note="较上周" />
       </section>
       <div class="grid2">
         <el-card class="flat" shadow="always"><div class="card-head"><h2>订单量 · 按城市</h2><span class="badge neutral">chart.1–3</span></div><div class="body"><EChart :option="lineOption" /></div></el-card>
@@ -96,12 +94,6 @@ const summary = ({ columns }) => columns.map((c, i) => i === 0 ? '合计' : c.pr
 <style scoped>
 /* 板块间距挂在 tab-pane 上：el-tabs__content 的直接子元素是 pane，不是板块，挂在 content 上 gap 不会落到板块之间 */
 .board-tabs :deep(.el-tab-pane) { display: flex; flex-direction: column; gap: var(--space-stack); }
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-stack); }
-.stat { --el-card-padding: var(--spacing-5) var(--space-card); }
-.stat .label { color: var(--color-text-secondary); font-size: var(--text-body-sm-size); }
-.stat .value { font-size: var(--text-display-size); font-weight: var(--text-display-weight); line-height: var(--text-display-line-height); margin: var(--spacing-1-5) 0 var(--spacing-1); letter-spacing: var(--text-display-tracking); }
-.stat .delta { font-size: var(--text-small-size); }
-.stat .note { color: var(--color-text-muted); }
 .grid2 { display: grid; grid-template-columns: 3fr 2fr; gap: var(--space-stack); align-items: start; }
 .grid2.even { grid-template-columns: 1fr 1fr; }
 .body { padding: var(--spacing-4) var(--space-card) var(--spacing-3); }

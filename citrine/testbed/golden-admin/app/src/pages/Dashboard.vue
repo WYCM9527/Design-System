@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { Right, Attention } from '@icon-park/vue-next'
 import { orders, todos, trend, tone, yen } from '../mock/data'
 import TrendChart from '../components/TrendChart.vue'
+import StatCard from '../components/StatCard.vue'
 
 const q = new URLSearchParams(location.search)
 const loading = ref(q.get('state') === 'loading')   // ?state=loading 截图表骨架
@@ -31,11 +32,7 @@ const recent = orders.filter((o) => o.status === '待接单' || o.status === '�
   </div>
 
   <section class="stats">
-    <el-card v-for="s in stats" :key="s.label" class="stat" :class="{ hi: s.hi }" shadow="always">
-      <div class="label">{{ s.label }}</div>
-      <div class="value num">{{ s.value }}</div>
-      <div class="delta num" :class="s.up ? 'up' : 'down'">{{ s.up ? '▲' : '▼' }} {{ s.delta }} <span v-if="s.note" class="note">· {{ s.note }}</span><span v-else class="note">· 较昨日</span></div>
-    </el-card>
+    <StatCard v-for="s in stats" :key="s.label" :label="s.label" :value="s.value" :delta="s.delta" :up="s.up" :note="s.note || '较昨日'" :hi="s.hi" />
   </section>
 
   <div class="grid2">
@@ -76,14 +73,6 @@ const recent = orders.filter((o) => o.status === '待接单' || o.status === '�
 .tip { display: flex; align-items: center; gap: var(--spacing-2-5); padding: var(--spacing-2-5) var(--spacing-3-5); border-radius: var(--radius-md); background: var(--color-status-warning-bg); color: var(--color-status-warning); font-size: var(--text-body-sm-size); }
 .tip .link { margin-left: auto; white-space: nowrap; }
 .tip-x { border: 0; background: transparent; color: inherit; cursor: pointer; font-size: var(--text-title-size); line-height: 1; padding: 0; min-width: var(--control-hit-min); min-height: var(--control-hit-min); display: inline-grid; place-items: center; border-radius: var(--radius-sm); opacity: var(--opacity-on-primary-muted); }
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-stack); }
-.stat { --el-card-padding: var(--spacing-5) var(--space-card); }
-.stat .label { color: var(--color-text-secondary); font-size: var(--text-body-sm-size); }
-.stat .value { font-size: var(--text-display-size); font-weight: var(--text-display-weight); line-height: var(--text-display-line-height); margin: var(--spacing-1-5) 0 var(--spacing-1); letter-spacing: var(--text-display-tracking); }
-.stat .delta { font-size: var(--text-small-size); }   /* 颜色交给全局 .up / .down（data.increase / decrease），不再压灰 */
-.stat .note { color: var(--color-text-muted); }
-/* 高亮统计卡：数据色卡禁止大面积黄色（用户规则 rc.24），黄只做左描边点缀，文字与普通卡一致 */
-.stat.hi { border-left: var(--border-width-indicator) solid var(--color-brand-indicator); }
 .grid2 { display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-stack); align-items: start; }
 .chart-wrap { padding: var(--spacing-4) var(--space-card) var(--spacing-3); }
 .todos { list-style: none; margin: 0; padding: var(--spacing-2) 0; }

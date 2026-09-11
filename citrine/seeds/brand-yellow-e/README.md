@@ -2,7 +2,7 @@
 
 > 种子目录代号仍是 `brand-yellow-e`（脚本与文档中的路径不变）；系统名称 Citrine（黄晶）见仓库根 README。
 
-版本 1.3.1 · 公司级中后台设计规范（单品牌线）· 变更见 [CHANGELOG.md](CHANGELOG.md)
+版本 1.3.2 · 公司级中后台设计规范（单品牌线）· 变更见 [CHANGELOG.md](CHANGELOG.md)
 
 一套已通过 `design-system-steward` `validate-system` / `build-tokens` / `guard` 的 DTCG 设计系统起点。复制进任何项目就是 Core + dark / compact 两个 Theme；视觉效果见 `../../previews/yellow-admin/`：`admin.html` 是工作台，`stress.html` 是登录、列表、表单、详情、反馈、折叠侧栏六类页面的压力测试（方案 S 全部由构建产物驱动）。
 
