@@ -20,8 +20,8 @@ const lineOption = (t) => ({
   legend: { top: 0, right: 0 },
   tooltip: { trigger: 'axis' },
   xAxis: { type: 'category', data: analytics.days, boundaryGap: false, ...axis(t), splitLine: { show: false } },
-  yAxis: { type: 'value', ...axis(t), axisLine: { show: false } },
-  series: analytics.cityLines.map((s) => ({ ...s, type: 'line', smooth: true, symbol: 'circle', symbolSize: 6, lineStyle: { width: 2 } }))
+  yAxis: { type: 'value', scale: true, splitNumber: 4, ...axis(t), axisLine: { show: false } },   /* 趋势对比：y 轴贴数据范围，不强制从 0 */
+  series: analytics.cityLines.map((s) => ({ ...s, type: 'line' }))   /* 平滑、数据点、线宽走桥接主题 */
 })
 const pieOption = (t) => ({
   legend: { orient: 'vertical', right: 0, top: 'middle' },

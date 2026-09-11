@@ -2,7 +2,7 @@
 
 > 种子目录代号仍是 `brand-yellow-e`（脚本与文档中的路径不变）；系统名称 Citrine（黄晶）见仓库根 README。
 
-版本 1.1.4 · 公司级中后台设计规范（单品牌线）· 变更见 [CHANGELOG.md](CHANGELOG.md)
+版本 1.2.0 · 公司级中后台设计规范（单品牌线）· 变更见 [CHANGELOG.md](CHANGELOG.md)
 
 一套已通过 `design-system-steward` `validate-system` / `build-tokens` / `guard` 的 DTCG 设计系统起点。复制进任何项目就是 Core + dark / compact 两个 Theme；视觉效果见 `../../previews/yellow-admin/`：`admin.html` 是工作台，`stress.html` 是登录、列表、表单、详情、反馈、折叠侧栏六类页面的压力测试（方案 S 全部由构建产物驱动）。
 
@@ -26,6 +26,7 @@ design-system/
 └── dist/                           # 空，在目标项目里构建
 bridge/shadcn-globals.css           # 可选：shadcn/ui + Tailwind v4 的契约变量桥接（颜色、图表、圆角、字体、字号阶梯、过渡、shadow-sm/md/lg）
 bridge/element-plus.css             # Element Plus 桥接：--el-* 全部指向 token；按 Element 2.14 全部组件走查逐条接管主色 / 焦点 / 写死色表与写死高度（compact 因此对全部控件生效），与实测项目 #/kitchen 走查页配套
+bridge/echarts.js                   # ECharts 桥接：运行时读 token 生成主题（轴 / 网格 / 图例 / 提示框 / 折线 / 柱 / 饼默认形态）与趋势折线、面积渐变配方；亮暗切换后重注册
 bridge/iconpark.css                 # IconPark 图标桥接：尺寸六档、角色色、小图标粗描边（预览页直接引用这份）
 bridge/iconpark.config.ts           # IconPark 全局配置片段 + 激活态 / two-tone 的颜色数组（React / Vue 3 / @icon-park/svg 三种接法）
 ```

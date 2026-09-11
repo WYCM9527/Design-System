@@ -106,6 +106,9 @@
 - 分类色用 `color.chart.1` … `color.chart.6`：品牌黄领衔，其后是公司调色板的蓝（Primary Blue 500 / 暗 400）、青（亮用 `cyan.600`，因为 `cyan.500` 在白底上只有 2.5:1，画不出线；暗用 `cyan.500`）、紫（亮暗同值），再是浅灰、深灰。刻意避开 warning 橙、error 红、success 绿，图表颜色不能和状态语义打架。调色板里的 Indigo 与 blue 800 / 300 留给第 7 序列以上的图表，出现前不收进 token。
 - 单序列强度（热力、排行）用 `color.chart.sequential.1` … `5`：灰阶四档 + 纯黄封顶，**按离散分段使用**（ECharts 用 piecewise visualMap），不要在灰与黄之间做连续插值——中间值是橄榄色。排行榜前三名纯黄、其余中性灰是同一条规则的应用。
 - 图表里的品牌黄和主按钮是同一个颜色，所以同一屏里图表不要和主按钮抢注意力：图表区域内不再放主按钮。
+- **折线（趋势）**：y 轴贴数据范围（ECharts `scale: true`，不强制从 0——两周对比的 1200～1900 若从 0 画起会被压成顶部一条），柱状图与面积图必须从 0 开始；平滑不超过 0.3（默认 0.5 会在数据点之间造出不存在的起伏）；不常显数据点，hover 由轴指示线带出；主序列 3px、对比序列 2px。**面积只给单序列**，且是从 `chart.area` 到透明的纵向渐变——多序列对比不填面积（面积会盖住其他序列、把整张图压成一块灰）。
+- 轴与网格：类目轴有轴线（`border.default`）、无刻度、无网格；数值轴无轴线、网格线 `border.default`；标签 `text.muted`、`text.small.size`；图例右上、圆角方块；提示框 `bg.inverse` + `text.inverse`。
+- ECharts 不读 CSS 变量：用 `bridge/echarts.js` 在运行时读 token 生成主题（`registerTheme`）与配方（`trendLine`、`areaGradient`），亮 / 暗切换后重新注册并重建实例；页面只写数据与布局，不写颜色与线型。
 
 ## 页面骨架
 
@@ -175,7 +178,7 @@
 | 日历 | 今天 / 选中 `bg.selected` | 今天 `text.primary` + `font.weight.medium`；上下月日期 `text.muted`（不是占位符） | 同日期面板的规则 |
 | 穿梭框 | 面板 `bg.surface`，项 hover `bg.hover` | 项 `text.primary`，hover 不变色 | 中间两个箭头按钮必须传 `button-texts`（组件库不给它们可访问名称，图标也不能单独承载信息） |
 | Popconfirm | `bg.elevated` | `text.primary` | 图标色是 prop 不是 CSS：传 `icon-color="var(--color-status-warning)"`，组件库默认写死 #f90 |
-| 图表 | 系列 `chart.1…6`；强度 `chart.sequential.1…5`；折线面积 `chart.area`（半透明冷灰，网格透出；不用 sequential.1 实色，暗色下是一整块灰） | 图例 `text.secondary` | — |
+| 图表 | 系列 `chart.1…6`；强度 `chart.sequential.1…5`；单序列折线面积 `chart.area` → 透明的纵向渐变（多序列不填） | 图例 `text.secondary`，轴标签 `text.muted` | 主题与配方来自 `bridge/echarts.js`；趋势 y 轴 `scale: true`、平滑 ≤ 0.3、不常显数据点；柱状从 0 起、`radius.xs` 圆角 |
 
 ## 交互与无障碍
 

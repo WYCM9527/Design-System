@@ -1,10 +1,10 @@
 # Citrine Design System
 
-**黄晶 · 公司级中后台设计系统** — 一个以品牌黄为唯一焦点、冷灰为骨架的 Web 中后台设计系统：DTCG 令牌单一来源、亮 / 暗 / 紧凑三种模式、Element Plus 与 shadcn/ui 两条桥接、给编码 Agent 的组件配方，以及一套可复跑的验收基线。
+**黄晶 · 公司级中后台设计系统** — 一个以品牌黄为唯一焦点、冷灰为骨架的 Web 中后台设计系统：DTCG 令牌单一来源、亮 / 暗 / 紧凑三种模式、Element Plus、shadcn/ui 与 ECharts 三条桥接、给编码 Agent 的组件配方，以及一套可复跑的验收基线。
 
 ![Citrine · 实测项目「黄金后台」亮 / 暗模式](docs/screenshots/hero.png)
 
-版本 **1.1.4** · Core 313 个 token · dark 69 条 / compact 8 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
+版本 **1.2.0** · Core 313 个 token · dark 69 条 / compact 8 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
 
 ---
 
@@ -37,7 +37,7 @@
 citrine/
 ├── seeds/brand-yellow-e/        # 设计系统种子（复制进项目即用）
 │   ├── design-system/           #   DESIGN.md（速查 + 规则 + 配方 + 验收基线）、tokens/、themes/dark|compact/、theme-map.json
-│   ├── bridge/                  #   element-plus.css · shadcn-globals.css · iconpark.css / iconpark.config.ts
+│   ├── bridge/                  #   element-plus.css · shadcn-globals.css · echarts.js · iconpark.css / iconpark.config.ts
 │   ├── README.md                #   用法、硬规则、从旧规范迁移的角色对照
 │   └── CHANGELOG.md             #   rc.1 → 1.1.3 每一条决定的来历
 ├── previews/yellow-admin/       # 静态预览：手写 token（E）与构建产物（S）逐像素一致的两套页面
