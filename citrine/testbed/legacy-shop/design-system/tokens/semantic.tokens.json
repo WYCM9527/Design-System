@@ -579,6 +579,11 @@
   },
   "control": {
     "height": {
+      "xs": {
+        "$type": "dimension",
+        "$value": "{size.control.xs}",
+        "$description": "行内胶囊档 24：表格操作胶囊（.act）、与状态胶囊（标签默认高）同高，字号 text.body-sm、字重 400。不是按钮档——按钮最小 sm。"
+      },
       "sm": {
         "$type": "dimension",
         "$value": "{size.control.sm}"

@@ -9,14 +9,14 @@ a { color: inherit; text-decoration: none; }
 .link.danger:hover { color: var(--color-text-danger); }
 .link.mono, .mono.link { font-style: normal; }   /* 等宽数字型链接（订单号、单号）不斜体：数字斜体显歪 */
 /* 操作链接（动词：编辑 / 复制 / 详情 / 改派 / 催单…）：不是内容型链接，不斜体不下划线。
-   形态是"同色胶囊描边"——文字与描边同色（currentColor），无填充，高度 control.height.sm，胶囊圆角；hover 底色 bg.hover。
-   与按钮的区别：不填充、描边是发丝线、字重 500 而非按钮的实底 / 描边灰。危险动作红字红边，hover 浅红底。相邻胶囊间距 space.inline，不再用「·」分隔 */
-.act, td .act { color: var(--color-text-link); font-weight: var(--text-weight-label); text-decoration: none; font-style: normal; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: var(--spacing-1); height: var(--control-height-sm); min-height: 0; padding: 0 var(--spacing-2-5); border: var(--border-width-default) solid currentColor; border-radius: var(--radius-full); line-height: 1; white-space: nowrap; }
+   形态是"同色胶囊描边"——文字与描边同色（currentColor），无填充，行内胶囊档 control.height.xs（与状态胶囊同高）、text.body-sm 字号、400 字重，胶囊圆角；hover 底色 bg.hover。
+   与按钮的区别：不填充、描边是发丝线、不到按钮的高度档。危险动作红字红边，hover 浅红底。相邻胶囊间距 space.inline，不再用「·」分隔 */
+.act, td .act { color: var(--color-text-link); font-family: inherit; font-size: var(--text-body-sm-size); font-weight: var(--font-weight-regular); text-decoration: none; font-style: normal; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: var(--spacing-1); height: var(--control-height-xs); min-height: 0; padding: 0 var(--spacing-2); border: var(--border-width-default) solid currentColor; border-radius: var(--radius-full); line-height: 1; white-space: nowrap; }
 .act:hover { color: var(--color-text-link-hover); background: var(--color-bg-hover); }
 .act.danger, .act.danger:hover { color: var(--color-text-danger); }
 .act.danger:hover { background: var(--color-status-error-bg); }
 .act + .act { margin-left: var(--space-inline); }
-button.act { background: transparent; font: inherit; }   /* 用 <button> 承载时去掉浏览器默认外观；<a> 与 <button> 同形 */
+button.act { background: transparent; margin: 0; }   /* 用 <button> 承载时去掉浏览器默认外观；字体由 .act 自己声明（不能用 font 简写 inherit——它会把字重、行高一并重置，<a> 与 <button> 就不同形了） */
 .act:disabled, .act.is-disabled { opacity: var(--opacity-disabled); cursor: not-allowed; pointer-events: none; }   /* 不可用的动作保留位置、压淡，不隐藏——列宽不跳 */
 /* 导览链接（查看全部 / 查看列表）：不是动作而是"去另一处看"，文字 + 右箭头图标引导，不描边不斜体；只有图标时（列表项右侧的 ›）用 icon.muted */
 .go { display: inline-flex; align-items: center; gap: var(--spacing-1); color: var(--color-text-link); font-weight: var(--text-weight-label); text-decoration: none; font-style: normal; cursor: pointer; min-height: var(--control-hit-min); }

@@ -158,6 +158,7 @@
   --size-control-sm: 28px;
   --control-height-sm: var(--size-control-sm);
   --size-control-xs: 24px;
+  --control-height-xs: var(--size-control-xs);
   --control-hit-min: var(--size-control-xs);
   --spacing-0-5: 2px;
   --control-segmented-inset: var(--spacing-0-5);

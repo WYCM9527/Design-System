@@ -46,7 +46,7 @@
   --color-text-on-danger: #FFFFFF;
   --color-control-knob: #FFFFFF;
 
-  --control-height-sm: 28px; --control-hit-min: 24px; --control-segmented-inset: 2px;
+  --control-height-xs: 24px; --control-height-sm: 28px; --control-hit-min: 24px; --control-segmented-inset: 2px;
   --control-height-md: 34px;
   --control-height-lg: 40px;
   --icon-size-xs: 12px;
