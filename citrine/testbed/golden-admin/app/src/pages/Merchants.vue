@@ -53,11 +53,11 @@ function toggleActive(row) {
       <el-table-column label="联系人" width="160"><template #default="{ row }">{{ row.contact }} <span class="sub-inline num">{{ row.phone }}</span></template></el-table-column>
       <el-table-column label="状态" width="110"><template #default="{ row }"><span class="status" :class="tone(row.status)">{{ row.status }}</span></template></el-table-column>
       <el-table-column label="入驻时间" width="130"><template #default="{ row }"><span class="num">{{ row.joined }}</span></template></el-table-column>
-      <el-table-column label="操作" width="180" fixed="right">
+      <el-table-column label="操作" width="210" fixed="right">
         <template #default="{ row }">
           <router-link class="act" :to="`/merchants/${row.id}/edit`">{{ can('merchant.edit') ? '编辑' : '查看' }}</router-link>
-          <template v-if="can('merchant.audit') && row.status === '待审核'"> · <a class="act" @click="openAudit(row)">审核</a></template>
-          <template v-if="can('merchant.edit')"> · <a class="act" @click="toggleActive(row)">{{ row.status === '已停用' ? '恢复' : '停用' }}</a></template>
+          <template v-if="can('merchant.audit') && row.status === '待审核'"><a class="act" @click="openAudit(row)">审核</a></template>
+          <template v-if="can('merchant.edit')"><a class="act" @click="toggleActive(row)">{{ row.status === '已停用' ? '恢复' : '停用' }}</a></template>
         </template>
       </el-table-column>
     </el-table>

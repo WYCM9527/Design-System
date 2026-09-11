@@ -46,7 +46,7 @@ function toggle(c) {
       <el-table-column label="活动时间" width="230"><template #default="{ row }"><span class="num">{{ row.range }}</span></template></el-table-column>
       <el-table-column label="状态" width="110"><template #default="{ row }"><span class="status" :class="tone(row.status)">{{ row.status }}</span></template></el-table-column>
       <el-table-column label="首页 Banner" width="110"><template #default="{ row }"><el-switch v-model="row.banner" size="small" :disabled="!can('campaign.edit')" /></template></el-table-column>
-      <el-table-column label="操作" width="170" fixed="right"><template #default="{ row }"><a class="act">编辑</a><template v-if="can('campaign.edit') && ['进行中', '待审核', '已下线'].includes(row.status)"> · <a class="act" @click="toggle(row)">{{ row.status === '进行中' ? '下线' : '上线' }}</a></template> · <a class="act">复制</a></template></el-table-column>
+      <el-table-column label="操作" width="210" fixed="right"><template #default="{ row }"><a class="act">编辑</a><template v-if="can('campaign.edit') && ['进行中', '待审核', '已下线'].includes(row.status)"><a class="act" @click="toggle(row)">{{ row.status === '进行中' ? '下线' : '上线' }}</a></template><a class="act">复制</a></template></el-table-column>
     </el-table>
   </el-card>
 
@@ -56,7 +56,7 @@ function toggle(c) {
       <h3>{{ c.name }}</h3>
       <div class="camp-meta">{{ c.scope.join('、') }} · <span class="num">{{ c.range }}</span></div>
       <el-progress :percentage="pct(c)" :stroke-width="6" :format="(p) => `${p}%`" :class="{ 'is-muted': c.status !== '进行中' }" />
-      <div class="camp-foot"><span class="num sub-inline">{{ yuan(c.used) }} / {{ yuan(c.budget) }}</span><span><a class="act">编辑</a> · <a class="act">复制</a></span></div>
+      <div class="camp-foot"><span class="num sub-inline">{{ yuan(c.used) }} / {{ yuan(c.budget) }}</span><span><a class="act">编辑</a><a class="act">复制</a></span></div>
     </el-card>
   </div>
 

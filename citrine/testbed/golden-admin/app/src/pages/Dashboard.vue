@@ -27,7 +27,7 @@ const recent = orders.filter((o) => o.status === '待接单' || o.status === '�
   <div v-if="showTip" class="tip">
     <Attention class="i-icon--md" />
     <span><b>3 个商户资质将在 7 天内过期</b>，请及时通知商户更新证照。</span>
-    <router-link class="act" to="/merchants">查看列表 →</router-link>
+    <router-link class="go" to="/merchants">查看列表<Right class="i-icon--sm" /></router-link>
     <button class="tip-x" @click="showTip = false" aria-label="关闭">×</button>
   </div>
 
@@ -58,13 +58,13 @@ const recent = orders.filter((o) => o.status === '待接单' || o.status === '�
   </div>
 
   <el-card class="flat" shadow="always">
-    <div class="card-head"><h2>最近异常订单</h2><div class="right"><router-link class="act" to="/orders">查看全部</router-link></div></div>
+    <div class="card-head"><h2>最近异常订单</h2><div class="right"><router-link class="go" to="/orders">查看全部<Right class="i-icon--sm" /></router-link></div></div>
     <el-table :data="recent" style="width: 100%">
       <el-table-column label="订单号" min-width="200"><template #default="{ row }"><router-link class="mono link" :to="`/orders/${row.id}`">{{ row.id }}</router-link><span class="sub">{{ row.time }}</span></template></el-table-column>
       <el-table-column prop="merchant" label="商户" min-width="180" />
       <el-table-column label="状态" width="120"><template #default="{ row }"><span class="status" :class="tone(row.status)">{{ row.status }}</span></template></el-table-column>
       <el-table-column label="金额" width="140" align="right"><template #default="{ row }"><span class="num">{{ yen(row.amount) }}</span></template></el-table-column>
-      <el-table-column label="操作" width="140"><template #default="{ row }"><router-link class="act" :to="`/orders/${row.id}`">详情</router-link> · <a class="act">催单</a></template></el-table-column>
+      <el-table-column label="操作" width="160"><template #default="{ row }"><router-link class="act" :to="`/orders/${row.id}`">详情</router-link><a class="act">催单</a></template></el-table-column>
     </el-table>
   </el-card>
 </template>

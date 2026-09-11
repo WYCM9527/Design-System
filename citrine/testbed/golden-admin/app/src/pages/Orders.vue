@@ -92,10 +92,10 @@ const rowClass = ({ row }) => (selected.value.includes(row) ? 'is-selected' : ''
         <el-table-column label="骑手" width="100"><template #default="{ row }">{{ row.rider || '—' }}</template></el-table-column>
         <el-table-column label="配送时长" width="110"><template #default="{ row }"><span class="num">{{ row.duration ? `${row.duration} min` : '—' }}</span></template></el-table-column>
         <el-table-column label="评分" width="80"><template #default="{ row }"><span class="num">{{ row.rating || '—' }}</span></template></el-table-column>
-        <el-table-column label="操作" width="170" fixed="right">
+        <el-table-column label="操作" width="200" fixed="right">
           <template #default="{ row }">
             <router-link class="act" :to="`/orders/${row.id}`">详情</router-link>
-            <template v-if="can('order.reassign')"> · <a class="act" @click="router.push(`/orders/${row.id}?reassign=1`)">改派</a></template>
+            <template v-if="can('order.reassign')"><a class="act" @click="router.push(`/orders/${row.id}?reassign=1`)">改派</a></template>
             <el-dropdown trigger="click" class="more" @command="(c) => c === 'cancel' && cancelOrder(row)">
               <a class="act more-link" role="button" aria-label="更多操作" tabindex="0"><MoreOne class="i-icon--sm" /></a>
               <template #dropdown><el-dropdown-menu><el-dropdown-item command="remind">催单</el-dropdown-item><el-dropdown-item command="cancel" :disabled="!can('order.cancel')" class="is-danger">取消订单</el-dropdown-item></el-dropdown-menu></template>
@@ -109,6 +109,6 @@ const rowClass = ({ row }) => (selected.value.includes(row) ? 'is-selected' : ''
 </template>
 
 <style scoped>
-.more { margin-left: var(--spacing-1-5); vertical-align: middle; }
-.more-link { text-decoration: none; font-style: normal; color: var(--color-icon-default); }
+.more { margin-left: var(--space-inline); vertical-align: middle; }   /* 与相邻操作胶囊同一间距 */
+.more-link { text-decoration: none; font-style: normal; color: var(--color-icon-default); padding: 0 var(--spacing-1-5); }   /* 图标胶囊：内边距收窄成近方形 */
 </style>
