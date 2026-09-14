@@ -1,0 +1,131 @@
+# 设计系统工作流 · 上手教程
+
+给要把公司设计系统（当前是 **Citrine 黄晶**）用进自己项目的同学。全程由 Agent（Cursor / Codex / Claude Code）执行，你只做三件事：装好、说一句话、在它停下来问你时拍板。读完约 10 分钟。
+
+## 0. 四件东西的关系
+
+| 东西 | 在哪 | 干什么 | 你需要碰吗 |
+| --- | --- | --- | --- |
+| **设计系统种子** | `citrine/seeds/brand-yellow-e/`（也是 npm 包 `@wycm9527/citrine`） | token、DESIGN 规范、Element Plus / shadcn 桥接、页面配方、Vue / React 配方组件，带身份文件 `design-system.json` | 只读。放进项目当快照 |
+| **design-system-adopter** | 仓库根 `design-system-adopter/` | 让 Agent 会「接入 / 换规范 / 更新」的 skill + 零依赖 CLI（`scripts/ds.mjs`） | 装一次进项目 |
+| **design-system-steward** | [WYCM9527/skills](https://github.com/WYCM9527/skills) | 构建 token、Guard 校验、存量迁移的治理工具 | adopter 找不到时会带你装 |
+| **验收工具** | `citrine/tools/`（npm 包 `@wycm9527/citrine-tools`，命令 `citrine-accept`） | 无头 Chrome 扫对比度、命名、品牌色泄漏、三端响应、Tab 焦点 | 装进项目 devDependencies |
+
+项目里最终长这样：
+
+```text
+your-project/
+├── design-systems/citrine/      # 上游只读快照（提交进 git，永不手改，是升级时的合并基线）
+├── design-system/               # 工作副本：token 与规则，steward 在这里治理（可加 scope / 豁免）
+│   ├── dist/                    # 构建产物（build-tokens 生成，不手改）
+│   └── .adopter.json            # 接入清单（系统 id、版本、快照 hash）
+├── .cursor/skills/design-system-adopter/
+├── src/styles/globals.css       # 样式入口：组件库 → dist → 桥接 → 配方层 → app.css
+├── accept.config.mjs            # 验收清单（页面、走查页、三端宽度、焦点）
+└── AGENTS.md                    # 项目规则（adopter 用模板生成，你确认后写入）
+```
+
+## 1. 前置条件
+
+- Node ≥ 22、本机装有 Google Chrome（验收用；找不到时设环境变量 `CHROME` 指向可执行文件）。
+- 对 `WYCM9527/Design-System` 仓库有读权限（**私有仓库**：本机 `git` 能克隆它即可；升级时也走这条凭证）。
+- 项目在 git 里。旧项目换规范前要先提交一次（批量改写存量样式的硬要求）。
+
+## 2. 安装（5 分钟）
+
+```bash
+# 1) 拿到仓库（浅克隆即可）
+git clone --depth 1 https://github.com/WYCM9527/Design-System.git /tmp/ds
+
+# 2) 把 adopter skill 装进你的项目（Cursor 项目级，随仓库共享给协作者；也可拷到 ~/.cursor/skills 或 ~/.codex/skills 全局用）
+cd your-project
+mkdir -p .cursor/skills && cp -R /tmp/ds/design-system-adopter .cursor/skills/
+
+# 3) 拿种子（两条渠道等价，选一条）
+npm i file:/tmp/ds/citrine/seeds/brand-yellow-e     # npm 渠道；包发到 registry 后就是 npm i @wycm9527/citrine
+#   或：cp -R /tmp/ds/citrine/seeds/brand-yellow-e vendor/   放进项目任意位置，skill 能认出来
+
+# 4) 验收工具
+npm i -D file:/tmp/ds/citrine/tools                  # 发布后：npm i -D @wycm9527/citrine-tools
+```
+
+steward 不用手动装：Agent 走到需要构建时会先找（`~/.cursor/skills`、`~/.codex/skills`、项目 `.cursor/skills`），找不到会给你一行安装命令，你点头它就装。
+
+> 把种子文件夹拷进项目后，`init` 会把它复制成 `design-systems/citrine/` 快照，之后原始下载目录可以删。
+
+## 3. 场景 A：新项目从 0 开始
+
+对 Agent 说（可直接粘贴，改栈名即可）：
+
+> 用 Citrine 设计系统起一个 **Vue 3 + Element Plus**（或 **React + shadcn/ui**）的中后台，按 design-system-adopter 的「从 0 开始」把系统接好、验收跑绿之后再开始做页面。配方不够用时提提案，不要在页面上补样式。
+
+Agent 会依次做：应用骨架（空目录时先问你选栈，给出 create-vite 命令）→ `ds.mjs init`（落快照 + 工作副本 + 清单，打印接线）→ steward `build-tokens` / `guard` → 写样式入口与 Vite 配置 → 渲染 `AGENTS.md` 给你看 → 做页面 → 建 `accept.config.mjs` → `npm run accept`。
+
+**你要拍板的点**：选栈；`AGENTS.md` 写入前看一眼；steward 安装。**完成标志**：`guard` 输出 `current`，`npm run accept` 四项全「通过」。
+
+## 4. 场景 B：旧项目换成公司规范
+
+对 Agent 说：
+
+> 把这个项目换成 Citrine 设计规范，按 design-system-adopter 的「更换现有规范」先做第一期换肤，给我看验收报告和二期收编清单再继续。
+
+三期，每期结束都能上线：
+
+| 期 | Agent 做什么 | 你拿到什么 | 大致工期 |
+| --- | --- | --- | --- |
+| 一 · 换肤 | steward `audit` 报工程量 → `init --legacy-rename`（原 `design-system/` 改名 `design-system.legacy/` 当证据，会先问你）→ 构建 → 挂桥接 → 旧变量做别名过渡 | 组件库部分立刻变成新样子（占页面视觉七八成）；页面扫描列出的二期清单 | 1–2 天 |
+| 二 · 收编 | steward `migrate adopt / replace` 自动处理无歧义项 → `settle` 时用种子的角色对照表起草决策文件给你确认 → 页面结构逐页换配方类 | `MIGRATION.md` 对照与回滚；验收数字逐批变绿 | 3–10 天看规模 |
+| 三 · 收尾 | `status` 到 unified、`guard` 到 current、写 `AGENTS.md`、验收进 CI | 干净的项目 | 半天 |
+
+关键原则（Agent 会遵守，你也要知道）：**按角色映射，不按色值找最接近的灰**——旧的深黄 hover、淡黄选中底、彩色链接在新系统里没有对应物，会换成反转块 / 无色系写法，不是"找个像的"。
+
+## 5. 场景 C：设计系统出新版了
+
+对 Agent 说：
+
+> 检查 Citrine 有没有新版本，按 design-system-adopter 的「更新」剧本先 dry-run 给我看差异（尤其是我本地改过的部分），确认后再升级并跑验收。
+
+流程：`ds.mjs status`（快照是否完整、你本地改过哪些文件、上游最新 tag）→ `upgrade --dry-run`（分类：直接更新 / 上游新增 / 保留本地 / 自动合并 / 冲突）→ 你拍板 → `upgrade`。
+
+合并规则：token 等 JSON **键级**三方合并——你改的键和上游改的键各取各的，同一个键两边都改才问你；`DESIGN.md` 等文档是文件级，选「保留本地 / 取上游 / 写冲突标记手工合」。有冲突时 Agent 会拿着 `.adopter-conflicts.json` 逐条问你，然后 `--resolve`。升级后必跑 `build-tokens → guard → accept`；minor 版本像素会变属预期，对照种子 CHANGELOG。
+
+## 6. 日常做页面的三条纪律
+
+Agent 在已接入的项目里改 UI 时自动遵守，你验收产出时按这三条看：
+
+1. **结构用配方类**：页头 / 筛选栏 / 状态胶囊 / 操作胶囊 / 表单页 / 空态 / 统计卡 / 原位确认条都在 `recipes.css` 里，不自己写骨架。
+2. **颜色 / 间距 / 字号 / 圆角只写 token 变量**：页面里出现 `#hex`、裸像素（表格列宽、筛选控件宽度这类"按内容定"的宽度除外）就是错的。
+3. **配方不够用时提提案，不在页面上补样式**：Agent 会停下来告诉你缺什么、建议进哪一层；你决定向仓库提 issue / PR 还是先用最接近的配方顶住。快照 `design-systems/citrine/` 任何时候都不改。
+
+三端是内置的：桌面展开、窄屏（≤1366）侧栏折叠、手机（≤768）抽屉侧栏 + 表格内部滚动 + 浮层贴底全宽，页面不用自己写媒体查询。
+
+## 7. 命令速查（Agent 会用，你也能直接跑）
+
+```bash
+A=.cursor/skills/design-system-adopter/scripts/ds.mjs
+node $A detect                          # 项目里有哪些设计系统候选、工作副本状态
+node $A init --system citrine --stack element-plus   # 或 --stack shadcn；已有 design-system/ 时加 --legacy-rename
+node $A status [--offline]              # 快照完整性、本地修改、上游最新
+node $A upgrade --dry-run               # 预览升级；去掉 --dry-run 执行；--resolve decisions.json 提交冲突决议
+node $A agents --stack element-plus     # 渲染 AGENTS.md；确认后加 --write
+node $A steward locate|install          # 找 / 装治理工具
+npx citrine-accept all                  # 验收：pages → components → narrow → focus；单跑某项：citrine-accept pages
+```
+
+steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/scripts/build-tokens.mjs --project $PWD`、`guard.mjs`（应为 `current`）、`status.mjs`（应为 `unified`）、`audit.mjs` / `migrate.mjs`（换规范用）。
+
+## 8. 常见问题
+
+| 现象 | 原因 / 处理 |
+| --- | --- |
+| `upgrade` / `steward install` 报下载失败 | 仓库私有：确认本机 `git clone` 该仓库能成功（凭证），或设 `GITHUB_TOKEN`；完全离线用 `upgrade --from <种子目录或 tgz>` |
+| `npm i @wycm9527/citrine` 404 | 包还没发到 registry，用 `file:` 指向克隆里的种子目录（第 2 节） |
+| 验收「未找到 Chrome」 | 装 Google Chrome，或 `CHROME=/path/to/chrome npx citrine-accept all` |
+| 验收报低对比 / 品牌色泄漏 / 无名称 | 先按 skill 的 `references/troubleshooting.md` 归因到层：页面自己的问题现场修；组件库默认色 / 命中区属于桥接层，向仓库提，不要用 `!important` 压 |
+| `status` 说快照被本地改动 | 快照只读；`ds.mjs restore --all` 恢复，需要的差异改到 `app.css` 或工作副本 |
+| 手机档验收失败：横向溢出 | 找超出视口的元素（多半是固定宽度）；组件走查页可在 `accept.config.mjs` 的手机档 `pages` 里剔除 |
+| 想看规则原文 | `design-system/DESIGN.md`（配方表、组件库对照、三端、验收基线），改动史在种子 `CHANGELOG.md` |
+
+## 9. 反馈回路
+
+这套系统靠真实项目的发现变好：接入过程中任何「配方缺、桥接漏、文档说不清」都值得记下来提到仓库——四个实测项目已经回填了 100 多条，你的项目会再出一批。提案写清场景、期望形态、建议进哪一层（token / 桥接 / 配方 / 组件），维护者按版本策略发新版，你 `upgrade` 即可拿到。

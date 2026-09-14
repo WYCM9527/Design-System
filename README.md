@@ -13,14 +13,19 @@
 一次安装：把 adopter skill 装进项目（Cursor 项目级；协作者随仓库共享），并把设计系统种子放进项目（npm 或直接下载文件夹，二选一）：
 
 ```bash
+# 0) 浅克隆本仓库（私有仓库：本机 git 需有读权限）
+git clone --depth 1 https://github.com/WYCM9527/Design-System.git /tmp/ds
+
 # 1) 装 skill 到项目 .cursor/skills/（也可放 ~/.cursor/skills 或 ~/.codex/skills 全局用）
-mkdir -p .cursor/skills && curl -L https://codeload.github.com/WYCM9527/Design-System/tar.gz/refs/heads/main \
-  | tar -xz -C .cursor/skills --strip-components=1 "Design-System-main/design-system-adopter"
+mkdir -p .cursor/skills && cp -R /tmp/ds/design-system-adopter .cursor/skills/
 
 # 2) 拿种子（Citrine 为例，两条渠道等价）
-npm i @wycm9527/citrine            # npm 渠道（未发 registry 前：npm i file:<克隆路径>/citrine/seeds/brand-yellow-e）
-#   或：下载 citrine/seeds/brand-yellow-e 整个文件夹放进项目任意位置，skill 的 detect 会认出来
+npm i file:/tmp/ds/citrine/seeds/brand-yellow-e      # npm 渠道（发到 registry 后就是 npm i @wycm9527/citrine）
+#   或：cp -R /tmp/ds/citrine/seeds/brand-yellow-e vendor/   放进项目任意位置，skill 的 detect 会认出来
+npm i -D file:/tmp/ds/citrine/tools                   # 验收工具（发布后：npm i -D @wycm9527/citrine-tools）
 ```
+
+完整上手教程（四件东西的关系、三个场景的提示词与拍板点、命令速查、常见问题）见 [docs/GUIDE.md](docs/GUIDE.md)。
 
 然后对 Agent 说一句话即可，skill 会问「从 0 开始 / 更换现有规范 / 只更新」并走完全流程（接入 → 构建 → 接线 → 项目规则 → 验收）。三段可直接粘贴的提示词：
 
