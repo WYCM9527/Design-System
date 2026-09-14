@@ -1,10 +1,10 @@
 <script setup>
 // 页面框架（PRD §6.1）：左侧分组导航（可折叠）、顶部面包屑 / 站内通知 / 主题 / 当前身份与演示身份切换 / 测试工具。
 // 壳层样式来自种子配方层 recipes.css（.app / .sidebar / .topbar / .iconbtn / .avatar…），这里只写业务。
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { Home, Order, Audit, Box, Shop, ChartHistogram, TreeDiagram, Permissions, Setting, Log, Remind, Moon, Sunny, MenuFold, MenuUnfold, Down, Bug, CheckSmall } from '@icon-park/vue-next'
+import { Home, Order, Audit, Box, Shop, ChartHistogram, TreeDiagram, Permissions, Setting, Log, Remind, Moon, Sunny, MenuFold, MenuUnfold, HamburgerButton, Down, Bug, CheckSmall } from '@icon-park/vue-next'
 import { db } from '../data/db'
 import { session, user, roleLabel, userDept, canSee, switchUser, toggleTheme } from '../data/session'
 import { leaveIfClean } from '../data/guard'
@@ -16,6 +16,14 @@ import { timeOf } from '../data/format'
 const vAriaLabel = { mounted: (el, b) => el.setAttribute('aria-label', b.value), updated: (el, b) => el.setAttribute('aria-label', b.value) }
 
 const route = useRoute(); const router = useRouter()
+// 手机（≤ layout.breakpoint.mobile，字面镜像 768）：侧栏离屏抽屉，汉堡开、遮罩 / 选中菜单关；抽屉里永远是展开形态
+const mqMobile = matchMedia('(max-width: 768px)')
+const isMobile = ref(mqMobile.matches)
+const navOpen = ref(false)
+const onMq = (e) => { isMobile.value = e.matches; navOpen.value = false }
+mqMobile.addEventListener('change', onMq)
+onBeforeUnmount(() => mqMobile.removeEventListener('change', onMq))
+router.afterEach(() => { navOpen.value = false })
 const groups = [
   { title: '工作台', items: [{ key: 'dashboard', label: '工作台', to: '/', icon: Home }] },
   { title: '业务管理', items: [
@@ -58,13 +66,13 @@ async function onUser(cmd) {
 </script>
 
 <template>
-  <div class="app" :class="{ 'is-collapsed': session.collapsed }">
+  <div class="app" :class="{ 'is-collapsed': session.collapsed, 'is-nav-open': navOpen }">
     <aside class="sidebar">
       <div class="app-brand">
         <span class="logo"><img v-if="db.settings.logo" :src="db.settings.logo" alt="企业标识" /><template v-else>{{ brandInitial }}</template></span>
-        <span v-if="!session.collapsed">{{ db.settings.systemName }}</span>
+        <span v-if="!session.collapsed || isMobile">{{ db.settings.systemName }}</span>
       </div>
-      <el-menu :default-active="activeKey" :collapse="session.collapsed" :collapse-transition="false" router>
+      <el-menu :default-active="activeKey" :collapse="session.collapsed && !isMobile" :collapse-transition="false" router>
         <el-menu-item-group v-for="g in visibleGroups" :key="g.title" :title="g.title">
           <el-menu-item v-for="item in g.items" :key="item.key" :index="item.key" :route="item.to" v-aria-label="item.label">
             <el-icon><component :is="item.icon" /></el-icon>
@@ -75,9 +83,12 @@ async function onUser(cmd) {
       <div class="sidebar-foot">{{ session.collapsed ? 'v1.0' : `${db.settings.companyName} · V1.0 测试版` }}</div>
     </aside>
 
+    <button v-if="navOpen" class="sidebar-mask" aria-label="关闭菜单" @click="navOpen = false" />
+
     <div class="main">
       <header class="topbar">
-        <button class="iconbtn" :title="session.collapsed ? '展开菜单' : '折叠菜单'" @click="session.collapsed = !session.collapsed">
+        <button class="iconbtn menu-btn" title="打开菜单" @click="navOpen = true"><HamburgerButton class="i-icon--lg" /></button>
+        <button class="iconbtn collapse-btn" :title="session.collapsed ? '展开菜单' : '折叠菜单'" @click="session.collapsed = !session.collapsed">
           <component :is="session.collapsed ? MenuUnfold : MenuFold" class="i-icon--lg" />
         </button>
         <el-breadcrumb separator="/">

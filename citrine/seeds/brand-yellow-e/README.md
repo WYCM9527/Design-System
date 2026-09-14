@@ -2,7 +2,7 @@
 
 > 种子目录代号仍是 `brand-yellow-e`（脚本与文档中的路径不变）；系统名称 Citrine（黄晶）见仓库根 README。
 
-版本 2.7.0 · 公司级中后台设计规范（单品牌线）· 纯数据包：本目录即分发单元（npm 包 **`@wycm9527/citrine`**，或整个文件夹直接下载），身份文件 `design-system.json`，接入 / 更新由 [design-system-adopter](../../../design-system-adopter/) skill 驱动 · 变更见 [CHANGELOG.md](CHANGELOG.md)
+版本 2.8.0 · 公司级中后台设计规范（单品牌线）· 纯数据包：本目录即分发单元（npm 包 **`@wycm9527/citrine`**，或整个文件夹直接下载），身份文件 `design-system.json`，接入 / 更新由 [design-system-adopter](../../../design-system-adopter/) skill 驱动 · 变更见 [CHANGELOG.md](CHANGELOG.md)
 
 一套已通过 `design-system-steward` `validate-system` / `build-tokens` / `guard` 的 DTCG 设计系统起点。复制进任何项目就是 Core + dark Theme；视觉效果见 `../../previews/yellow-admin/`：`admin.html` 是工作台，`stress.html` 是登录、列表、表单、详情、反馈、折叠侧栏六类页面的压力测试（方案 S 全部由构建产物驱动）。
 
@@ -39,7 +39,7 @@ migration/roles.json                # 旧规范 → 新 token 的角色对照（
 package.json                        # 包定义：exports 暴露 bridge/*、echarts、iconpark.config、vue/*、react/*；peer 依赖全部可选；无 bin——机制代码在 adopter skill 里
 ```
 
-Core 共 315 个 token，构建后 `dist/tokens.css` 的变量名就是 `--color-action-primary`、`--text-body-size`、`--control-height-md`、`--layout-form-label-width`、`--elevation-card-color` 这类形态；`dist/index.css` 把 Core 与两个 Theme 合成一个文件。
+Core 共 321 个 token，构建后 `dist/tokens.css` 的变量名就是 `--color-action-primary`、`--text-body-size`、`--control-height-md`、`--layout-form-label-width`、`--elevation-card-color` 这类形态；`dist/index.css` 把 Core 与两个 Theme 合成一个文件。
 
 ## 用法
 

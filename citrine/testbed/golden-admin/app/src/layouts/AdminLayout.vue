@@ -1,12 +1,20 @@
 <script setup>
 // el-menu-item 不透传 attrs，折叠时只剩图标、没有可访问名称：用指令把 aria-label 写到根元素（DESIGN.md 折叠侧栏配方）
 const vAriaLabel = { mounted: (el, b) => el.setAttribute('aria-label', b.value), updated: (el, b) => el.setAttribute('aria-label', b.value) }
-import { computed } from 'vue'
+import { computed, onBeforeUnmount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { Home, ChartHistogram, Order, Expenses, Shop, Coupon, Riding, Remind, Peoples, User, Search, Moon, Sunny, MenuFold, MenuUnfold, Down } from '@icon-park/vue-next'
+import { Home, ChartHistogram, Order, Expenses, Shop, Coupon, Riding, Remind, Peoples, User, Search, Moon, Sunny, MenuFold, MenuUnfold, HamburgerButton, Down } from '@icon-park/vue-next'
 import { store, roleInfo, canSee, setRole, toggleTheme, ROLES } from '../store'
 
 const route = useRoute(); const router = useRouter()
+// 手机（≤ layout.breakpoint.mobile，字面镜像 768）：侧栏离屏抽屉，汉堡开、遮罩 / 选中菜单关；抽屉里永远是展开形态
+const mqMobile = matchMedia('(max-width: 768px)')
+const isMobile = ref(mqMobile.matches)
+const navOpen = ref(false)
+const onMq = (e) => { isMobile.value = e.matches; navOpen.value = false }
+mqMobile.addEventListener('change', onMq)
+onBeforeUnmount(() => mqMobile.removeEventListener('change', onMq))
+router.afterEach(() => { navOpen.value = false })
 const groups = [
   { title: '概览', items: [{ key: 'dashboard', label: '工作台', to: '/', icon: Home }, { key: 'analytics', label: '数据看板', to: '/analytics', icon: ChartHistogram }] },
   { title: '业务', items: [
@@ -33,10 +41,10 @@ function onCommand(cmd) {
 </script>
 
 <template>
-  <div class="app" :class="{ 'is-collapsed': store.collapsed }">
+  <div class="app" :class="{ 'is-collapsed': store.collapsed, 'is-nav-open': navOpen }">
     <aside class="sidebar">
-      <div class="app-brand"><span class="logo">Y</span><span v-if="!store.collapsed">黄金后台</span></div>
-      <el-menu :default-active="activeKey" :collapse="store.collapsed" :collapse-transition="false" router>
+      <div class="app-brand"><span class="logo">Y</span><span v-if="!store.collapsed || isMobile">黄金后台</span></div>
+      <el-menu :default-active="activeKey" :collapse="store.collapsed && !isMobile" :collapse-transition="false" router>
         <el-menu-item-group v-for="g in visibleGroups" :key="g.title" :title="g.title">
           <el-menu-item v-for="item in g.items" :key="item.key" :index="item.key" :route="item.to" v-aria-label="item.label">
             <el-icon><component :is="item.icon" /></el-icon>
@@ -47,9 +55,12 @@ function onCommand(cmd) {
       <div class="sidebar-foot">{{ store.collapsed ? 'v2.4' : 'v2.4.0 · 设计系统实测' }}</div>
     </aside>
 
+    <button v-if="navOpen" class="sidebar-mask" aria-label="关闭菜单" @click="navOpen = false" />
+
     <div class="main">
       <header class="topbar">
-        <button class="iconbtn" :title="store.collapsed ? '展开菜单' : '折叠菜单'" @click="store.collapsed = !store.collapsed">
+        <button class="iconbtn menu-btn" title="打开菜单" @click="navOpen = true"><HamburgerButton class="i-icon--lg" /></button>
+        <button class="iconbtn collapse-btn" :title="store.collapsed ? '展开菜单' : '折叠菜单'" @click="store.collapsed = !store.collapsed">
           <component :is="store.collapsed ? MenuUnfold : MenuFold" class="i-icon--lg" />
         </button>
         <el-breadcrumb separator="/">

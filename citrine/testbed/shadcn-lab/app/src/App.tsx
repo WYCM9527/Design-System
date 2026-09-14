@@ -2,7 +2,7 @@
 // 同时验证与组件库无关的配方层（recipes.css）和 React 版配方组件（bridge/react）能否直接复用。
 // 壳层用 recipes.css 的 .app / .sidebar / .nav / .topbar / .content；没有路由库，hash 路由手写。
 import * as React from 'react'
-import { LayoutDashboard, ListOrdered, FilePenLine, Boxes, Moon, Sun, PanelLeftClose, PanelLeftOpen, Bell } from 'lucide-react'
+import { LayoutDashboard, ListOrdered, FilePenLine, Boxes, Menu, Moon, Sun, PanelLeftClose, PanelLeftOpen, Bell } from 'lucide-react'
 import { Kitchen } from './pages/Kitchen'
 import { Orders } from './pages/Orders'
 import { Dashboard } from './pages/Dashboard'
@@ -24,14 +24,17 @@ function useHash() {
 export default function App() {
   const path = useHash()
   const route = ROUTES[path] ?? ROUTES['/']
-  const [collapsed, setCollapsed] = React.useState(() => matchMedia('(max-width: 1366px)').matches)
+  const [collapsed, setCollapsed] = React.useState(() => matchMedia('(max-width: 1366px)').matches)   // layout.breakpoint.narrow 字面镜像
+  const [navOpen, setNavOpen] = React.useState(false)   // 手机抽屉（≤ 768，layout.breakpoint.mobile 字面镜像）
+  React.useEffect(() => { setNavOpen(false) }, [path])
+  React.useEffect(() => { const mq = matchMedia('(max-width: 768px)'); const on = () => setNavOpen(false); mq.addEventListener('change', on); return () => mq.removeEventListener('change', on) }, [])
   const [dark, setDark] = React.useState(() => document.documentElement.classList.contains('dark'))
   const toggleTheme = () => { const next = !dark; setDark(next); document.documentElement.classList.toggle('dark', next); localStorage.setItem('sl-theme', next ? 'dark' : 'light') }
   React.useEffect(() => { document.title = `${route.title} · Citrine × shadcn 实验室` }, [route])
   const groups = [...new Set(Object.values(ROUTES).map((r) => r.group))]
   const Page = route.page
   return (
-    <div className={`app${collapsed ? ' is-collapsed' : ''}`}>
+    <div className={`app${collapsed ? ' is-collapsed' : ''}${navOpen ? ' is-nav-open' : ''}`}>
       <aside className="sidebar">
         <div className="app-brand"><span className="logo">C</span>{!collapsed && <span>shadcn 实验室</span>}</div>
         <nav className="nav" aria-label="主导航">
@@ -48,9 +51,11 @@ export default function App() {
         </nav>
         <div className="sidebar-foot">{collapsed ? 'v2.5' : 'v2.5.0 · React + shadcn/ui'}</div>
       </aside>
+      {navOpen && <button className="sidebar-mask" aria-label="关闭菜单" onClick={() => setNavOpen(false)} />}
       <div className="main">
         <header className="topbar">
-          <button className="iconbtn" title={collapsed ? '展开菜单' : '折叠菜单'} onClick={() => setCollapsed(!collapsed)}>{collapsed ? <PanelLeftOpen className="i-icon--lg" /> : <PanelLeftClose className="i-icon--lg" />}</button>
+          <button className="iconbtn menu-btn" title="打开菜单" onClick={() => setNavOpen(true)}><Menu className="i-icon--lg" /></button>
+          <button className="iconbtn collapse-btn" title={collapsed ? '展开菜单' : '折叠菜单'} onClick={() => setCollapsed(!collapsed)}>{collapsed ? <PanelLeftOpen className="i-icon--lg" /> : <PanelLeftClose className="i-icon--lg" />}</button>
           <nav aria-label="面包屑" className="crumbs"><span>{route.group}</span><span className="sep" aria-hidden="true">/</span><span>{route.title}</span></nav>
           <span className="spacer" />
           <button className="iconbtn" title="通知（3 条未读）" aria-label="通知，3 条未读"><Bell className="i-icon--lg" /><span className="unread num">3</span></button>

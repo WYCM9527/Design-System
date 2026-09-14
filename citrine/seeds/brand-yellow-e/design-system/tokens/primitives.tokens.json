@@ -1093,6 +1093,14 @@
           "unit": "px",
           "value": 40
         }
+      },
+      "touch": {
+        "$type": "dimension",
+        "$value": {
+          "value": 44,
+          "unit": "px"
+        },
+        "$description": "粗指针（触屏）的最小命中区，WCAG 2.5.8 AAA / 移动端惯例。"
       }
     },
     "icon": {
@@ -1234,6 +1242,25 @@
       "$value": {
         "unit": "px",
         "value": 400
+      }
+    },
+    "viewport": {
+      "$description": "视口断点原始值。CSS 媒体查询无法引用 var()：recipes / 桥接里的 @media 数值是这两个值的字面镜像（写死并注明），改这里必须同步改镜像（guard 不查媒体查询，靠 CHANGELOG 纪律）。",
+      "narrow": {
+        "$type": "dimension",
+        "$value": {
+          "value": 1366,
+          "unit": "px"
+        },
+        "$description": "窄屏上限（小笔记本 / 平板横屏）：≤ 此宽侧栏默认折叠为图标栏。"
+      },
+      "mobile": {
+        "$type": "dimension",
+        "$value": {
+          "value": 768,
+          "unit": "px"
+        },
+        "$description": "手机上限：< 此宽进入手机形态（侧栏离屏抽屉、单列、浮层全屏化）。"
       }
     }
   },

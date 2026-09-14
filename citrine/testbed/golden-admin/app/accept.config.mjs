@@ -24,6 +24,9 @@ export const DEFAULT_QUERY = { role: 'admin' };
 /** 全组件走查页（没有则设为 null，scan:components 会跳过） */
 export const KITCHEN = '#/kitchen';
 /** 窄屏检查：宽度与页面 */
-export const NARROW = { width: 1366, pages: [['dashboard', '#/'], ['orders', '#/orders'], ['refunds', '#/refunds'], ['analytics', '#/analytics'], ['campaigns-card', '?view=card#/campaigns'], ['members', '#/members'], ['order-detail', '#/orders/20260908-0412'], ['apply', '#/merchants/apply'], ['kitchen', '#/kitchen']] };
+export const NARROW = {   // 三端：narrow 档侧栏折叠，mobile 档侧栏离屏 + 汉堡可开合（DESIGN「三端」）
+  widths: [{ name: 'narrow', width: 1366, expect: 'collapsed' }, { name: 'mobile', width: 390, expect: 'offcanvas', pages: [['dashboard', '#/'], ['orders', '#/orders'], ['refunds', '#/refunds'], ['analytics', '#/analytics'], ['campaigns-card', '?view=card#/campaigns'], ['members', '#/members'], ['order-detail', '#/orders/20260908-0412'], ['apply', '#/merchants/apply'], ['kitchen', '#/kitchen']].filter(([n]) => n !== 'kitchen') }],
+  pages: [['dashboard', '#/'], ['orders', '#/orders'], ['refunds', '#/refunds'], ['analytics', '#/analytics'], ['campaigns-card', '?view=card#/campaigns'], ['members', '#/members'], ['order-detail', '#/orders/20260908-0412'], ['apply', '#/merchants/apply'], ['kitchen', '#/kitchen']]
+};
 /** Tab 焦点遍历：名字 → 页面 */
 export const FOCUS = { pages: { orders: '#/orders', apply: '#/merchants/apply' }, steps: 80 };

@@ -607,6 +607,11 @@
       "$type": "dimension",
       "$value": "{spacing.0-5}",
       "$description": "分段选择器：外胶囊到选中内胶囊的内缩。外壳高 = control.height.*，内胶囊高 = 外壳 − 2 × inset − 2 × 发丝线。"
+    },
+    "hit-touch": {
+      "$type": "dimension",
+      "$value": "{size.control.touch}",
+      "$description": "触屏命中区：pointer: coarse 下操作胶囊 / 图标按钮 / 条件标签 × 的最小高度，视觉字号与描边不变。"
     }
   },
   "icon": {
@@ -748,6 +753,17 @@
         "$type": "dimension",
         "$value": "{size.auth-card}",
         "$description": "登录卡片宽度。"
+      }
+    },
+    "breakpoint": {
+      "$description": "三端断点（桌面 ≥ narrow+1 / 窄屏(平板) mobile…narrow / 手机 < mobile）。给 JS matchMedia 与文档用；CSS 媒体查询里是字面镜像。项目可按 PRD 覆盖（如轻采窄屏线 1280）。",
+      "narrow": {
+        "$type": "dimension",
+        "$value": "{size.viewport.narrow}"
+      },
+      "mobile": {
+        "$type": "dimension",
+        "$value": "{size.viewport.mobile}"
       }
     }
   },

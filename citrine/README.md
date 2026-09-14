@@ -4,7 +4,7 @@
 
 ![Citrine · 实测项目「黄金后台」亮 / 暗模式](docs/screenshots/hero.png)
 
-版本 **2.7.0** · Core 315 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
+版本 **2.8.0** · Core 321 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
 
 ---
 
@@ -113,6 +113,12 @@ node <Design-System>/skills/design-system-steward/scripts/guard.mjs --project "$
 | --- | --- |
 | ![](docs/screenshots/procure-report-light.png) | ![](docs/screenshots/procure-org-dark.png) |
 
+**手机档（390px，2.8.0 三端）**：侧栏离屏抽屉 + 汉堡，表格保留全列内部滚动，浮层贴底全宽，触控命中 44。
+
+| 订单管理 · 手机 | 轻采工作台 · 手机 |
+| --- | --- |
+| ![](docs/screenshots/admin-orders-mobile.png) | ![](docs/screenshots/procure-dashboard-mobile.png) |
+
 **React + shadcn/ui 实验室**（[`testbed/shadcn-lab/`](testbed/shadcn-lab/)）：第二条消费路径的渲染验证——按 shadcn new-york 源码手写 21 个组件接种子的 `bridge/shadcn-globals.css`，页面骨架直接复用与组件库无关的 `recipes.css`，配方组件用 `bridge/react/`。全组件走查揪出 8 处需要组件级接管的地方（Tailwind 根字号与 rem 刻度冲突、提示框黄底、遮罩写死黑色、骨架 / 进度轨道、表头与 hover、标签页浮块、勾选命中区、焦点双环），全部修在桥接里；同一套验收工具跑通（页面 × 亮暗、80 个交互元素走查、窄屏、焦点），见 [FINDINGS.md](testbed/shadcn-lab/FINDINGS.md)。
 
 | 组件走查 · 亮色 | 工作台 · 暗色（与 Vue 版同形） |
@@ -139,7 +145,7 @@ patch 只改描述、文档，以及让组件库遵守既有规则的桥接修�
 ## 已知边界
 
 - shadcn/ui 桥接已在 React 实验项目渲染验证并跑全组件走查（21 个组件、80 个交互元素）；未覆盖的 shadcn 组件（Sheet、Command、Calendar、DataTable、Sonner 等）接入时先按 DESIGN「组件库对照」类推，再跑走查。
-- 只确认了桌面宽度（≥ 1280px）的布局；断点规则等真实需求出现时再作为提案加入。
+- 三端（桌面 / 窄屏 / 手机）已覆盖：断点 token + recipes / 桥接的手机形态 + `check-narrow` 多档验收（见 DESIGN「三端」）。手机目标是**可用**（导航抽屉、表格内部滚动、浮层贴底全宽、触控命中 44），不做底部 Tab 导航与列表卡片化——真实移动端需求出现时再作为配方提案。
 - 走查页未铺 Tour、Watermark、Affix、Backtop、InfiniteScroll、TableV2 等依赖滚动或运行时的组件。
 - 两个 npm 包（`@wycm9527/citrine`、`@wycm9527/citrine-tools`）已可 `npm pack`，但尚未 `npm publish`：需要决定 scope / 包名与发布账号；仓库内实测项目用 `file:` 链接消费。
 - Figma 变量尚未与 token 同步。治理工具的四个已知缺陷（尺寸匹配不看属性、注释里的值被计数、`settle --apply` 只写豁免、guard / status 分工不清）已在 [WYCM9527/skills](https://github.com/WYCM9527/skills) 的 `design-system-steward` 0.6.0 修正，本仓库默认克隆的就是它。

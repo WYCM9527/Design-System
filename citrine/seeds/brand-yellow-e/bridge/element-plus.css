@@ -352,6 +352,18 @@
 
 /* Element 内置图标（下拉箭头、关闭、勾）是自带的 SVG，与 IconPark 风格并存——这是接入真实组件库不可避免的妥协，见 DESIGN.md 图标一节 */
 
+/* ---- 手机（≤ 768，layout.breakpoint.mobile 的字面镜像）：浮层全宽化。宽度覆盖组件内联 style 必须 !important（桥接层允许，页面层禁止） ---- */
+@media (max-width: 768px) {
+  .el-dialog, .el-dialog.is-sm, .el-dialog.is-md { width: 100vw !important; max-width: 100vw; margin: auto 0 0; border-radius: var(--radius-xl) var(--radius-xl) 0 0; }   /* 贴底、只留顶部圆角 */
+  .el-overlay-dialog { display: flex; align-items: flex-end; }
+  .el-dialog__body { max-height: 70dvh; overflow: auto; }
+  .el-drawer.rtl, .el-drawer.ltr { width: 100% !important; border-radius: 0; }
+  .el-message-box { width: calc(100vw - var(--spacing-4) * 2); max-width: calc(100vw - var(--spacing-4) * 2); }
+  .el-pagination { flex-wrap: wrap; row-gap: var(--spacing-2); justify-content: center; }
+  .el-pagination .el-pagination__sizes, .el-pagination .el-pagination__jump { display: none; }   /* 手机收敛：页码为主 */
+  .el-breadcrumb__item:not(:last-child) { display: none; }   /* 顶栏面包屑只留当前页 */
+}
+
 /* ---- 键盘焦点：全局兜底 ----
    Element 自带的焦点环用主色画（复选框、开关、分页、单选按钮组），品牌黄在白底上 1.5:1 等于没有；菜单项、标签页、下拉项又被写死 outline:none。
    统一为近黑实线（暗色近白）+ 1px 偏移；行内型控件（菜单项、标签页、下拉项）改为内缩，避免被容器裁掉。 */

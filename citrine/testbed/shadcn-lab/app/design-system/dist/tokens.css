@@ -160,6 +160,8 @@
   --size-control-xs: 24px;
   --control-height-xs: var(--size-control-xs);
   --control-hit-min: var(--size-control-xs);
+  --size-control-touch: 44px;
+  --control-hit-touch: var(--size-control-touch);
   --spacing-0-5: 2px;
   --control-segmented-inset: var(--spacing-0-5);
   --duration-fast: 150ms;
@@ -237,6 +239,10 @@
   --layer-toast: var(--z-1000);
   --size-auth-card: 400px;
   --layout-auth-card-width: var(--size-auth-card);
+  --size-viewport-mobile: 768px;
+  --layout-breakpoint-mobile: var(--size-viewport-mobile);
+  --size-viewport-narrow: 1366px;
+  --layout-breakpoint-narrow: var(--size-viewport-narrow);
   --size-drawer: 480px;
   --layout-drawer-width: var(--size-drawer);
   --size-form-label: 112px;

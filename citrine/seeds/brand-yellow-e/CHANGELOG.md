@@ -2,6 +2,15 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.8.0 — 2026-09-14（三端适配：桌面 / 窄屏 / 手机）
+
+- **断点与触控 token**（Core 315 → 321）：`layout.breakpoint.narrow`（1366，窄屏上限，侧栏默认折叠）、`layout.breakpoint.mobile`（768，手机上限）、`control.hit-touch`（44，粗指针命中区）+ 对应 primitives（`size.viewport.*`、`size.control.touch`）。CSS 媒体查询无法引用 var()：recipes / 桥接里的 `@media` 数值是 token 的**字面镜像**，改 token 必须同步改镜像。
+- **DESIGN 新章「三端」**：三端形态表（侧栏 展开 / 折叠 / 离屏抽屉、留白收紧、统计卡 4→2→1、表单单列、表格保留全列内部滚动、浮层贴底全宽、分页收敛、触控命中 44）；明确不做底部 Tab 与列表卡片化（手机目标是可用，不是移动优先重设计）；替换旧的「≤1440 折叠」与「只确认桌面宽度」条目（1440 是文档漂移，实现一直是 1366）。
+- **recipes 三端实现**：手机档侧栏离屏抽屉（`.menu-btn` 汉堡 / `.sidebar-mask` 遮罩 / `.is-nav-open`，`.collapse-btn` 手机隐藏；`.is-collapsed` 的折叠样式在抽屉里全部还原）、`.stats` 降列、筛选与表单单列（`.form-grid` 全面改 `minmax(0,1fr)`——行内录入表格不得撑破网格）、页头动作区整行换下（覆盖桌面 `flex:none`）、卡头 / 批量条换行且「已选 N 项」不竖排、`.crumbs` 手机只留当前页、`.content` 留白收紧、`pointer: coarse` 下命中区升 `hit-touch`。
+- **桥接手机档**：Element `el-dialog` 贴底全宽（顶部圆角）+ body 内滚、`el-drawer` 全宽、`el-message-box` 自适应、分页收敛（去 sizes / jumper）、面包屑只留当前页；shadcn `dialog-content / alert-dialog-content` 贴底全宽、`sheet-content` 全宽。宽度覆盖组件内联 style 的 `!important` 只允许出现在桥接层。
+- **验收工具 `check-narrow` 泛化为多档**：`NARROW.widths: [{ name, width, expect: 'collapsed' | 'offcanvas', pages? }]`——offcanvas 档验证侧栏离屏、汉堡唤出抽屉、遮罩关闭、文档级无横向溢出；档位可用自己的 pages 剔除组件走查页（固宽组件面板不属于「手机可用」目标）。旧形态 `{ width, pages }` 继续支持。
+- 三个实测项目壳层接手机抽屉（`navOpen` + `el-menu :collapse="collapsed && !isMobile"`），narrow（1366 / 1280）与 mobile（390）双档全绿；工作副本经 `ds.mjs upgrade` 从 2.7.0 升级（键级合并路径实测）。
+
 ## 2.7.0 — 2026-09-14（纯数据包：身份文件 + 模板 + 角色对照，机制移入 design-system-adopter skill）
 
 - **新增身份文件 `design-system.json`**：id / 名称 / 版本 / upstream（仓库 · 子路径 · tag 前缀 `citrine-v` · npm 包名）/ 两个栈的入口、模板与脚手架指针 / 验收工具 / 迁移对照表 / `owned` 上游文件清单。任何带此文件且 upstream 指向本仓库的目录都会被 adopter skill 识别为「我们的设计系统」；用户自建的 `design-system/` 不受影响。

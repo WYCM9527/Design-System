@@ -30,5 +30,8 @@ export const PAGES = [
 
 export const DEFAULT_QUERY = { role: 'admin' };
 export const KITCHEN = null;   // 全组件走查在黄金后台做一次，这里复用结论
-export const NARROW = { width: 1280, pages: [['dashboard', '#/'], ['applications', '#/applications'], ['application-new', '?role=applicant#/applications/new'], ['application-detail', '#/applications/pd1'], ['approvals', '?role=approver#/approvals'], ['assets', '#/assets'], ['report', '#/report'], ['org', '#/org'], ['roles', '#/roles'], ['settings', '#/settings'], ['logs', '#/logs']] };
+export const NARROW = {   // 三端：narrow 档侧栏折叠，mobile 档侧栏离屏 + 汉堡可开合（DESIGN「三端」）
+  widths: [{ name: 'narrow', width: 1280, expect: 'collapsed' }, { name: 'mobile', width: 390, expect: 'offcanvas' }],
+  pages: [['dashboard', '#/'], ['applications', '#/applications'], ['application-new', '?role=applicant#/applications/new'], ['application-detail', '#/applications/pd1'], ['approvals', '?role=approver#/approvals'], ['assets', '#/assets'], ['report', '#/report'], ['org', '#/org'], ['roles', '#/roles'], ['settings', '#/settings'], ['logs', '#/logs']]
+};
 export const FOCUS = { pages: { applications: '#/applications', 'application-new': '?role=applicant#/applications/new', approvals: '?role=approver#/approvals', settings: '#/settings' }, steps: 80 };

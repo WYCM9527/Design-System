@@ -162,6 +162,12 @@
 [data-slot="dropdown-menu-item"]:focus, [data-slot="select-item"]:focus, [data-slot="dropdown-menu-checkbox-item"]:focus, [data-slot="dropdown-menu-radio-item"]:focus, [data-slot="dropdown-menu-sub-trigger"]:focus { background-color: var(--color-bg-hover); color: var(--color-text-primary); }
 [data-slot="select-item"][data-state="checked"] { color: var(--color-text-selected); font-weight: var(--text-weight-label); }
 
+/* ── 手机（≤ 768，layout.breakpoint.mobile 的字面镜像）：浮层全宽贴底，与 Element 桥接同一形态 ── */
+@media (max-width: 768px) {
+  [data-slot="dialog-content"], [data-slot="alert-dialog-content"] { top: auto; bottom: 0; left: 0; translate: none; transform: none; max-width: 100vw; width: 100vw; border-radius: var(--radius-xl) var(--radius-xl) 0 0; max-height: 85dvh; overflow: auto; }
+  [data-slot="sheet-content"] { width: 100vw !important; max-width: 100vw; }
+}
+
 /* 键盘焦点兜底与减少动态效果，与 element-plus.css 同一份约定（shadcn 组件自带 data-slot，走上面的 ring 模型，不再叠 outline） */
 :where(a, button, [role="button"], [role="menuitem"], [role="tab"], summary, [tabindex]:not([tabindex="-1"])):not([data-slot]):focus-visible { outline: var(--border-width-active) solid var(--color-border-focus); outline-offset: 1px; }
 @media (prefers-reduced-motion: reduce) {
