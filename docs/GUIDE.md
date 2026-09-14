@@ -53,6 +53,39 @@ steward 不用手动装：Agent 走到需要构建时会先找（`~/.cursor/skil
 
 > 把种子文件夹拷进项目后，`init` 会把它复制成 `design-systems/citrine/` 快照，之后原始下载目录可以删。
 
+### 2b. 小白版：整段交给 AI
+
+不想碰命令行的同学，打开 Cursor（或 Codex / Claude Code）的 Agent，把下面整段原文粘贴发送即可。它会自己检查环境、下载、安装、自检，只在两处需要你开口（项目名、仓库权限），装好后问你一句「新项目还是旧项目换新」就接着走。
+
+> 你现在全权负责把公司设计系统 **Citrine** 的整套工作流装进这台电脑的项目里。我是小白，不要问我技术问题：能自动判断的全部自动做，只在标注【必须问我】的地方停下来问；每一步先用一句话说你在做什么，做完把结果给我看；任何一步失败就停下，用大白话告诉我原因和我该做什么，不要自己换别的办法绕过去。
+>
+> **一、环境检查**（缺什么装什么；装系统软件前先告诉我一句再装）
+> 1. Node.js 版本 ≥ 22（`node -v`）。没有或太旧：macOS 用 `brew install node`（没有 brew 就去 nodejs.org 下载 LTS 安装包），Windows 用 `winget install OpenJS.NodeJS.LTS`。
+> 2. git（`git --version`）。没有：macOS 跑 `xcode-select --install`，Windows `winget install Git.Git`。
+> 3. Google Chrome（验收截图要用）。没有就装。
+> 4. 看当前目录：已经是前端项目（有 `package.json`）就在这里装；不是的话【必须问我】项目叫什么名字，然后新建这个文件夹、进入、`git init`。
+>
+> **二、下载仓库**（私有仓库）
+> `git clone --depth 1 https://github.com/WYCM9527/Design-System.git /tmp/ds`
+> 如果失败且提示 403 / 404 / authentication / permission：停下，告诉我「需要请管理员把你的 GitHub 账号加进 WYCM9527/Design-System 仓库，然后在这台电脑登录 GitHub（推荐 `gh auth login`）」，等我说「好了」再重试。不要尝试其他下载方式。
+>
+> **三、安装四件东西**（在项目目录里）
+> 1. skill：`mkdir -p .cursor/skills && cp -R /tmp/ds/design-system-adopter .cursor/skills/`。如果你不是在 Cursor 里运行，就装到你自己的 skill 目录（Codex 是 `~/.codex/skills/`，Claude Code 是项目 `.claude/skills/`）。
+> 2. 设计系统种子：`npm i file:/tmp/ds/citrine/seeds/brand-yellow-e`
+> 3. 验收与构建工具：`npm i -D file:/tmp/ds/citrine/tools style-dictionary@5.5.2`
+> 4. 治理工具：`node .cursor/skills/design-system-adopter/scripts/ds.mjs steward locate`；如果输出「未找到」，就跑 `node .cursor/skills/design-system-adopter/scripts/ds.mjs steward install`。
+>
+> **四、自检**（四条都要通过才算装好，任何一条不过就回到对应步骤重做）
+> - `node .cursor/skills/design-system-adopter/scripts/ds.mjs detect` 的输出里有 `citrine`（来源 npm）
+> - `node .cursor/skills/design-system-adopter/scripts/ds.mjs steward locate` 输出一个路径
+> - 文件 `.cursor/skills/design-system-adopter/SKILL.md` 存在
+> - 文件 `node_modules/.bin/citrine-accept` 存在
+>
+> **五、收尾**
+> - 在 `.gitignore` 里确保有 `node_modules/`、`.accept/`、`.adopter-conflicts.json` 三行（没有就加）。
+> - 通读一遍 `.cursor/skills/design-system-adopter/SKILL.md`。
+> - 用大白话向我汇报：装了哪四样、各放在哪、自检结果。然后只问我一个问题：「这个项目是**从 0 开始**的新项目，还是要把**现有项目换成公司规范**？」我回答后，按 SKILL.md 对应的剧本继续，不要自己发明步骤。
+
 ## 3. 场景 A：新项目从 0 开始
 
 对 Agent 说（可直接粘贴，改栈名即可）：

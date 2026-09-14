@@ -25,7 +25,7 @@ npm i file:/tmp/ds/citrine/seeds/brand-yellow-e      # npm 渠道（发到 regis
 npm i -D file:/tmp/ds/citrine/tools                   # 验收工具（发布后：npm i -D @wycm9527/citrine-tools）
 ```
 
-完整上手教程（四件东西的关系、三个场景的提示词与拍板点、命令速查、常见问题）见 [docs/GUIDE.md](docs/GUIDE.md)。
+完整上手教程（四件东西的关系、三个场景的提示词与拍板点、命令速查、常见问题）见 [docs/GUIDE.md](docs/GUIDE.md)；不想碰命令行的同学直接粘贴教程 [2b 节的「小白版」整段提示词](docs/GUIDE.md#2b-小白版整段交给-ai)，AI 会自己检查环境、下载、安装、自检。
 
 然后对 Agent 说一句话即可，skill 会问「从 0 开始 / 更换现有规范 / 只更新」并走完全流程（接入 → 构建 → 接线 → 项目规则 → 验收）。三段可直接粘贴的提示词：
 
