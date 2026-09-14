@@ -45,10 +45,9 @@ URL 形如 `index.html?theme=dark&state=empty#/orders`：
 
 ```text
 app/
-├── design-system/            # 种子副本 + 本项目的 exemptions.json
-├── accept.config.mjs         # 验收清单（citrine/tools 读取）
-├── src/styles/globals.css    # 样式入口顺序：Element Plus → 设计系统 dist → 桥接 → 配方层 recipes.css → 项目补充 app.css
-├── src/styles/bridge/        # 种子 bridge/ 的同步副本（element-plus.css / iconpark.css / echarts.js / recipes.css / vue/）
+├── design-system/            # 由 citrine init / upgrade 维护的上游文件（.citrine.json 清单）+ 本项目的 exemptions.json
+├── accept.config.mjs         # 验收清单（citrine-accept 读取）
+├── src/styles/globals.css    # 样式入口顺序：Element Plus → 设计系统 dist → @wycm9527/citrine 的桥接 → 配方层 recipes.css → 项目补充 app.css（桥接与配方组件从包 import，无副本）
 ├── src/layouts/AdminLayout.vue
 ├── src/pages/                # Login / Dashboard / Orders / OrderDetail / Merchants / MerchantForm / MerchantApply / MerchantDetail / Refunds / Campaigns / Members
 │                             # Analytics / Riders / Notices / NoticeDetail / Profile；异常页 Forbidden / NotFound / ServerError；组件走查页 KitchenSink

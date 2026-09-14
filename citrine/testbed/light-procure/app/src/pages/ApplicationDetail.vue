@@ -4,7 +4,7 @@
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {ElMessage } from 'element-plus'
-import { confirmBox } from '../styles/bridge/vue/confirm.js'
+import { confirmBox } from '@wycm9527/citrine/vue/confirm.js'
 import { Left, Pic, FilePdf, FileFailed } from '@icon-park/vue-next'
 import { db } from '../data/db'
 import { session, can, demoState, demoParam } from '../data/session'

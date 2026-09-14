@@ -1,7 +1,7 @@
 <script setup>
 import { computed, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
-import { confirmBox } from '../styles/bridge/vue/confirm.js'
+import { confirmBox } from '@wycm9527/citrine/vue/confirm.js'
 import { riders, orders, tone } from '../mock/data'
 import { can } from '../store'
 

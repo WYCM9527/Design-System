@@ -2,7 +2,7 @@
 
 > 种子目录代号仍是 `brand-yellow-e`（脚本与文档中的路径不变）；系统名称 Citrine（黄晶）见仓库根 README。
 
-版本 2.5.0 · 公司级中后台设计规范（单品牌线）· 变更见 [CHANGELOG.md](CHANGELOG.md)
+版本 2.6.0 · 公司级中后台设计规范（单品牌线）· npm 包 **`@wycm9527/citrine`**（本目录即包根，`npm pack` 直接可发）· 变更见 [CHANGELOG.md](CHANGELOG.md)
 
 一套已通过 `design-system-steward` `validate-system` / `build-tokens` / `guard` 的 DTCG 设计系统起点。复制进任何项目就是 Core + dark Theme；视觉效果见 `../../previews/yellow-admin/`：`admin.html` 是工作台，`stress.html` 是登录、列表、表单、详情、反馈、折叠侧栏六类页面的压力测试（方案 S 全部由构建产物驱动）。
 
@@ -23,7 +23,8 @@ design-system/
 ├── scope-map.json                  # 空；局部规范在目标项目里按证据登记
 ├── style-dictionary.config.mjs
 └── dist/                           # 空，在目标项目里构建
-bridge/shadcn-globals.css           # shadcn/ui + Tailwind v4 桥接：契约变量、@theme inline（字体 / 字号 / 阴影 / 动效）、@layer base 边线色，以及按 data-slot 的组件级接管（控件三档高度、命中区、焦点环、提示框、遮罩、骨架 / 进度、表格、标签页、菜单项）；2.5.0 起在 React 实验项目渲染验证
+bridge/shadcn.css                   # shadcn/ui + Tailwind v4 桥接本体（可直接从包 @import）：契约变量、@theme inline（字体 / 字号 / 阴影 / 动效）、@layer base 边线色，以及按 data-slot 的组件级接管（控件三档高度、命中区、焦点环、提示框、遮罩、骨架 / 进度、表格、标签页、菜单项）；在 React 实验项目渲染验证
+bridge/shadcn-globals.css           # 复制式接入用的 globals.css 模板：Tailwind → dist → shadcn.css → recipes.css 四行 import
 bridge/element-plus.css             # Element Plus 桥接：--el-* 全部指向 token；按 Element 2.14 全部组件走查逐条接管主色 / 焦点 / 写死色表与写死高度，与实测项目 #/kitchen 走查页配套
 bridge/echarts.js                   # ECharts 桥接：运行时读 token 生成主题（轴 / 网格 / 图例 / 提示框 / 折线 / 柱 / 饼默认形态）与趋势折线、面积渐变配方；亮暗切换后重注册
 bridge/iconpark.css                 # IconPark 图标桥接：尺寸六档、角色色、小图标粗描边（预览页直接引用这份）
@@ -31,21 +32,65 @@ bridge/iconpark.config.ts           # IconPark 全局配置片段 + 激活态 / 
 bridge/recipes.css                  # 配方层：DESIGN「页面骨架 / 组件配方」的可复制实现——壳层、页头、卡片区块、链接四层、状态胶囊、筛选栏 / 条件标签 / 批量条 / 分页、表单页、结果页、空态 / 加载失败、图表容器、统计卡网格 / 状态条、打印；与组件库无关，只引用 token
 bridge/echarts.d.ts                 # echarts.js 的类型声明（TypeScript / React 项目）
 bridge/react/                       # 配方组件（React + shadcn/ui）：StatCard / EChart / TrendChart / TableSkeleton / ConfirmBar + useInlineConfirm，与 vue/ 同形，样式共用 recipes.css
-bridge/vue/                         # 配方组件（Vue 3 + Element Plus）：StatCard（统计卡，含 hint 口径说明）、EChart（图表容器，追踪 option 里的响应式数据，亮暗切换重建）、TrendChart（趋势折线，计数型自动整数刻度）、TableSkeleton（表格骨架）、confirm.js（确认弹窗，关闭后焦点回到触发元素）
+bridge/vue/                         # 配方组件（Vue 3 + Element Plus）：StatCard（统计卡，含 hint 口径说明）、EChart（图表容器，追踪 option 里的响应式数据，亮暗切换重建）、TrendChart（趋势折线，计数型自动整数刻度）、TableSkeleton（表格骨架）、ConfirmBar + inlineConfirm.js（浮层内原位确认）、confirm.js（页面级确认弹窗，关闭后焦点回到触发元素）
+bin/citrine.mjs                     # citrine CLI：init（落 design-system/ 并打印接线）· manifest（给已复制的项目补清单）· upgrade（按清单升级上游文件，本地改过的跳过）· status
+package.json                        # 包定义：exports 暴露 bridge/*、echarts、iconpark.config、vue/*、react/*；peer 依赖全部可选
 ```
 
 Core 共 315 个 token，构建后 `dist/tokens.css` 的变量名就是 `--color-action-primary`、`--text-body-size`、`--control-height-md`、`--layout-form-label-width`、`--elevation-card-color` 这类形态；`dist/index.css` 把 Core 与两个 Theme 合成一个文件。
 
 ## 用法
 
+两层，各有各的分发方式：
+
+- **`design-system/`（token、DESIGN、主题、scope / theme 登记）落到项目里**——steward 要在项目内治理它（Guard、Scope、豁免），所以它是项目自己的一份，由 `citrine` CLI 落地并按版本升级。
+- **`bridge/`（桥接、配方、配方组件）直接从包 import**——项目里不放副本，升级包就是升级桥接。
+
 ```bash
-cp -R design-system /path/to/project/            # 目标项目里不能已有 design-system/
-cd /path/to/project && npm i -D style-dictionary@5.5.2
-node <skill>/scripts/build-tokens.mjs --project /path/to/project     # 生成 dist/tokens.css、dist/themes/dark.css、dist/index.css
-node <skill>/scripts/guard.mjs --project /path/to/project            # 应为 current
+npm i @wycm9527/citrine && npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2
+npx citrine init --stack element        # 或 --stack shadcn；项目里不能已有 design-system/。落 8 个上游文件 + .citrine.json 清单，并打印这个栈的接线步骤
+node <skill>/scripts/build-tokens.mjs --project $PWD     # 生成 dist/tokens.css、dist/themes/dark.css、dist/index.css
+node <skill>/scripts/guard.mjs --project $PWD            # 应为 current
 ```
 
-然后按 skill 流程走：`integrate` 把 `dist/index.css` 接进全局样式入口；用 shadcn 就把 `bridge/shadcn-globals.css` 作为 `globals.css`（它自己 `@import "tailwindcss"`，只需改 dist 的相对路径），再引 `recipes.css`，组件用 `bridge/react/`（对照表见 DESIGN「组件库对照：shadcn/ui」）；用 Element Plus 就在 Element 样式之后引入 `bridge/element-plus.css`（不要再引 Element 的 dark css-vars，暗色由 dist 间接生效）；**再引入 `bridge/recipes.css`**——页面骨架的公共类都在这里，项目只写业务页面，不重写页头 / 筛选栏 / 状态胶囊 / 表单页 / 空态这些结构（把 `bridge/` 复制进项目的 `src/styles/bridge/`——Element Plus 项目不要带上 `shadcn-globals.css` 与 `iconpark.config.ts`，它们的变量定义会被 `status` 当成待决项；Vue 项目直接 import `bridge/vue/*.vue`）；存量硬编码用 `migrate` 分层统一；`status` 看进度。完整的 Vue 3 + Element Plus 接入范例见 `../../testbed/golden-admin/`（18 页）与 `../../testbed/light-procure/`（试点：12 页从零按文档接入）；React + shadcn/ui 见 `../../testbed/shadcn-lab/`。
+样式入口（Element Plus）：
+
+```css
+@import "element-plus/dist/index.css";
+@import "../../design-system/dist/index.css";
+@import "@wycm9527/citrine/bridge/element-plus.css";   /* 逐组件桥接；不要再引 Element 的 dark css-vars */
+@import "@wycm9527/citrine/bridge/iconpark.css";
+@import "@wycm9527/citrine/bridge/recipes.css";        /* 页面骨架公共类 */
+@import "./app.css";                                    /* 项目自己的补充，只引用 token */
+```
+
+样式入口（shadcn/ui + Tailwind v4）：
+
+```css
+@import "tailwindcss";
+@import "../../design-system/dist/index.css";
+@import "@wycm9527/citrine/bridge/shadcn.css";         /* 契约变量 + @theme inline + 按 data-slot 的组件接管 */
+@import "@wycm9527/citrine/bridge/recipes.css";
+@import "./app.css";
+```
+
+配方组件与图表：`import StatCard from '@wycm9527/citrine/vue/StatCard.vue'`、`import { StatCard } from '@wycm9527/citrine/react/StatCard'`、`import { registerTheme, trendLine, rankBars } from '@wycm9527/citrine/echarts'`、`import { iconParkDefaults } from '@wycm9527/citrine/iconpark.config'`。包里是 `.vue` / `.tsx` 源码，Vite 配 `optimizeDeps.exclude: ['@wycm9527/citrine']` 交给框架插件编译（仓库内三个实测项目用 `file:` 链接消费同一份源码，另加 `resolve.preserveSymlinks: true`；发布后的真实安装不需要）。
+
+然后写项目规则 `AGENTS.md`（三行 steward 规则 + 项目接线，样板见 `../../testbed/light-procure/app/AGENTS.md` 与 `../../testbed/shadcn-lab/app/AGENTS.md`；新增项目规则需要用户确认），页面只写业务——页头 / 筛选栏 / 状态胶囊 / 操作胶囊 / 表单页 / 空态 / 统计卡 / 原位确认条都是现成配方；存量硬编码用 `migrate` 分层统一，`status` 看进度；验收用 `citrine-accept all`（见 `../../tools/README.md`）。
+
+### 升级
+
+```bash
+npm update @wycm9527/citrine
+npx citrine status            # 清单版本 vs 包版本，哪些上游文件被本地改过
+npx citrine upgrade --dry-run # 预览：更新 / 新增 / 保留（本地改过的）
+npx citrine upgrade           # 本地没改过的上游文件直接更新；改过的跳过并列出（--force 覆盖）；打印两版之间的 CHANGELOG 标题
+node <skill>/scripts/build-tokens.mjs --project $PWD && node <skill>/scripts/guard.mjs --project $PWD && npx citrine-accept all
+```
+
+上游文件 = tokens / DESIGN.md / THEME.md / style-dictionary.config.mjs / scope-map.json / theme-map.json；项目自己的 `exemptions.json` / `MIGRATION.md` / `scopes/` / `dist/` 永远不碰。已经手工复制过 `design-system/` 的老项目先 `npx citrine manifest` 建清单，再走同一条升级路。版本策略：描述 / 文档 / 桥接修正是 patch，新增或修改 token、新产物是 minor，重命名 / 删除是 major——minor 升级页面像素会变，属预期，看 CHANGELOG 决定是否需要页面配合。
+
+完整的 Vue 3 + Element Plus 接入范例见 `../../testbed/golden-admin/`（18 页）与 `../../testbed/light-procure/`（试点：12 页从零按文档接入）；React + shadcn/ui 见 `../../testbed/shadcn-lab/`。
 
 ## 这套颜色的硬规则（写进了 token 描述）
 

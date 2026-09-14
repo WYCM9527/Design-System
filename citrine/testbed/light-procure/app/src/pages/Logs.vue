@@ -3,7 +3,7 @@
 // 列表页约定见 AGENTS.md；演示参数放在 # 之前：?state=loading|error|empty、?drawer=<logId>。
 import { computed, reactive, ref, onMounted } from 'vue'
 import { Refresh, Attention, Log as LogIcon, FileSearch, ArrowRight } from '@icon-park/vue-next'
-import TableSkeleton from '../styles/bridge/vue/TableSkeleton.vue'
+import TableSkeleton from '@wycm9527/citrine/vue/TableSkeleton.vue'
 import { db } from '../data/db'
 import { session, rememberList, recallList, demoState, demoParam } from '../data/session'
 import { listLogs, moduleLabel } from '../data/api'

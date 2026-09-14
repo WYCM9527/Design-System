@@ -1,10 +1,10 @@
 # 验收工具
 
-DESIGN.md「验收基线」的执行者，仓库级、对任意实测项目运行。全部基于无头 Chrome + 原生 CDP，只需要 **Node ≥ 22** 和本机的 Google Chrome（找不到时用环境变量 `CHROME` 指定可执行文件）；没有 npm 依赖。输出（截图、`report.json`）写到 `tools/out/<项目名>/`，已在 `.gitignore` 里。
+DESIGN.md「验收基线」的执行者，对任意项目运行。发布为 npm 包 **`@wycm9527/citrine-tools`**（命令 `citrine-accept`），仓库内的实测项目通过 `file:../../../tools` 消费同一份源码。全部基于无头 Chrome + 原生 CDP，只需要 **Node ≥ 22** 和本机的 Google Chrome（找不到时用环境变量 `CHROME` 指定可执行文件）；没有 npm 依赖。输出（截图、`report.json`）写到项目内 `.accept/`（加进 `.gitignore`；`--out <dir>` 或 `CITRINE_OUT` 可改）。
 
 ## 项目怎么接
 
-1. 在项目 `app/` 目录放一份 `accept.config.mjs`（见 `testbed/golden-admin/app/accept.config.mjs`、`testbed/light-procure/app/accept.config.mjs`）：
+1. 在项目目录放一份 `accept.config.mjs`（见 `testbed/golden-admin/app/accept.config.mjs`、`testbed/light-procure/app/accept.config.mjs`）：
 
    ```js
    export const PAGES = [['dashboard', '#/'], ['orders-empty', '?state=empty#/orders'], …]   // 名字 → 「?演示参数#路由」
@@ -15,27 +15,34 @@ DESIGN.md「验收基线」的执行者，仓库级、对任意实测项目运�
    ```
 
    演示参数放在 `#` 之前，页面用 `location.search` 读（不要用路由 query）。挂载点 `#app` 或 `#root` 都可以；组件走查页的浮层触发器带 `data-ks-open`（Element 的 `.el-popper` 与 Radix / shadcn 的 popper、`role=menu|listbox|tooltip` 都能识别），弹层带 `data-ks-modal`（`.el-overlay` 或 `role=dialog|alertdialog`）。探针能解析 `rgb()` 之外的 `oklab / oklch / color()` 计算值（Tailwind v4 的 `color-mix`）。
-2. `package.json` 的脚本指向 `citrine/tools`（目标项目缺省是当前目录，也可 `--project <appDir>`）：
+2. 装包并在 `package.json` 里接命令（目标项目缺省是当前目录，也可 `--project <appDir>`）：
+
+   ```bash
+   npm i -D @wycm9527/citrine-tools        # 仓库内实测项目用 "file:../../../tools"
+   ```
 
    ```json
-   "scan:pages": "node ../../../tools/scan-pages.mjs",
-   "check:narrow": "node ../../../tools/check-narrow.mjs",
-   "check:focus": "node ../../../tools/check-focus.mjs",
-   "accept": "npm run build && node ../../../tools/scan-pages.mjs --modes all && node ../../../tools/check-narrow.mjs && node ../../../tools/check-focus.mjs"
+   "scan:pages": "citrine-accept pages",
+   "scan:components": "citrine-accept components",
+   "check:narrow": "citrine-accept narrow",
+   "check:focus": "citrine-accept focus",
+   "accept": "npm run build && citrine-accept all"
    ```
+
+   `citrine-accept all` = pages → components → narrow → focus；黄金后台再加 `--with-previews` 跑 E/S 像素对照。
 
 ## 命令
 
-在项目 `app/` 目录运行：
+在项目目录运行（`npm run …` 或直接 `npx citrine-accept <步骤>`）：
 
 | 命令 | 检查什么 | 失败条件（退出码 1） |
 | --- | --- | --- |
 | `npm run accept` | 构建 + 项目登记的全部检查 | 任一项失败 |
-| `npm run scan:pages -- [--modes all\|light,dark] [--only kitchen,apply-*] [--no-shots]` | `PAGES` 登记的全部页面状态 × 亮 / 暗两种模式：对比度（含底色合成）、可访问名称、命中区、横向溢出、nowrap 截断、重复 id、无 alt 图片；逐页截图 | 未批准的低对比、无名称、溢出、重复 id。已批准例外单列为 `approved`；截断与小命中区只提示 |
-| `npm run scan:components -- [--modes all]` | `KITCHEN` 全组件页：对 600+ 个交互元素连同祖先链强制 `:hover` / `:focus-visible`，浮层与弹层逐个点开 | 状态切换新引入品牌黄、悬停后文字对比掉档、不来自 token 的颜色、浮层 / 弹层打不开 |
-| `npm run check:narrow` | `NARROW.width`（黄金后台 1366、轻采 1280）：侧栏默认折叠、页面与内容区无横向溢出 | 任一页未折叠或溢出 |
-| `npm run check:focus -- [--page orders,apply] [--steps 80]` | 真实 Tab 键遍历 `FOCUS.pages`，每个停靠元素都要有可见焦点环 | 出现 `NO RING` |
-| `node ../../../tools/diff-previews.mjs` | 种子级：预览 E（手写 token）与 S（构建产物）逐像素比对（跳过顶部预览条，动画相位差 ≤ 0.6%）；与项目无关，黄金后台的 `accept` 顺带跑它 | 超阈值或高度不一致 |
+| `citrine-accept pages [--modes all\|light,dark] [--only kitchen,apply-*] [--no-shots]` | `PAGES` 登记的全部页面状态 × 亮 / 暗两种模式：对比度（含底色合成）、可访问名称、命中区、横向溢出、nowrap 截断、重复 id、无 alt 图片；逐页截图 | 未批准的低对比、无名称、溢出、重复 id。已批准例外单列为 `approved`；截断与小命中区只提示 |
+| `citrine-accept components [--modes all]` | `KITCHEN` 全组件页：对 600+ 个交互元素连同祖先链强制 `:hover` / `:focus-visible`，浮层与弹层逐个点开 | 状态切换新引入品牌黄、悬停后文字对比掉档、不来自 token 的颜色、浮层 / 弹层打不开 |
+| `citrine-accept narrow` | `NARROW.width`（黄金后台 1366、轻采 1280）：侧栏默认折叠、页面与内容区无横向溢出 | 任一页未折叠或溢出 |
+| `citrine-accept focus [--page orders,apply] [--steps 80]` | 真实 Tab 键遍历 `FOCUS.pages`，每个停靠元素都要有可见焦点环 | 出现 `NO RING` |
+| `citrine-accept previews [--previews <dir>]` | 种子级：预览 E（手写 token）与 S（构建产物）逐像素比对（跳过顶部预览条，动画相位差 ≤ 0.6%）；与项目无关，只有黄金后台的 `accept --with-previews` 跑它 | 超阈值或高度不一致 |
 
 ## 新增页面时
 

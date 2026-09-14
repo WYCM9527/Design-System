@@ -23,8 +23,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Progress } from '@/components/ui/progress'
 import { Separator } from '@/components/ui/separator'
-import { StatCard } from '@/styles/bridge/react/StatCard'
-import { TableSkeleton } from '@/styles/bridge/react/TableSkeleton'
+import { StatCard } from '@wycm9527/citrine/react/StatCard'
+import { TableSkeleton } from '@wycm9527/citrine/react/TableSkeleton'
 
 function Sec({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (

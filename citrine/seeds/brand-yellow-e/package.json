@@ -1,0 +1,71 @@
+{
+  "name": "@wycm9527/citrine",
+  "version": "2.6.0",
+  "description": "Citrine（黄晶）· 公司级中后台设计系统种子：DTCG token（亮 / 暗）、DESIGN 规范、Element Plus / shadcn/ui / ECharts / IconPark 桥接、页面骨架配方与 Vue / React 配方组件，以及 citrine CLI（init / manifest / upgrade / status）",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WYCM9527/skills.git",
+    "directory": "citrine/seeds/brand-yellow-e"
+  },
+  "keywords": [
+    "design-system",
+    "design-tokens",
+    "dtcg",
+    "element-plus",
+    "shadcn",
+    "tailwind",
+    "echarts"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "citrine": "./bin/citrine.mjs"
+  },
+  "files": [
+    "bin",
+    "bridge",
+    "design-system",
+    "!design-system/dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./design-system/*": "./design-system/*",
+    "./bridge/*": "./bridge/*",
+    "./echarts": {
+      "types": "./bridge/echarts.d.ts",
+      "default": "./bridge/echarts.js"
+    },
+    "./iconpark.config": "./bridge/iconpark.config.ts",
+    "./vue/*": "./bridge/vue/*",
+    "./react/*": "./bridge/react/*.tsx"
+  },
+  "peerDependencies": {
+    "@icon-park/vue-next": "^1.4.0",
+    "echarts": "^5.0.0 || ^6.0.0",
+    "element-plus": "^2.7.0",
+    "react": "^18.0.0 || ^19.0.0",
+    "vue": "^3.4.0"
+  },
+  "peerDependenciesMeta": {
+    "@icon-park/vue-next": {
+      "optional": true
+    },
+    "echarts": {
+      "optional": true
+    },
+    "element-plus": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    }
+  }
+}

@@ -4,7 +4,7 @@
 
 ![Citrine · 实测项目「黄金后台」亮 / 暗模式](docs/screenshots/hero.png)
 
-版本 **2.5.0** · Core 315 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
+版本 **2.6.0** · Core 315 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
 
 ---
 
@@ -37,7 +37,9 @@
 citrine/
 ├── seeds/brand-yellow-e/        # 设计系统种子（复制进项目即用）
 │   ├── design-system/           #   DESIGN.md（速查 + 规则 + 配方 + 验收基线）、tokens/、themes/dark/、theme-map.json
-│   ├── bridge/                  #   element-plus.css · shadcn-globals.css · echarts.js(+.d.ts) · iconpark.css / iconpark.config.ts · recipes.css（页面骨架配方）· vue/ 与 react/（配方组件）
+│   ├── bridge/                  #   element-plus.css · shadcn.css（+ shadcn-globals.css 模板）· echarts.js(+.d.ts) · iconpark.css / iconpark.config.ts · recipes.css（页面骨架配方）· vue/ 与 react/（配方组件）
+│   ├── bin/citrine.mjs          #   citrine CLI：init / manifest / upgrade / status
+│   └── package.json             #   npm 包 @wycm9527/citrine（exports 暴露 bridge/*、echarts、iconpark.config、vue/*、react/*）
 │   ├── README.md                #   用法、硬规则、从旧规范迁移的角色对照
 │   └── CHANGELOG.md             #   rc.1 → 2.4.0 每一条决定的来历
 ├── previews/yellow-admin/       # 静态预览：手写 token（E）与构建产物（S）逐像素一致的两套页面
@@ -59,15 +61,15 @@ citrine/
 git clone https://github.com/WYCM9527/Design-System.git && cd Design-System
 git clone https://github.com/WYCM9527/skills.git skills          # 治理工具，放在仓库根目录
 
-# 把种子放进你的项目：design-system/（token 与规则）+ bridge/（组件库桥接与页面骨架配方）
-cp -R citrine/seeds/brand-yellow-e/design-system /path/to/project/
-cp -R citrine/seeds/brand-yellow-e/bridge /path/to/project/src/styles/bridge   # Element Plus 项目删掉其中的 shadcn-globals.css 与 iconpark.config.ts
-cd /path/to/project && npm i -D style-dictionary@5.5.2
+# 种子是 npm 包 @wycm9527/citrine（目录 citrine/seeds/brand-yellow-e 即包根），验收工具是 @wycm9527/citrine-tools（citrine/tools）
+cd /path/to/project
+npm i @wycm9527/citrine && npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2   # 未发布到 registry 前用 file:<路径> 指向这两个目录
+npx citrine init --stack element        # 或 --stack shadcn：落 design-system/（token 与规则）+ .citrine.json 清单，打印该栈的样式入口与接线
 node <Design-System>/skills/design-system-steward/scripts/build-tokens.mjs --project "$PWD"   # → design-system/dist/
 node <Design-System>/skills/design-system-steward/scripts/guard.mjs --project "$PWD"          # 应为 current
 ```
 
-样式入口按顺序引入：组件库基础样式 → `design-system/dist/index.css` → 对应桥接（`bridge/element-plus.css` 或把 `shadcn-globals.css` 并进 `globals.css`）→ `bridge/recipes.css`（页面骨架公共类）→ 项目自己的补充。暗色在 `<html>` 上加 `dark`。项目规则写进 `AGENTS.md`（见 `testbed/golden-admin/app/AGENTS.md`）。
+桥接、配方与配方组件**直接从包 import**，项目里不放副本：样式入口按顺序引入组件库基础样式 → `design-system/dist/index.css` → `@wycm9527/citrine/bridge/element-plus.css`（或 `bridge/shadcn.css`）→ `@wycm9527/citrine/bridge/recipes.css` → 项目自己的补充；组件 `@wycm9527/citrine/vue/StatCard.vue` / `@wycm9527/citrine/react/StatCard`，图表 `@wycm9527/citrine/echarts`。暗色在 `<html>` 上加 `dark`。项目规则写进 `AGENTS.md`（见 `testbed/light-procure/app/AGENTS.md`）。升级：`npm update @wycm9527/citrine && npx citrine upgrade`——本地没改过的上游文件直接更新、改过的跳过并列出，然后 build-tokens → guard → `citrine-accept all`。细节见 [种子 README「用法 / 升级」](seeds/brand-yellow-e/README.md#用法)。
 
 已有旧规范的项目：先 `audit` 看只读报告，`migrate --phase adopt / replace` 自动处理无歧义项，其余按种子 README「从旧规范迁移」的**角色对照**手工映射，最后 `settle → guard / status` 两绿。排练记录见 `testbed/legacy-shop/README.md`。
 
@@ -137,6 +139,7 @@ patch 只改描述、文档，以及让组件库遵守既有规则的桥接修�
 - shadcn/ui 桥接已在 React 实验项目渲染验证并跑全组件走查（21 个组件、80 个交互元素）；未覆盖的 shadcn 组件（Sheet、Command、Calendar、DataTable、Sonner 等）接入时先按 DESIGN「组件库对照」类推，再跑走查。
 - 只确认了桌面宽度（≥ 1280px）的布局；断点规则等真实需求出现时再作为提案加入。
 - 走查页未铺 Tour、Watermark、Affix、Backtop、InfiniteScroll、TableV2 等依赖滚动或运行时的组件。
+- 两个 npm 包（`@wycm9527/citrine`、`@wycm9527/citrine-tools`）已可 `npm pack`，但尚未 `npm publish`：需要决定 scope / 包名与发布账号；仓库内实测项目用 `file:` 链接消费。
 - Figma 变量尚未与 token 同步。治理工具的四个已知缺陷（尺寸匹配不看属性、注释里的值被计数、`settle --apply` 只写豁免、guard / status 分工不清）已在 [WYCM9527/skills](https://github.com/WYCM9527/skills) 的 `design-system-steward` 0.6.0 修正，本仓库默认克隆的就是它。
 
 ## 方法

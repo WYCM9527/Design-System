@@ -2,7 +2,7 @@
 import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { confirmBox } from '../styles/bridge/vue/confirm.js'
+import { confirmBox } from '@wycm9527/citrine/vue/confirm.js'
 import { AddUser, Plus } from '@icon-park/vue-next'
 import { members, permissionGroups } from '../mock/data'
 import { ROLES, store, setRole, can } from '../store'

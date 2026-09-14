@@ -1,7 +1,7 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
-import { confirmBox } from '../styles/bridge/vue/confirm.js'
+import { confirmBox } from '@wycm9527/citrine/vue/confirm.js'
 import { Plus, ViewList, ViewGridList } from '@icon-park/vue-next'
 import { campaigns, tone } from '../mock/data'
 import { can } from '../store'

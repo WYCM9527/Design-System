@@ -3,17 +3,17 @@
 // 列表页约定见 AGENTS.md；演示参数放在 # 之前：?state=loading|error|empty、?drawer=<id>、?edit=<id>|new。
 import { computed, reactive, ref, onMounted, nextTick } from 'vue'
 import {ElMessage } from 'element-plus'
-import { confirmBox } from '../styles/bridge/vue/confirm.js'
+import { confirmBox } from '@wycm9527/citrine/vue/confirm.js'
 import { Plus, Refresh, Attention, Shop, FileSearch } from '@icon-park/vue-next'
-import TableSkeleton from '../styles/bridge/vue/TableSkeleton.vue'
+import TableSkeleton from '@wycm9527/citrine/vue/TableSkeleton.vue'
 import { db } from '../data/db'
 import { session, can, rememberList, recallList, demoState, demoParam } from '../data/session'
 import { listSuppliers, saveSupplier, toggleSupplier } from '../data/api'
 import { PAGE_SIZES } from '../data/constants'
 import { timeOf, dash } from '../data/format'
 import { useDirtyGuard } from '../data/guard'
-import ConfirmBar from '../styles/bridge/vue/ConfirmBar.vue'
-import { useInlineConfirm } from '../styles/bridge/vue/inlineConfirm.js'
+import ConfirmBar from '@wycm9527/citrine/vue/ConfirmBar.vue'
+import { useInlineConfirm } from '@wycm9527/citrine/vue/inlineConfirm.js'
 
 const manage = computed(() => can('supplier.manage'))
 const totalCount = computed(() => db.suppliers.length)   // 页头「共 N 家」= 全部供应商数，不随筛选变化

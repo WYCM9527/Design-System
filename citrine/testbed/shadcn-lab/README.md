@@ -1,6 +1,6 @@
 # 实测项目四 · Citrine × shadcn/ui 实验室
 
-第二条消费路径的**渲染验证**：Vite + React 19 + Tailwind v4 + Radix 上的 shadcn/ui 组件（按 new-york 源码手写 21 个），接种子的 `bridge/shadcn-globals.css`，页面骨架直接用与组件库无关的 `recipes.css`，配方组件用 `bridge/react/`。此前这条路径只做过变量级验证（引用可解析），从未画出来看。
+第二条消费路径的**渲染验证**：Vite + React 19 + Tailwind v4 + Radix 上的 shadcn/ui 组件（按 new-york 源码手写 21 个），从 npm 包 `@wycm9527/citrine` 引入 `bridge/shadcn.css`，页面骨架直接用与组件库无关的 `recipes.css`，配方组件用 `@wycm9527/citrine/react/*`。此前这条路径只做过变量级验证（引用可解析），从未画出来看。
 
 ## 页面
 

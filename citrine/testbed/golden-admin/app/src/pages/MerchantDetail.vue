@@ -4,9 +4,9 @@
 import { computed, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { confirmBox } from '../styles/bridge/vue/confirm.js'
+import { confirmBox } from '@wycm9527/citrine/vue/confirm.js'
 import { Right, Down, Pic, Shop, Time } from '@icon-park/vue-next'
-import StatCard from '../styles/bridge/vue/StatCard.vue'
+import StatCard from '@wycm9527/citrine/vue/StatCard.vue'
 import { merchants, merchantDetails, MERCHANT_STATE, merchantState, LOG_TYPE, QUAL_STATUS, SETTLEMENT_STATUS, URGE_REASONS, tone, yen } from '../mock/data'
 
 const route = useRoute()

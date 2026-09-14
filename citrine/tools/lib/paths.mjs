@@ -1,13 +1,14 @@
-// 仓库级验收工具的路径解析：tools/ 位于 citrine/tools/，可对任意实测项目运行。
-// 目标项目 = --project <appDir> 或环境变量 CITRINE_APP，缺省为当前目录（在项目 app/ 目录用 npm run 调用即可）。
-// 项目在 app/accept.config.mjs 里登记页面状态、组件走查页、窄屏与焦点检查清单（见 tools/README.md）。
+// 验收工具的路径解析：既可在仓库内（citrine/tools/）直接 node 运行，也可作为 npm 包 @wycm9527/citrine-tools 的 citrine-accept 命令运行。
+// 目标项目 = --project <appDir> 或环境变量 CITRINE_APP，缺省为当前目录（在项目目录用 npm run 调用即可）。
+// 项目在 accept.config.mjs 里登记页面状态、组件走查页、窄屏与焦点检查清单（见 README.md）。输出写到项目内 .accept/（加进 .gitignore）。
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname, resolve, basename } from 'node:path';
 import { existsSync, mkdirSync } from 'node:fs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 export const TOOLS = resolve(here, '..');
-export const PREVIEWS = resolve(TOOLS, '../previews/yellow-admin');
+// 预览页目录（只有黄金后台的 E/S 像素对照用）：--previews <dir>，缺省为仓库内 citrine/previews/yellow-admin
+export const PREVIEWS = resolve(args().previews || process.env.CITRINE_PREVIEWS || resolve(TOOLS, '../previews/yellow-admin'));
 
 /** 解析 --key value / --key=value / 位置参数 */
 export function args(argv = process.argv.slice(2)) {
@@ -25,7 +26,7 @@ export const APP_DIST = resolve(APP, 'dist');
 export const TOKENS_DIST = resolve(APP, 'design-system/dist');
 // 项目名：testbed/<name>/app → <name>；其他结构取 app 目录名
 export const PROJECT = basename(APP) === 'app' ? basename(dirname(APP)) : basename(APP);
-export const OUT = resolve(TOOLS, 'out', PROJECT);
+export const OUT = resolve(early.out || process.env.CITRINE_OUT || resolve(APP, '.accept'));
 
 export function outDir(sub) { const d = resolve(OUT, sub); mkdirSync(d, { recursive: true }); return d; }
 

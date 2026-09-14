@@ -2,10 +2,10 @@
 import * as React from 'react'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { StatCard } from '@/styles/bridge/react/StatCard'
-import { TrendChart } from '@/styles/bridge/react/TrendChart'
-import { EChart } from '@/styles/bridge/react/EChart'
-import { rankBars } from '@/styles/bridge/echarts.js'
+import { StatCard } from '@wycm9527/citrine/react/StatCard'
+import { TrendChart } from '@wycm9527/citrine/react/TrendChart'
+import { EChart } from '@wycm9527/citrine/react/EChart'
+import { rankBars } from '@wycm9527/citrine/echarts'
 
 const days = ['08/26', '08/27', '08/28', '08/29', '08/30', '08/31', '09/01', '09/02', '09/03', '09/04', '09/05', '09/06', '09/07', '09/08']
 const thisWeek = [1180, 1260, 1210, 1340, 1420, 1390, 1510, 1480, 1560, 1620, 1580, 1710, 1690, 1760]

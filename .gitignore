@@ -6,6 +6,9 @@ node_modules/
 citrine/testbed/golden-admin/app/dist/
 citrine/testbed/light-procure/app/dist/
 citrine/testbed/shadcn-lab/app/dist/
+# 验收工具输出（citrine-accept 写到项目内 .accept/）与 npm pack 产物
+.accept/
 citrine/tools/out/
+*.tgz
 # 系统文件
 .DS_Store

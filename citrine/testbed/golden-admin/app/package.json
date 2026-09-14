@@ -7,15 +7,18 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "scan:pages": "node ../../../tools/scan-pages.mjs",
-    "scan:components": "node ../../../tools/scan-components.mjs",
-    "check:narrow": "node ../../../tools/check-narrow.mjs",
-    "check:focus": "node ../../../tools/check-focus.mjs",
-    "diff:previews": "node ../../../tools/diff-previews.mjs",
-    "accept": "npm run build && node ../../../tools/scan-pages.mjs --modes all && node ../../../tools/scan-components.mjs --modes all && node ../../../tools/check-narrow.mjs && node ../../../tools/check-focus.mjs && node ../../../tools/diff-previews.mjs"
+    "scan:pages": "citrine-accept pages",
+    "scan:components": "citrine-accept components",
+    "check:narrow": "citrine-accept narrow",
+    "check:focus": "citrine-accept focus",
+    "diff:previews": "citrine-accept previews",
+    "accept": "npm run build && citrine-accept all --with-previews",
+    "citrine:status": "citrine status",
+    "citrine:upgrade": "citrine upgrade"
   },
   "dependencies": {
     "@icon-park/vue-next": "^1.4.2",
+    "@wycm9527/citrine": "file:../../../seeds/brand-yellow-e",
     "echarts": "^6.1.0",
     "element-plus": "^2.14.5",
     "vue": "^3.5.41",
@@ -23,6 +26,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.8",
+    "@wycm9527/citrine-tools": "file:../../../tools",
     "style-dictionary": "^5.5.2",
     "vite": "^8.2.2"
   }

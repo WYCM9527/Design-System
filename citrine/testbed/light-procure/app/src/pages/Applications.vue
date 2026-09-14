@@ -5,14 +5,14 @@
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {ElMessage } from 'element-plus'
-import { confirmBox } from '../styles/bridge/vue/confirm.js'
+import { confirmBox } from '@wycm9527/citrine/vue/confirm.js'
 import { Plus, Export, Close, CloseOne, Refresh, Down, Up, MoreOne, Order, Search } from '@icon-park/vue-next'
 import { db, today } from '../data/db'
 import { session, can, demoState, rememberList, recallList } from '../data/session'
 import { listApplications, submitApplication, deleteDrafts, copyApplication, canEditApp, ApiError } from '../data/api'
 import { money, dateOf, timeOf, downloadCsv } from '../data/format'
 import { APP_STATUS, APP_STATUS_LIST, PRIORITY, PAGE_SIZES } from '../data/constants'
-import TableSkeleton from '../styles/bridge/vue/TableSkeleton.vue'
+import TableSkeleton from '@wycm9527/citrine/vue/TableSkeleton.vue'
 
 const route = useRoute(); const router = useRouter()
 const MEM_KEY = 'applications'

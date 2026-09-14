@@ -7,6 +7,8 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   base: './',
   plugins: [react(), tailwindcss()],
-  resolve: { alias: { '@': path.resolve(import.meta.dirname, 'src') } },
+  // @wycm9527/citrine 里是 .tsx 源码，不预打包；仓库内它是 file: 符号链接，preserveSymlinks 让包内 import 的 react / echarts 从本项目的 node_modules 解析（发布后的真实安装不需要）
+  optimizeDeps: { exclude: ['@wycm9527/citrine'] },
+  resolve: { alias: { '@': path.resolve(import.meta.dirname, 'src') }, preserveSymlinks: true },
   build: { chunkSizeWarningLimit: 2000 }
 })

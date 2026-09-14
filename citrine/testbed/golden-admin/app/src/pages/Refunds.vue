@@ -2,7 +2,7 @@
 // 退款审核：筛选 + 多选表格 + 批量条 + 通过 / 拒绝 + 详情抽屉。视觉全部走 DESIGN.md 配方与 app.css 公共类
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
-import { confirmBox } from '../styles/bridge/vue/confirm.js'
+import { confirmBox } from '@wycm9527/citrine/vue/confirm.js'
 import { Inbox, Search } from '@icon-park/vue-next'
 import { refunds, REFUND_STATUS, yen } from '../mock/data'
 

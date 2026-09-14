@@ -1,8 +1,6 @@
-/* shadcn/ui + Tailwind v4 桥接：把 shadcn 的契约变量全部指向设计系统的语义 token。
-   放进 app/globals.css。不需要再写 .dark 块——dist/themes/dark.css 一变，这里全部跟着变。
-   暗色：在 <html> 上加 class dark。 */
-@import "tailwindcss";
-@import "../design-system/dist/index.css"; /* 路径按项目实际调整；由 skill 的 integrate 写入 */
+/* shadcn/ui + Tailwind v4 桥接本体：把 shadcn 的契约变量全部指向设计系统的语义 token，并按 data-slot 接管组件。
+   本文件不含 @import：项目的 globals.css 先 @import "tailwindcss" 与 design-system/dist/index.css，再 @import 本文件
+   （从 npm 包：@import "@wycm9527/citrine/bridge/shadcn.css"）。不需要写 .dark 块——dist/themes/dark.css 一变，这里全部跟着变；暗色在 <html> 上加 class dark。 */
 
 :root {
   --background: var(--color-bg-page);

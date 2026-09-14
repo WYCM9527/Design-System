@@ -1,4 +1,4 @@
-/* shadcn 实验室自己的补充：只放本项目特有的选择器；骨架公共类来自 bridge/recipes.css。全部引用 token。 */
+/* shadcn 实验室自己的补充：只放本项目特有的选择器；骨架公共类来自 @wycm9527/citrine/bridge/recipes.css。全部引用 token。 */
 .card-block { background: var(--color-bg-surface); border: var(--border-width-default) solid var(--color-border-default); border-radius: var(--radius-lg); box-shadow: 0 var(--elevation-card-y) var(--elevation-card-blur) var(--elevation-card-color); overflow: hidden; }
 .ks-body { padding: var(--space-card); }
 .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-inline); }

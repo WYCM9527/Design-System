@@ -2,6 +2,15 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.6.0 — 2026-09-14（分发机制：npm 包 + citrine CLI）
+
+- **种子即 npm 包 `@wycm9527/citrine`**（本目录为包根，`npm pack` 32 个文件 / 115 kB，不含 dist）：`exports` 暴露 `bridge/*`、`echarts`（带类型）、`iconpark.config`、`vue/*`、`react/*`；peer 依赖（vue / element-plus / @icon-park/vue-next / echarts / react）全部可选。桥接、配方与配方组件**直接从包 import**，项目里不再放 `src/styles/bridge/` 副本——三个实测项目已改为 `file:` 链接消费同一份源码，删除全部副本，验收（含黄金后台 E/S 像素对照）全绿。
+- **`citrine` CLI**（`bin/citrine.mjs`，零依赖）：`init --stack element|shadcn` 落 `design-system/` 并打印该栈的样式入口与接线；`manifest` 给已手工复制的项目补 `.citrine.json` 清单；`upgrade [--dry-run] [--force]` 按清单升级上游文件——本地没改过的直接更新、改过的跳过并列出，项目自己的 `exemptions.json` / `MIGRATION.md` / `scopes/` / `dist/` 永远不碰，并打印两版之间的 CHANGELOG 标题；`status` 看清单版本与本地改动。
+- **验收工具发成 `@wycm9527/citrine-tools`**（命令 `citrine-accept pages|components|narrow|focus|previews|all [--with-previews]`），输出从 `tools/out/` 移到项目内 `.accept/`；预览目录可用 `--previews` 指定。
+- **shadcn 桥接拆成两份**：`bridge/shadcn.css` 是可直接 `@import` 的桥接本体（不含 Tailwind / dist 的 import），`bridge/shadcn-globals.css` 退为复制式接入的四行 `globals.css` 模板。
+- 消费方式的三个注意点写进种子 README「用法」：包里是 `.vue` / `.tsx` 源码，Vite 配 `optimizeDeps.exclude: ['@wycm9527/citrine']`；仓库内 `file:` 链接另需 `resolve.preserveSymlinks: true`（tsconfig 同名选项）；发布到 registry 后的真实安装不需要后者。
+- 尚未 `npm publish`（需要 npm 账号 / 组织 scope 决定）；包名与 scope 可在发布前一次性改名。
+
 ## 2.5.0 — 2026-09-14（shadcn/ui 路径渲染验证 · 原位确认条 · React 配方组件）
 
 - **新增实测项目四 `testbed/shadcn-lab`**（React 19 + Tailwind v4 + Radix，按 shadcn new-york 源码手写 21 个组件）：第一次把 `bridge/shadcn-globals.css` 画出来看并跑全组件走查。发现与处理见 `testbed/shadcn-lab/FINDINGS.md`（D99–D111）。

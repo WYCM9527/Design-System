@@ -4,16 +4,16 @@
 // 演示参数（放在 # 之前）：?state=loading|error|empty、?dialog=new、?dialog=<memberId>（配合 ?state=invalid 直接展示字段错误）。
 import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue'
 import {ElMessage } from 'element-plus'
-import { confirmBox } from '../styles/bridge/vue/confirm.js'
+import { confirmBox } from '@wycm9527/citrine/vue/confirm.js'
 import { AddUser, Close, Refresh, Peoples } from '@icon-park/vue-next'
-import TableSkeleton from '../styles/bridge/vue/TableSkeleton.vue'
+import TableSkeleton from '@wycm9527/citrine/vue/TableSkeleton.vue'
 import { db, findDept } from '../data/db'
 import { listMembers, saveMember, toggleMember, ApiError } from '../data/api'
 import { session, isSelf, can, demoState, demoParam, rememberList, recallList } from '../data/session'
 import { ROLES, PAGE_SIZES } from '../data/constants'
 import { dateOf } from '../data/format'
-import ConfirmBar from '../styles/bridge/vue/ConfirmBar.vue'
-import { useInlineConfirm } from '../styles/bridge/vue/inlineConfirm.js'
+import ConfirmBar from '@wycm9527/citrine/vue/ConfirmBar.vue'
+import { useInlineConfirm } from '@wycm9527/citrine/vue/inlineConfirm.js'
 
 const COMPANY = 'company'
 // constants.js 没有成员启停用的状态映射（供应商同样），这里按 PRD 语义就地定义：启用 success、停用 neutral（无倾向状态）

@@ -5,17 +5,17 @@
 import { computed, reactive, ref, onMounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {ElMessage } from 'element-plus'
-import { confirmBox } from '../styles/bridge/vue/confirm.js'
+import { confirmBox } from '@wycm9527/citrine/vue/confirm.js'
 import { Plus, Export, Close, Refresh, Attention, Box, FileSearch } from '@icon-park/vue-next'
-import TableSkeleton from '../styles/bridge/vue/TableSkeleton.vue'
+import TableSkeleton from '@wycm9527/citrine/vue/TableSkeleton.vue'
 import { db, today } from '../data/db'
 import { session, can, rememberList, recallList, demoState, demoParam } from '../data/session'
 import { listAssets, getAsset, saveAsset, assignAsset, returnAsset, approvedAppsForLink, activeMembers, visibleAssets } from '../data/api'
 import { CATEGORIES, ASSET_STATUS, PAGE_SIZES, LINE_LIMIT } from '../data/constants'
 import { money, dateOf, timeOf, dash, downloadCsv } from '../data/format'
 import { useDirtyGuard } from '../data/guard'
-import ConfirmBar from '../styles/bridge/vue/ConfirmBar.vue'
-import { useInlineConfirm } from '../styles/bridge/vue/inlineConfirm.js'
+import ConfirmBar from '@wycm9527/citrine/vue/ConfirmBar.vue'
+import { useInlineConfirm } from '@wycm9527/citrine/vue/inlineConfirm.js'
 
 const route = useRoute(); const router = useRouter()
 const viewAll = computed(() => can('asset.viewAll'))     // 审批人 / 管理员看全部；申请人只看本人在用

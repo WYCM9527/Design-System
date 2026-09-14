@@ -8,7 +8,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { ConfirmBar, useInlineConfirm } from '@/styles/bridge/react/ConfirmBar'
+import { ConfirmBar, useInlineConfirm } from '@wycm9527/citrine/react/ConfirmBar'
 
 export function FormPage() {
   const state = new URLSearchParams(location.search).get('state')

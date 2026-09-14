@@ -2,13 +2,13 @@
 import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { confirmBox } from '../styles/bridge/vue/confirm.js'
+import { confirmBox } from '@wycm9527/citrine/vue/confirm.js'
 import { Plus, Export, Close, Refresh, Order as OrderIcon, MoreOne } from '@icon-park/vue-next'
 import { orders, tone, yen } from '../mock/data'
 import { can } from '../store'
 
 const router = useRouter()
-import TableSkeleton from '../styles/bridge/vue/TableSkeleton.vue'
+import TableSkeleton from '@wycm9527/citrine/vue/TableSkeleton.vue'
 const q = new URLSearchParams(location.search)
 // 演示状态：normal / loading / empty / error（PRD §4.3 四态在此页完整实现）
 const state = ref(['loading', 'empty', 'error'].includes(q.get('state')) ? q.get('state') : 'normal')

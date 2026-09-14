@@ -4,7 +4,7 @@
 // `data-ks-ignore` 标记的元素承载用户数据颜色（取色器、图片），不参与颜色规则判定。
 import { ref, reactive, onMounted, h } from 'vue'
 import { ElMessage, ElNotification } from 'element-plus'
-import { confirmBox } from '../styles/bridge/vue/confirm.js'
+import { confirmBox } from '@wycm9527/citrine/vue/confirm.js'
 
 const input = ref('黄金后台')
 const num = ref(3)

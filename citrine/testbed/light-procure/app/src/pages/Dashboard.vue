@@ -10,10 +10,10 @@ import { user, userDept, roleLabel, can, demoState } from '../data/session'
 import { money, timeOf, weekday } from '../data/format'
 import { APP_STATUS, PRIORITY } from '../data/constants'
 import { myStats, myWeeklyTrend, myStatusDistribution, myRecentApps, pendingForMe, pendingCount } from '../data/api'
-import StatCard from '../styles/bridge/vue/StatCard.vue'
-import EChart from '../styles/bridge/vue/EChart.vue'
-import TrendChart from '../styles/bridge/vue/TrendChart.vue'
-import TableSkeleton from '../styles/bridge/vue/TableSkeleton.vue'
+import StatCard from '@wycm9527/citrine/vue/StatCard.vue'
+import EChart from '@wycm9527/citrine/vue/EChart.vue'
+import TrendChart from '@wycm9527/citrine/vue/TrendChart.vue'
+import TableSkeleton from '@wycm9527/citrine/vue/TableSkeleton.vue'
 
 const router = useRouter()
 const state = demoState()

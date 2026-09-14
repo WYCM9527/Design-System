@@ -2,7 +2,7 @@
 // 路由离开、刷新关闭、顶栏身份切换共用同一条规则；Esc 与取消由弹窗 / 抽屉自己调用 confirmLeave。
 import { useRouter } from 'vue-router'
 import { onBeforeUnmount } from 'vue'
-import { confirmBox } from '../styles/bridge/vue/confirm.js'
+import { confirmBox } from '@wycm9527/citrine/vue/confirm.js'
 import { session } from './session'
 
 export async function confirmLeave(message = '有未保存的修改，离开后将丢失。确定离开？') {
