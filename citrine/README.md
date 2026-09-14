@@ -4,7 +4,7 @@
 
 ![Citrine · 实测项目「黄金后台」亮 / 暗模式](docs/screenshots/hero.png)
 
-版本 **2.4.1** · Core 315 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
+版本 **2.4.2** · Core 315 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
 
 ---
 
@@ -131,7 +131,7 @@ patch 只改描述、文档，以及让组件库遵守既有规则的桥接修�
 - 只确认了桌面宽度（≥ 1280px）的布局；断点规则等真实需求出现时再作为提案加入。
 - 走查页未铺 Tour、Watermark、Affix、Backtop、InfiniteScroll、TableV2 等依赖滚动或运行时的组件。
 - 浮层内的「原位确认区域」（抽屉里不再叠一层确认弹窗）没有配方，目前抽屉内的离开确认仍走确认弹窗。
-- Figma 变量尚未与 token 同步；治理工具（`design-system-steward`）的四个已知缺陷记录在 `testbed/legacy-shop/README.md` 与 CHANGELOG，需回填到 [WYCM9527/skills](https://github.com/WYCM9527/skills)。
+- Figma 变量尚未与 token 同步。治理工具的四个已知缺陷（尺寸匹配不看属性、注释里的值被计数、`settle --apply` 只写豁免、guard / status 分工不清）已在 [WYCM9527/skills](https://github.com/WYCM9527/skills) 的 `design-system-steward` 0.6.0 修正，本仓库默认克隆的就是它。
 
 ## 方法
 

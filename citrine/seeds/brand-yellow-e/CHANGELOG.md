@@ -2,6 +2,10 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.4.2 — 2026-09-14（治理工具缺陷回填完成）
+
+- 排练与试点中记录的 `design-system-steward` 四个缺陷已在 [WYCM9527/skills](https://github.com/WYCM9527/skills) 0.6.0 修正并推送：`migrate` 按 CSS 属性 / Tailwind 前缀先筛同类 Token 再判撞值；`audit / migrate / status` 扫描前抹掉注释；`settle --apply --decisions-file` 直接落地归并决定并写 `MIGRATION.md`；`--allow-dirty` 生效；`guard` / `status` 输出 `checks` / `notCovered` 写明分工。三个实测项目复跑 `status` 仍为 unified、`replace` 无新增自动替换。「已知边界」与遗留迁移排练记录同步。
+
 ## 2.4.1 — 2026-09-14（收尾：文档对齐与仓库整理）
 
 - 文档里残留的"三模式"、"105 个页面状态"、"56 条发现"、"rc.1 → 1.1.3"、"Core 314 个 token" 全部对齐到 2.4.0 的实际状态（亮 / 暗两模式；黄金后台 80 + 轻采 94 个页面状态；72 + 26 条发现；315 个 token）。
