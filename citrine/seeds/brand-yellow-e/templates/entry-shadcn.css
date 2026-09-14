@@ -1,0 +1,8 @@
+/* 样式入口（Citrine · React + Tailwind v4 + shadcn/ui）。顺序：Tailwind → 设计系统构建产物 → shadcn 桥接本体（契约变量 + @theme inline + 按 data-slot 的组件接管）→ 配方层 → 项目补充。
+   {{BRIDGE}} 由 adopter 按来源解析：npm 安装是 @wycm9527/citrine/bridge，文件夹快照是相对 design-systems/citrine/bridge 的路径。
+   根字号保持 16px（Tailwind 的 rem 刻度依赖它）；暗色在 <html> 上加 class dark。 */
+@import "tailwindcss";
+@import "{{DIST}}/index.css";
+@import "{{BRIDGE}}/shadcn.css";
+@import "{{BRIDGE}}/recipes.css";
+@import "./app.css";

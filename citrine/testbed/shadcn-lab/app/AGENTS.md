@@ -8,7 +8,7 @@
 
 ## 项目接线
 
-- **样式入口** `src/styles/globals.css`：Tailwind → `design-system/dist/index.css` → `@wycm9527/citrine/bridge/shadcn.css` → `@wycm9527/citrine/bridge/recipes.css` → 项目补充 `app.css`。桥接与配方来自 npm 包（仓库内 `file:` 链接种子），项目里没有副本、不要改；`design-system/` 由 `npx citrine upgrade` 升级；`@theme inline` 已把颜色、字号阶梯、阴影、动效接到 token，Tailwind 的 `text-sm` 是 13px、`text-base` 14px、`rounded-md` 是 `radius.md`。
+- **样式入口** `src/styles/globals.css`：Tailwind → `design-system/dist/index.css` → `@wycm9527/citrine/bridge/shadcn.css` → `@wycm9527/citrine/bridge/recipes.css` → 项目补充 `app.css`。桥接与配方来自 npm 包（仓库内 `file:` 链接种子），项目里没有副本、不要改；`design-system/` 由 design-system-adopter 升级（`ds.mjs status / upgrade`，清单 `.adopter.json`）；`@theme inline` 已把颜色、字号阶梯、阴影、动效接到 token，Tailwind 的 `text-sm` 是 13px、`text-base` 14px、`rounded-md` 是 `radius.md`。
 - **组件**：`src/components/ui/*` 按 shadcn new-york 源码手写（不经 CLI），可以用 shadcn 的 className 写法；哪个变体对应哪个角色、哪些变体**不用**（`Button link`、`Badge default / destructive`、文字型 `ghost`）见 DESIGN「组件库对照：shadcn/ui」。
 - **页面骨架用配方类**（与 Vue 项目同一套）：`.page-head`、`.card-head`、`.filter / .conds / .acts`、`.chips / .chip`、`.batch`、`.pager`、`.form-page / .form-grid / .form-foot(.is-sticky)`、`.status.*`、`.badge.brand`、`.act / .link / .go / .title-link`、`.empty`、`.error-box`、`.stats`、`.confirm-bar`；壳层 `.app / .sidebar / .nav / .topbar / .content`。
 - **配方组件** `@wycm9527/citrine/react/*`（`import { StatCard } from '@wycm9527/citrine/react/StatCard'`）：`StatCard`（label / value / delta / up / positive / note / hint）、`EChart`（option 函数 + deps）、`TrendChart`（days / series / count）、`TableSkeleton`、`ConfirmBar` + `useInlineConfirm`（Dialog 内的离开确认替换页脚，不叠第二层弹窗）。图表 option 只写数据与布局，颜色线型来自 `@wycm9527/citrine/echarts` 主题。

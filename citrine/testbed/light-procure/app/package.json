@@ -10,9 +10,7 @@
     "scan:pages": "citrine-accept pages",
     "check:narrow": "citrine-accept narrow",
     "check:focus": "citrine-accept focus",
-    "accept": "npm run build && citrine-accept all",
-    "citrine:status": "citrine status",
-    "citrine:upgrade": "citrine upgrade"
+    "accept": "npm run build && citrine-accept all"
   },
   "dependencies": {
     "@icon-park/vue-next": "^1.4.2",

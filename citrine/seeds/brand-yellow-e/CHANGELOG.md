@@ -2,6 +2,15 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.7.0 — 2026-09-14（纯数据包：身份文件 + 模板 + 角色对照，机制移入 design-system-adopter skill）
+
+- **新增身份文件 `design-system.json`**：id / 名称 / 版本 / upstream（仓库 · 子路径 · tag 前缀 `citrine-v` · npm 包名）/ 两个栈的入口、模板与脚手架指针 / 验收工具 / 迁移对照表 / `owned` 上游文件清单。任何带此文件且 upstream 指向本仓库的目录都会被 adopter skill 识别为「我们的设计系统」；用户自建的 `design-system/` 不受影响。
+- **新增 `templates/`**：`entry-element.css` / `entry-shadcn.css`（样式入口片段，`{{BRIDGE}}` / `{{DIST}}` 由 adopter 按 npm / 文件夹来源解析）、`notes-element.md` / `notes-shadcn.md`（各栈接线要点）、`AGENTS.md`（项目规则模板，三行 steward 规则 + 栈要点填充）、`accept.config.mjs`（验收清单模板）。
+- **新增 `migration/roles.json`**：旧规范 → 新 token 的角色对照机器可读版（19 个角色 + 4 个无对应物，含 CSS 属性上下文与替代写法），settle 起草决策文件用；`scripts/check-roles.mjs` 校验它与 README 迁移表、token 源一致。
+- **删除 `bin/citrine.mjs`**：init / manifest / upgrade / status 移入通用的 design-system-adopter skill（仓库根 `design-system-adopter/`），机制与具体设计系统解耦——项目状态文件从 `.citrine.json` 改为 `.adopter.json`，新增只读上游快照 `design-systems/<id>/` 作为三方合并的基线。
+- **盲测回填**（空项目 + 一句提示词 + 只靠 adopter skill 从 0 走到验收全绿；发现 8 处摩擦）：recipes 新增 `.card-body`（flat 卡放自由内容 / 图表的留白，此前每个项目都得自造）；`iconpark.config.ts` 头注释与实现对齐（描边统一 4）；栈要点写明**像素允许出现的位置**（表格列宽、筛选控件宽度这类「按内容定」的宽度）与 exports 路径映射；accept 模板注明 `KITCHEN: null` 会跳过组件走查（桥接回归由上游实测项目覆盖）与亮暗两遍的切换机制；「从 0 开始」剧本补当前目录脚手架与原始下载目录的处置。
+- 版本 tag 从本版起只打 `citrine-vX.Y.Z`；历史无前缀 tag（v1.x–v2.4.2）已删除。
+
 ## 2.6.0 — 2026-09-14（分发机制：npm 包 + citrine CLI）
 
 - **种子即 npm 包 `@wycm9527/citrine`**（本目录为包根，`npm pack` 32 个文件 / 115 kB，不含 dist）：`exports` 暴露 `bridge/*`、`echarts`（带类型）、`iconpark.config`、`vue/*`、`react/*`；peer 依赖（vue / element-plus / @icon-park/vue-next / echarts / react）全部可选。桥接、配方与配方组件**直接从包 import**，项目里不再放 `src/styles/bridge/` 副本——三个实测项目已改为 `file:` 链接消费同一份源码，删除全部副本，验收（含黄金后台 E/S 像素对照）全绿。

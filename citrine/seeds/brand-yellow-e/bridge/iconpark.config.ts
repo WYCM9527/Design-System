@@ -1,6 +1,6 @@
 /**
  * IconPark 桥接（配置部分）。全局配置只做一次，让每个图标默认就符合设计系统：
- *   描边 icon.stroke.width = 3（IconPark 默认 4 在 14px 正文旁偏重）、圆头圆角、线性、跟随 font-size。
+ *   描边 icon.stroke.width = 4（实测反馈 3 太细，采用 IconPark 默认值）、圆头圆角、线性、跟随 font-size。
  * 尺寸与颜色交给 iconpark.css 里的 .i-icon--* 类，不在每个图标上写 size / fill。
  *
  * 版本：@icon-park/react、@icon-park/vue-next、@icon-park/svg 1.4.x（Apache-2.0）。

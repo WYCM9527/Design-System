@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "system": "citrine",
+  "description": "旧规范 → Citrine 的角色对照（机器可读版，与 README「从旧规范迁移」的表由 scripts/check-roles.mjs 保持一致）。migrate --phase settle 起草决策文件时用它：按角色映射，不按色值找最接近的灰。properties 是该角色出现的 CSS 属性上下文；hints 是旧变量名 / 注释里常见的字样，用于把待决项归到角色。",
+  "roles": [
+    { "role": "正文色", "to": "color.text.primary", "var": "--color-text-primary", "properties": ["color"], "hints": ["text", "font-color", "正文", "主文字", "#333", "#303133"], "note": "暖灰 → 冷灰是整体换族，逐档对应，不做值近似。" },
+    { "role": "次要文字", "to": "color.text.secondary", "var": "--color-text-secondary", "properties": ["color"], "hints": ["secondary", "次要", "#606266"], "note": "" },
+    { "role": "弱化文字", "to": "color.text.muted", "var": "--color-text-muted", "properties": ["color"], "hints": ["muted", "disabled-text", "弱化", "辅助", "#909399", "#999"], "note": "最浅到 neutral.500；neutral.400 只允许占位符。" },
+    { "role": "边线", "to": "color.border.default", "var": "--color-border-default", "properties": ["border-color", "border", "outline-color", "box-shadow"], "hints": ["border", "divider", "分割线", "#dcdfe6", "#e4e7ed"], "note": "发丝线；输入框边线用 color.border.input。" },
+    { "role": "页面底", "to": "color.bg.page", "var": "--color-bg-page", "properties": ["background", "background-color"], "hints": ["page-bg", "body-bg", "页面底", "#f5f7fa", "#f0f2f5"], "note": "" },
+    { "role": "分区底", "to": "color.bg.subtle", "var": "--color-bg-subtle", "properties": ["background", "background-color"], "hints": ["section", "表头底", "分区"], "note": "表头、浅分区。" },
+    { "role": "卡片白", "to": "color.bg.surface", "var": "--color-bg-surface", "properties": ["background", "background-color"], "hints": ["card", "white", "#fff", "#ffffff"], "note": "白色按角色拆：输入框 color.bg.input、浮层 color.bg.elevated——同一个旧白值在新系统里是三个语义。" },
+    { "role": "输入框底", "to": "color.bg.input", "var": "--color-bg-input", "properties": ["background", "background-color"], "hints": ["input-bg", "输入框"], "note": "" },
+    { "role": "浮层底", "to": "color.bg.elevated", "var": "--color-bg-elevated", "properties": ["background", "background-color"], "hints": ["popover", "dialog-bg", "浮层", "弹窗"], "note": "" },
+    { "role": "品牌黄 · 按钮填充", "to": "color.action.primary", "var": "--color-action-primary", "properties": ["background", "background-color"], "hints": ["brand", "primary", "主色", "#f9cf00", "#fadb14", "黄"], "note": "一个旧品牌黄变量在新系统里是四个语义（按钮 / 指示条 / 大面积 / 图表），按用途拆，不能一对一替换。" },
+    { "role": "品牌黄 · 指示条", "to": "color.brand.indicator", "var": "--color-brand-indicator", "properties": ["background", "background-color", "border-color", "border-left", "border-bottom"], "hints": ["indicator", "active-bar", "指示条", "选中条"], "note": "" },
+    { "role": "品牌黄 · 大面积（登录 / 营销）", "to": "color.bg.brand", "var": "--color-bg-brand", "properties": ["background", "background-color"], "hints": ["login", "hero", "大面积"], "note": "" },
+    { "role": "品牌黄 · 图表", "to": "color.chart.1", "var": "--color-chart-1", "properties": ["fill", "stroke", "background"], "hints": ["chart", "图表"], "note": "" },
+    { "role": "状态色（成功 / 警示 / 错误 及浅底）", "to": "color.status.success", "var": "--color-status-success", "properties": ["color", "background", "background-color"], "hints": ["success", "warning", "error", "danger-text", "状态"], "note": "三色各有 -bg 浅底（--color-status-*-bg）；warning 是橙不是黄。状态色是文字色，填充只给危险按钮。" },
+    { "role": "危险按钮填充", "to": "color.action.danger", "var": "--color-action-danger", "properties": ["background", "background-color"], "hints": ["danger", "delete", "危险"], "note": "配 color.text.on-danger（白字）；不要复用 status.error（暗色下会变浅）。" },
+    { "role": "彩色链接", "to": "color.text.link", "var": "--color-text-link", "properties": ["color"], "hints": ["link", "a-color", "链接", "#409eff"], "note": "链接无色系：近黑 + 下划线 + 斜体（--text-link-decoration / --text-link-style），不保留蓝色链接。" },
+    { "role": "1px 边线宽", "to": "border.width.default", "var": "--border-width-default", "properties": ["border-width", "border"], "hints": ["1px"], "note": "" },
+    { "role": "小圆角（4–8px）", "to": "radius.md", "var": "--radius-md", "properties": ["border-radius"], "hints": ["4px", "6px", "8px"], "note": "按容器层级取 --radius-md（控件）或 --radius-lg（卡片），不逐像素对应。" },
+    { "role": "正文字号（13–14px）", "to": "text.body.size", "var": "--text-body-size", "properties": ["font-size"], "hints": ["14px", "13px"], "note": "尺寸按角色进阶梯；14px 出现在 font-size 之外（如 padding）时另按间距阶梯归。" }
+  ],
+  "noEquivalent": [
+    { "legacy": "深黄 hover（主按钮悬停变深）", "replacement": "color.action.primary-hover", "var": "--color-action-primary-hover", "note": "新系统 hover 不变深（延伸色显脏），反馈靠边线变黑；直接替换变量即可。" },
+    { "legacy": "淡黄选中底（菜单 / 列表选中）", "replacement": "color.bg.sidebar-selected / color.action.selected", "var": "--color-bg-sidebar-selected", "note": "选中改为深黑反转块 + 品牌色指示条，不保留淡黄底。" },
+    { "legacy": "金色 / 深黄文字", "replacement": "color.text.brand", "var": "--color-text-brand", "note": "仅 ≥ 20px 的展示性文字允许品牌色文字；正文一律近黑。" },
+    { "legacy": "HTML 内联样式", "replacement": "抽成 class 再引用 token", "var": null, "note": "guard 会把内联字面量算作 Drift。" }
+  ]
+}

@@ -11,9 +11,7 @@
     "scan:components": "citrine-accept components",
     "check:narrow": "citrine-accept narrow",
     "check:focus": "citrine-accept focus",
-    "accept": "npm run build && citrine-accept all",
-    "citrine:status": "citrine status",
-    "citrine:upgrade": "citrine upgrade"
+    "accept": "npm run build && citrine-accept all"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.15",

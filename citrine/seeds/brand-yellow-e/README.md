@@ -2,7 +2,7 @@
 
 > 种子目录代号仍是 `brand-yellow-e`（脚本与文档中的路径不变）；系统名称 Citrine（黄晶）见仓库根 README。
 
-版本 2.6.0 · 公司级中后台设计规范（单品牌线）· npm 包 **`@wycm9527/citrine`**（本目录即包根，`npm pack` 直接可发）· 变更见 [CHANGELOG.md](CHANGELOG.md)
+版本 2.7.0 · 公司级中后台设计规范（单品牌线）· 纯数据包：本目录即分发单元（npm 包 **`@wycm9527/citrine`**，或整个文件夹直接下载），身份文件 `design-system.json`，接入 / 更新由 [design-system-adopter](../../../design-system-adopter/) skill 驱动 · 变更见 [CHANGELOG.md](CHANGELOG.md)
 
 一套已通过 `design-system-steward` `validate-system` / `build-tokens` / `guard` 的 DTCG 设计系统起点。复制进任何项目就是 Core + dark Theme；视觉效果见 `../../previews/yellow-admin/`：`admin.html` 是工作台，`stress.html` 是登录、列表、表单、详情、反馈、折叠侧栏六类页面的压力测试（方案 S 全部由构建产物驱动）。
 
@@ -33,27 +33,32 @@ bridge/recipes.css                  # 配方层：DESIGN「页面骨架 / 组件
 bridge/echarts.d.ts                 # echarts.js 的类型声明（TypeScript / React 项目）
 bridge/react/                       # 配方组件（React + shadcn/ui）：StatCard / EChart / TrendChart / TableSkeleton / ConfirmBar + useInlineConfirm，与 vue/ 同形，样式共用 recipes.css
 bridge/vue/                         # 配方组件（Vue 3 + Element Plus）：StatCard（统计卡，含 hint 口径说明）、EChart（图表容器，追踪 option 里的响应式数据，亮暗切换重建）、TrendChart（趋势折线，计数型自动整数刻度）、TableSkeleton（表格骨架）、ConfirmBar + inlineConfirm.js（浮层内原位确认）、confirm.js（页面级确认弹窗，关闭后焦点回到触发元素）
-bin/citrine.mjs                     # citrine CLI：init（落 design-system/ 并打印接线）· manifest（给已复制的项目补清单）· upgrade（按清单升级上游文件，本地改过的跳过）· status
-package.json                        # 包定义：exports 暴露 bridge/*、echarts、iconpark.config、vue/*、react/*；peer 依赖全部可选
+design-system.json                  # 身份文件：id / 版本 / upstream（仓库 · 子路径 · tag 前缀 · npm 包名）/ 两个栈的入口与模板指针 / 验收工具 / 迁移对照表 / owned 清单——adopter skill 靠它识别与更新
+templates/                          # 接入模板：entry-element.css / entry-shadcn.css（样式入口片段）、notes-*.md（各栈接线要点，AGENTS 模板的填充物）、AGENTS.md（项目规则模板）、accept.config.mjs（验收清单模板）
+migration/roles.json                # 旧规范 → 新 token 的角色对照（机器可读版；settle 起草决策文件用），与 README 迁移表由 scripts/check-roles.mjs 保持一致
+package.json                        # 包定义：exports 暴露 bridge/*、echarts、iconpark.config、vue/*、react/*；peer 依赖全部可选；无 bin——机制代码在 adopter skill 里
 ```
 
 Core 共 315 个 token，构建后 `dist/tokens.css` 的变量名就是 `--color-action-primary`、`--text-body-size`、`--control-height-md`、`--layout-form-label-width`、`--elevation-card-color` 这类形态；`dist/index.css` 把 Core 与两个 Theme 合成一个文件。
 
 ## 用法
 
-两层，各有各的分发方式：
-
-- **`design-system/`（token、DESIGN、主题、scope / theme 登记）落到项目里**——steward 要在项目内治理它（Guard、Scope、豁免），所以它是项目自己的一份，由 `citrine` CLI 落地并按版本升级。
-- **`bridge/`（桥接、配方、配方组件）直接从包 import**——项目里不放副本，升级包就是升级桥接。
+分发单元就是本目录（`design-system/` + `bridge/` + 身份文件 `design-system.json` + 模板），两条渠道等价：npm 包 `@wycm9527/citrine`，或把整个文件夹下载 / 复制到目标项目的 `design-systems/citrine/`。接入、识别与更新由 **design-system-adopter** skill 驱动（安装见仓库根 README），它读 `design-system.json`，与具体设计系统无关：
 
 ```bash
-npm i @wycm9527/citrine && npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2
-npx citrine init --stack element        # 或 --stack shadcn；项目里不能已有 design-system/。落 8 个上游文件 + .citrine.json 清单，并打印这个栈的接线步骤
-node <skill>/scripts/build-tokens.mjs --project $PWD     # 生成 dist/tokens.css、dist/themes/dark.css、dist/index.css
-node <skill>/scripts/guard.mjs --project $PWD            # 应为 current
+# 装好 adopter skill 之后，对 Agent 说「用 Citrine 起一个后台」即可；等价的手动命令：
+node .cursor/skills/design-system-adopter/scripts/ds.mjs init --system citrine --stack element-plus   # 或 --stack shadcn
+# init 做的事：把种子落成只读快照 design-systems/citrine/（npm 装过就从 node_modules 拷）→ 生成工作副本 design-system/
+# → 写 .adopter.json 清单 → 打印该栈的样式入口与接线步骤；然后 build-tokens → guard 应为 current
 ```
 
-样式入口（Element Plus）：
+两层的角色：
+
+- **`design-system/`（工作副本）**——steward 在项目内治理它（Guard、Scope、豁免、局部 token）；从快照生成，允许本地修改，升级时三方合并。
+- **`design-systems/citrine/`（上游快照，只读）**——更新的比较基线，hash 校验，改了会被 `status` 报警；npm 只是下载渠道，快照始终存在。
+- **`bridge/`（桥接、配方、配方组件）直接 import**——npm 装的从 `@wycm9527/citrine/bridge/*`，文件夹方式从快照相对路径；项目里不放第三份副本。
+
+样式入口（Element Plus；shadcn 版见 `templates/entry-shadcn.css`）：
 
 ```css
 @import "element-plus/dist/index.css";
@@ -64,31 +69,21 @@ node <skill>/scripts/guard.mjs --project $PWD            # 应为 current
 @import "./app.css";                                    /* 项目自己的补充，只引用 token */
 ```
 
-样式入口（shadcn/ui + Tailwind v4）：
-
-```css
-@import "tailwindcss";
-@import "../../design-system/dist/index.css";
-@import "@wycm9527/citrine/bridge/shadcn.css";         /* 契约变量 + @theme inline + 按 data-slot 的组件接管 */
-@import "@wycm9527/citrine/bridge/recipes.css";
-@import "./app.css";
-```
-
 配方组件与图表：`import StatCard from '@wycm9527/citrine/vue/StatCard.vue'`、`import { StatCard } from '@wycm9527/citrine/react/StatCard'`、`import { registerTheme, trendLine, rankBars } from '@wycm9527/citrine/echarts'`、`import { iconParkDefaults } from '@wycm9527/citrine/iconpark.config'`。包里是 `.vue` / `.tsx` 源码，Vite 配 `optimizeDeps.exclude: ['@wycm9527/citrine']` 交给框架插件编译（仓库内三个实测项目用 `file:` 链接消费同一份源码，另加 `resolve.preserveSymlinks: true`；发布后的真实安装不需要）。
 
-然后写项目规则 `AGENTS.md`（三行 steward 规则 + 项目接线，样板见 `../../testbed/light-procure/app/AGENTS.md` 与 `../../testbed/shadcn-lab/app/AGENTS.md`；新增项目规则需要用户确认），页面只写业务——页头 / 筛选栏 / 状态胶囊 / 操作胶囊 / 表单页 / 空态 / 统计卡 / 原位确认条都是现成配方；存量硬编码用 `migrate` 分层统一，`status` 看进度；验收用 `citrine-accept all`（见 `../../tools/README.md`）。
+项目规则 `AGENTS.md` 由 adopter 用 `templates/AGENTS.md` + 该栈的 `templates/notes-*.md` 生成（展示全文、确认后写入，已有文件只追加不覆盖）。页面只写业务——页头 / 筛选栏 / 状态胶囊 / 操作胶囊 / 表单页 / 空态 / 统计卡 / 原位确认条都是现成配方；存量硬编码用 steward 的 `migrate` 分层统一；验收 `citrine-accept all`（见 `../../tools/README.md`）。
 
 ### 升级
 
 ```bash
-npm update @wycm9527/citrine
-npx citrine status            # 清单版本 vs 包版本，哪些上游文件被本地改过
-npx citrine upgrade --dry-run # 预览：更新 / 新增 / 保留（本地改过的）
-npx citrine upgrade           # 本地没改过的上游文件直接更新；改过的跳过并列出（--force 覆盖）；打印两版之间的 CHANGELOG 标题
-node <skill>/scripts/build-tokens.mjs --project $PWD && node <skill>/scripts/guard.mjs --project $PWD && npx citrine-accept all
+node .cursor/skills/design-system-adopter/scripts/ds.mjs status     # 快照版本 vs 上游最新 tag；快照是否被改动；工作副本哪些文件动过
+node .cursor/skills/design-system-adopter/scripts/ds.mjs upgrade --dry-run   # 预览三方合并结果
+node .cursor/skills/design-system-adopter/scripts/ds.mjs upgrade    # 按 citrine-vX.Y.Z tag 拉上游（npm 装的从 node_modules）：
+#   上游未变→不动；本地未改→直接替换；两边都改→ tokens / scope-map / theme-map 键级自动合并（同键冲突才问），
+#   DESIGN.md 等 markdown 文件级选择（保留本地 / 取上游 / 写冲突标记）；然后 build-tokens → guard → citrine-accept all
 ```
 
-上游文件 = tokens / DESIGN.md / THEME.md / style-dictionary.config.mjs / scope-map.json / theme-map.json；项目自己的 `exemptions.json` / `MIGRATION.md` / `scopes/` / `dist/` 永远不碰。已经手工复制过 `design-system/` 的老项目先 `npx citrine manifest` 建清单，再走同一条升级路。版本策略：描述 / 文档 / 桥接修正是 patch，新增或修改 token、新产物是 minor，重命名 / 删除是 major——minor 升级页面像素会变，属预期，看 CHANGELOG 决定是否需要页面配合。
+版本策略：描述 / 文档 / 桥接修正是 patch，新增或修改 token、新产物是 minor，重命名 / 删除是 major——minor 升级页面像素会变，属预期，看 CHANGELOG 决定是否需要页面配合。仓库只打 `citrine-vX.Y.Z` 一种 tag。
 
 完整的 Vue 3 + Element Plus 接入范例见 `../../testbed/golden-admin/`（18 页）与 `../../testbed/light-procure/`（试点：12 页从零按文档接入）；React + shadcn/ui 见 `../../testbed/shadcn-lab/`。
 
@@ -137,7 +132,7 @@ node <skill>/scripts/build-tokens.mjs --project $PWD && node <skill>/scripts/gua
 | 1px 边线、6px 圆角、14px 字号 | `border.width.default`（发丝线）、按容器层级取 `radius.md / lg`、`text.body.size` | 尺寸按角色进阶梯，不逐像素对应 |
 | HTML 内联样式 | 抽成 class 再引用 token | `guard` 会把内联字面量算作 Drift |
 
-流程：项目先在 git 仓库里提交一次 → 复制 `design-system/` 并 `build-tokens` → `audit` → `migrate --phase adopt / replace`（自动只做无歧义项，`--apply` 生成 `MIGRATION.md`）→ 旧变量名保留为别名指向 token，样式按上表重写 → `migrate --phase settle` 清零 → `guard` / `status` 两绿。
+流程：项目先在 git 仓库里提交一次 → adopter `init`（旧 `design-system/` 会先改名 `design-system.legacy/` 当证据）并 `build-tokens` → steward `audit` → 有旧变量才 `migrate --phase adopt`（桥接为新 token 的别名）→ `replace`（自动只做无歧义项，`--apply` 生成 `MIGRATION.md`）→ `settle`（adopter 用 `migration/roles.json` 按上表起草决策文件，确认后 `--apply`）→ 豁免登记 → `guard` / `status` 两绿。上表的机器可读版在 `migration/roles.json`。
 
 ## 什么不进 Token（在目标项目用 exemptions.json 登记）
 

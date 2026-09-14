@@ -99,6 +99,7 @@ td .link, .card-head .link, .batch .link, .empty .link, .more-link { display: in
 .card-head { display: flex; align-items: center; gap: var(--spacing-3); padding: var(--spacing-4) var(--space-card); border-bottom: var(--border-width-default) solid var(--color-border-default); }
 .card-head h2 { margin: 0; font-size: var(--text-title-sm-size); font-weight: var(--text-weight-strong); }
 .card-head .right { margin-left: auto; display: flex; gap: var(--space-inline); align-items: center; }
+.card-body { padding: var(--space-card); }   /* flat 卡里直接放图表 / 自由内容时的留白（表格、筛选栏等配方自带内边距，不需要它） */
 .el-card.flat { --el-card-padding: 0; }
 
 /* ── 状态胶囊：文字 + 同色浅底，400 字重；.status 与 .badge 同物，两个名字只为语义 ── */

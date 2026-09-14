@@ -4,7 +4,7 @@
 
 ![Citrine · 实测项目「黄金后台」亮 / 暗模式](docs/screenshots/hero.png)
 
-版本 **2.6.0** · Core 315 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
+版本 **2.7.0** · Core 315 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
 
 ---
 
@@ -61,17 +61,19 @@ citrine/
 git clone https://github.com/WYCM9527/Design-System.git && cd Design-System
 git clone https://github.com/WYCM9527/skills.git skills          # 治理工具，放在仓库根目录
 
-# 种子是 npm 包 @wycm9527/citrine（目录 citrine/seeds/brand-yellow-e 即包根），验收工具是 @wycm9527/citrine-tools（citrine/tools）
+# 种子是纯数据包（目录 citrine/seeds/brand-yellow-e 即 npm 包 @wycm9527/citrine 的包根，身份文件 design-system.json）；
+# 接入 / 更新由仓库根的 design-system-adopter skill 驱动（安装一行命令见根 README），验收工具是 @wycm9527/citrine-tools（citrine/tools）
 cd /path/to/project
 npm i @wycm9527/citrine && npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2   # 未发布到 registry 前用 file:<路径> 指向这两个目录
-npx citrine init --stack element        # 或 --stack shadcn：落 design-system/（token 与规则）+ .citrine.json 清单，打印该栈的样式入口与接线
+node .cursor/skills/design-system-adopter/scripts/ds.mjs init --system citrine --stack element-plus   # 或 --stack shadcn
+# init：落只读快照 design-systems/citrine/ → 生成工作副本 design-system/ → 写 .adopter.json → 打印该栈的样式入口与接线
 node <Design-System>/skills/design-system-steward/scripts/build-tokens.mjs --project "$PWD"   # → design-system/dist/
 node <Design-System>/skills/design-system-steward/scripts/guard.mjs --project "$PWD"          # 应为 current
 ```
 
 桥接、配方与配方组件**直接从包 import**，项目里不放副本：样式入口按顺序引入组件库基础样式 → `design-system/dist/index.css` → `@wycm9527/citrine/bridge/element-plus.css`（或 `bridge/shadcn.css`）→ `@wycm9527/citrine/bridge/recipes.css` → 项目自己的补充；组件 `@wycm9527/citrine/vue/StatCard.vue` / `@wycm9527/citrine/react/StatCard`，图表 `@wycm9527/citrine/echarts`。暗色在 `<html>` 上加 `dark`。项目规则写进 `AGENTS.md`（见 `testbed/light-procure/app/AGENTS.md`）。升级：`npm update @wycm9527/citrine && npx citrine upgrade`——本地没改过的上游文件直接更新、改过的跳过并列出，然后 build-tokens → guard → `citrine-accept all`。细节见 [种子 README「用法 / 升级」](seeds/brand-yellow-e/README.md#用法)。
 
-已有旧规范的项目：先 `audit` 看只读报告，`migrate --phase adopt / replace` 自动处理无歧义项，其余按种子 README「从旧规范迁移」的**角色对照**手工映射，最后 `settle → guard / status` 两绿。排练记录见 `testbed/legacy-shop/README.md`。
+已有旧规范的项目走 adopter 的「更换现有规范」三期剧本：换肤（init --legacy-rename + 桥接接管）→ 收编（steward `audit` → `adopt / replace` 自动处理无歧义项，其余按种子 `migration/roles.json` 的**角色对照**起草 settle 决策）→ 收尾（`guard` / `status` 两绿）。排练记录见 `testbed/legacy-shop/README.md`。升级：`ds.mjs status → upgrade`（三方合并，本地改动经确认保留）。
 
 ## 实测项目
 

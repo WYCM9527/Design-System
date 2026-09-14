@@ -45,7 +45,8 @@ URL 形如 `index.html?theme=dark&state=empty#/orders`：
 
 ```text
 app/
-├── design-system/            # 由 citrine init / upgrade 维护的上游文件（.citrine.json 清单）+ 本项目的 exemptions.json
+├── design-system/            # 工作副本：由 design-system-adopter 维护（清单 .adopter.json）+ 本项目的 exemptions.json
+├── design-systems/citrine     # 上游只读快照（仓库内是指向种子的符号链接）
 ├── accept.config.mjs         # 验收清单（citrine-accept 读取）
 ├── src/styles/globals.css    # 样式入口顺序：Element Plus → 设计系统 dist → @wycm9527/citrine 的桥接 → 配方层 recipes.css → 项目补充 app.css（桥接与配方组件从包 import，无副本）
 ├── src/layouts/AdminLayout.vue
