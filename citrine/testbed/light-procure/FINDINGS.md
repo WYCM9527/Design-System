@@ -31,7 +31,7 @@
 | D95 | `useDirtyGuard` 用 `onBeforeRouteLeave`，新建保存后 `replace` 到编辑路由（同一组件实例）后不再触发 | 组件级守卫绑定路由记录 | P | 改为全局 `router.beforeEach` + 卸载时移除；表单页删掉自己的补丁 |
 | D96 | 操作列按 PRD 逐项列举（查看 / 编辑 / 提交 / 删除 + ⋯）在 1440 会横向滚动 | DESIGN「一行最多 3 个动作、危险动作收进更多」与 PRD 细节冲突 | N | 采用 DESIGN：查看 / 编辑 / 提交 + ⋯（复制、删除）；PRD 属于测试脚本，设计规则优先 |
 | D97 | 四组在"表格列宽 / 筛选控件宽度"上都纠结要不要写像素 | DESIGN 说它们不是 token、按内容定，而项目规则说样式不写像素 | N | 维持：列宽 `width` prop 与筛选控件行内宽度按内容定，`<style>` 里零字面量；关键词框用 `layout.search-width` |
-| D98 | 抽屉内的离开确认走 `ElMessageBox` 等于第二层浮层，与 PRD「浮层内原位确认」冲突；`el-date-picker` 的「今天」跟真实日期 | 组件能力 | N | 记录；原位确认区域需要自绘，留待有真实需求时做成配方 |
+| D98 | 抽屉内的离开确认走 `ElMessageBox` 等于第二层浮层，与 PRD「浮层内原位确认」冲突；`el-date-picker` 的「今天」跟真实日期 | 组件能力 | S | 2.5.0：新增原位确认条配方 `.confirm-bar` + `bridge/vue/ConfirmBar.vue` / `useInlineConfirm`，审批抽屉、资产 / 供应商编辑抽屉、分配与成员弹窗全部改用；「今天」跟真实日期仍记录 |
 
 ## 闭环验证（PRD §8）
 

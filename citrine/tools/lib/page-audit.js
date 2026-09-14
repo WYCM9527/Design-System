@@ -4,7 +4,8 @@
 (() => {
   const out = { url: location.hash, small: [], noName: [], overflowX: [], truncated: [], lowContrast: [], tinyTargets: [], dupIds: [], imgNoAlt: 0 };
   const vis = (el) => { const r = el.getBoundingClientRect(); const cs = getComputedStyle(el); return r.width > 0 && r.height > 0 && cs.visibility !== 'hidden' && cs.display !== 'none' && cs.opacity !== '0'; };
-  const parse = (c) => { const m = c.match(/rgba?\(([^)]+)\)/); if (!m) return null; const p = m[1].split(',').map(Number); return { r: p[0], g: p[1], b: p[2], a: p.length > 3 ? p[3] : 1 }; };
+  const __cv = document.createElement('canvas'); __cv.width = __cv.height = 1; const __cx = __cv.getContext('2d', { willReadFrequently: true }); const parseAny = (s) => { if (!s || s === 'transparent' || s === 'none') return null; __cx.clearRect(0, 0, 1, 1); __cx.fillStyle = '#000'; __cx.fillStyle = s; if (__cx.fillStyle === '#000000' && !/black|#000|rgb\(0, 0, 0\)/.test(s)) { /* 未识别的字符串会保持上一个值 */ } __cx.fillRect(0, 0, 1, 1); const d = __cx.getImageData(0, 0, 1, 1).data; return { r: d[0], g: d[1], b: d[2], a: Math.round((d[3] / 255) * 1000) / 1000 }; };
+  const parse = (c) => { const m = (c || '').match(/rgba?\(([^)]+)\)/); if (m) { const p = m[1].split(/[\s,\/]+/).filter(Boolean).map(Number); return { r: p[0], g: p[1], b: p[2], a: p.length > 3 ? p[3] : 1 }; } return /^(oklab|oklch|lab|lch|color|hsl|hwb)\(/.test(String(c || '').trim()) ? parseAny(c) : null; };
   const lin = (v) => { v /= 255; return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
   const lum = (c) => 0.2126 * lin(c.r) + 0.7152 * lin(c.g) + 0.0722 * lin(c.b);
   const blend = (fg, bg) => ({ r: fg.r * fg.a + bg.r * (1 - fg.a), g: fg.g * fg.a + bg.g * (1 - fg.a), b: fg.b * fg.a + bg.b * (1 - fg.a), a: 1 });

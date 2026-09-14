@@ -12,7 +12,8 @@ import { listMembers, saveMember, toggleMember, ApiError } from '../data/api'
 import { session, isSelf, can, demoState, demoParam, rememberList, recallList } from '../data/session'
 import { ROLES, PAGE_SIZES } from '../data/constants'
 import { dateOf } from '../data/format'
-import { confirmLeave } from '../data/guard'
+import ConfirmBar from '../styles/bridge/vue/ConfirmBar.vue'
+import { useInlineConfirm } from '../styles/bridge/vue/inlineConfirm.js'
 
 const COMPANY = 'company'
 // constants.js 没有成员启停用的状态映射（供应商同样），这里按 PRD 语义就地定义：启用 success、停用 neutral（无倾向状态）
@@ -95,8 +96,10 @@ function show() {
 }
 function openNew() { dialog.id = ''; Object.assign(form, blank()); if (node.value !== COMPANY) form.deptId = node.value; show() }
 function openEdit(m) { dialog.id = m.id; Object.assign(form, { name: m.name, email: m.email, deptId: m.deptId, role: m.role }); show() }
-async function tryClose() { if (dirty() && !(await confirmLeave())) return; dialog.open = false }
-const beforeClose = async (done) => { if (!dirty() || (await confirmLeave())) done() }   // 关闭按钮与 Esc 走同一条确认规则
+const leave = useInlineConfirm()   // 浮层内原位确认，不叠弹窗
+const askLeave = () => leave.ask({ message: '成员资料有未保存的修改，关闭后会丢失。', confirmText: '放弃修改', cancelText: '继续编辑', danger: true })
+async function tryClose() { if (dirty() && !(await askLeave())) return; dialog.open = false }
+const beforeClose = async (done) => { if (!dirty() || (await askLeave())) done() }   // 关闭按钮与 Esc 走同一条确认规则
 async function save() {
   const ok = await formRef.value.validate().catch(() => false)
   if (!ok) return
@@ -200,7 +203,10 @@ async function toggle(m) {
         </template>
       </el-form-item>
     </el-form>
-    <template #footer><el-button @click="tryClose">取消</el-button><el-button type="primary" :loading="dialog.saving" @click="save">保存</el-button></template>
+    <template #footer>
+      <ConfirmBar v-if="leave.state.open" v-bind="leave.state" @confirm="leave.confirm" @cancel="leave.cancel" />
+      <template v-else><el-button @click="tryClose">取消</el-button><el-button type="primary" :loading="dialog.saving" @click="save">保存</el-button></template>
+    </template>
   </el-dialog>
 </template>
 

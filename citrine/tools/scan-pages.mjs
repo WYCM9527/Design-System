@@ -26,7 +26,7 @@ try {
   for (const mode of modes) {
     for (const [name, spec] of pages) {
       await browser.resetStorage(`${server.url}/index.html`);
-      await browser.goto(pageUrl(server.url, spec, modeQuery(mode), cfg.DEFAULT_QUERY), "document.readyState === 'complete' && document.querySelector('#app') && document.querySelector('#app').children.length > 0 && document.body.innerText.trim().length > 20");
+      await browser.goto(pageUrl(server.url, spec, modeQuery(mode), cfg.DEFAULT_QUERY), "document.readyState === 'complete' && document.querySelector('#app, #root') && document.querySelector('#app, #root').children.length > 0 && document.body.innerText.trim().length > 20");
       await sleep(1000);
       let res; try { res = await browser.evalJs(audit); } catch (e) { res = { error: String(e).slice(0, 200) }; }
       res.mode = mode; res.title = await browser.evalJs('document.title');

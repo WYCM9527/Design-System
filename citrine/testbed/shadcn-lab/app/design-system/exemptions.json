@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "exemptions": [
+    { "path": "src/components/ui/**", "reason": "shadcn/ui 上游源码（new-york）按原样保留：ring-[3px]、translate-y-[2px]、p-[3px]、8rem 最小宽度、50% 居中等是组件内部几何；颜色全部走 --primary 等契约变量，视觉接管在 bridge/shadcn-globals.css 按 data-slot 完成" },
+    { "path": "src/styles/bridge/shadcn-globals.css", "reason": "种子 shadcn 桥接的同步副本：全局焦点兜底的 outline-offset 1px 是组件几何" },
+    { "path": "src/styles/globals.css", "reason": "同上：桥接副本改路径后的样式入口" }
+  ]
+}

@@ -13,7 +13,9 @@ import { session, can, rememberList, recallList, demoState, demoParam } from '..
 import { listAssets, getAsset, saveAsset, assignAsset, returnAsset, approvedAppsForLink, activeMembers, visibleAssets } from '../data/api'
 import { CATEGORIES, ASSET_STATUS, PAGE_SIZES, LINE_LIMIT } from '../data/constants'
 import { money, dateOf, timeOf, dash, downloadCsv } from '../data/format'
-import { useDirtyGuard, confirmLeave } from '../data/guard'
+import { useDirtyGuard } from '../data/guard'
+import ConfirmBar from '../styles/bridge/vue/ConfirmBar.vue'
+import { useInlineConfirm } from '../styles/bridge/vue/inlineConfirm.js'
 
 const route = useRoute(); const router = useRouter()
 const viewAll = computed(() => can('asset.viewAll'))     // 审批人 / 管理员看全部；申请人只看本人在用
@@ -106,7 +108,8 @@ function openEditor(src) {
 }
 const openCreate = () => openEditor(null)
 function openEdit(a) { const src = typeof a === 'string' ? db.assets.find((x) => x.id === a) : a; if (!src) return ElMessage.error('记录不存在或已被删除'); openEditor(src) }
-async function closeEditor(done) { if (isEditorDirty() && !(await confirmLeave())) return; done ? done() : (editor.open = false) }
+const leaveEditor = useInlineConfirm(), leaveAssign = useInlineConfirm()   // 浮层内原位确认，不叠弹窗
+async function closeEditor(done) { if (isEditorDirty() && !(await leaveEditor.ask({ message: '资产资料有未保存的修改，关闭后会丢失。', confirmText: '放弃修改', cancelText: '继续编辑', danger: true }))) return; done ? done() : (editor.open = false) }
 async function save() {
   const ok = await editorRef.value.validate().catch(() => false)
   if (!ok) return   // scroll-to-error 已定位到首个错误
@@ -133,7 +136,7 @@ function openAssign(a) {
   nextTick(() => assignRef.value?.clearValidate())
 }
 const isAssignDirty = () => assign.open && !!(assign.userId || assign.note)
-async function closeAssign(done) { if (isAssignDirty() && !(await confirmLeave())) return; done ? done() : (assign.open = false) }
+async function closeAssign(done) { if (isAssignDirty() && !(await leaveAssign.ask({ message: '分配信息尚未确认，关闭后会丢失。', confirmText: '放弃分配', cancelText: '继续填写', danger: true }))) return; done ? done() : (assign.open = false) }
 async function confirmAssign() {
   const ok = await assignRef.value.validate().catch(() => false); if (!ok) return
   assign.saving = true
@@ -327,8 +330,11 @@ onMounted(() => {
       <el-form-item label="备注" prop="note"><el-input v-model="editor.form.note" type="textarea" :rows="3" maxlength="300" show-word-limit placeholder="选填" /></el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="closeEditor()">取消</el-button>
-      <el-button type="primary" :loading="editor.saving" @click="save">{{ editor.id ? '保存' : '登记' }}</el-button>
+      <ConfirmBar v-if="leaveEditor.state.open" v-bind="leaveEditor.state" @confirm="leaveEditor.confirm" @cancel="leaveEditor.cancel" />
+      <template v-else>
+        <el-button @click="closeEditor()">取消</el-button>
+        <el-button type="primary" :loading="editor.saving" @click="save">{{ editor.id ? '保存' : '登记' }}</el-button>
+      </template>
     </template>
   </el-drawer>
 
@@ -345,8 +351,11 @@ onMounted(() => {
       <el-form-item label="备注" prop="note"><el-input v-model="assign.note" type="textarea" :rows="2" maxlength="200" show-word-limit placeholder="选填" /></el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="closeAssign()">取消</el-button>
-      <el-button type="primary" :loading="assign.saving" @click="confirmAssign">确认分配</el-button>
+      <ConfirmBar v-if="leaveAssign.state.open" v-bind="leaveAssign.state" @confirm="leaveAssign.confirm" @cancel="leaveAssign.cancel" />
+      <template v-else>
+        <el-button @click="closeAssign()">取消</el-button>
+        <el-button type="primary" :loading="assign.saving" @click="confirmAssign">确认分配</el-button>
+      </template>
     </template>
   </el-dialog>
 </template>

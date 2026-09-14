@@ -5,11 +5,25 @@
 
 /* ── 基础 ── */
 *, *::before, *::after { box-sizing: border-box; }
-html { font-family: var(--font-family-body); font-size: var(--text-body-size); line-height: var(--text-body-line-height); }
-body { margin: 0; background: var(--color-bg-page); color: var(--color-text-primary); }
+/* 根字号保持浏览器默认 16px：Tailwind 的 rem 刻度（size-4 = 1rem）依赖它，改在 html 上会让 shadcn 的每个尺寸缩 12.5%；正文字号落在 body */
+html { font-family: var(--font-family-body); line-height: var(--text-body-line-height); }
+body { margin: 0; font-size: var(--text-body-size); background: var(--color-bg-page); color: var(--color-text-primary); }
 a { color: inherit; text-decoration: none; }
 .num { font-variant-numeric: var(--text-numeric-variant); }
 .mono { font-family: var(--font-family-code); font-variant-numeric: var(--text-numeric-variant); }
+
+/* ── 图标尺寸六档：IconPark 走 font-size（见 iconpark.css）；lucide 这类 SVG 图标库走 width / height，同一组类名 ── */
+svg.i-icon--xs { width: var(--size-icon-xs); height: var(--size-icon-xs); flex: none; }
+svg.i-icon--sm { width: var(--size-icon-sm); height: var(--size-icon-sm); flex: none; }
+svg.i-icon--md { width: var(--size-icon-md); height: var(--size-icon-md); flex: none; }
+svg.i-icon--lg { width: var(--size-icon-lg); height: var(--size-icon-lg); flex: none; }
+svg.i-icon--xl { width: var(--size-icon-xl); height: var(--size-icon-xl); flex: none; }
+svg.i-icon--2xl { width: var(--size-icon-2xl); height: var(--size-icon-2xl); flex: none; }
+svg.i-icon--muted { color: var(--color-icon-muted); }
+/* 面包屑（没有组件库时） */
+.crumbs { display: flex; align-items: center; gap: var(--spacing-2); font-size: var(--text-body-sm-size); color: var(--color-text-secondary); }
+.crumbs .sep { color: var(--color-text-muted); }
+.crumbs span:last-child { color: var(--color-text-primary); }
 
 /* ── 链接四层（DESIGN 视觉语言·链接） ── */
 /* 内容型：订单号、名称——下划线 + 斜体；等宽数字型不斜体 */
@@ -49,6 +63,16 @@ td .link, .card-head .link, .batch .link, .empty .link, .more-link { display: in
 .app-brand .logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .is-collapsed .app-brand { padding: 0; justify-content: center; }
 .sidebar .el-menu { border-right: 0; flex: 1; padding-top: var(--spacing-2); }
+/* 不用 Element 菜单时的侧栏导航（React / 静态页）：分组标题 + 链接，当前项深黑反转块 + 左侧品牌指示条，与 el-menu 桥接同一形态 */
+.nav { flex: 1; padding: var(--spacing-2); display: flex; flex-direction: column; gap: var(--spacing-0-5); overflow: hidden auto; }
+.nav-group { font-size: var(--text-caption-size); color: var(--color-text-sidebar-muted); padding: var(--spacing-3-5) var(--spacing-3) var(--spacing-1-5); white-space: nowrap; }
+.nav a, .nav button { display: flex; align-items: center; gap: var(--spacing-2-5); min-height: var(--control-height-md); padding: 0 var(--spacing-3); border-radius: var(--radius-md); color: var(--color-text-sidebar); position: relative; text-decoration: none; background: transparent; border: 0; font: inherit; width: 100%; text-align: left; cursor: pointer; white-space: nowrap; }
+.nav a:hover, .nav button:hover { background: var(--color-bg-sidebar-hover); }
+.nav a.active, .nav button.active { background: var(--color-bg-sidebar-selected); color: var(--color-text-sidebar-selected); font-weight: var(--font-weight-medium); }
+.nav a.active::before, .nav button.active::before { content: ""; position: absolute; left: 0; top: var(--spacing-2); bottom: var(--spacing-2); width: var(--border-width-indicator); border-radius: var(--radius-full); background: var(--color-brand-indicator); }
+.is-collapsed .nav-group { display: none; }
+.is-collapsed .nav a, .is-collapsed .nav button { justify-content: center; padding: 0; }
+.is-collapsed .nav .nav-label { display: none; }
 .sidebar-foot { padding: var(--spacing-3) var(--spacing-4); border-top: var(--border-width-default) solid var(--color-border-sidebar); font-size: var(--text-small-size); color: var(--color-text-sidebar-muted); white-space: nowrap; overflow: hidden; }
 .main { min-width: 0; display: flex; flex-direction: column; }
 .topbar { height: var(--layout-topbar-height); display: flex; align-items: center; gap: var(--spacing-3); padding: 0 var(--space-gutter); background: var(--color-bg-surface); border-bottom: var(--border-width-default) solid var(--color-border-default); position: sticky; top: 0; z-index: var(--layer-sticky); }
@@ -134,6 +158,16 @@ td .link, .card-head .link, .batch .link, .empty .link, .more-link { display: in
 .upload-zone input[type="file"] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; }   /* 透明铺满：点 label 触发选择，Tab 仍可到达 */
 .upload-zone { position: relative; }
 
+/* ── 浮层内原位确认条（bridge/vue/ConfirmBar.vue）：替换抽屉 / 弹窗页脚，不叠第二层弹窗；底色中性、只有确认按钮带颜色（彩色文字不落灰底） ── */
+.confirm-bar { display: flex; align-items: center; gap: var(--space-inline); padding: var(--spacing-3) var(--space-card); background: var(--color-bg-subtle); border-top: var(--border-width-default) solid var(--color-border-default); }
+.confirm-bar .msg { flex: 1; min-width: 0; color: var(--color-text-primary); font-size: var(--text-body-sm-size); line-height: var(--text-body-line-height); }
+/* 没有组件库按钮时（React 版未传 renderButton）的兜底按钮：次要 = 描边、主 = 黄底深字、危险 = 红底白字 */
+.confirm-bar__btn { height: var(--control-height-md); padding: 0 var(--spacing-4); border-radius: var(--radius-md); font: inherit; font-weight: var(--text-weight-label); cursor: pointer; border: var(--border-width-control) solid var(--color-border-strong); background: var(--color-bg-surface); color: var(--color-text-primary); }
+.confirm-bar__btn.is-primary { background: var(--color-action-primary); border-color: var(--color-action-primary); color: var(--color-text-on-primary); }
+.confirm-bar__btn.is-danger { background: var(--color-action-danger); border-color: var(--color-action-danger); color: var(--color-text-on-danger); }
+.el-drawer__footer .confirm-bar { margin: calc(var(--spacing-3) * -1) calc(var(--space-card) * -1); border-top: 0; }   /* 撑满 Element 抽屉页脚（spacing.3 × space.card）的内边距，页脚自带的上边线保留 */
+.el-dialog__footer .confirm-bar { margin: calc(var(--space-card) * -1); margin-top: 0; border-radius: 0 0 var(--radius-xl) var(--radius-xl); }   /* 弹窗页脚是 space.card 内边距、无边线：成为带圆角的完整底栏 */
+
 /* ── 结果页（403 / 404 / 500）：内容区垂直居中，插图 two-tone ── */
 .result { text-align: center; padding: var(--spacing-10) var(--spacing-5); max-width: var(--layout-form-max-width); margin: auto; min-height: calc(100vh - var(--layout-topbar-height) - var(--space-gutter) * 2); display: flex; flex-direction: column; justify-content: center; align-items: center; }
 .result .illu { width: var(--illustration-size-md); height: calc(var(--illustration-size-md) * 0.6); border-radius: var(--radius-lg); background: var(--color-bg-subtle); border: var(--border-width-default) dashed var(--color-border-strong); display: grid; place-items: center; margin-bottom: var(--spacing-5); }
@@ -153,8 +187,28 @@ td .link, .card-head .link, .batch .link, .empty .link, .more-link { display: in
 .chart { height: calc(var(--control-height-md) * 7); width: 100%; }
 .chart.tall { height: calc(var(--control-height-md) * 9); }
 
-/* ── 统计卡网格（卡片本身是 bridge/vue/StatCard.vue）与状态条 ── */
+/* ── 统计卡（bridge/vue/StatCard.vue 与 bridge/react/StatCard.tsx 共用这组类）：数据大字 + 涨跌 + 口径说明，左侧品牌指示条是固定特征 ── */
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-stack); }
+.stat-card { background: var(--color-bg-surface); border: var(--border-width-default) solid var(--color-border-default); border-left: var(--border-width-indicator) solid var(--color-brand-indicator); border-radius: var(--radius-lg); box-shadow: 0 var(--elevation-card-y) var(--elevation-card-blur) var(--elevation-card-color); padding: var(--spacing-5) var(--space-card); min-width: 0; }
+.stat-card__label { display: flex; align-items: center; gap: var(--spacing-1); color: var(--color-text-secondary); font-size: var(--text-body-sm-size); }
+.stat-card__hint { display: inline-grid; place-items: center; width: var(--control-hit-min); height: var(--control-hit-min); margin: calc((var(--control-hit-min) - var(--size-icon-sm)) / -2) 0; padding: 0; border: 0; border-radius: var(--radius-full); background: transparent; color: var(--color-icon-muted); cursor: help; font: inherit; }
+.stat-card__hint:hover { color: var(--color-text-primary); background: var(--color-bg-hover); }
+.stat-card__value { font-size: var(--text-display-size); font-weight: var(--text-display-weight); line-height: var(--text-display-line-height); margin: var(--spacing-1-5) 0 var(--spacing-1); letter-spacing: var(--text-display-tracking); color: var(--color-text-primary); }
+.stat-card__delta { font-size: var(--text-small-size); }   /* 颜色交给 .up / .down */
+.stat-card__note { color: var(--color-text-muted); font-size: var(--text-small-size); }
+
+/* ── 表格骨架（bridge/vue/TableSkeleton.vue 与 bridge/react/TableSkeleton.tsx 共用）：表头 + 等高行 + 列宽，加载完成不跳版 ── */
+.tskel { overflow: hidden; }
+.tskel-head, .tskel-row { display: flex; align-items: center; border-bottom: var(--border-width-default) solid var(--color-border-default); }
+.tskel-head { background: var(--color-bg-subtle); height: calc(var(--table-cell-padding-y) * 2 + var(--text-body-line-height) * var(--text-small-size)); }
+.tskel-row { height: calc(var(--table-cell-padding-y) * 2 + var(--text-body-line-height) * var(--text-body-size) + var(--text-body-line-height) * var(--text-small-size)); }
+.tskel .cell { padding: 0 var(--table-cell-padding-x); min-width: 0; }
+.tskel .bar { display: block; height: var(--text-small-size); border-radius: var(--radius-xs); width: 70%; background: linear-gradient(90deg, var(--color-bg-skeleton) 25%, var(--color-bg-skeleton-highlight) 50%, var(--color-bg-skeleton) 75%); background-size: 400% 100%; animation: tskel-shimmer 1.4s var(--motion-easing-standard) infinite; }
+.tskel .bar.head { width: 45%; }
+.tskel .bar.short { width: 40%; }
+@keyframes tskel-shimmer { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
+
+/* ── 状态条 ── */
 .stat-strip { display: inline-flex; flex-wrap: wrap; gap: var(--space-inline); margin-bottom: var(--space-stack); }
 .stat-strip .cell { display: inline-flex; align-items: center; gap: var(--spacing-2); height: var(--control-height-lg); padding: 0 var(--spacing-4); background: var(--color-bg-surface); border: var(--border-width-default) solid var(--color-border-default); border-radius: var(--radius-md); color: var(--color-text-secondary); font-size: var(--text-body-sm-size); }
 .stat-strip .cell.is-clickable { cursor: pointer; }

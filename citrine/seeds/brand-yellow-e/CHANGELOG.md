@@ -2,6 +2,17 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.5.0 — 2026-09-14（shadcn/ui 路径渲染验证 · 原位确认条 · React 配方组件）
+
+- **新增实测项目四 `testbed/shadcn-lab`**（React 19 + Tailwind v4 + Radix，按 shadcn new-york 源码手写 21 个组件）：第一次把 `bridge/shadcn-globals.css` 画出来看并跑全组件走查。发现与处理见 `testbed/shadcn-lab/FINDINGS.md`（D99–D111）。
+- **`bridge/shadcn-globals.css` 组件级接管**（按 `data-slot`，不依赖 Tailwind 类名）：`@layer base` 边线色回 `--border`（preflight 的 currentColor 让只写 `border` 的卡片 / 提示条 / 输入框拿文字色当边线）；`h-8 / h-9 / h-10 / size-9` 与 `SelectTrigger[data-size]` 接到 `control.height.sm / md / lg`；勾选 / 单选 / 开关命中区伪元素外扩到 24；焦点环颜色换 `focus.ring`、有 `data-slot` 的元素不再叠全局 outline；Tooltip 反转块；Dialog / AlertDialog / Sheet / Drawer 遮罩接 `bg.overlay`；Skeleton 接 `bg.skeleton`、Progress 轨道接 `border.default`；表格表头 / hover / 选中行；Tabs 选中项深黑反转块；菜单 / 下拉项 focus 用 `bg.hover`；`TabsContent` 焦点环；destructive 提示条描述文字接 `text.danger`（原为红的 90% 洗色，白底 3.3:1）；`--shadow-2xs / xs` 映射。
+- **`recipes.css`**：根字号不再写在 `html` 上（Tailwind 的 rem 刻度依赖 16px，此前 shadcn 所有尺寸缩 12.5%），正文字号落在 `body`；新增纯 CSS 侧栏导航 `.nav`（当前项反转块 + 指示条，折叠态），`svg.i-icon--*` 图标尺寸六档（lucide 这类 SVG 图标库），`.crumbs` 面包屑；统计卡与表格骨架的样式移入 recipes（`.stat-card__*`、`.tskel*`），Vue / React 两版组件共用；新增**原位确认条** `.confirm-bar`（D98）。
+- **新增 `bridge/react/`**：StatCard / EChart / TrendChart / TableSkeleton / ConfirmBar + `useInlineConfirm`，与 `bridge/vue/` 同形；`bridge/echarts.d.ts` 类型声明。`bridge/vue/` 新增 `ConfirmBar.vue` + `inlineConfirm.js`，`StatCard.vue` 不再依赖 `el-card`。
+- **原位确认**：抽屉 / 弹窗里的离开确认不再叠 `ElMessageBox`，页脚替换为 `.confirm-bar`（中性底、只有确认按钮带颜色、次要按钮自动聚焦、Esc = 留下）；轻采的审批抽屉、资产 / 供应商编辑抽屉、分配与成员弹窗全部改用；DESIGN 配方表新增「浮层内的确认」行与交互规则。
+- **DESIGN** 新增「组件库对照：shadcn/ui」：每个 shadcn 变体对应的 Citrine 角色，以及**不用**清单（`Button link`、`Badge default / destructive`、文字型 `ghost`）与替代写法。
+- **验收工具**：探针颜色解析加 canvas 归一化（Tailwind v4 的 `color-mix()` 计算值是 `oklab(…)`，此前被当成透明、把主按钮 hover 误报为白字白底）；走查脚本兼容 Radix 浮层（`POPPER_SEL`）、`role=dialog|alertdialog` 弹层、非 Element 的下拉触发器；页面扫描兼容 `#root` 挂载点。
+- 回归：黄金后台与轻采在同一份 recipes / 桥接下复跑全量验收，shadcn 实验室 10 状态 × 亮暗 + 80 元素走查 + 窄屏 + 焦点全绿。
+
 ## 2.4.2 — 2026-09-14（治理工具缺陷回填完成）
 
 - 排练与试点中记录的 `design-system-steward` 四个缺陷已在 [WYCM9527/skills](https://github.com/WYCM9527/skills) 0.6.0 修正并推送：`migrate` 按 CSS 属性 / Tailwind 前缀先筛同类 Token 再判撞值；`audit / migrate / status` 扫描前抹掉注释；`settle --apply --decisions-file` 直接落地归并决定并写 `MIGRATION.md`；`--allow-dirty` 生效；`guard` / `status` 输出 `checks` / `notCovered` 写明分工。三个实测项目复跑 `status` 仍为 unified、`replace` 无新增自动替换。「已知边界」与遗留迁移排练记录同步。

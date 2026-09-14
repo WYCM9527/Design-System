@@ -12,7 +12,8 @@ import { session, rememberList, recallList, demoState, demoParam } from '../data
 import { listApprovals, decideApplication, pendingCount, getApplication } from '../data/api'
 import { APP_STATUS, PAGE_SIZES } from '../data/constants'
 import { money, dateOf, timeOf, dash, lineSubtotal, fileSize } from '../data/format'
-import { confirmLeave } from '../data/guard'
+import ConfirmBar from '../styles/bridge/vue/ConfirmBar.vue'
+import { useInlineConfirm } from '../styles/bridge/vue/inlineConfirm.js'
 
 const router = useRouter()
 const KEY = 'approvals'
@@ -92,14 +93,15 @@ function onClosed() {
   if (loading.value) { const stop = watch(loading, (v) => { if (!v) { stop(); nextTick(focusBack) } }) } else nextTick(focusBack)
 }
 // Esc / 右上角 × / 底部「取消」共用：处理中不允许关；已输入意见先确认
+const leave = useInlineConfirm()   // 浮层内不叠第二层弹窗：确认条替换抽屉页脚（PRD §1.1 原位确认）
 async function beforeClose(done) {
   if (drawer.acting) return
-  if (drawer.opinion.trim() && !(await confirmLeave('意见尚未提交，确定关闭？'))) return
+  if (drawer.opinion.trim() && !(await leave.ask({ message: '审批意见尚未提交，关闭后会丢失。', confirmText: '确定关闭', cancelText: '继续填写' }))) return
   done()
 }
 function requestClose() { beforeClose(() => { drawer.open = false }) }
 async function goDetail() {
-  if (drawer.opinion.trim() && !(await confirmLeave('意见尚未提交，确定离开？'))) return
+  if (drawer.opinion.trim() && !(await leave.ask({ message: '审批意见尚未提交，离开后会丢失。', confirmText: '确定离开', cancelText: '继续填写' }))) return
   router.push(`/applications/${drawer.app.id}`)
 }
 async function decide(result) {
@@ -235,7 +237,8 @@ const isPdf = (f) => f.type === 'application/pdf' || /\.pdf$/i.test(f.name)
       <p class="dgo"><a class="go" :href="`#/applications/${drawer.app.id}`" @click.prevent="goDetail">查看完整详情<Right class="i-icon--sm" /></a><span class="help">预览附件、查看流转记录请进入详情页</span></p>
     </template>
     <template #footer>
-      <el-form v-if="drawer.app" label-position="top" class="decide" @submit.prevent>
+      <ConfirmBar v-if="leave.state.open" v-bind="leave.state" @confirm="leave.confirm" @cancel="leave.cancel" />
+      <el-form v-else-if="drawer.app" label-position="top" class="decide" @submit.prevent>
         <el-form-item :error="drawer.error">
           <template #label>审批意见<span class="help">通过时选填，驳回时必填；填写时 2–200 字</span></template>
           <el-input ref="opinionRef" v-model="drawer.opinion" type="textarea" :rows="3" maxlength="200" show-word-limit placeholder="填写审批意见" @input="drawer.error = ''" />

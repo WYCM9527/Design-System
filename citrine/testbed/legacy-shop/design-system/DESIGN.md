@@ -131,6 +131,30 @@
 
 给普通编码 Agent 的速查表：每个组件用哪些 Token。不在表里的组件先按最接近的一行类推，再提提案。
 
+### 组件库对照：shadcn/ui（React + Tailwind v4）
+
+Element Plus 由 `bridge/element-plus.css` 逐组件接管；shadcn/ui 由 `bridge/shadcn-globals.css` 接管（契约变量 + `@theme inline` + 按 `data-slot` 的组件级接管），2.5.0 起在 React 实验项目（`testbed/shadcn-lab`）上渲染验证并跑同一套走查。页面骨架公共类（`recipes.css`）与组件库无关，React 项目直接用；配方组件用 `bridge/react/`（StatCard / EChart / TrendChart / TableSkeleton / ConfirmBar + `useInlineConfirm`）。
+
+| shadcn 写法 | Citrine 角色 | 说明 |
+| --- | --- | --- |
+| `Button` default | 主按钮（黄底深字） | `--primary` = `action.primary`；hover 走 `primary/90`，桥接已让 color-mix 结果可被验收工具解析 |
+| `Button variant="outline"` | 次要（描边） | |
+| `Button variant="secondary"` | quiet（浅底文字按钮） | `--secondary` = `bg.hover` |
+| `Button variant="ghost"` | 只给图标按钮 | 静息透明，文字按钮裸放违反「按钮不能裸放」 |
+| `Button variant="destructive"` | 危险实底（最终确认） | 红底白字，只用于最终确认 |
+| `Button variant="link"` | **不用** | `text-primary` 是白底黄字；链接用 recipes 的 `.link` / `.act` / `.go` |
+| `Badge` default / destructive | **不用** | 黄底徽标违反「黄不表达强调」，红实底只留给按钮；状态用 `.status.*`，强调用 `.badge.brand`，中性标签可用 `Badge variant="secondary|outline"` |
+| `Tabs` | 分段选择器形态 | 桥接把选中项改为深黑反转块、外壳 `bg.subtle` + 发丝线；`TabsContent` 是 Tab 停靠点，桥接补了焦点环 |
+| `Tooltip` | 反转块 | shadcn 默认 `bg-primary`（黄），桥接改为 `bg.inverse` + `text.inverse` |
+| `Dialog` / `AlertDialog` 遮罩 | `bg.overlay` | shadcn 写死 `bg-black/50`，桥接接管 `*-overlay` |
+| `Skeleton` / `Progress` 轨道 | `bg.skeleton` / `border.default` | shadcn 用 `accent`（选中底）与 `primary/20`（黄的洗色），都不是 |
+| `Table` | 表头 `bg.subtle` + `text.secondary` + 500，行 hover `bg.hover`，选中 `bg.selected-subtle` | shadcn 默认表头正文色、hover `muted/50` |
+| `Checkbox` / `RadioGroup` / `Switch` | 选中黄（允许），命中区 24 | 视觉 16，桥接用伪元素外扩到 `control.hit-min` |
+| `h-8` / `h-9` / `h-10`、`size-9`、`SelectTrigger size` | `control.height.sm / md / lg` | shadcn 三档是 32 / 36 / 40，桥接按 `data-slot` 接到 28 / 34 / 40 |
+| 焦点 | 边线换 `--ring`（= `border.focus`）+ 3px 环 | 桥接把环色从「`--ring` 的 50%」换成 `focus.ring`（16% 灰环）；有 `data-slot` 的元素不再叠全局 outline |
+| 根字号 | 保持 16px | Tailwind 的 rem 刻度依赖根字号；recipes 只在 `body` 设 14px，不动 `html` |
+| 菜单 / 下拉项 focus | `bg.hover` | `accent` 是「选中」语义，留给 `data-state=checked` |
+
 | 组件 | 底 | 文字 | 边线 / 其他 |
 | --- | --- | --- | --- |
 | 主按钮 | `action.primary` / `-hover` / `-active` | `text.on-primary` | 高度 `control.height.md`，圆角 `radius.md` |
@@ -160,6 +184,7 @@
 | 登录页 | 品牌区 `bg.brand`；表单卡 `bg.surface` | 品牌区 `text.on-brand` + `text.hero.size`；卡片标题 `text.heading.size` | 卡宽 `layout.auth.card-width`，按钮/输入 `control.height.lg` |
 | 结果页（403 / 404 / 500） | 插图底 `bg.subtle` + `border.strong` 虚线 | 代码 `text.brand` + `text.hero.size`；说明 `text.secondary` + `text.paragraph.line-height` | 内容在内容区里**垂直居中**（min-height = 视口 − 顶栏 − 上下 gutter），不贴顶；插图 `illustration.size.md`，用 two-tone 图标（`icon.brand` 描边 + `icon.two-tone` 填充） |
 | 通知卡 | `bg.elevated` | `text.primary` / `text.secondary` | `border.default` + 左侧 `status.*` × `border.width.indicator`，`elevation.popover.*` |
+| 浮层内的确认（关闭带未保存修改的抽屉 / 弹窗、抽屉里的不可逆动作） | **原位确认条** `.confirm-bar`（`bridge/vue/ConfirmBar.vue` + `useInlineConfirm`）：把浮层页脚替换成一条 `bg.subtle` 底 + 上发丝线的确认区域，不叠第二层弹窗；只有确认按钮带颜色（可逆的关闭用主按钮，丢弃修改 / 不可逆用 danger），文字保持中性 | 一句话说明后果 `text.body-sm`；按钮「继续填写 / 继续编辑」（次要，出现时自动聚焦）+「确定关闭 / 放弃修改」 | Esc 在条内 = 留下；再次触发关闭复用同一条，不叠两条；页面级导航的离开确认仍用 `confirmBox`（那里没有"原位"可言） |
 | 抽屉 | `bg.elevated` | 内部分组小标题 `.drawer-h`（`text.title-sm.size` + `text.weight.label`，首个不加上外边距）；480 宽的抽屉里描述列表用单列、明细表把类别 / 规格并入物品副行 | 宽 `layout.drawer.width`，`elevation.modal.*`，进出 `motion.duration.slow`；内容用描述列表 + 时间线，不放第二层弹窗 |
 | 折叠侧栏 | 同侧栏 | 同侧栏 | 宽 `layout.sidebar.collapsed-width`（Element 会按图标宽 + padding 自己推算折叠宽度，必须显式覆盖成这个 token），图标 `icon.size.lg`，项是 `control.height.lg` 的正方形、水平居中，选中指示条贴侧栏外沿；折叠后菜单项只剩图标，必须带 `aria-label`（Element 的 `el-menu-item` 不透传属性，用指令写到根元素） |
 | 计数徽标（顶栏通知、`el-badge`） | `action.danger`（亮暗都保持深红；不用 `status.error`，它暗色下变浅红、白字不够）；`type=primary` 的徽标是反转块 `action.selected` | `text.on-danger` / `text.on-selected`，`text.caption.size` | 顶栏的 16px 胶囊挂在铃铛右上角略出头，不用 badge 组件（它按包裹元素定位，在小按钮上会顶出容器）；组件库 badge 的默认类型就是 danger，文字色必须跟填充走（红底不能配近黑字） |
@@ -194,6 +219,7 @@
 
 - 动效三档：即时反馈（hover / active）用 `motion.duration.fast` + `motion.easing.standard`；下拉、Tooltip 出现用 `motion.duration.normal` + `motion.easing.enter`；弹窗、抽屉用 `motion.duration.slow`，进场 `easing.enter`（减速）、退场 `easing.exit`（加速）。用户系统开启"减少动态效果"时，所有时长视为 0——由桥接里的 `@media (prefers-reduced-motion: reduce)` 落地：三档 duration 归零，所有 transition / animation 时长归零。
 - 焦点必须可见：焦点环用 `color.focus.ring` 配 `focus.ring.width`，输入框聚焦同时把边线换成 `color.border.focus`。焦点边线是近黑（暗色下近白），焦点环是 16% 的灰环——黄色在白底上不可见，深金又显脏，焦点这种"必须一眼看见"的状态交给无色系最可靠。桥接提供全局 `:focus-visible` 兜底（链接、按钮、菜单项、标签页、单选组、开关、分页、排序、关闭按钮全部覆盖）——组件库自带的焦点环是主色画的，黄在白底上等于没有；菜单项和标签页还被写死了 `outline: none`；Element 2.14 又给 38 处控件（表格筛选 / 展开 / 排序、标签关闭、锚点、取色器、评分、标签页 inset 阴影）加了主色 `:focus-visible`，全部由桥接改为 `border.focus`。
+- 浮层里不再叠浮层：抽屉 / 弹窗内需要确认时用原位确认条（见配方表「浮层内的确认」），`ElMessageBox` 只用于页面级的确认。
 - 浮层关闭后焦点回到触发元素：弹窗 / 抽屉由 Element 的焦点陷阱归位（列表刷新导致触发行重绘时页面要兜底到同列首个按钮）；**`ElMessageBox` 不会归位**，确认弹窗一律走 `bridge/vue/confirm.js` 的 `confirmBox / confirmDanger`（记住打开前的焦点元素、关闭后还回去，用法同 `ElMessageBox.confirm`）。抽屉打开后焦点落在容器而不是首个控件，需要 `@opened` 手动聚焦到意见框 / 第一个输入。
 - 禁用态用 `opacity.disabled` 统一表达，按钮、输入框、开关都一样，不另造一套灰色。
 - 黄底面（登录页品牌区等）上的次要文字用 `opacity.on-primary-muted` 压一档，而不是换成灰色文字——灰字在黄底上对比度不够。

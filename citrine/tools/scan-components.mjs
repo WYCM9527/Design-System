@@ -20,6 +20,8 @@ const APPROVED_FG = new Set(['rgb(11, 158, 116)', 'rgb(215, 103, 18)', 'rgb(238,
 const tokenRgbs = (() => { const set = new Set(); const files = [resolve(TOKENS_DIST, 'tokens.css'), ...readdirSync(resolve(TOKENS_DIST, 'themes')).map((f) => resolve(TOKENS_DIST, 'themes', f))]; for (const f of files) for (const m of readFileSync(f, 'utf8').matchAll(/#([0-9a-fA-F]{6})([0-9a-fA-F]{2})?\b/g)) set.add([0, 2, 4].map((i) => parseInt(m[1].slice(i, i + 2), 16)).join(',')); return [...set]; })();
 const TARGET_SEL = 'button, a, input, textarea, label, li, [role], [tabindex], .el-radio, .el-checkbox, .el-switch, .el-tag, .el-select__wrapper, .el-input__wrapper, .el-textarea__inner, .el-table__row, .el-table__cell, .el-pager li, .el-step, .el-tree-node__content, .el-collapse-item__header, .el-tabs__item, .el-menu-item, .el-sub-menu__title, .el-dropdown-menu__item, .el-select-dropdown__item, .el-cascader-node, .el-date-table td, .el-date-table-cell, .el-time-spinner__item, .el-transfer-panel__item, .el-upload-list__item, .el-upload-dragger, .el-segmented__item, .el-slider__button, .el-rate__item, .el-card, .el-link, .el-breadcrumb__inner, .el-page-header__back, .el-anchor__link, .el-timeline-item__node, .el-calendar-day, .el-check-tag, .el-input-number__increase, .el-input-number__decrease, .el-icon, .el-tag__close, .el-select__caret, .el-input__clear, .el-input__password, .el-month-table td, .el-year-table td, .el-picker-panel__shortcut, .el-picker-panel__icon-btn, .el-time-panel__btn, .el-dialog__headerbtn, .el-drawer__close-btn, .el-message-box__headerbtn, .el-message__closeBtn, .el-notification__closeBtn, .el-alert__close-btn, .el-color-dropdown__btns button, .el-carousel__arrow, .el-collapse-item__arrow, .el-table__expand-icon, .caret-wrapper, .el-table-filter__list-item, .el-upload';
 const key = (y) => `${y.section}|${y.path}|${y.prop}`;
+// 浮层容器：Element 的 .el-popper，以及 Radix / shadcn 的 popper 内容与角色（页面里以字符串内联进 evalJs）
+const POPPER_SEL = JSON.stringify('.el-popper, [data-radix-popper-content-wrapper] > *, [data-radix-menu-content], [role="menu"], [role="listbox"], [role="tooltip"]');
 
 const server = await serve(APP_DIST);
 const browser = await launch({ width: 1600, height: 1000 });
@@ -82,20 +84,20 @@ try {
     { const r = await scanRoot('document.body', findings, 'page', 3); rest.push(...r.rest); probed += r.probed; }
     const openers = await evalJs('document.querySelectorAll("[data-ks-open]").length');
     for (let i = 0; i < openers; i++) {
-      const before = await evalJs('[...document.querySelectorAll(".el-popper")].filter((p) => __ks.visible(p)).length');
-      const info = await evalJs(`(() => { const o = document.querySelectorAll("[data-ks-open]")[${i}]; const type = o.getAttribute("data-ks-type") || ""; const t = type === "dropdown" ? (o.querySelector(".el-dropdown__caret-button") || o.querySelector(".el-tooltip__trigger") || o.querySelector(".el-button")) : (o.matches("button, .el-button") ? o : (o.querySelector("input, .el-select__wrapper, .el-button") || o)); t.scrollIntoView({ block: "center" }); const r = t.getBoundingClientRect(); return { label: __ks.path(o), type, x: r.left + r.width / 2, y: r.top + r.height / 2 } })()`);
+      const before = await evalJs(`[...document.querySelectorAll(${POPPER_SEL})].filter((p) => __ks.visible(p)).length`);
+      const info = await evalJs(`(() => { const o = document.querySelectorAll("[data-ks-open]")[${i}]; const type = o.getAttribute("data-ks-type") || ""; const t = type === "dropdown" ? (o.querySelector(".el-dropdown__caret-button") || o.querySelector(".el-tooltip__trigger") || o.querySelector(".el-button") || o) : (o.matches("button, .el-button") ? o : (o.querySelector("input, .el-select__wrapper, .el-button") || o)); t.scrollIntoView({ block: "center" }); const r = t.getBoundingClientRect(); return { label: __ks.path(o), type, x: r.left + r.width / 2, y: r.top + r.height / 2 } })()`);
       for (const type of ['mousePressed', 'mouseReleased']) await send('Input.dispatchMouseEvent', { type, x: info.x, y: info.y, button: 'left', clickCount: 1 });
       if (info.type === 'autocomplete') { await sleep(200); await send('Input.insertText', { text: '鲜' }); }
       await sleep(600);
-      const cnt = await evalJs('[...document.querySelectorAll(".el-popper")].filter((p) => __ks.visible(p)).length');
+      const cnt = await evalJs(`[...document.querySelectorAll(${POPPER_SEL})].filter((p) => __ks.visible(p)).length`);
       if (cnt <= before) { findings.push({ kind: 'popper-not-opened', target: info.label }); continue; }
-      const r = await scanRoot('[...document.querySelectorAll(".el-popper")].filter((p) => __ks.visible(p)).at(-1)', findings, 'popper:' + info.label, 2); rest.push(...r.rest); probed += r.probed;
+      const r = await scanRoot(`[...document.querySelectorAll(${POPPER_SEL})].filter((p) => __ks.visible(p)).at(-1)`, findings, 'popper:' + info.label, 2); rest.push(...r.rest); probed += r.probed;
       await esc(); await evalJs('document.body.click(); document.activeElement && document.activeElement.blur(); "ok"'); await sleep(300);
     }
     const modals = await evalJs('[...document.querySelectorAll("[data-ks-modal]")].map((b) => b.getAttribute("data-ks-modal"))');
     for (let i = 0; i < modals.length; i++) {
       await evalJs(`(() => { const b = document.querySelectorAll("[data-ks-modal]")[${i}]; b.scrollIntoView({ block: "center" }); b.click(); return 1 })()`); await sleep(600);
-      const sel = modals[i] === 'message' ? '[...document.querySelectorAll(".el-message")].at(-1)' : modals[i] === 'notification' ? '[...document.querySelectorAll(".el-notification")].at(-1)' : '[...document.querySelectorAll(".el-overlay")].filter((p) => __ks.visible(p)).at(-1)';
+      const sel = modals[i] === 'message' ? '[...document.querySelectorAll(".el-message")].at(-1)' : modals[i] === 'notification' ? '[...document.querySelectorAll(".el-notification")].at(-1)' : '[...document.querySelectorAll(".el-overlay, [role=\\"dialog\\"], [role=\\"alertdialog\\"]")].filter((p) => __ks.visible(p)).at(-1)';
       const r = await scanRoot(sel, findings, 'modal:' + modals[i], 2); rest.push(...r.rest); probed += r.probed;
       if (!r.probed) findings.push({ kind: 'modal-not-opened', target: modals[i] });
       if (modals[i] === 'message' || modals[i] === 'notification') await evalJs('document.querySelectorAll(".el-message, .el-notification").forEach((e) => e.remove()); "ok"');

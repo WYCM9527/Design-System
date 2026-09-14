@@ -2,7 +2,7 @@
 
 > 种子目录代号仍是 `brand-yellow-e`（脚本与文档中的路径不变）；系统名称 Citrine（黄晶）见仓库根 README。
 
-版本 2.4.2 · 公司级中后台设计规范（单品牌线）· 变更见 [CHANGELOG.md](CHANGELOG.md)
+版本 2.5.0 · 公司级中后台设计规范（单品牌线）· 变更见 [CHANGELOG.md](CHANGELOG.md)
 
 一套已通过 `design-system-steward` `validate-system` / `build-tokens` / `guard` 的 DTCG 设计系统起点。复制进任何项目就是 Core + dark Theme；视觉效果见 `../../previews/yellow-admin/`：`admin.html` 是工作台，`stress.html` 是登录、列表、表单、详情、反馈、折叠侧栏六类页面的压力测试（方案 S 全部由构建产物驱动）。
 
@@ -23,12 +23,14 @@ design-system/
 ├── scope-map.json                  # 空；局部规范在目标项目里按证据登记
 ├── style-dictionary.config.mjs
 └── dist/                           # 空，在目标项目里构建
-bridge/shadcn-globals.css           # 可选：shadcn/ui + Tailwind v4 的契约变量桥接（颜色、图表、圆角、字体、字号阶梯、过渡、shadow-sm/md/lg）
+bridge/shadcn-globals.css           # shadcn/ui + Tailwind v4 桥接：契约变量、@theme inline（字体 / 字号 / 阴影 / 动效）、@layer base 边线色，以及按 data-slot 的组件级接管（控件三档高度、命中区、焦点环、提示框、遮罩、骨架 / 进度、表格、标签页、菜单项）；2.5.0 起在 React 实验项目渲染验证
 bridge/element-plus.css             # Element Plus 桥接：--el-* 全部指向 token；按 Element 2.14 全部组件走查逐条接管主色 / 焦点 / 写死色表与写死高度，与实测项目 #/kitchen 走查页配套
 bridge/echarts.js                   # ECharts 桥接：运行时读 token 生成主题（轴 / 网格 / 图例 / 提示框 / 折线 / 柱 / 饼默认形态）与趋势折线、面积渐变配方；亮暗切换后重注册
 bridge/iconpark.css                 # IconPark 图标桥接：尺寸六档、角色色、小图标粗描边（预览页直接引用这份）
 bridge/iconpark.config.ts           # IconPark 全局配置片段 + 激活态 / two-tone 的颜色数组（React / Vue 3 / @icon-park/svg 三种接法）
 bridge/recipes.css                  # 配方层：DESIGN「页面骨架 / 组件配方」的可复制实现——壳层、页头、卡片区块、链接四层、状态胶囊、筛选栏 / 条件标签 / 批量条 / 分页、表单页、结果页、空态 / 加载失败、图表容器、统计卡网格 / 状态条、打印；与组件库无关，只引用 token
+bridge/echarts.d.ts                 # echarts.js 的类型声明（TypeScript / React 项目）
+bridge/react/                       # 配方组件（React + shadcn/ui）：StatCard / EChart / TrendChart / TableSkeleton / ConfirmBar + useInlineConfirm，与 vue/ 同形，样式共用 recipes.css
 bridge/vue/                         # 配方组件（Vue 3 + Element Plus）：StatCard（统计卡，含 hint 口径说明）、EChart（图表容器，追踪 option 里的响应式数据，亮暗切换重建）、TrendChart（趋势折线，计数型自动整数刻度）、TableSkeleton（表格骨架）、confirm.js（确认弹窗，关闭后焦点回到触发元素）
 ```
 
@@ -43,7 +45,7 @@ node <skill>/scripts/build-tokens.mjs --project /path/to/project     # 生成 di
 node <skill>/scripts/guard.mjs --project /path/to/project            # 应为 current
 ```
 
-然后按 skill 流程走：`integrate` 把 `dist/index.css` 接进全局样式入口；用 shadcn 就把 `bridge/shadcn-globals.css` 的内容并进 `app/globals.css`，用 Element Plus 就在 Element 样式之后引入 `bridge/element-plus.css`（不要再引 Element 的 dark css-vars，暗色由 dist 间接生效）；**再引入 `bridge/recipes.css`**——页面骨架的公共类都在这里，项目只写业务页面，不重写页头 / 筛选栏 / 状态胶囊 / 表单页 / 空态这些结构（把 `bridge/` 复制进项目的 `src/styles/bridge/`——Element Plus 项目不要带上 `shadcn-globals.css` 与 `iconpark.config.ts`，它们的变量定义会被 `status` 当成待决项；Vue 项目直接 import `bridge/vue/*.vue`）；存量硬编码用 `migrate` 分层统一；`status` 看进度。完整的 Vue 3 + Element Plus 接入范例见 `../../testbed/golden-admin/`（18 页）与 `../../testbed/light-procure/`（试点：12 页从零按文档接入）。
+然后按 skill 流程走：`integrate` 把 `dist/index.css` 接进全局样式入口；用 shadcn 就把 `bridge/shadcn-globals.css` 作为 `globals.css`（它自己 `@import "tailwindcss"`，只需改 dist 的相对路径），再引 `recipes.css`，组件用 `bridge/react/`（对照表见 DESIGN「组件库对照：shadcn/ui」）；用 Element Plus 就在 Element 样式之后引入 `bridge/element-plus.css`（不要再引 Element 的 dark css-vars，暗色由 dist 间接生效）；**再引入 `bridge/recipes.css`**——页面骨架的公共类都在这里，项目只写业务页面，不重写页头 / 筛选栏 / 状态胶囊 / 表单页 / 空态这些结构（把 `bridge/` 复制进项目的 `src/styles/bridge/`——Element Plus 项目不要带上 `shadcn-globals.css` 与 `iconpark.config.ts`，它们的变量定义会被 `status` 当成待决项；Vue 项目直接 import `bridge/vue/*.vue`）；存量硬编码用 `migrate` 分层统一；`status` 看进度。完整的 Vue 3 + Element Plus 接入范例见 `../../testbed/golden-admin/`（18 页）与 `../../testbed/light-procure/`（试点：12 页从零按文档接入）；React + shadcn/ui 见 `../../testbed/shadcn-lab/`。
 
 ## 这套颜色的硬规则（写进了 token 描述）
 

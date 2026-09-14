@@ -1,0 +1,16 @@
+{
+  "activation": {
+    "kind": "class"
+  },
+  "defaultTheme": "light",
+  "themes": [
+    {
+      "id": "dark",
+      "reason": "预览中确认的暗色模式：黄色在深底上对比度更高。",
+      "runtimeOwner": "宿主应用在 <html> 上切换 class dark（如 next-themes）。",
+      "source": "yellow-admin 预览 tokens-e.css 的 .dark 块。",
+      "status": "active"
+    }
+  ],
+  "version": 1
+}

@@ -4,7 +4,7 @@
 
 ![Citrine · 实测项目「黄金后台」亮 / 暗模式](docs/screenshots/hero.png)
 
-版本 **2.4.2** · Core 315 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
+版本 **2.5.0** · Core 315 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
 
 ---
 
@@ -37,7 +37,7 @@
 citrine/
 ├── seeds/brand-yellow-e/        # 设计系统种子（复制进项目即用）
 │   ├── design-system/           #   DESIGN.md（速查 + 规则 + 配方 + 验收基线）、tokens/、themes/dark/、theme-map.json
-│   ├── bridge/                  #   element-plus.css · shadcn-globals.css · echarts.js · iconpark.css / iconpark.config.ts · recipes.css（页面骨架配方）· vue/（配方组件）
+│   ├── bridge/                  #   element-plus.css · shadcn-globals.css · echarts.js(+.d.ts) · iconpark.css / iconpark.config.ts · recipes.css（页面骨架配方）· vue/ 与 react/（配方组件）
 │   ├── README.md                #   用法、硬规则、从旧规范迁移的角色对照
 │   └── CHANGELOG.md             #   rc.1 → 2.4.0 每一条决定的来历
 ├── previews/yellow-admin/       # 静态预览：手写 token（E）与构建产物（S）逐像素一致的两套页面
@@ -46,6 +46,7 @@ citrine/
 │   └── app/                     #   AGENTS.md 是编码 Agent 的规则入口
 ├── testbed/legacy-shop/         # 实测项目二：暖灰旧规范的遗留后台，排练 audit → migrate → guard 的迁移路径
 ├── testbed/light-procure/       # 实测项目三「轻采」：按 PRD 从零接入的试点——采购 / 资产 / 审批 12 页，验证第二个项目能否只靠文档与配方层落地
+├── testbed/shadcn-lab/          # 实测项目四：React + Tailwind v4 + shadcn/ui 实验室，第二条消费路径的渲染验证与全组件走查
 ├── tools/                       # 仓库级验收工具（页面扫描、全组件走查、窄屏、Tab 焦点、E/S 像素比对），项目用 accept.config.mjs 登记清单
 └── docs/screenshots/            # 本页截图
 ```
@@ -108,6 +109,12 @@ node <Design-System>/skills/design-system-steward/scripts/guard.mjs --project "$
 | --- | --- |
 | ![](docs/screenshots/procure-report-light.png) | ![](docs/screenshots/procure-org-dark.png) |
 
+**React + shadcn/ui 实验室**（[`testbed/shadcn-lab/`](testbed/shadcn-lab/)）：第二条消费路径的渲染验证——按 shadcn new-york 源码手写 21 个组件接种子的 `bridge/shadcn-globals.css`，页面骨架直接复用与组件库无关的 `recipes.css`，配方组件用 `bridge/react/`。全组件走查揪出 8 处需要组件级接管的地方（Tailwind 根字号与 rem 刻度冲突、提示框黄底、遮罩写死黑色、骨架 / 进度轨道、表头与 hover、标签页浮块、勾选命中区、焦点双环），全部修在桥接里；同一套验收工具跑通（页面 × 亮暗、80 个交互元素走查、窄屏、焦点），见 [FINDINGS.md](testbed/shadcn-lab/FINDINGS.md)。
+
+| 组件走查 · 亮色 | 工作台 · 暗色（与 Vue 版同形） |
+| --- | --- |
+| ![](docs/screenshots/shadcn-kitchen-light.png) | ![](docs/screenshots/shadcn-dashboard-dark.png) |
+
 ## 验收基线
 
 每次改 token 或桥接都复跑（详见 `DESIGN.md`「验收基线」；工具在仓库级 `tools/`，各实测项目在 `app/` 目录 `npm run accept` 一键执行，只需 Node ≥ 22 与 Chrome）：
@@ -119,7 +126,7 @@ node <Design-System>/skills/design-system-steward/scripts/guard.mjs --project "$
 - 构建一致性：`validate-system / guard / status` 三绿；预览 E 与 S 逐像素一致。
 - 全组件走查：hover / focus 不新引入黄色、不掉对比、外来颜色为 0。
 
-当前状态（2.4.0）：黄金后台 80 个页面状态 + 轻采 94 个 × 亮 / 暗，0 未批准项；走查页两模式 0 状态问题；两个项目 `guard` current、`status` unified。
+当前状态（2.5.0）：黄金后台 80 个页面状态 + 轻采 94 个 + shadcn 实验室 10 个 × 亮 / 暗，0 未批准项；Element 与 shadcn 两个走查页两模式 0 状态问题；三个项目 `guard` current。
 
 ## 版本策略
 
@@ -127,10 +134,9 @@ patch 只改描述、文档，以及让组件库遵守既有规则的桥接修�
 
 ## 已知边界
 
-- shadcn/ui 桥接只做了变量级验证（90 个引用全部可解析），尚未在 React 项目里渲染验证；配方层（`recipes.css`）与配方组件（`bridge/vue/`）目前只有 Vue 3 + Element Plus 一套实现。
+- shadcn/ui 桥接已在 React 实验项目渲染验证并跑全组件走查（21 个组件、80 个交互元素）；未覆盖的 shadcn 组件（Sheet、Command、Calendar、DataTable、Sonner 等）接入时先按 DESIGN「组件库对照」类推，再跑走查。
 - 只确认了桌面宽度（≥ 1280px）的布局；断点规则等真实需求出现时再作为提案加入。
 - 走查页未铺 Tour、Watermark、Affix、Backtop、InfiniteScroll、TableV2 等依赖滚动或运行时的组件。
-- 浮层内的「原位确认区域」（抽屉里不再叠一层确认弹窗）没有配方，目前抽屉内的离开确认仍走确认弹窗。
 - Figma 变量尚未与 token 同步。治理工具的四个已知缺陷（尺寸匹配不看属性、注释里的值被计数、`settle --apply` 只写豁免、guard / status 分工不清）已在 [WYCM9527/skills](https://github.com/WYCM9527/skills) 的 `design-system-steward` 0.6.0 修正，本仓库默认克隆的就是它。
 
 ## 方法

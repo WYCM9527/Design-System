@@ -11,7 +11,9 @@ import { session, can, rememberList, recallList, demoState, demoParam } from '..
 import { listSuppliers, saveSupplier, toggleSupplier } from '../data/api'
 import { PAGE_SIZES } from '../data/constants'
 import { timeOf, dash } from '../data/format'
-import { useDirtyGuard, confirmLeave } from '../data/guard'
+import { useDirtyGuard } from '../data/guard'
+import ConfirmBar from '../styles/bridge/vue/ConfirmBar.vue'
+import { useInlineConfirm } from '../styles/bridge/vue/inlineConfirm.js'
 
 const manage = computed(() => can('supplier.manage'))
 const totalCount = computed(() => db.suppliers.length)   // 页头「共 N 家」= 全部供应商数，不随筛选变化
@@ -81,7 +83,8 @@ function openEditor(src) {
 }
 const openCreate = () => openEditor(null)
 function openEdit(s) { const src = typeof s === 'string' ? db.suppliers.find((x) => x.id === s) : s; if (!src) return ElMessage.error('记录不存在或已被删除'); openEditor(src) }
-async function closeEditor(done) { if (isEditorDirty() && !(await confirmLeave())) return; done ? done() : (editor.open = false) }
+const leaveEditor = useInlineConfirm()   // 浮层内原位确认，不叠弹窗
+async function closeEditor(done) { if (isEditorDirty() && !(await leaveEditor.ask({ message: '供应商资料有未保存的修改，关闭后会丢失。', confirmText: '放弃修改', cancelText: '继续编辑', danger: true }))) return; done ? done() : (editor.open = false) }
 async function save() {
   fieldErrors.name = ''
   const ok = await editorRef.value.validate().catch(() => false)
@@ -213,8 +216,11 @@ onMounted(() => {
       <div v-if="!editor.id" class="help">新建的供应商默认启用，保存后即可在采购申请中选择。</div>
     </el-form>
     <template #footer>
-      <el-button @click="closeEditor()">取消</el-button>
-      <el-button type="primary" :loading="editor.saving" @click="save">保存</el-button>
+      <ConfirmBar v-if="leaveEditor.state.open" v-bind="leaveEditor.state" @confirm="leaveEditor.confirm" @cancel="leaveEditor.cancel" />
+      <template v-else>
+        <el-button @click="closeEditor()">取消</el-button>
+        <el-button type="primary" :loading="editor.saving" @click="save">保存</el-button>
+      </template>
     </template>
   </el-drawer>
 </template>

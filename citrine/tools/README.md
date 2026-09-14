@@ -14,7 +14,7 @@ DESIGN.md「验收基线」的执行者，仓库级、对任意实测项目运�
    export const FOCUS = { pages: { orders: '#/orders' }, steps: 80 }
    ```
 
-   演示参数放在 `#` 之前，页面用 `location.search` 读（不要用路由 query）。
+   演示参数放在 `#` 之前，页面用 `location.search` 读（不要用路由 query）。挂载点 `#app` 或 `#root` 都可以；组件走查页的浮层触发器带 `data-ks-open`（Element 的 `.el-popper` 与 Radix / shadcn 的 popper、`role=menu|listbox|tooltip` 都能识别），弹层带 `data-ks-modal`（`.el-overlay` 或 `role=dialog|alertdialog`）。探针能解析 `rgb()` 之外的 `oklab / oklch / color()` 计算值（Tailwind v4 的 `color-mix`）。
 2. `package.json` 的脚本指向 `citrine/tools`（目标项目缺省是当前目录，也可 `--project <appDir>`）：
 
    ```json

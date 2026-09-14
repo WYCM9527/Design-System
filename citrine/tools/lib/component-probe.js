@@ -2,7 +2,8 @@
 // __ks.snapshot(root) 列出可见的黄色属性；__ks.probe(el) 返回元素及其后代的黄色属性与文字对比；__ks.foreign(root) 找不来自 token 的颜色。
 // 判黄：色相 40–64°、饱和度 ≥ 0.55、明度 0.28–0.78（品牌黄 50°；暗色 warning 的橙 37° 不算）。token 颜色集合由外部注入到 window.__ksTokens。
 window.__ks = (() => {
-  const parse = (s) => { const m = /rgba?\(([^)]+)\)/.exec(s || ''); if (!m) return null; const p = m[1].split(/[\s,\/]+/).filter(Boolean).map(Number); return { r: p[0], g: p[1], b: p[2], a: p.length > 3 ? p[3] : 1 }; };
+  const __cv = document.createElement('canvas'); __cv.width = __cv.height = 1; const __cx = __cv.getContext('2d', { willReadFrequently: true }); const parseAny = (s) => { if (!s || s === 'transparent' || s === 'none') return null; __cx.clearRect(0, 0, 1, 1); __cx.fillStyle = '#000'; __cx.fillStyle = s; if (__cx.fillStyle === '#000000' && !/black|#000|rgb\(0, 0, 0\)/.test(s)) { /* 未识别的字符串会保持上一个值 */ } __cx.fillRect(0, 0, 1, 1); const d = __cx.getImageData(0, 0, 1, 1).data; return { r: d[0], g: d[1], b: d[2], a: Math.round((d[3] / 255) * 1000) / 1000 }; };
+  const parse = (s) => { const m = /rgba?\(([^)]+)\)/.exec(s || ''); if (m) { const p = m[1].split(/[\s,\/]+/).filter(Boolean).map(Number); return { r: p[0], g: p[1], b: p[2], a: p.length > 3 ? p[3] : 1 }; } return /^(oklab|oklch|lab|lch|color|hsl|hwb)\(/.test(String(s || '').trim()) ? parseAny(s) : null; };
   const colorsIn = (s) => (s || '').match(/rgba?\([^)]+\)/g) || [];
   const hsl = (c) => { const r = c.r / 255, g = c.g / 255, b = c.b / 255, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2; if (max === min) return { h: 0, s: 0, l }; const d = max - min; const s = l > 0.5 ? d / (2 - max - min) : d / (max + min); let h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4; return { h: h * 60, s, l }; };
   const isYellow = (c) => { if (!c || c.a < 0.15) return false; const { h, s, l } = hsl(c); return h >= 40 && h <= 64 && s >= 0.55 && l >= 0.28 && l <= 0.78; };
