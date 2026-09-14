@@ -2,7 +2,7 @@
 
 > 种子目录代号仍是 `brand-yellow-e`（脚本与文档中的路径不变）；系统名称 Citrine（黄晶）见仓库根 README。
 
-版本 2.4.0 · 公司级中后台设计规范（单品牌线）· 变更见 [CHANGELOG.md](CHANGELOG.md)
+版本 2.4.1 · 公司级中后台设计规范（单品牌线）· 变更见 [CHANGELOG.md](CHANGELOG.md)
 
 一套已通过 `design-system-steward` `validate-system` / `build-tokens` / `guard` 的 DTCG 设计系统起点。复制进任何项目就是 Core + dark Theme；视觉效果见 `../../previews/yellow-admin/`：`admin.html` 是工作台，`stress.html` 是登录、列表、表单、详情、反馈、折叠侧栏六类页面的压力测试（方案 S 全部由构建产物驱动）。
 
@@ -32,7 +32,7 @@ bridge/recipes.css                  # 配方层：DESIGN「页面骨架 / 组件
 bridge/vue/                         # 配方组件（Vue 3 + Element Plus）：StatCard（统计卡，含 hint 口径说明）、EChart（图表容器，追踪 option 里的响应式数据，亮暗切换重建）、TrendChart（趋势折线，计数型自动整数刻度）、TableSkeleton（表格骨架）、confirm.js（确认弹窗，关闭后焦点回到触发元素）
 ```
 
-Core 共 314 个 token，构建后 `dist/tokens.css` 的变量名就是 `--color-action-primary`、`--text-body-size`、`--control-height-md`、`--layout-form-label-width`、`--elevation-card-color` 这类形态；`dist/index.css` 把 Core 与两个 Theme 合成一个文件。
+Core 共 315 个 token，构建后 `dist/tokens.css` 的变量名就是 `--color-action-primary`、`--text-body-size`、`--control-height-md`、`--layout-form-label-width`、`--elevation-card-color` 这类形态；`dist/index.css` 把 Core 与两个 Theme 合成一个文件。
 
 ## 用法
 
@@ -43,7 +43,7 @@ node <skill>/scripts/build-tokens.mjs --project /path/to/project     # 生成 di
 node <skill>/scripts/guard.mjs --project /path/to/project            # 应为 current
 ```
 
-然后按 skill 流程走：`integrate` 把 `dist/index.css` 接进全局样式入口；用 shadcn 就把 `bridge/shadcn-globals.css` 的内容并进 `app/globals.css`，用 Element Plus 就在 Element 样式之后引入 `bridge/element-plus.css`（不要再引 Element 的 dark css-vars，暗色由 dist 间接生效）；**再引入 `bridge/recipes.css`**——页面骨架的公共类都在这里，项目只写业务页面，不重写页头 / 筛选栏 / 状态胶囊 / 表单页 / 空态这些结构（把整个 `bridge/` 复制进项目的 `src/styles/bridge/`，Vue 项目直接 import `bridge/vue/*.vue`）；存量硬编码用 `migrate` 分层统一；`status` 看进度。完整的 Vue 3 + Element Plus 接入范例见 `../../testbed/golden-admin/`（18 页）与 `../../testbed/light-procure/`（试点：12 页从零按文档接入）。
+然后按 skill 流程走：`integrate` 把 `dist/index.css` 接进全局样式入口；用 shadcn 就把 `bridge/shadcn-globals.css` 的内容并进 `app/globals.css`，用 Element Plus 就在 Element 样式之后引入 `bridge/element-plus.css`（不要再引 Element 的 dark css-vars，暗色由 dist 间接生效）；**再引入 `bridge/recipes.css`**——页面骨架的公共类都在这里，项目只写业务页面，不重写页头 / 筛选栏 / 状态胶囊 / 表单页 / 空态这些结构（把 `bridge/` 复制进项目的 `src/styles/bridge/`——Element Plus 项目不要带上 `shadcn-globals.css` 与 `iconpark.config.ts`，它们的变量定义会被 `status` 当成待决项；Vue 项目直接 import `bridge/vue/*.vue`）；存量硬编码用 `migrate` 分层统一；`status` 看进度。完整的 Vue 3 + Element Plus 接入范例见 `../../testbed/golden-admin/`（18 页）与 `../../testbed/light-procure/`（试点：12 页从零按文档接入）。
 
 ## 这套颜色的硬规则（写进了 token 描述）
 

@@ -1,6 +1,6 @@
 # 黄金后台 · 设计系统实测项目
 
-`seeds/brand-yellow-e` 的实测场。产品需求在 [PRD.md](PRD.md)，每一轮实测发现的问题记在 [FINDINGS.md](FINDINGS.md)，截图在 `shots/`。
+`seeds/brand-yellow-e` 的实测场。产品需求在 [PRD.md](PRD.md)，每一轮实测发现的问题记在 [FINDINGS.md](FINDINGS.md)；验收截图由仓库级工具生成到 `citrine/tools/out/golden-admin/`（不入库）。
 
 ## 运行
 
@@ -39,20 +39,19 @@ URL 形如 `index.html?theme=dark&state=empty#/orders`：
 
 `#/refunds`（退款审核）是盲测产物：由一个只读过 `AGENTS.md` 与 DESIGN.md、禁止看其他页面源码的 Agent 完成，之后按补全的配方对齐（筛选栏形态、操作列按钮、批量条），保留为常规页面参与回归。
 
-`#/kitchen` 是组件走查页：Element Plus 全部组件的静息 / 选中 / 禁用 / 出错状态铺在一页（浮层与弹层带 `data-ks-open` / `data-ks-modal` 标记供脚本逐个打开），用于桥接覆盖率扫描——三模式下对每个交互元素强制 hover / focus-visible，看是否新引入黄色、对比是否掉档、颜色是否都来自 token。不是业务页面，不进侧栏。
+`#/kitchen` 是组件走查页：Element Plus 全部组件的静息 / 选中 / 禁用 / 出错状态铺在一页（浮层与弹层带 `data-ks-open` / `data-ks-modal` 标记供脚本逐个打开），用于桥接覆盖率扫描——亮 / 暗两种模式下对每个交互元素强制 hover / focus-visible，看是否新引入黄色、对比是否掉档、颜色是否都来自 token。不是业务页面，不进侧栏。
 
 ## 结构
 
 ```text
 app/
 ├── design-system/            # 种子副本 + 本项目的 exemptions.json
-├── src/styles/globals.css    # 样式入口顺序：Element Plus → 设计系统 dist → 两份桥接 → 项目骨架
-├── src/styles/bridge/        # element-plus.css / iconpark.css（与 seeds/brand-yellow-e/bridge 保持同步）
+├── accept.config.mjs         # 验收清单（citrine/tools 读取）
+├── src/styles/globals.css    # 样式入口顺序：Element Plus → 设计系统 dist → 桥接 → 配方层 recipes.css → 项目补充 app.css
+├── src/styles/bridge/        # 种子 bridge/ 的同步副本（element-plus.css / iconpark.css / echarts.js / recipes.css / vue/）
 ├── src/layouts/AdminLayout.vue
-├── src/pages/                # P0：Login / Dashboard / Orders / OrderDetail / Merchants / MerchantForm / Campaigns / Members
-│                             # P1：Analytics / Riders / Notices / NoticeDetail / Profile；异常页 Forbidden / NotFound / ServerError
-├── src/components/EChart.vue       # 通用 ECharts 容器：option 工厂 + token 读取器；高度由 .chart 类用 token 表达
-├── src/components/TrendChart.vue   # 工作台折线（第一轮写法，保留对照）
+├── src/pages/                # Login / Dashboard / Orders / OrderDetail / Merchants / MerchantForm / MerchantApply / MerchantDetail / Refunds / Campaigns / Members
+│                             # Analytics / Riders / Notices / NoticeDetail / Profile；异常页 Forbidden / NotFound / ServerError；组件走查页 KitchenSink
 ├── src/mock/data.js          # 确定性模拟数据
 └── src/store.js              # 角色 / 主题 / 折叠
 ```

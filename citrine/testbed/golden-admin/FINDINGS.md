@@ -7,7 +7,7 @@
 ## 结果概览（2026-09-08）
 
 - `validate` 0 issue · `guard` current · `status: unified`，采用率 **100%**（751 处 `var()` 引用，11 处字面量全部登记豁免——全是 Element 组件内部几何与徽标圆点）。
-- 七页 + 十三种状态 × 亮 / 暗 / 紧凑 = 60 张截图在 `shots/`。
+- 七页 + 十三种状态 × 亮 / 暗 / 紧凑 = 60 张截图（早期人工截图已随 2.4.0 收尾移出仓库，可在 git 历史 `shots/` 找到；现役截图由 `citrine/tools` 生成）。
 - 暗色**没有**引入 Element 的 `dark/css-vars.css`，全部靠 `--el-*` → token 的 `var()` 间接生效，可用。
 
 ## 发现的问题

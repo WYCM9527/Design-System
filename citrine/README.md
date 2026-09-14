@@ -4,7 +4,7 @@
 
 ![Citrine · 实测项目「黄金后台」亮 / 暗模式](docs/screenshots/hero.png)
 
-版本 **2.4.0** · Core 315 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
+版本 **2.4.1** · Core 315 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
 
 ---
 
@@ -39,10 +39,10 @@ citrine/
 │   ├── design-system/           #   DESIGN.md（速查 + 规则 + 配方 + 验收基线）、tokens/、themes/dark/、theme-map.json
 │   ├── bridge/                  #   element-plus.css · shadcn-globals.css · echarts.js · iconpark.css / iconpark.config.ts · recipes.css（页面骨架配方）· vue/（配方组件）
 │   ├── README.md                #   用法、硬规则、从旧规范迁移的角色对照
-│   └── CHANGELOG.md             #   rc.1 → 1.1.3 每一条决定的来历
+│   └── CHANGELOG.md             #   rc.1 → 2.4.0 每一条决定的来历
 ├── previews/yellow-admin/       # 静态预览：手写 token（E）与构建产物（S）逐像素一致的两套页面
 ├── testbed/golden-admin/        # 实测项目一「黄金后台」：Vue 3 + Element Plus，18 个页面 × 亮 / 暗 + 全组件走查页
-│   ├── PRD.md · FINDINGS.md     #   需求与 56 条实测发现（每条对应一次系统级修正）
+│   ├── PRD.md · FINDINGS.md     #   需求与 72 条实测发现（每条对应一次系统级修正；D73 起在 light-procure）
 │   └── app/                     #   AGENTS.md 是编码 Agent 的规则入口
 ├── testbed/legacy-shop/         # 实测项目二：暖灰旧规范的遗留后台，排练 audit → migrate → guard 的迁移路径
 ├── testbed/light-procure/       # 实测项目三「轻采」：按 PRD 从零接入的试点——采购 / 资产 / 审批 12 页，验证第二个项目能否只靠文档与配方层落地
@@ -60,7 +60,7 @@ git clone https://github.com/WYCM9527/skills.git skills          # 治理工具�
 
 # 把种子放进你的项目：design-system/（token 与规则）+ bridge/（组件库桥接与页面骨架配方）
 cp -R citrine/seeds/brand-yellow-e/design-system /path/to/project/
-cp -R citrine/seeds/brand-yellow-e/bridge /path/to/project/src/styles/bridge
+cp -R citrine/seeds/brand-yellow-e/bridge /path/to/project/src/styles/bridge   # Element Plus 项目删掉其中的 shadcn-globals.css 与 iconpark.config.ts
 cd /path/to/project && npm i -D style-dictionary@5.5.2
 node <Design-System>/skills/design-system-steward/scripts/build-tokens.mjs --project "$PWD"   # → design-system/dist/
 node <Design-System>/skills/design-system-steward/scripts/guard.mjs --project "$PWD"          # 应为 current
@@ -84,7 +84,7 @@ node <Design-System>/skills/design-system-steward/scripts/guard.mjs --project "$
 | --- | --- |
 | ![](docs/screenshots/admin-login-light.png) | ![](docs/screenshots/admin-refunds-light.png) |
 
-**全组件走查页**（`#/kitchen`）把 Element Plus 全部组件的静息 / 选中 / 禁用 / 出错状态铺在一页，浮层与弹层逐个点开，三模式下对 600+ 个交互元素强制 `:hover` / `:focus-visible`，只报三类硬问题：状态切换新引入的黄色、悬停后对比掉档、不来自 token 的颜色。
+**全组件走查页**（`#/kitchen`）把 Element Plus 全部组件的静息 / 选中 / 禁用 / 出错状态铺在一页，浮层与弹层逐个点开，亮 / 暗两种模式下对 600+ 个交互元素强制 `:hover` / `:focus-visible`，只报三类硬问题：状态切换新引入的黄色、悬停后对比掉档、不来自 token 的颜色。
 
 | 亮色 | 暗色 |
 | --- | --- |
@@ -119,7 +119,7 @@ node <Design-System>/skills/design-system-steward/scripts/guard.mjs --project "$
 - 构建一致性：`validate-system / guard / status` 三绿；预览 E 与 S 逐像素一致。
 - 全组件走查：hover / focus 不新引入黄色、不掉对比、外来颜色为 0。
 
-当前状态：105 个页面状态 × 三模式 0 未批准项；走查页三模式 0 状态问题。
+当前状态（2.4.0）：黄金后台 80 个页面状态 + 轻采 94 个 × 亮 / 暗，0 未批准项；走查页两模式 0 状态问题；两个项目 `guard` current、`status` unified。
 
 ## 版本策略
 
@@ -127,9 +127,11 @@ patch 只改描述、文档，以及让组件库遵守既有规则的桥接修�
 
 ## 已知边界
 
-- shadcn/ui 桥接只做了变量级验证（90 个引用全部可解析），尚未在 React 项目里渲染验证。
+- shadcn/ui 桥接只做了变量级验证（90 个引用全部可解析），尚未在 React 项目里渲染验证；配方层（`recipes.css`）与配方组件（`bridge/vue/`）目前只有 Vue 3 + Element Plus 一套实现。
 - 只确认了桌面宽度（≥ 1280px）的布局；断点规则等真实需求出现时再作为提案加入。
 - 走查页未铺 Tour、Watermark、Affix、Backtop、InfiniteScroll、TableV2 等依赖滚动或运行时的组件。
+- 浮层内的「原位确认区域」（抽屉里不再叠一层确认弹窗）没有配方，目前抽屉内的离开确认仍走确认弹窗。
+- Figma 变量尚未与 token 同步；治理工具（`design-system-steward`）的四个已知缺陷记录在 `testbed/legacy-shop/README.md` 与 CHANGELOG，需回填到 [WYCM9527/skills](https://github.com/WYCM9527/skills)。
 
 ## 方法
 

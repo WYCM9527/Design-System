@@ -2,6 +2,13 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.4.1 — 2026-09-14（收尾：文档对齐与仓库整理）
+
+- 文档里残留的"三模式"、"105 个页面状态"、"56 条发现"、"rc.1 → 1.1.3"、"Core 314 个 token" 全部对齐到 2.4.0 的实际状态（亮 / 暗两模式；黄金后台 80 + 轻采 94 个页面状态；72 + 26 条发现；315 个 token）。
+- 黄金后台 README 的结构树改为现状（`accept.config.mjs`、`bridge/` 含配方层与 `vue/`、不再有 `src/components/`），AGENTS 写明公共类来自 `recipes.css`；快速开始与种子 README 写明 Element Plus 项目复制 `bridge/` 时去掉 `shadcn-globals.css` / `iconpark.config.ts`（它们的变量定义会被 `status` 当成待决项）。
+- 「已知边界」补三条：配方层目前只有 Vue + Element Plus 一套实现；浮层内原位确认没有配方；Figma 变量未同步、steward 四个缺陷待回填。
+- 仓库整理：移除黄金后台早期的人工截图目录 `shots/`（90 张、12MB，含已删除的紧凑模式；现役截图由 `citrine/tools` 生成到不入库的 `tools/out/`）与 Vite 模板残留的 `app/README.md`。
+
 ## 2.4.0 — 2026-09-14（试点项目三「轻采」：配方层与验收工具进种子）
 
 用一份与黄金后台无关的 PRD（采购 / 资产 / 单级审批，12 页 3 角色）做接入试点：四个互不通气的编码 Agent 只靠仓库文档从零实现，记录 158 条"只能猜的地方"；集成后按 T01–T15 走通闭环，验收 94 个页面状态全绿。发现与处理见 `testbed/light-procure/FINDINGS.md`（D73–D98），系统层变化如下：

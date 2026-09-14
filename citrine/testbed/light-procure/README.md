@@ -12,12 +12,12 @@ light-procure/
 └── app/            # Vue 3 + Element Plus + ECharts + IconPark；hash 路由；本地模拟数据（localStorage + IndexedDB 附件）
     ├── AGENTS.md           # 编码 Agent 的规则入口（项目接线）
     ├── accept.config.mjs   # 验收清单（citrine/tools 读取）
-    ├── design-system/      # 种子副本 + dist
+    ├── design-system/      # 种子副本 + dist + 本项目的 exemptions.json（桥接副本与演示图片样本的字面量豁免）
     └── src/
         ├── data/           # constants / seed（36 张申请、24 件资产、8 家供应商、12 名成员）/ db（持久化 + 演示时钟）/ api（全部业务）/ session / format / files / guard
         ├── layouts/        # AppLayout：分组侧栏、面包屑、通知面板、主题、身份切换、测试工具
         ├── pages/          # P01–P12 + 403 / 404
-        └── styles/         # globals.css 入口；bridge/ 为种子 bridge 的同步副本（含 recipes.css 与 vue/ 配方组件）
+        └── styles/         # globals.css 入口；bridge/ 为种子 bridge 的同步副本（不含 shadcn / iconpark.config），含 recipes.css 与 vue/ 配方组件
 ```
 
 ## 运行
