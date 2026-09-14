@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 import { Right, Attention } from '@icon-park/vue-next'
 import { orders, todos, trend, tone, yen } from '../mock/data'
-import TrendChart from '../components/TrendChart.vue'
-import StatCard from '../components/StatCard.vue'
+import TrendChart from '../styles/bridge/vue/TrendChart.vue'
+import StatCard from '../styles/bridge/vue/StatCard.vue'
 
 const q = new URLSearchParams(location.search)
 const loading = ref(q.get('state') === 'loading')   // ?state=loading 截图表骨架

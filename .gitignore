@@ -4,6 +4,7 @@ articles/
 # 依赖与构建产物（design-system/dist 是可交付的 token 构建物，保留）
 node_modules/
 citrine/testbed/golden-admin/app/dist/
-citrine/testbed/golden-admin/tools/out/
+citrine/testbed/light-procure/app/dist/
+citrine/tools/out/
 # 系统文件
 .DS_Store

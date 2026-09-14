@@ -83,9 +83,5 @@ function onCommand(cmd) {
 
 <style scoped>
 .menu-label { flex: 1; }
-/* 未读计数：贴在图标右上角、不越出按钮；底色用 action.danger（亮暗都是深红，白字 5.2:1），不用 status.error（暗色下变浅红，白字只有 3:1） */
-.unread { position: absolute; top: 0; right: 0; transform: translate(25%, -15%); min-width: 16px; height: 16px; padding: 0 4px; border-radius: var(--radius-full); background: var(--color-action-danger); color: var(--color-text-on-danger); font-size: var(--text-caption-size); line-height: 16px; font-weight: var(--text-weight-strong); text-align: center; pointer-events: none; }
-.user { display: inline-flex; align-items: center; gap: var(--spacing-2); cursor: pointer; padding: var(--spacing-1) var(--spacing-1) var(--spacing-1) var(--spacing-1); border-radius: var(--radius-md); }
-.user:hover { background: var(--color-bg-hover); }
-.user-name { font-size: var(--text-body-sm-size); color: var(--color-text-primary); }
+/* 未读计数、用户区、头像的样式来自种子配方层 recipes.css（.iconbtn .unread / .topbar .user / .avatar） */
 </style>

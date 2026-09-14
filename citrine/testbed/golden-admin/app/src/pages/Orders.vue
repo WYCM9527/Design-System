@@ -1,13 +1,14 @@
 <script setup>
 import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage } from 'element-plus'
+import { confirmBox } from '../styles/bridge/vue/confirm.js'
 import { Plus, Export, Close, Refresh, Order as OrderIcon, MoreOne } from '@icon-park/vue-next'
 import { orders, tone, yen } from '../mock/data'
 import { can } from '../store'
 
 const router = useRouter()
-import TableSkeleton from '../components/TableSkeleton.vue'
+import TableSkeleton from '../styles/bridge/vue/TableSkeleton.vue'
 const q = new URLSearchParams(location.search)
 // 演示状态：normal / loading / empty / error（PRD §4.3 四态在此页完整实现）
 const state = ref(['loading', 'empty', 'error'].includes(q.get('state')) ? q.get('state') : 'normal')
@@ -30,11 +31,11 @@ const preselect = (row) => rows.value.indexOf(row) < 3 && !q.get('state') // 默
 function onReady() { setTimeout(() => rows.value.filter(preselect).forEach((r) => tableRef.value?.toggleRowSelection(r, true)), 150) }
 
 function cancelOrder(row) {
-  ElMessageBox.confirm(`已派单的订单会通知骑手返回，退款将在 1–3 个工作日内原路返回。`, `取消订单 ${row.id}？`, { confirmButtonText: '确认取消', cancelButtonText: '再想想', type: 'warning', confirmButtonClass: 'el-button--danger' })
+  confirmBox(`已派单的订单会通知骑手返回，退款将在 1–3 个工作日内原路返回。`, `取消订单 ${row.id}？`, { confirmButtonText: '确认取消', cancelButtonText: '再想想', type: 'warning', confirmButtonClass: 'el-button--danger' })
     .then(() => { row.status = '已取消'; ElMessage.success('订单已取消') }).catch(() => {})
 }
 function batchCancel() {
-  ElMessageBox.confirm(`将取消 ${selected.value.length} 个订单，此操作不可撤销。`, '批量取消', { confirmButtonText: '确认取消', cancelButtonText: '再想想', type: 'warning', confirmButtonClass: 'el-button--danger' })
+  confirmBox(`将取消 ${selected.value.length} 个订单，此操作不可撤销。`, '批量取消', { confirmButtonText: '确认取消', cancelButtonText: '再想想', type: 'warning', confirmButtonClass: 'el-button--danger' })
     .then(() => { selected.value.forEach((r) => (r.status = '已取消')); ElMessage.success(`已取消 ${selected.value.length} 个订单`); tableRef.value.clearSelection() }).catch(() => {})
 }
 const rowClass = ({ row }) => (selected.value.includes(row) ? 'is-selected' : '')

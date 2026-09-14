@@ -1,7 +1,8 @@
 <script setup>
 import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage } from 'element-plus'
+import { confirmBox } from '../styles/bridge/vue/confirm.js'
 import { AddUser, Plus } from '@icon-park/vue-next'
 import { members, permissionGroups } from '../mock/data'
 import { ROLES, store, setRole, can } from '../store'
@@ -30,7 +31,7 @@ function saveRole() {
   if (editing.member.account === 'wangxm' && editing.role !== store.role) { setRole(editing.role); ElMessage.warning('你已把自己改为' + ROLES[editing.role].label + '，菜单已按新角色刷新'); if (editing.role === 'finance') router.push('/') } else ElMessage.success('角色已更新')
 }
 function remove(m) {
-  ElMessageBox.confirm(`移除后 ${m.name} 将立即失去访问权限，历史操作记录保留。`, `移除成员「${m.name}」？`, { confirmButtonText: '确认移除', cancelButtonText: '取消', type: 'warning', confirmButtonClass: 'el-button--danger' })
+  confirmBox(`移除后 ${m.name} 将立即失去访问权限，历史操作记录保留。`, `移除成员「${m.name}」？`, { confirmButtonText: '确认移除', cancelButtonText: '取消', type: 'warning', confirmButtonClass: 'el-button--danger' })
     .then(() => { members.splice(members.indexOf(m), 1); ElMessage.success('已移除') }).catch(() => {})
 }
 const initials = (n) => n.slice(0, 1)

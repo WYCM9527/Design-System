@@ -1,6 +1,7 @@
 <script setup>
 import { computed, reactive, ref } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage } from 'element-plus'
+import { confirmBox } from '../styles/bridge/vue/confirm.js'
 import { riders, orders, tone } from '../mock/data'
 import { can } from '../store'
 
@@ -17,7 +18,7 @@ function confirmDispatch() {
   ElMessage.success(`已把 ${dispatch.order} 派给 ${dispatch.rider.name}`)
 }
 function forceOffline(r) {
-  ElMessageBox.confirm(`${r.name} 当前有 ${r.current} 单在配送，强制下线后这些订单需要重新派单。`, `强制下线「${r.name}」？`, { confirmButtonText: '确认下线', cancelButtonText: '取消', type: 'warning', confirmButtonClass: 'el-button--danger' })
+  confirmBox(`${r.name} 当前有 ${r.current} 单在配送，强制下线后这些订单需要重新派单。`, `强制下线「${r.name}」？`, { confirmButtonText: '确认下线', cancelButtonText: '取消', type: 'warning', confirmButtonClass: 'el-button--danger' })
     .then(() => { r.status = '离线'; ElMessage.success('已下线') }).catch(() => {})
 }
 const initials = (n) => n.slice(0, 1)

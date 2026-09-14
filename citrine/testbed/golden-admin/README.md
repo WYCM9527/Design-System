@@ -33,7 +33,7 @@ URL 形如 `index.html?theme=dark&state=empty#/orders`：
 
 ## 验收
 
-验收基线（阈值与已批准的例外）以种子 `design-system/DESIGN.md` 的「验收基线」一节为准。工具在 [`tools/`](tools/)，在 `app/` 目录 `npm run accept` 一键跑完：全部页面状态 × 亮 / 暗的自动扫描（对比度、可访问名称、命中区、溢出、截断、重复 id）、全组件走查（hover / focus 不新引入黄色、悬停不掉对比、无外来颜色）、1366px 窄屏、Tab 键焦点遍历、预览 E 与 S 的像素一致。只需 Node ≥ 22 与 Chrome。结果记进 [FINDINGS.md](FINDINGS.md)。
+验收基线（阈值与已批准的例外）以种子 `design-system/DESIGN.md` 的「验收基线」一节为准。工具在仓库级 [`citrine/tools/`](../../tools/)（页面清单登记在 `app/accept.config.mjs`），在 `app/` 目录 `npm run accept` 一键跑完：全部页面状态 × 亮 / 暗的自动扫描（对比度、可访问名称、命中区、溢出、截断、重复 id）、全组件走查（hover / focus 不新引入黄色、悬停不掉对比、无外来颜色）、1366px 窄屏、Tab 键焦点遍历、预览 E 与 S 的像素一致。只需 Node ≥ 22 与 Chrome。结果记进 [FINDINGS.md](FINDINGS.md)。
 
 `#/merchants/:id`（商户详情，页签 + 日志 + 结算）是第三轮盲测产物；`#/merchants/apply`（入驻申请，三步表单）是第二轮盲测产物，同样只凭文档完成后保留为常规页面。
 

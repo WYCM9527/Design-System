@@ -1,0 +1,1413 @@
+{
+  "color": {
+    "brand": {
+      "500": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1,
+          "colorSpace": "srgb",
+          "components": [
+            0.9765,
+            0.8118,
+            0
+          ],
+          "hex": "#F9CF00"
+        },
+        "$description": "唯一的品牌黄。不允许衍生浅调或深金：实测发现延伸色在界面里显脏。需要层次时用无色系（暖灰 / 深黑），黄色只以纯色出现。"
+      },
+      "$description": "以品牌色 #F9CF00 为 500 锚点推导；加深时色相向橙微移，避免芥末/橄榄。"
+    },
+    "neutral": {
+      "50": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.9765,
+            0.9804,
+            0.9843
+          ],
+          "hex": "#F9FAFB"
+        }
+      },
+      "100": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.9529,
+            0.9569,
+            0.9647
+          ],
+          "hex": "#F3F4F6"
+        }
+      },
+      "200": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.898,
+            0.9059,
+            0.9216
+          ],
+          "hex": "#E5E7EB"
+        }
+      },
+      "300": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.8196,
+            0.8353,
+            0.8588
+          ],
+          "hex": "#D1D5DB"
+        }
+      },
+      "400": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.6118,
+            0.6392,
+            0.6863
+          ],
+          "hex": "#9CA3AF"
+        }
+      },
+      "500": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.4,
+            0.4275,
+            0.4824
+          ],
+          "hex": "#666D7B"
+        },
+        "$description": "弱化文字的底线灰。冷灰族的 500（#6B7280）白底只有 4.4:1，压深到 #666D7B：neutral.100 上 4.73:1、白底 5.2:1。"
+      },
+      "600": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.2941,
+            0.3333,
+            0.3882
+          ],
+          "hex": "#4B5563"
+        }
+      },
+      "700": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.2157,
+            0.2549,
+            0.3176
+          ],
+          "hex": "#374151"
+        }
+      },
+      "800": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.1216,
+            0.1608,
+            0.2157
+          ],
+          "hex": "#1F2937"
+        }
+      },
+      "900": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.0667,
+            0.0941,
+            0.1529
+          ],
+          "hex": "#111827"
+        }
+      },
+      "$description": "冷灰（gray 族，近黑 #111827 带一丝深蓝）。rc.19 由暖灰（stone）整体换族：暖灰在界面里显黄、显脏；黄已无延伸色、只以纯色小面积出现，「黄的淡色落在冷灰上变橄榄」的旧顾虑不再成立。",
+      "scrim": {
+        "$type": "color",
+        "$value": {
+          "alpha": 0.451,
+          "colorSpace": "srgb",
+          "components": [
+            0.0667,
+            0.0941,
+            0.1529
+          ],
+          "hex": "#11182773"
+        },
+        "$description": "弹窗遮罩：neutral.900 45%。"
+      },
+      "shadow-1": {
+        "$type": "color",
+        "$value": {
+          "alpha": 0.0588,
+          "colorSpace": "srgb",
+          "components": [
+            0.0667,
+            0.0941,
+            0.1529
+          ],
+          "hex": "#1118270F"
+        },
+        "$description": "卡片阴影色：neutral.900 6%。原 4% 几乎不可见，边线成了唯一的分层手段，显得凌厉。"
+      },
+      "shadow-2": {
+        "$type": "color",
+        "$value": {
+          "alpha": 0.102,
+          "colorSpace": "srgb",
+          "components": [
+            0.0667,
+            0.0941,
+            0.1529
+          ],
+          "hex": "#1118271A"
+        },
+        "$description": "浮层阴影色：neutral.900 10%。"
+      },
+      "shadow-3": {
+        "$type": "color",
+        "$value": {
+          "alpha": 0.1608,
+          "colorSpace": "srgb",
+          "components": [
+            0.0667,
+            0.0941,
+            0.1529
+          ],
+          "hex": "#11182729"
+        },
+        "$description": "弹窗阴影色：neutral.900 16%。"
+      },
+      "wash": {
+        "$type": "color",
+        "$value": {
+          "alpha": 0.1412,
+          "colorSpace": "srgb",
+          "components": [
+            0.6118,
+            0.6392,
+            0.6863
+          ],
+          "hex": "#9CA3AF24"
+        },
+        "$description": "14% 的冷灰洗色，半透明：图表面积填充（chart.area）亮暗共用，网格线能透出来。"
+      },
+      "wash-dark": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.1529,
+            0.1686,
+            0.2078
+          ],
+          "hex": "#272B35"
+        },
+        "$description": "暗色 neutral 状态浅底：neutral.400 以 14% 叠在 graphite.850 上的预混实色，同 status 色的 wash 一样不随底色变化。"
+      },
+      "ring": {
+        "$type": "color",
+        "$value": {
+          "alpha": 0.1608,
+          "colorSpace": "srgb",
+          "components": [
+            0.0667,
+            0.0941,
+            0.1529
+          ],
+          "hex": "#11182729"
+        },
+        "$description": "亮色焦点环：neutral.900 16%。"
+      },
+      "mask": {
+        "$type": "color",
+        "$value": {
+          "alpha": 0.902,
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "hex": "#FFFFFFE6"
+        },
+        "$description": "加载遮罩：白 90%，盖在卡片 / 表格上时内容隐约透出。与弹窗遮罩（scrim）是两个语义：遮罩压暗全页，mask 只是把一块区域变淡。"
+      }
+    },
+    "graphite": {
+      "600": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.2275,
+            0.251,
+            0.2863
+          ],
+          "hex": "#3A4049"
+        },
+        "$description": "2.2.0：色度按 OKLCH 压到原来的 60%（C 0.031→0.018，L 与色相不变），深底不再偏蓝。"
+      },
+      "700": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.1333,
+            0.1569,
+            0.1882
+          ],
+          "hex": "#222830"
+        },
+        "$description": "2.2.0：色度按 OKLCH 压到原来的 60%（C 0.030→0.018，L 与色相不变），深底不再偏蓝。"
+      },
+      "750": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.1176,
+            0.1373,
+            0.1686
+          ],
+          "hex": "#1E232B"
+        },
+        "$description": "2.2.0：色度按 OKLCH 压到原来的 60%（C 0.030→0.018，L 与色相不变），深底不再偏蓝。"
+      },
+      "800": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.0941,
+            0.1137,
+            0.149
+          ],
+          "hex": "#181D26"
+        },
+        "$description": "2.2.0：色度按 OKLCH 压到原来的 60%（C 0.032→0.019，L 与色相不变），深底不再偏蓝。"
+      },
+      "850": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.0784,
+            0.0941,
+            0.1294
+          ],
+          "hex": "#141821"
+        },
+        "$description": "2.2.0：色度按 OKLCH 压到原来的 60%（C 0.032→0.019，L 与色相不变），深底不再偏蓝。"
+      },
+      "900": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.0588,
+            0.0745,
+            0.1098
+          ],
+          "hex": "#0F131C"
+        },
+        "$description": "2.2.0：色度按 OKLCH 压到原来的 60%（C 0.031→0.018，L 与色相不变），深底不再偏蓝。"
+      },
+      "950": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.0431,
+            0.0588,
+            0.0902
+          ],
+          "hex": "#0B0F17"
+        },
+        "$description": "2.2.0：色度按 OKLCH 压到原来的 60%（C 0.030→0.018，L 与色相不变），深底不再偏蓝。"
+      },
+      "$description": "暗色深底。与亮色冷灰同族：每档保持原明度，色相校到 gray 族暗端（OKLCH 由 700–950 锚点插值），亮暗切换时灰的\"味道\"一致。",
+      "scrim": {
+        "$type": "color",
+        "$value": {
+          "alpha": 0.651,
+          "colorSpace": "srgb",
+          "components": [
+            0.0431,
+            0.0588,
+            0.0902
+          ],
+          "hex": "#0B0F17A6"
+        },
+        "$description": "暗色弹窗遮罩：graphite.950 65%。"
+      },
+      "ring": {
+        "$type": "color",
+        "$value": {
+          "alpha": 0.2,
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "hex": "#FFFFFF33"
+        },
+        "$description": "暗色焦点环：白 20%。"
+      },
+      "mask": {
+        "$type": "color",
+        "$value": {
+          "alpha": 0.902,
+          "colorSpace": "srgb",
+          "components": [
+            0.0941,
+            0.1137,
+            0.149
+          ],
+          "hex": "#181D26E6"
+        },
+        "$description": "暗色加载遮罩：graphite.800（surface）90%。"
+      }
+    },
+    "white": {
+      "$type": "color",
+      "$value": {
+        "alpha": 1,
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          1,
+          1
+        ],
+        "hex": "#FFFFFF"
+      }
+    },
+    "green": {
+      "50": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1,
+          "colorSpace": "srgb",
+          "components": [
+            0.8549,
+            0.9608,
+            0.9098
+          ],
+          "hex": "#DAF5E8"
+        },
+        "$description": "success 浅底（用户指定值，rc.26）。"
+      },
+      "500": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.0,
+            0.6471,
+            0.4314
+          ],
+          "hex": "#00A56E"
+        },
+        "$description": "success 暗色文字色、wash 基色。rc.29 实测反馈暗色偏亮，从 #10B981 压到 graphite.850 上 5.58:1。"
+      },
+      "700": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1,
+          "colorSpace": "srgb",
+          "components": [
+            0.0431,
+            0.6196,
+            0.4549
+          ],
+          "hex": "#0B9E74"
+        },
+        "$description": "success 亮色文字色，也是涨跌的涨色（用户指定值，rc.26）。实测对比度：浅底 #DAF5E8 上 2.96:1、白底 3.41:1——低于 12px 小字的 AA 底线 4.5，属用户拍板的品牌例外；如需回到 AA，同色相压深到 ≈#067A59（浅底 4.5+）。"
+      },
+      "wash": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.0667,
+            0.1725,
+            0.1725
+          ],
+          "hex": "#112C2C"
+        },
+        "$description": "暗色 green 浅底：green.500 以 14% 叠在 graphite.850 上的预混实色。"
+      },
+      "$description": "Success · emerald（rc.19 随冷调整体从公司调色板的 #22C55E 族转向 emerald；公司板作色相参考）。"
+    },
+    "orange": {
+      "50": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1,
+          "colorSpace": "srgb",
+          "components": [
+            1.0,
+            0.9451,
+            0.8471
+          ],
+          "hex": "#FFF1D8"
+        },
+        "$description": "warning 浅底（用户指定值，rc.27）。"
+      },
+      "500": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.7961,
+            0.4941,
+            0.0
+          ],
+          "hex": "#CB7E00"
+        },
+        "$description": "warning 暗色文字色。rc.29 从 #F5A524 压到 graphite.850 上 5.51:1；色相仍与品牌黄分得开。"
+      },
+      "700": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1,
+          "colorSpace": "srgb",
+          "components": [
+            0.8431,
+            0.4039,
+            0.0706
+          ],
+          "hex": "#D76712"
+        },
+        "$description": "warning 亮色文字色（用户指定值，rc.27）。实测对比度：浅底 #FFF1D8 上 3.22:1、白底 3.60:1，低于 12px 小字的 AA 底线 4.5；与品牌黄 2.39:1（旧值 3.34），主要靠色相（橙 vs 黄）区分。属用户拍板的品牌例外；如需回到 AA，同色相压深到 ≈#A8500D（浅底 4.5+）。"
+      },
+      "wash": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.1804,
+            0.149,
+            0.1098
+          ],
+          "hex": "#2E261C"
+        },
+        "$description": "暗色 orange 浅底：orange.500 以 14% 叠在 graphite.850 上的预混实色。"
+      },
+      "$description": "公司调色板 Warning · Orange：default #F5A524 / bg #FFF7E6；text 压深一档保 AA。"
+    },
+    "red": {
+      "50": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1,
+          "colorSpace": "srgb",
+          "components": [
+            1.0,
+            0.8863,
+            0.8902
+          ],
+          "hex": "#FFE2E3"
+        },
+        "$description": "error 浅底（用户指定值，rc.28）。"
+      },
+      "500": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.9216,
+            0.3882,
+            0.4706
+          ],
+          "hex": "#EB6378"
+        },
+        "$description": "error 暗色文字色。rc.29 从 rose-400 #FB7185 压到 graphite.850 上 5.57:1。"
+      },
+      "700": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1,
+          "colorSpace": "srgb",
+          "components": [
+            0.9333,
+            0.2824,
+            0.2941
+          ],
+          "hex": "#EE484B"
+        },
+        "$description": "error 亮色文字色，也是危险按钮填充（用户指定值，rc.28）。实测对比度：浅底 #FFE2E3 上 3.04:1、白底 3.71:1，白字压上面 3.71:1——均低于 AA 4.5，属用户拍板的品牌例外（success / warning / error 三对同性质，rc.26–28）；回补路径 ≈#D6203B（白字 4.6+）。"
+      },
+      "800": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1,
+          "colorSpace": "srgb",
+          "components": [
+            0.8627,
+            0.2078,
+            0.2353
+          ],
+          "hex": "#DC353C"
+        },
+        "$description": "危险按钮 hover：red.700 在 OKLCH 里再降 0.05 L（随 rc.28 的新 700 重推）。白字 4.55:1。"
+      },
+      "900": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1,
+          "colorSpace": "srgb",
+          "components": [
+            0.7922,
+            0.1176,
+            0.1765
+          ],
+          "hex": "#CA1E2D"
+        },
+        "$description": "危险按钮 active（L−0.10 重推）。白字 5.62:1。"
+      },
+      "wash": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.1961,
+            0.1333,
+            0.1765
+          ],
+          "hex": "#32222D"
+        },
+        "$description": "暗色 red 浅底：red.500 以 14% 叠在 graphite.850 上的预混实色。"
+      },
+      "$description": "Danger · rose（rc.19 随冷调整体从 #FF5A5F 族转向 rose；公司板作色相参考）。"
+    },
+    "blue": {
+      "400": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.4902,
+            0.6275,
+            0.9882
+          ],
+          "hex": "#7DA0FC"
+        },
+        "$description": "暗色图表第 2 序列。"
+      },
+      "500": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.3098,
+            0.4902,
+            0.9686
+          ],
+          "hex": "#4F7DF7"
+        },
+        "$description": "亮色图表第 2 序列：白底 3.7:1。"
+      },
+      "$description": "公司调色板 Primary Blue，本系统主色是黄，所以蓝只以图表分类色出现（500 亮 / 400 暗）；其余八档未引用，不收。链接、焦点、选中态按品牌决定继续用无色系。"
+    },
+    "cyan": {
+      "50": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.9255,
+            0.9922,
+            1.0
+          ],
+          "hex": "#ECFDFF"
+        }
+      },
+      "500": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.0,
+            0.6235,
+            0.7098
+          ],
+          "hex": "#009FB5"
+        },
+        "$description": "info 暗色文字色与暗色图表第 3 序列。白底上不做线条和文字（亮色图表用 cyan.600）。rc.29 从 #12B5CB 压到 graphite.850 上 5.60:1。"
+      },
+      "600": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.0549,
+            0.5412,
+            0.6078
+          ],
+          "hex": "#0E8A9B"
+        },
+        "$description": "调色板的 text 值，亮色图表第 3 序列：白底 4.1:1，作线条 / 柱子够，作 12px 文字不够。"
+      },
+      "700": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.0,
+            0.4863,
+            0.5529
+          ],
+          "hex": "#007C8D"
+        },
+        "$description": "info 亮色文字色。调色板 text #0E8A9B 在 cyan.50 上 3.9:1，同色相压深到 #007C8D：cyan.50 上 4.7:1，白底 4.9:1。"
+      },
+      "wash": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.0667,
+            0.1686,
+            0.2118
+          ],
+          "hex": "#112B36"
+        },
+        "$description": "暗色 cyan 浅底：cyan.500 以 14% 叠在 graphite.850 上的预混实色。"
+      },
+      "$description": "公司调色板 Info · Cyan：default #12B5CB / hover #0FA0B4 / text #0E8A9B / bg #ECFDFF；hover 未引用故未收。"
+    },
+    "transparent": {
+      "$type": "color",
+      "$value": {
+        "alpha": 0,
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0,
+          0
+        ],
+        "hex": "#00000000"
+      }
+    },
+    "black": {
+      "shadow-2": {
+        "$type": "color",
+        "$value": {
+          "alpha": 0.302,
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#0000004D"
+        },
+        "$description": "暗色浮层阴影色：黑 30%。"
+      },
+      "shadow-3": {
+        "$type": "color",
+        "$value": {
+          "alpha": 0.502,
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0,
+            0
+          ],
+          "hex": "#00000080"
+        },
+        "$description": "暗色弹窗阴影色：黑 50%。"
+      }
+    },
+    "purple": {
+      "500": {
+        "$type": "color",
+        "$value": {
+          "alpha": 1.0,
+          "colorSpace": "srgb",
+          "components": [
+            0.5451,
+            0.3608,
+            0.9647
+          ],
+          "hex": "#8B5CF6"
+        },
+        "$description": "图表第 4 序列，亮暗共用：白底 4.2:1，graphite.850 上 4.2:1。"
+      },
+      "$description": "公司调色板 Experimental · Purple；bg #F6F2FF 未引用，不收。"
+    }
+  },
+  "spacing": {
+    "0-5": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 2
+      },
+      "$description": "2px：只给「胶囊里的胶囊」这类内缩用（分段选择器的外壳到内胶囊）；不是间距阶梯的一员，布局不要用它。"
+    },
+    "1": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 4
+      }
+    },
+    "2": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 8
+      }
+    },
+    "3": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 12
+      }
+    },
+    "4": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 16
+      }
+    },
+    "5": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 20
+      }
+    },
+    "6": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 24
+      }
+    },
+    "8": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 32
+      }
+    },
+    "10": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 40
+      }
+    },
+    "1-5": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 6
+      }
+    },
+    "2-5": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 10
+      }
+    },
+    "3-5": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 14
+      }
+    }
+  },
+  "radius": {
+    "sm": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 6
+      },
+      "$description": "标签、分页项、分段选择器内项、骨架条。"
+    },
+    "md": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 8
+      },
+      "$description": "按钮、输入框、菜单项、下拉浮层、提示条、侧栏选中块。"
+    },
+    "lg": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 12
+      },
+      "$description": "卡片、面板、统计卡。"
+    },
+    "full": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 999
+      }
+    },
+    "xs": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 4
+      },
+      "$description": "勾选框、极小元素（≤ 16px）。"
+    },
+    "xl": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 16
+      },
+      "$description": "弹窗、抽屉、登录卡等最外层容器。嵌套规则：内元素圆角必须小于外框，相邻层级至少差一档。"
+    }
+  },
+  "font": {
+    "family": {
+      "sans": {
+        "$type": "fontFamily",
+        "$value": [
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "PingFang SC",
+          "Segoe UI",
+          "Microsoft YaHei",
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "Noto Sans CJK SC",
+          "sans-serif"
+        ],
+        "$description": "Windows 上中文由微软雅黑显式承担，不靠系统兜底。"
+      },
+      "mono": {
+        "$type": "fontFamily",
+        "$value": [
+          "SF Mono",
+          "Menlo",
+          "Consolas",
+          "Liberation Mono",
+          "monospace"
+        ]
+      }
+    },
+    "size": {
+      "xs": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 12
+        }
+      },
+      "sm": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 13
+        }
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 14
+        },
+        "$description": "根字号。中后台信息密度高，14px 是主流基准。"
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 15
+        }
+      },
+      "xl": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 16
+        }
+      },
+      "2xl": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 20
+        }
+      },
+      "3xl": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 26
+        }
+      },
+      "4xl": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 32
+        }
+      }
+    },
+    "weight": {
+      "regular": {
+        "$type": "fontWeight",
+        "$value": 400
+      },
+      "medium": {
+        "$type": "fontWeight",
+        "$value": 500,
+        "$description": "中等字重。Mac 上是 PingFang Medium / SF Pro Medium；Windows 雅黑没有 500 字形，浏览器退回常规——但 ClearType 渲染的雅黑常规本来就比 Mac 的 400 显得重，两端观感反而更接近。"
+      },
+      "semibold": {
+        "$type": "fontWeight",
+        "$value": 600
+      },
+      "bold": {
+        "$type": "fontWeight",
+        "$value": 700
+      }
+    },
+    "line-height": {
+      "tight": {
+        "$type": "number",
+        "$value": 1.25
+      },
+      "normal": {
+        "$type": "number",
+        "$value": 1.6,
+        "$description": "正文行高 1.6：中文在 1.5 下略挤，1.6 更松弛；表格、表单同用。"
+      },
+      "relaxed": {
+        "$type": "number",
+        "$value": 1.7
+      }
+    },
+    "letter-spacing": {
+      "tight": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "em",
+          "value": -0.01
+        }
+      },
+      "wide": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "em",
+          "value": 0.06
+        }
+      }
+    }
+  },
+  "size": {
+    "control": {
+      "sm": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 28
+        }
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 34
+        },
+        "$description": "按钮、输入框、搜索框共用同一高度，表单里对齐不靠手调。"
+      },
+      "xs": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 24
+        }
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 40
+        }
+      }
+    },
+    "icon": {
+      "md": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 16
+        }
+      },
+      "xs": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 12
+        }
+      },
+      "sm": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 14
+        }
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 20
+        }
+      },
+      "xl": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 24
+        }
+      },
+      "2xl": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 32
+        }
+      }
+    },
+    "avatar": {
+      "sm": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 28
+        }
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 32
+        }
+      }
+    },
+    "sidebar": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 168
+      },
+      "$description": "中文菜单项 3～5 个汉字，200 时色块右侧大量空余（用户反馈）。168 = 两侧 8px 外边距 + 152px 色块，容纳 12px 内边距 + 16px 图标 + 6 个汉字 + 12px 内边距；侧栏标签因此不超过 6 个汉字。"
+    },
+    "topbar": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 56
+      }
+    },
+    "search": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 240
+      }
+    },
+    "form-label": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 112
+      },
+      "$description": "横向表单标签列宽：容纳 7 个中文字符 + 必填星号（13px），再窄会换行。"
+    },
+    "sidebar-collapsed": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 64
+      }
+    },
+    "illustration": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 120
+      }
+    },
+    "modal": {
+      "sm": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 420
+        }
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 640
+        }
+      }
+    },
+    "drawer": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 480
+      }
+    },
+    "form-max": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 720
+      }
+    },
+    "auth-card": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 400
+      }
+    }
+  },
+  "border": {
+    "width": {
+      "thin": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 0.6
+        },
+        "$description": "发丝线 0.6px：卡片外框、表格行分隔、输入框边线、分隔线。Retina 上是 1 物理像素，1x 屏上浏览器取整为 1px。控件边线、选中下划线、指示条不在此列。"
+      },
+      "medium": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 1.5
+        }
+      },
+      "thick": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 2
+        }
+      },
+      "bar": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 3
+        }
+      }
+    }
+  },
+  "duration": {
+    "fast": {
+      "$type": "duration",
+      "$value": {
+        "unit": "ms",
+        "value": 150
+      }
+    },
+    "normal": {
+      "$type": "duration",
+      "$value": {
+        "unit": "ms",
+        "value": 200
+      }
+    },
+    "slow": {
+      "$type": "duration",
+      "$value": {
+        "unit": "ms",
+        "value": 300
+      }
+    }
+  },
+  "easing": {
+    "standard": {
+      "$type": "cubicBezier",
+      "$value": [
+        0.2,
+        0,
+        0,
+        1
+      ]
+    },
+    "enter": {
+      "$type": "cubicBezier",
+      "$value": [
+        0,
+        0,
+        0.2,
+        1
+      ]
+    },
+    "exit": {
+      "$type": "cubicBezier",
+      "$value": [
+        0.4,
+        0,
+        1,
+        1
+      ]
+    }
+  },
+  "opacity": {
+    "45": {
+      "$type": "number",
+      "$value": 0.45
+    },
+    "50": {
+      "$type": "number",
+      "$value": 0.5
+    },
+    "78": {
+      "$type": "number",
+      "$value": 0.78
+    }
+  },
+  "z": {
+    "2": {
+      "$type": "number",
+      "$value": 2
+    },
+    "10": {
+      "$type": "number",
+      "$value": 10
+    },
+    "100": {
+      "$type": "number",
+      "$value": 100
+    },
+    "1000": {
+      "$type": "number",
+      "$value": 1000
+    }
+  },
+  "shadow": {
+    "y": {
+      "1": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 4
+        },
+        "$description": "卡片层 y 偏移。rc.33 实测反馈阴影不够柔和，2 → 4。"
+      },
+      "2": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 8
+        }
+      },
+      "3": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 16
+        }
+      }
+    },
+    "blur": {
+      "1": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 16
+        },
+        "$description": "卡片层模糊。rc.33 从 8 → 16：更大的扩散让阴影更柔，颜色仍是 neutral.900 6%。"
+      },
+      "2": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 24
+        }
+      },
+      "3": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 48
+        }
+      }
+    }
+  },
+  "stroke-width": {
+    "4": {
+      "$type": "number",
+      "$value": 4
+    }
+  }
+}

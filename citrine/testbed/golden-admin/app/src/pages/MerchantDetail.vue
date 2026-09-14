@@ -3,9 +3,10 @@
 // 演示参数放在 # 之前（AGENTS.md 约定，不用 useRoute().query）：?state=disabled|empty|missing、?tab=quals|logs|settlement。
 import { computed, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage } from 'element-plus'
+import { confirmBox } from '../styles/bridge/vue/confirm.js'
 import { Right, Down, Pic, Shop, Time } from '@icon-park/vue-next'
-import StatCard from '../components/StatCard.vue'
+import StatCard from '../styles/bridge/vue/StatCard.vue'
 import { merchants, merchantDetails, MERCHANT_STATE, merchantState, LOG_TYPE, QUAL_STATUS, SETTLEMENT_STATUS, URGE_REASONS, tone, yen } from '../mock/data'
 
 const route = useRoute()
@@ -50,7 +51,7 @@ const NODE_TYPE = { success: 'success', error: 'danger', warning: 'warning', inf
 
 const settlements = computed(() => (isEmpty ? [] : detail.value.settlements))
 
-const confirm = (message, title, options) => ElMessageBox.confirm(message, title, { cancelButtonText: '取消', type: 'warning', ...options }).then(() => true, () => false)
+const confirm = (message, title, options) => confirmBox(message, title, { cancelButtonText: '取消', type: 'warning', ...options }).then(() => true, () => false)
 
 function edit() { router.push({ name: 'merchant-edit', params: { id: id.value } }) }
 async function toggleStatus() {

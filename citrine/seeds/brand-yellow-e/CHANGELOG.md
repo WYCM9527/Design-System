@@ -2,6 +2,19 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.4.0 — 2026-09-14（试点项目三「轻采」：配方层与验收工具进种子）
+
+用一份与黄金后台无关的 PRD（采购 / 资产 / 单级审批，12 页 3 角色）做接入试点：四个互不通气的编码 Agent 只靠仓库文档从零实现，记录 158 条"只能猜的地方"；集成后按 T01–T15 走通闭环，验收 94 个页面状态全绿。发现与处理见 `testbed/light-procure/FINDINGS.md`（D73–D98），系统层变化如下：
+
+- **新增 `bridge/recipes.css`（配方层）**：页面骨架的可复制实现——壳层、页头、卡片区块、链接四层（含新增的标题型 `.title-link`）、状态胶囊、筛选栏（`.filter.solo`）/ 条件标签（× 用 `<button class="x">`，命中区 24）/ 批量条 / 分页、表单页（`.form-foot.is-sticky`、`.help` 出错自动隐藏、只读块 `.ro`、行内录入表格 `.table-editable`、上传区 `.upload-zone`）、抽屉小标题 `.drawer-h`、结果页、空态 / 加载失败、图表容器、统计卡网格 / 状态条、打印。此前这些只存在于黄金后台的 `app.css`，第二个项目按 README 接入拿不到（D73、D85–D87）。
+- **新增 `bridge/vue/`（配方组件）**：`StatCard`（新增 `hint` 口径说明、`note` 可单独显示、`#label-extra`）、`EChart`（`watchEffect` 追踪 option 里的响应式数据，数据变了自动重画；亮暗切换靠监听 `<html class>`，不依赖项目状态）、`TrendChart`（`count` prop）、`TableSkeleton`、`confirm.js`（`confirmBox / confirmDanger`：`ElMessageBox` 关闭后把焦点还给触发元素）。
+- **`bridge/echarts.js`**：`trendLine` 对计数型数据（全整数且 ≤ 20，或显式 `count`）y 轴从 0 起、整数刻度（D78）；新增 `rankBars` 排行横向柱配方——前三纯黄、其余灰、零值不着黄（D79）。
+- **`bridge/element-plus.css`**：`el-tree` 当前节点深黑反转块（含 `el-text` 标签跟随）、行高 `control.height.md`、展开箭头 `icon.muted`（D80）；表格合计行 `bg.subtle` + 500 + 等宽数字（D81）；`.el-tabs__header` 间距接 `spacing.4`、`.el-dialog.is-sm / .is-md` 尺寸档（D84）；加载中的按钮不再被 `opacity.disabled` 压淡（D83）。
+- **DESIGN.md**：先读第 5 条写明下拉「全部…」用 `'all'` 哨兵（Element 把空串当未选，D76）、第 6 条指向配方层、第 8 条只读 = 不可聚焦文本块；页面骨架表新增「左右分栏页」「设置页」两行（D90），表单页脚次序改为"主 · 次要（保存草稿 / 上一步）· quiet（取消）"（D88）并写明 sticky 页脚与行内录入表格；组件配方表新增「页面级组织树」「上传区」两行，表格行补合计行与禁用胶囊的 `title`，弹窗行补尺寸档，抽屉行补 `.drawer-h` 与 480 宽内的取舍；数据可视化补计数型趋势与 `rankBars`；交互一节补浮层焦点归位规则（D82）。
+- **验收工具移到仓库级 `citrine/tools/`**：项目用 `accept.config.mjs` 登记页面状态 / 组件走查页 / 窄屏宽度 / 焦点页，`--project` 指向任意 app；输出按项目分目录；无头 Chrome 加 `--no-proxy-server`（D74）。黄金后台的清单迁到 `app/accept.config.mjs`。
+- README：十条硬规则第 6 / 7 条对齐 DESIGN（操作列默认操作胶囊、胶囊 400，D75）；快速开始补复制 `bridge/` 与引入 `recipes.css`；结构树补第三个实测项目与 `tools/`。
+- 黄金后台改为消费同一份配方层与组件（8 页逐像素零差异），确认弹窗全部改用 `confirmBox`；全量验收（页面 × 亮暗、全组件走查、1366、焦点、E/S）复跑全绿。
+
 ## 2.3.0 — 2026-09-12（操作胶囊减重）
 
 - **新增 token `control.height.xs`**（→ `size.control.xs` 24）：行内胶囊档，给表格操作胶囊与状态胶囊——不是按钮档，按钮最小到 sm。

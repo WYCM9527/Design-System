@@ -1,7 +1,8 @@
 <script setup>
 import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage } from 'element-plus'
+import { confirmBox } from '../styles/bridge/vue/confirm.js'
 import { Plus } from '@icon-park/vue-next'
 import { merchants, tone } from '../mock/data'
 import { can } from '../store'
@@ -26,7 +27,7 @@ async function submitAudit() {
 }
 function toggleActive(row) {
   const off = row.status !== '已停用'
-  ElMessageBox.confirm(off ? '停用后商户将从 App 下架，进行中的订单不受影响。' : '恢复后商户立即重新上架。', off ? `停用「${row.name}」？` : `恢复「${row.name}」？`, { confirmButtonText: off ? '确认停用' : '恢复', cancelButtonText: '取消', type: 'warning', confirmButtonClass: off ? 'el-button--danger' : '' })
+  confirmBox(off ? '停用后商户将从 App 下架，进行中的订单不受影响。' : '恢复后商户立即重新上架。', off ? `停用「${row.name}」？` : `恢复「${row.name}」？`, { confirmButtonText: off ? '确认停用' : '恢复', cancelButtonText: '取消', type: 'warning', confirmButtonClass: off ? 'el-button--danger' : '' })
     .then(() => { row.status = off ? '已停用' : '已上线'; ElMessage.success(off ? '已停用' : '已恢复') }).catch(() => {})
 }
 </script>

@@ -10,7 +10,7 @@
 
 - 链接分四层：内容型 `.link`（订单号 / 名称：斜体下划线）、操作型 `.act`（编辑 / 详情 / 改派等动词：同色胶囊描边，`<a>` / `<button>` 同形，相邻直接并排不加「·」，危险加 `danger`；不要给它另写字号字重）、导览型 `.go`（查看全部 / 查看列表：文字 + `<Right class="i-icon--sm" />`）、标题型（待办 / 公告标题）；不要把动词写成 `.link`。
 - 样式只引用 `design-system/dist` 生成的 CSS 变量（`--color-*`、`--space-*`、`--text-*`、`--control-*`、`--radius-*`、`--elevation-*`…），不写色值、像素字面量；页面级公共类在 `src/styles/app.css`。
-- 组件库是 Element Plus，已由 `src/styles/bridge/element-plus.css` 接到 token；不要改桥接、不要引 Element 的 dark css-vars。统计卡用 `components/StatCard.vue`（label / value / delta / up / positive / note，左描边自带），图表用 `components/EChart.vue`（主题来自 `src/styles/bridge/echarts.js`），option 里只写数据与布局，不写颜色、线型。
+- 组件库是 Element Plus，已由 `src/styles/bridge/element-plus.css` 接到 token；不要改桥接、不要引 Element 的 dark css-vars。`src/styles/bridge/` 是种子 `bridge/` 的同步副本（不含 shadcn / iconpark.config）：页面骨架公共类在 `recipes.css`，统计卡 / 图表 / 趋势 / 表格骨架在 `bridge/vue/`（`StatCard`：label / value / delta / up / positive / note / hint；`EChart` 的 option 只写数据与布局，不写颜色、线型），确认弹窗一律用 `bridge/vue/confirm.js` 的 `confirmBox / confirmDanger`（关闭后焦点回到触发按钮）。
 - IconPark 图标尺寸类六档 `i-icon--xs|sm|md|lg|xl|2xl`（桥接 `iconpark.css`），不在图标上写 font-size。
 - 路由 `src/router.js`（hash 路由，`meta.menu` 对应侧栏项与角色权限），侧栏与顶栏在 `src/layouts/AdminLayout.vue`，角色与权限在 `src/store.js`，演示数据在 `src/mock/data.js`。
 - 演示状态参数（`?state=empty|loading|error|invalid|success|disabled|missing`、`?step=2`、`?tab=`、`?role=`、`?theme=`）放在 `#` **之前**，页面用 `new URLSearchParams(location.search)` 读取（截图脚本依赖这一约定，不要用 `useRoute().query`）。

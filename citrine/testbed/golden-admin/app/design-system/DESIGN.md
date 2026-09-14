@@ -10,12 +10,12 @@
 2. 黄底深字、白底无黄字、任何 hover / focus 不出现黄。
 3. 状态色只做"文字 + 同色浅底"胶囊；实底按钮只有主（黄）与危险（红底白字）；`type=success / warning / info` 按钮不用。
 4. 按钮不能裸放：有描边（次要）或浅底（quiet 文字按钮）。链接分四层：内容型（订单号、名称：下划线 + 斜体）、操作型（编辑 / 详情 / 改派等动词：同色胶囊描边，行内胶囊档 `control.height.xs` 高、`text.body-sm` 字号、400 字重——与状态胶囊同一轻重，不斜体、hover 底色、危险红字红边）、导览型（查看全部 / 查看列表：文字 + 右箭头图标，不描边）、标题型（列表项标题：近黑 + 500）。表格操作列默认操作胶囊，审批类决定才用 quiet 按钮。
-5. 筛选栏：控件不带可见标签（靠 `aria-label`），下拉默认值是真实选项「全部…」，关键词框占位符描述可搜字段；动作区「查询」主按钮 +「重置」quiet，折行时整体换到下一行右对齐。
-6. 尺寸只从 token 拿：控件高 `control.height.*`，间距 `space.* / spacing.*`，圆角按容器层级递减，字号 8 档阶梯；**列宽与筛选控件宽度不是 token**（按内容定，关键词框用 `layout.search-width`）。页面骨架（页头 / 列表 / 表单 / 分步 / 详情 / 结果）见「页面骨架」一节。
+5. 筛选栏：控件不带可见标签（靠 `aria-label`），下拉默认值是真实选项「全部…」（值不能是空串——Element 把空串当未选、显示灰占位符；用 `'all'` 哨兵再在查询时映射为不过滤），关键词框占位符描述可搜字段；动作区「查询」主按钮 +「重置」quiet，折行时整体换到下一行右对齐。
+6. 尺寸只从 token 拿：控件高 `control.height.*`，间距 `space.* / spacing.*`，圆角按容器层级递减，字号 8 档阶梯；**列宽与筛选控件宽度不是 token**（按内容定，关键词框用 `layout.search-width`）。页面骨架（页头 / 列表 / 表单 / 分步 / 详情 / 结果 / 左右分栏 / 设置）见「页面骨架」一节，**它们的可复制实现在 `bridge/recipes.css`（公共类）与 `bridge/vue/`（统计卡、图表、骨架、确认弹窗），项目只写业务页面，不重写这些结构**。
 7. 字重：正文与胶囊 400，按钮 / 表头 / 标签 500，反转块选中 500，数据大字 700。
-8. 禁用 = `opacity.disabled`；只读 = `bg.readonly`；加载 = 骨架屏或转圈，不用禁用态假装。
+8. 禁用 = `opacity.disabled`；只读 = `bg.readonly` 的**不可聚焦文本块**（`.ro`），不是 readonly 输入框（会进 Tab 序列却不可改）；加载 = 骨架屏或转圈，不用禁用态假装。
 9. 图标类控件必须有 `aria-label`、命中区 ≥ 24px；所有颜色和尺寸都必须能在 `dist/tokens.css` 里找到名字。
-10. 改完跑 `guard`（构建与登记一致）和 `status`（页面字面量清零，`migrate --phase settle` 无待决项）；新页面登记进 `tools/lib/pages.mjs` 后跑 `npm run accept`。
+10. 改完跑 `guard`（构建与登记一致）和 `status`（页面字面量清零，`migrate --phase settle` 无待决项）；新页面登记进项目的 `accept.config.mjs` 后跑 `npm run accept`。
 
 ## 视觉语言
 
@@ -104,6 +104,7 @@
 ## 数据可视化
 
 - 分类色用 `color.chart.1` … `color.chart.6`：品牌黄领衔，其后是公司调色板的蓝（Primary Blue 500 / 暗 400）、青（亮用 `cyan.600`，因为 `cyan.500` 在白底上只有 2.5:1，画不出线；暗用 `cyan.500`）、紫（亮暗同值），再是浅灰、深灰。刻意避开 warning 橙、error 红、success 绿，图表颜色不能和状态语义打架。调色板里的 Indigo 与 blue 800 / 300 留给第 7 序列以上的图表，出现前不收进 token。
+- **计数型趋势**（申请数、订单数这类小整数）：y 轴从 0 起、刻度只取整数——`scale: true` 会让 1～3 出现 1.5 / 2.5 这种“半张申请”刻度；`trendLine` 按数据自动判断（全是整数且最大值 ≤ 20），也可显式传 `count`。排行横向柱状图用 `rankBars({ categories, values, top, formatter })` 配方：前三名纯黄、其余灰、零值不着黄、右侧金额标签。图表容器组件 `EChart` 会追踪 option 函数里读到的响应式数据，数据变了自动重画，不需要 key 重建。
 - 单序列强度（热力、排行）用 `color.chart.sequential.1` … `5`：灰阶四档 + 纯黄封顶，**按离散分段使用**（ECharts 用 piecewise visualMap），不要在灰与黄之间做连续插值——中间值是橄榄色。排行榜前三名纯黄、其余中性灰是同一条规则的应用。
 - 图表里的品牌黄和主按钮是同一个颜色，所以同一屏里图表不要和主按钮抢注意力：图表区域内不再放主按钮。
 - **折线（趋势）**：y 轴贴数据范围（ECharts `scale: true`，不强制从 0——两周对比的 1200～1900 若从 0 画起会被压成顶部一条），柱状图与面积图必须从 0 开始；平滑取 0.5 并开 `smoothMonotone: 'x'`（单独调低平滑到 0.3 会让曲线在数据点处显硬；不加 monotone 约束则会在点之间鼓出数据里没有的起伏），线端与拐角圆头；不常显数据点，hover 由轴指示线带出；**所有序列统一 2px 细线**——主序列靠品牌黄识别，不靠加粗（浅色底上一条 3px 的黄粗条会很突兀）。**面积只给单序列**，且是从 `chart.area` 到透明的纵向渐变——多序列对比不填面积（面积会盖住其他序列、把整张图压成一块灰）。
@@ -118,10 +119,12 @@
 | --- | --- | --- |
 | 页头（所有页面） | 标题 `text.heading.size` + `text.weight.strong`（详情页在标题后跟状态胶囊）；一句说明 `text.secondary`；右侧页面级操作区：主按钮 = 最常用的正向动作（编辑 / 新建），可逆的状态变更（停用 / 恢复、上线 / 下线）= 次要按钮，不可逆或危险的（删除）收进「更多」下拉的 `is-danger` 项，都要二次确认 | 与内容区间距 `space.stack` |
 | 列表页 | 页头 → 筛选卡 → 表格卡（批量操作条、表格、分页在同一张卡里） | 见「筛选栏」「表格」「已选筹码 / 批量操作条」配方 |
-| 统计卡 vs 状态条 | 带趋势 / 对比的指标用统计卡（数据大字 + 涨跌，左侧品牌指示条是固定特征）；**只有一个数字的计数不拉满一行**，做成状态条：一行等高格子（`control.height.lg`），左点右数，可点击时作筛选 | 同侧栏的"宽度浪费"规则：内容撑不起的容器不要拉满。**统计卡封装成一个项目组件复用**（golden-admin：`components/StatCard.vue`），不要每页复制一份样式——两页各写一份迟早漂移 |
-| 表单页 | 一张卡，宽度 ≤ `layout.form.max-width`；卡内两列网格（列间距 `spacing.6`），地址、多行文本、上传等长字段跨两列；标签列宽 `layout.form.label-width`、右对齐；页脚按钮行右对齐、顶部发丝线，主操作在最右，其左依次次要（取消 / 上一步）、quiet（保存草稿） | 帮助文字 `text.small.size` + `text.muted`，在控件下方 `spacing.1`；出错时错误文案（`status.error`）占同一位置，不叠加。单位后缀（km、元）用 `text.secondary` 文字跟在控件后，间距 `space.inline` |
+| 统计卡 vs 状态条 | 带趋势 / 对比的指标用统计卡（数据大字 + 涨跌，左侧品牌指示条是固定特征）；**只有一个数字的计数不拉满一行**，做成状态条：一行等高格子（`control.height.lg`），左点右数，可点击时作筛选 | 同侧栏的"宽度浪费"规则：内容撑不起的容器不要拉满。**统计卡用配方组件 `bridge/vue/StatCard.vue`**（label / value / delta / up / positive / note / hint——口径说明放 `hint`，标签右侧信息图标悬停出 tooltip），不要每页复制一份样式——两页各写一份迟早漂移 |
+| 表单页 | 一张卡，宽度 ≤ `layout.form.max-width`；卡内两列网格（列间距 `spacing.6`），地址、多行文本、上传等长字段跨两列；标签列宽 `layout.form.label-width`、右对齐；页脚按钮行右对齐、顶部发丝线，主操作在最右，其左依次次要（第二个真实动作：保存草稿 / 上一步）、quiet（取消 / 放弃修改）；超过一屏的长表单页脚用 `.form-foot.is-sticky` 贴底跟随；表单内的行内录入表格（采购明细这类）用 `.table-editable`：单元格内边距收到 `spacing.3 / spacing.2`、控件 `small`、行内错误静态渲染在控件下、列头星号标必填 | 帮助文字 `text.small.size` + `text.muted`，在控件下方 `spacing.1`；出错时错误文案（`status.error`）占同一位置，不叠加。单位后缀（km、元）用 `text.secondary` 文字跟在控件后，间距 `space.inline` |
 | 分步流程 | 顶部步骤条 + 每步一张表单卡；「上一步 / 下一步」在页脚；最后一步是只读汇总（描述列表，标签列宽同表单）+ 协议勾选 + 提交主按钮 | 完成步骤图标 `status.success`、标题 `text.secondary`；当前步骤 `action.primary`（不必传 `finish-status`，桥接已把完成态与 success 态都映射好） |
 | 详情页 | 页头（标题 + 状态胶囊 + 概要）→ 数据卡一行 → **一张卡内的页签**（概览 / 资质 / 日志 / 结算这类维度），每个页签内用分区小标题（`text.title-sm.size` + `text.weight.label`）+ 发丝线分隔多个板块；概览页签 = 描述列表 + 进度 / 状态 + 关联列表（带「查看全部」导览）；卡内多栏网格间距 `spacing.4`；次级详情 / 小表单用右侧抽屉，不开第二层弹窗；`?tab=` 直达页签 | 页签放卡内而不是卡外：卡外页签会让每个页签各成一张卡，页面被切碎 |
+| 左右分栏页（组织树 + 成员表、角色列表 + 权限矩阵） | 左窄右宽 `minmax(0, 1fr) minmax(0, 5fr)`（1440 展开侧栏时左栏约 200px）；左栏只放导航性内容（树 / 列表，6～8 字一项），**当前项深黑反转块**（`action.selected` + `text.on-selected` + 500，同侧栏与分段选择器；树由桥接接管 `is-current`，自绘列表用同一组 token）；右栏页头由页面全宽渲染，卡头再写当前范围 | 左栏再宽就是侧栏那条「宽度浪费」规则；1280 下右栏要容得下 7 列表格不滚动 |
+| 设置页 | 页签放卡内（同详情页），每个页签 = 独立表单 + 自己的页脚（放弃修改 quiet + 保存主按钮），有未保存修改时切换页签要确认，页签标题后缀文字「（未保存）」而不是圆点；「恢复演示数据」这类危险区独立成卡：卡头 + 说明 + 实底危险按钮，红色只落在按钮上，不做红边红标题；确认要求输入指定文字，不匹配时确认按钮禁用 | 每个字段旁用 `.help` 写「保存后的效果」；字段出错时 `.help` 隐藏、错误文案占同一位置（recipes 已处理） |
 | 结果页 | 内容区垂直居中；插图底 `bg.subtle` + `border.strong` 虚线；标题 `text.title.size` + strong；说明 `text.secondary` + `text.paragraph.line-height`；操作居中：主按钮 + 次要 | 系统结果（403 / 404 / 500）用 two-tone 品牌插图 + `text.brand` 大字代码；**操作结果**（提交成功 / 失败）用 `status.success / error` 的线性图标 `icon.size.2xl`；**内容级不存在**（记录已删除、链接有误）用 `icon.muted` 线性图标 + 说明 + 「返回列表」主按钮，不用品牌插图——那是系统级页面 |
 
 ## 组件配方
@@ -141,7 +144,7 @@
 | 禁用态（任何控件） | 不换色 | 不换色 | `opacity.disabled` |
 | 输入框 / 搜索框 | `bg.input` | `text.primary`，占位符 `text.placeholder` | `border.input`；聚焦 `border.focus` + `focus.ring` × `focus.ring.width`；出错 `status.error` |
 | 卡片 | `bg.surface` | — | `border.default`，`radius.lg`，`elevation.card.*`，内边距 `space.card` |
-| 表格 | 表头 `bg.subtle`；斑马纹 `bg.subtle`；行 hover `bg.hover`；选中 `bg.selected-subtle`；选中 + hover `bg.selected-hover` | 表头 `text.secondary`（`text.small.size`），副行 `text.muted`，数字列 `text.numeric.variant` | 行分隔 `border.default`；单元格内边距 `table.cell.padding-y / -x`；排序激活 `text.selected`；固定列右缘 `elevation.popover.*`。**操作列**：默认是一串操作胶囊（详情 改派 ⋯，间距 `space.inline`），危险动作红字红边；列宽按胶囊估算——两字胶囊约 44px、四字约 70px、图标胶囊约 28px，加间距与单元格内边距，胶囊不得换行；只有审批类决定（通过 / 拒绝、确认 / 驳回）用 small quiet 文字按钮（`text` + `size="small"`），危险的用 `type="danger" text`（红字 + `status.error-bg` 浅红底，hover 同色发丝边——不是灰底红字）；无论哪种形态，**危险动作不得与普通动作同色**；一行最多 3 个动作，更多收进下拉「更多」；不可操作的行放 `text.muted` 的「—」；不用描边次要按钮排成一列；单元格里的名称 / 单号才是内容型链接 |
+| 表格 | 表头 `bg.subtle`；斑马纹 `bg.subtle`；行 hover `bg.hover`；选中 `bg.selected-subtle`；选中 + hover `bg.selected-hover` | 表头 `text.secondary`（`text.small.size`），副行 `text.muted`，数字列 `text.numeric.variant` | 行分隔 `border.default`；单元格内边距 `table.cell.padding-y / -x`；排序激活 `text.selected`；固定列右缘 `elevation.popover.*`；**合计行**（`show-summary`）`bg.subtle` + 500 + 等宽数字（桥接已接管表尾）；操作胶囊不可用时 `<button disabled>` 保留 `title` 说明原因（`<a>` 没有原生禁用，需要原因时外包一层带 `title` 的 span）。**操作列**：默认是一串操作胶囊（详情 改派 ⋯，间距 `space.inline`），危险动作红字红边；列宽按胶囊估算——两字胶囊约 44px、四字约 70px、图标胶囊约 28px，加间距与单元格内边距，胶囊不得换行；只有审批类决定（通过 / 拒绝、确认 / 驳回）用 small quiet 文字按钮（`text` + `size="small"`），危险的用 `type="danger" text`（红字 + `status.error-bg` 浅红底，hover 同色发丝边——不是灰底红字）；无论哪种形态，**危险动作不得与普通动作同色**；一行最多 3 个动作，更多收进下拉「更多」；不可操作的行放 `text.muted` 的「—」；不用描边次要按钮排成一列；单元格里的名称 / 单号才是内容型链接 |
 | 筛选栏 | 条件区无底；控件不带可见标签，靠 `aria-label` 命名（筛选栏是紧凑形态，占位符规则在这里的例外只有关键词框：占位符列出可搜字段，且带 `aria-label` 与清除按钮） | 下拉默认值是真实选项「全部…」，用正文色 | 条件区 / 动作区两组；动作区「查询」主按钮 +「重置」quiet 文字按钮，`margin-left: auto`，折行时整体换行右对齐；关键词框宽 `layout.search-width`，其余控件按内容定宽 |
 | 已选筹码 / 批量操作条 | `bg.selected` | 「已选 N 项」`text.selected` + `text.weight.strong`；带「取消选择」内容型链接 | 按钮 small：普通批量为次要按钮，破坏性批量为实底危险按钮；条随勾选出现，位于表格上方 |
 | 选项卡片（改派骑手、派单选单） | 默认 `bg.surface`；hover `bg.hover`；选中 `bg.selected-subtle` | `text.primary`，meta `text.muted` | 边线 `border.default`，选中 `border.focus`；卡片撑满容器宽度（radio-group 默认 align-items:center 会把它挤成内容宽） |
@@ -150,13 +153,14 @@
 | 只读 / 禁用输入框 | 只读 `bg.readonly` | 只读 `text.secondary` | 禁用整体 `opacity.disabled` |
 | 单选 / 滑杆 / 数字步进 / 上传 | 滑杆轨道 `bg.selected`，填充 `action.primary-active`；上传区 `bg.subtle`，拖入 `bg.selected` | — | 单选选中 `action.primary-active`；上传虚线 `border.strong`，拖入 `border.focus` |
 | 描述列表 | 标签列 `bg.subtle` | 标签 `text.secondary`，值 `text.primary` | 标签列宽 `layout.form.label-width`，行分隔 `border.default` |
+| 上传区 | `.upload-zone`：`bg.subtle` + `border.strong` 虚线 + `radius.md`；hover `bg.hover`；拖入 `.is-over` 边线换 `border.focus` + `bg.selected`；满额 `.is-full` 压淡；键盘焦点画在整块上 | 说明 `text.secondary`，限制文案 `.help` | 用原生 `<input type=file>` 包在 `<label>` 里（Element 的 `el-upload` 列表表达不了「写入中 / 失败」与预览 / 删除胶囊）；文件行 = 类型图标 `icon.muted` + 文件名 + 大小 + 状态胶囊（写入中 info / 已就绪 success / 失败 error）+ 操作胶囊「预览 / 删除」；已随记录保存过的文件删除时先记待删、保存成功后再物理删除 |
 | 附件 / 资质卡 | 缩略图占位 `bg.subtle` + `border.default` 虚线 + `icon.muted` 图标，比例 4:3、宽随栅格 | 文件名 `text.body-sm.size`，元信息（上传时间）`text.muted`，审核状态胶囊 | 操作胶囊「下载 / 预览」；缺失项：状态胶囊「未上传」+ 说明 + `text.muted`「—」占位 |
 | 步骤条 | 完成 `status.success`，当前 `action.primary` | 当前 `text.primary` 加粗，其余 `text.muted` | 连线 `border.default`，完成段 `status.success`。**流程中止**（取消、驳回）：当前步改为 `status.error`（Element `process-status="error"`），标题改成中止原因，后续步骤保持待办灰——不能让已取消的单子还亮着一个黄色进行中 |
 | 时间线 | 节点按事件语义取 `status.*`（完成 success、失败 / 取消 error、告警 warning）；当前进行中 `action.primary`；**未发生的步骤空心节点 `border.strong`**；中性 / 记录类事件（资料变更、备注）不传 type，用默认灰节点——只有带语义的事件上色 | 标题 `text.body-sm.size` + `text.primary`，说明与时间 `text.muted` | 连线 `border.default` |
 | 登录页 | 品牌区 `bg.brand`；表单卡 `bg.surface` | 品牌区 `text.on-brand` + `text.hero.size`；卡片标题 `text.heading.size` | 卡宽 `layout.auth.card-width`，按钮/输入 `control.height.lg` |
 | 结果页（403 / 404 / 500） | 插图底 `bg.subtle` + `border.strong` 虚线 | 代码 `text.brand` + `text.hero.size`；说明 `text.secondary` + `text.paragraph.line-height` | 内容在内容区里**垂直居中**（min-height = 视口 − 顶栏 − 上下 gutter），不贴顶；插图 `illustration.size.md`，用 two-tone 图标（`icon.brand` 描边 + `icon.two-tone` 填充） |
 | 通知卡 | `bg.elevated` | `text.primary` / `text.secondary` | `border.default` + 左侧 `status.*` × `border.width.indicator`，`elevation.popover.*` |
-| 抽屉 | `bg.elevated` | 内部分组小标题 `text.title-sm.size` + `text.weight.label`，首个不加上外边距 | 宽 `layout.drawer.width`，`elevation.modal.*`，进出 `motion.duration.slow`；内容用描述列表 + 时间线，不放第二层弹窗 |
+| 抽屉 | `bg.elevated` | 内部分组小标题 `.drawer-h`（`text.title-sm.size` + `text.weight.label`，首个不加上外边距）；480 宽的抽屉里描述列表用单列、明细表把类别 / 规格并入物品副行 | 宽 `layout.drawer.width`，`elevation.modal.*`，进出 `motion.duration.slow`；内容用描述列表 + 时间线，不放第二层弹窗 |
 | 折叠侧栏 | 同侧栏 | 同侧栏 | 宽 `layout.sidebar.collapsed-width`（Element 会按图标宽 + padding 自己推算折叠宽度，必须显式覆盖成这个 token），图标 `icon.size.lg`，项是 `control.height.lg` 的正方形、水平居中，选中指示条贴侧栏外沿；折叠后菜单项只剩图标，必须带 `aria-label`（Element 的 `el-menu-item` 不透传属性，用指令写到根元素） |
 | 计数徽标（顶栏通知、`el-badge`） | `action.danger`（亮暗都保持深红；不用 `status.error`，它暗色下变浅红、白字不够）；`type=primary` 的徽标是反转块 `action.selected` | `text.on-danger` / `text.on-selected`，`text.caption.size` | 顶栏的 16px 胶囊挂在铃铛右上角略出头，不用 badge 组件（它按包裹元素定位，在小按钮上会顶出容器）；组件库 badge 的默认类型就是 danger，文字色必须跟填充走（红底不能配近黑字） |
 | 图标（IconPark） | — | 随文字继承；独立图标 `icon.default / muted / brand`，状态图标 `status.*` | 尺寸 `icon.size.*`（font-size），描边 `icon.stroke.width`（小图标 `-small`），激活 `icon.theme.active`（multi-color），插图 two-tone `icon.brand` + `icon.two-tone` |
@@ -170,7 +174,7 @@
 | 侧栏 | `bg.sidebar`；项 hover `bg.sidebar-hover`；选中 `bg.sidebar-selected`（深黑反转块，hover 不变） | `text.sidebar` / `-strong` / `-muted`；选中 `text.sidebar-selected`（白）；菜单项 400、选中 500（`font.weight.medium`，不用 600） | 图标始终线性；左侧指示条 `brand.indicator` × `border.width.indicator`；分组标题 `text.caption.size`，不加字距；侧栏内不放计数气泡，待处理数放在页面与工作台 |
 | 日期面板 | 选中日 / 起止日 `action.selected` 深黑圆底；范围带用组件库默认浅灰 | 选中白字 `text.on-selected`；「今天」`text.primary` + `font.weight.medium`（不用黄字）；hover `text.primary` | 组件库的 `--el-datepicker-*` 变量在组件级声明，必须在 `.el-picker-panel` 同级覆盖，`:root` 级会被压掉 |
 | 下拉菜单 | `bg.elevated`；项 hover `bg.hover`；危险项 hover `status.error-bg` | `text.primary`；危险项 `text.danger`（桥接约定类 `is-danger`） | `border.default`，`elevation.popover.*`，出现用 `motion.duration.normal` + `motion.easing.enter` |
-| 弹窗 | 遮罩 `bg.overlay`；面板 `bg.elevated` | `text.primary` / `text.secondary` | `radius.lg`，`elevation.modal.*`，进出用 `motion.duration.slow` + `motion.easing.enter` / `exit` |
+| 弹窗 | 遮罩 `bg.overlay`；面板 `bg.elevated` | `text.primary` / `text.secondary` | 尺寸档用类：确认类 `.el-dialog.is-sm`（`layout.modal.width.sm`）、带表单 `.is-md`（不要 `:width` 传字符串）；`radius.lg`，`elevation.modal.*`，进出用 `motion.duration.slow` + `motion.easing.enter` / `exit` |
 | Tooltip / 深色 Toast | `bg.inverse` | `text.inverse` | `radius.sm`，`text.small.size` |
 | 统计卡（数据卡） | 同普通卡（`bg.surface`）+ **左侧 `brand.indicator` × `border.width.indicator` 描边**——这是数据卡的固定特征，所有同类卡都带，不是高亮；**数据色卡禁止大面积黄色**（用户规则），黄只出现在这一条描边上 | 同普通卡；涨跌照用 `data.increase / decrease` | 数字 `text.display.size`（32px）+ `.weight`（700）+ `.line-height`（1.25 紧行高）+ `.tracking`；数据数字是卡片主角，必须一眼压住标签与涨跌 |
 | 进度条 / 进度环 / 仪表盘 | 轨道 `bg.selected` | 内嵌百分比 `text.on-primary`（不用白字） | 填充 `action.primary-active`，`radius.full`；**颜色跟状态走**：只有进行中是黄，已结束 / 已下线 / 草稿等非进行中用 `data.inactive` 灰（桥接约定类 `is-muted`；不用 `border.strong`，它与轨道几乎同色），并在旁边用 `status.neutral` 胶囊说明状态（已到期 / 已暂停）——一屏十几张卡全黄就不是焦点了；status 变体用 `status.*`；不接受自定义进度色 |
@@ -180,6 +184,7 @@
 | 局部加载（v-loading、表格加载） | 遮罩 `bg.mask`（surface 90%，内容隐约透出） | 加载文字 `text.secondary` | 转圈 `action.primary-active`；不要拿 `bg.overlay` 当加载遮罩，那会把一张卡片压成黑块 |
 | 锚点导航 | — | 默认 `text.secondary`，当前 `text.selected` | 标记条 `brand.indicator`（指示条语义，允许黄）；焦点 `border.focus` |
 | 级联 / 树选择 / 时间选择的面板 | 项 hover `bg.hover`；勾选 / 当前 `text.selected` + 加重 | `text.primary` | 选中不用黄字；勾图标随文字色 |
+| 页面级组织树（`el-tree highlight-current`） | 行 hover `bg.hover`；**当前节点深黑反转块** `action.selected` + `text.on-selected` + 500（桥接接管，含展开箭头颜色） | 节点计数 `text.small` + `text.muted` 靠右 | 行高 `control.height.md`、行圆角 `radius.md`；展开箭头 `icon.muted`（Element 默认的占位符灰只有 2.5:1） |
 | 日历 | 今天 / 选中 `bg.selected` | 今天 `text.primary` + `font.weight.medium`；上下月日期 `text.muted`（不是占位符） | 同日期面板的规则 |
 | 穿梭框 | 面板 `bg.surface`，项 hover `bg.hover` | 项 `text.primary`，hover 不变色 | 中间两个箭头按钮必须传 `button-texts`（组件库不给它们可访问名称，图标也不能单独承载信息） |
 | Popconfirm | `bg.elevated` | `text.primary` | 图标色是 prop 不是 CSS：传 `icon-color="var(--color-status-warning)"`，组件库默认写死 #f90 |
@@ -189,6 +194,7 @@
 
 - 动效三档：即时反馈（hover / active）用 `motion.duration.fast` + `motion.easing.standard`；下拉、Tooltip 出现用 `motion.duration.normal` + `motion.easing.enter`；弹窗、抽屉用 `motion.duration.slow`，进场 `easing.enter`（减速）、退场 `easing.exit`（加速）。用户系统开启"减少动态效果"时，所有时长视为 0——由桥接里的 `@media (prefers-reduced-motion: reduce)` 落地：三档 duration 归零，所有 transition / animation 时长归零。
 - 焦点必须可见：焦点环用 `color.focus.ring` 配 `focus.ring.width`，输入框聚焦同时把边线换成 `color.border.focus`。焦点边线是近黑（暗色下近白），焦点环是 16% 的灰环——黄色在白底上不可见，深金又显脏，焦点这种"必须一眼看见"的状态交给无色系最可靠。桥接提供全局 `:focus-visible` 兜底（链接、按钮、菜单项、标签页、单选组、开关、分页、排序、关闭按钮全部覆盖）——组件库自带的焦点环是主色画的，黄在白底上等于没有；菜单项和标签页还被写死了 `outline: none`；Element 2.14 又给 38 处控件（表格筛选 / 展开 / 排序、标签关闭、锚点、取色器、评分、标签页 inset 阴影）加了主色 `:focus-visible`，全部由桥接改为 `border.focus`。
+- 浮层关闭后焦点回到触发元素：弹窗 / 抽屉由 Element 的焦点陷阱归位（列表刷新导致触发行重绘时页面要兜底到同列首个按钮）；**`ElMessageBox` 不会归位**，确认弹窗一律走 `bridge/vue/confirm.js` 的 `confirmBox / confirmDanger`（记住打开前的焦点元素、关闭后还回去，用法同 `ElMessageBox.confirm`）。抽屉打开后焦点落在容器而不是首个控件，需要 `@opened` 手动聚焦到意见框 / 第一个输入。
 - 禁用态用 `opacity.disabled` 统一表达，按钮、输入框、开关都一样，不另造一套灰色。
 - 黄底面（登录页品牌区等）上的次要文字用 `opacity.on-primary-muted` 压一档，而不是换成灰色文字——灰字在黄底上对比度不够。
 - 图标类控件（关闭 ×、更多 ⋯、箭头、表格操作链接）必须有可访问名称（`aria-label` 或可见文字；Tooltip 不算），命中区不小于 `control.hit-min`（24×24）——视觉尺寸可以更小，用伪元素或 min-width / min-height 外扩。句中链接除外。
@@ -196,7 +202,7 @@
 
 ## 验收基线
 
-每次改 token 或桥接后，按下面的基线对实测项目做全量回归；基线与例外都在这里，扫描工具只是执行者（实测项目 `testbed/golden-admin/tools/`，`npm run accept` 一键跑完）。
+每次改 token 或桥接后，按下面的基线对实测项目做全量回归；基线与例外都在这里，扫描工具只是执行者（仓库级工具 `citrine/tools/`，各实测项目在 `app/` 目录 `npm run accept` 一键跑完）。
 
 - **对比度**（亮 / 暗两种模式都要过）：正文与 12px 小字 ≥ 4.5:1，大字（≥ 24px 或 ≥ 18.66px 加粗）与图标 ≥ 3:1，连底色一起算（页面底、选中行、预混浅底）。
 - **已批准的例外**（用户拍板，不算失败，扫描单列统计）：

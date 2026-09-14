@@ -1,6 +1,7 @@
 <script setup>
 import { reactive, ref } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage } from 'element-plus'
+import { confirmBox } from '../styles/bridge/vue/confirm.js'
 import { Plus, ViewList, ViewGridList } from '@icon-park/vue-next'
 import { campaigns, tone } from '../mock/data'
 import { can } from '../store'
@@ -25,7 +26,7 @@ async function save() {
 }
 function toggle(c) {
   const online = c.status === '进行中'
-  ElMessageBox.confirm(online ? '下线后用户端立即不可见，已领取的优惠仍可使用。' : '上线后立即对投放城市的用户可见。', online ? `下线「${c.name}」？` : `上线「${c.name}」？`, { confirmButtonText: online ? '确认下线' : '确认上线', cancelButtonText: '取消', type: 'warning', confirmButtonClass: online ? 'el-button--danger' : '' })
+  confirmBox(online ? '下线后用户端立即不可见，已领取的优惠仍可使用。' : '上线后立即对投放城市的用户可见。', online ? `下线「${c.name}」？` : `上线「${c.name}」？`, { confirmButtonText: online ? '确认下线' : '确认上线', cancelButtonText: '取消', type: 'warning', confirmButtonClass: online ? 'el-button--danger' : '' })
     .then(() => { c.status = online ? '已下线' : '进行中'; ElMessage.success(online ? '已下线' : '已上线') }).catch(() => {})
 }
 </script>

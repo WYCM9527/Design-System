@@ -1,7 +1,8 @@
 <script setup>
 // 退款审核：筛选 + 多选表格 + 批量条 + 通过 / 拒绝 + 详情抽屉。视觉全部走 DESIGN.md 配方与 app.css 公共类
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage } from 'element-plus'
+import { confirmBox } from '../styles/bridge/vue/confirm.js'
 import { Inbox, Search } from '@icon-park/vue-next'
 import { refunds, REFUND_STATUS, yen } from '../mock/data'
 
@@ -78,7 +79,7 @@ function approve(list) {
   const msg = targets.length === 1
     ? `确定通过退款单 ${targets[0].id}（${yen(targets[0].amount)}）？通过后金额将原路退回用户。`
     : `确定通过已选的 ${targets.length} 笔退款申请？通过后金额将原路退回用户。`
-  ElMessageBox.confirm(msg, '通过退款', { confirmButtonText: '确认通过', cancelButtonText: '取消' })
+  confirmBox(msg, '通过退款', { confirmButtonText: '确认通过', cancelButtonText: '取消' })
     .then(() => {
       targets.forEach((r) => Object.assign(r, { status: 'approved', handler: CURRENT_USER, handledAt: now(), rejectReason: null }))
       clearSelection()

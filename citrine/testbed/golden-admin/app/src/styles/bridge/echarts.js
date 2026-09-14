@@ -1,7 +1,7 @@
 // ECharts 桥接：ECharts 画在 canvas 上，不读 CSS 变量。这里在运行时从 :root 读取 token 的计算值，生成 ECharts 主题与几条图表配方。
 // 用法：
 //   import * as echarts from 'echarts/core'
-//   import { registerTheme, trendLine, areaGradient } from '<seed>/bridge/echarts.js'
+//   import { registerTheme, trendLine, areaGradient, rankBars } from '<seed>/bridge/echarts.js'
 //   const name = registerTheme(echarts)              // 每次亮 / 暗切换后重新调用，再 dispose + init(el, name)
 //   const chart = echarts.init(el, name)
 //   chart.setOption(trendLine({ days, series: [{ name: '本周', data }, { name: '上周', data }] }))
@@ -56,15 +56,35 @@ export function areaGradient(echarts, el = document.documentElement) {
 
 /**
  * 趋势折线配方：类目 x 轴无留白，y 轴贴数据范围（scale），所有序列统一 2px 细线（主序列靠品牌黄区分，不靠粗细——浅色下粗黄条突兀），无面积；图例右上。
- * @param {{ days: string[], series: { name: string, data: number[] }[], area?: object }} p  area 只在单序列时传 areaGradient(echarts)
+ * 计数型趋势（申请数、订单数这类整数）：y 轴从 0 起、刻度只取整数（minInterval 1）——否则会出现 0.5、1.5 这种"半张申请"的刻度；默认按数据自动判断（全是整数且最大值 ≤ 20），也可显式传 count。
+ * @param {{ days: string[], series: { name: string, data: number[] }[], area?: object, count?: boolean }} p  area 只在单序列时传 areaGradient(echarts)
  */
-export function trendLine({ days, series, area }) {
+export function trendLine({ days, series, area, count }) {
+  const values = series.flatMap((s) => s.data).filter((v) => v !== null && v !== undefined);
+  const isCount = count ?? (values.length > 0 && values.every((v) => Number.isInteger(v)) && Math.max(...values) <= 20);
   return {
     grid: { left: 8, right: 8, top: 36, bottom: 0, containLabel: true },
     legend: { top: 0, right: 0 },
     tooltip: { trigger: 'axis' },
     xAxis: { type: 'category', data: days, boundaryGap: false },
-    yAxis: { type: 'value', scale: true, splitNumber: 4 },
+    yAxis: isCount ? { type: 'value', min: 0, minInterval: 1, splitNumber: 4 } : { type: 'value', scale: true, splitNumber: 4 },
     series: series.map((s) => ({ name: s.name, type: 'line', data: s.data, areaStyle: area && series.length === 1 ? area : undefined })),   // 线宽走主题（2px），不按序列加粗
+  };
+}
+
+/**
+ * 排行横向柱状配方（DESIGN「数据可视化」：排行榜前三名纯黄、其余中性灰——单序列强度按离散分段，不在灰黄之间插值）。
+ * categories 与 values 已按大小排好序（第一项是第一名）；value 为 0 的项不着色为黄。
+ * @param {{ categories: string[], values: number[], top?: number, formatter?: (v: number) => string, el?: Element }} p
+ */
+export function rankBars({ categories, values, top = 3, formatter, el = document.documentElement }) {
+  const t = chartTokens(el);
+  const hi = t.sequential[t.sequential.length - 1], lo = t.sequential[1];   // 封顶的纯黄 / 灰阶第二档
+  return {
+    grid: { left: 8, right: 96, top: 8, bottom: 8, containLabel: true },   // 右侧留出金额标签（¥12,345.00）的宽度
+    tooltip: { trigger: 'axis', axisPointer: { type: 'none' }, valueFormatter: formatter },
+    xAxis: { type: 'value', min: 0, axisLabel: { show: false }, splitLine: { show: false } },
+    yAxis: { type: 'category', data: categories.slice().reverse(), axisLine: { show: false } },   // 第一名在最上
+    series: [{ type: 'bar', data: values.slice().reverse().map((v, i, arr) => ({ value: v, itemStyle: { color: arr.length - 1 - i < top && v > 0 ? hi : lo } })), barMaxWidth: 16, label: { show: true, position: 'right', color: t.text, fontSize: t.font, formatter: formatter ? (p) => formatter(p.value) : undefined } }],
   };
 }

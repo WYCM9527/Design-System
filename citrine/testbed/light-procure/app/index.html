@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>轻采 · 企业采购与资产后台</title>
+    <script>
+      // Theme 激活方式来自 design-system/theme-map.json：<html> 上的 class dark。
+      // 首屏前读 URL 与 localStorage，避免闪烁；截图脚本靠 ?theme=dark 直达。
+      (function () {
+        var q = new URLSearchParams(location.search);
+        var theme = q.get('theme') || localStorage.getItem('qc-theme');
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

@@ -595,3 +595,21 @@ button, input, select, textarea { font-family: inherit; }
 .el-input-number--large { line-height: calc(var(--control-height-lg) - 2px); }
 /* 分页项按配方走 control.height.sm（Element 默认 32 方块） */
 .el-pagination { --el-pagination-button-width: var(--control-height-sm); --el-pagination-button-height: var(--control-height-sm); }
+
+/* ── 2.4.0 试点项目三（轻采）回填：第二个项目按文档从零接入时暴露的组件缺口 ── */
+/* 树：当前节点是「当前 / 选中」语义 → 深黑反转块（同侧栏、分段选择器），Element 默认的 primary-light-9 底与 hover 几乎同色；行高进控件档；展开箭头用 icon.muted（占位符灰只有 2.5:1） */
+.el-tree { --el-tree-node-content-height: var(--control-height-md); --el-tree-expand-icon-color: var(--color-icon-muted); --el-tree-node-hover-bg-color: var(--color-bg-hover); }
+.el-tree-node__content { border-radius: var(--radius-md); }
+.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content { background-color: var(--color-action-selected); color: var(--color-text-on-selected); font-weight: var(--font-weight-medium); }
+.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content .el-tree-node__expand-icon, .el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content .el-tree-node__label, .el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content .el-text { color: inherit; }   /* 标签用 el-text 渲染时自带正文色，反转块上要跟随 */
+.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content:hover { background-color: var(--color-action-selected); }
+/* 标签页头与内容的间距：Element 写死 15px，接到间距阶梯 */
+.el-tabs__header { margin: 0 0 var(--spacing-4); }
+.el-tabs--border-card > .el-tabs__header { margin: 0; }
+/* 表格合计行（show-summary）：Element 用行 hover 色做底、字重同正文，压不住正文行 → 浅底 + 500 + 等宽数字（DESIGN 表格配方「合计行」） */
+.el-table__footer-wrapper td.el-table__cell { background-color: var(--color-bg-subtle); color: var(--color-text-primary); font-weight: var(--font-weight-medium); font-variant-numeric: var(--text-numeric-variant); }
+/* 弹窗尺寸档：用 class 而不是 :width="'var(--…)'" 传字符串——确认类 sm、带表单 md */
+.el-dialog.is-sm { --el-dialog-width: var(--layout-modal-width-sm); }
+.el-dialog.is-md { --el-dialog-width: var(--layout-modal-width-md); }
+/* 加载中的按钮不压淡：Element 在 loading 时同时加 is-disabled，正在处理的主按钮不应像禁用态 */
+.el-button.is-loading.is-disabled, .el-button.is-loading.is-disabled:hover { opacity: 1; }

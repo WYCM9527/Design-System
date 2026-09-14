@@ -3,7 +3,8 @@
 // 不是业务页面，不进侧栏；`data-ks-open` 标记的浮层由扫描脚本逐个点开，`data-ks-modal` 标记的弹层逐个触发。
 // `data-ks-ignore` 标记的元素承载用户数据颜色（取色器、图片），不参与颜色规则判定。
 import { ref, reactive, onMounted, h } from 'vue'
-import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
+import { ElMessage, ElNotification } from 'element-plus'
+import { confirmBox } from '../styles/bridge/vue/confirm.js'
 
 const input = ref('黄金后台')
 const num = ref(3)
@@ -80,7 +81,7 @@ function openMessage() { ElMessage({ message: '已保存', type: 'success', dura
 function openMessageWarn() { ElMessage({ message: '库存不足', type: 'warning', duration: 0, showClose: true }) }
 function openMessageErr() { ElMessage({ message: '保存失败', type: 'error', duration: 0, showClose: true }) }
 function openNotification() { ElNotification({ title: '新订单', message: '20260910-0005 已接入', type: 'success', duration: 0 }) }
-function openMessageBox() { ElMessageBox.confirm('确认删除商户「果然鲜」？此操作不可撤销。', '删除确认', { type: 'warning', confirmButtonText: '删除', cancelButtonText: '取消', confirmButtonClass: 'el-button--danger' }).catch(() => {}) }
+function openMessageBox() { confirmBox('确认删除商户「果然鲜」？此操作不可撤销。', '删除确认', { type: 'warning', confirmButtonText: '删除', cancelButtonText: '取消', confirmButtonClass: 'el-button--danger' }).catch(() => {}) }
 
 onMounted(() => {
   formRef.value?.validate(() => {})

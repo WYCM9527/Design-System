@@ -1,7 +1,8 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage } from 'element-plus'
+import { confirmBox } from '../styles/bridge/vue/confirm.js'
 import { Printer } from '@icon-park/vue-next'
 import { orders, riders, tone, yen } from '../mock/data'
 import { can } from '../store'
@@ -21,7 +22,7 @@ function confirmReassign() {
 }
 function doPrint() { window.print() }
 function cancel() {
-  ElMessageBox.confirm('已派单的订单会通知骑手返回，退款将在 1–3 个工作日内原路返回。', `取消订单 ${order.value.id}？`, { confirmButtonText: '确认取消', cancelButtonText: '再想想', type: 'warning', confirmButtonClass: 'el-button--danger' })
+  confirmBox('已派单的订单会通知骑手返回，退款将在 1–3 个工作日内原路返回。', `取消订单 ${order.value.id}？`, { confirmButtonText: '确认取消', cancelButtonText: '再想想', type: 'warning', confirmButtonClass: 'el-button--danger' })
     .then(() => { order.value.status = '已取消'; ElMessage.success('订单已取消') }).catch(() => {})
 }
 const timeline = [

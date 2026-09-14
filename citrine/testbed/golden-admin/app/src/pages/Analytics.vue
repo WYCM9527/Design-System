@@ -3,8 +3,8 @@ import { ref } from 'vue'
 import { Export } from '@icon-park/vue-next'
 import { analytics, yen } from '../mock/data'
 import { can } from '../store'
-import EChart from '../components/EChart.vue'
-import StatCard from '../components/StatCard.vue'
+import EChart from '../styles/bridge/vue/EChart.vue'
+import StatCard from '../styles/bridge/vue/StatCard.vue'
 
 const range = ref('7d'); const city = ref('all'); const tab = ref(new URLSearchParams(location.search).get('tab') === 'settlement' && can('finance.view') ? 'settlement' : 'overview')
 // up 决定箭头方向，positive 决定颜色：取消率下降是好事，箭头向下但用"涨"的绿色

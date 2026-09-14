@@ -1,0 +1,25 @@
+/* IconPark 桥接（样式部分）。配合 iconpark.config.ts 使用；纯 CSS 项目只需要这个文件。
+   IconPark 组件渲染为 <span class="i-icon i-icon-<name>"><svg width="1em" height="1em">…</svg></span>，
+   所以尺寸走 font-size，颜色走 color，两者都指向 token。 */
+.i-icon { display: inline-flex; align-items: center; justify-content: center; line-height: 1; font-size: var(--icon-size-md); color: inherit; vertical-align: -0.125em; flex: none; }
+.i-icon svg { width: 1em; height: 1em; display: block; }
+
+/* 尺寸六档：与 icon.size.* 一一对应（描边统一由 --icon-stroke-width 控制） */
+.i-icon--xs { font-size: var(--icon-size-xs); }
+.i-icon--sm { font-size: var(--icon-size-sm); }
+.i-icon--md { font-size: var(--icon-size-md); }
+.i-icon--lg { font-size: var(--icon-size-lg); }
+.i-icon--xl { font-size: var(--icon-size-xl); }
+.i-icon--2xl { font-size: var(--icon-size-2xl); }
+
+/* 颜色：随文字出现的图标什么都不加（继承 currentColor）；独立图标按角色取色 */
+.i-icon--default { color: var(--color-icon-default); }
+.i-icon--muted { color: var(--color-icon-muted); }
+.i-icon--brand { color: var(--color-icon-brand); }
+.i-icon--success { color: var(--color-status-success); }
+.i-icon--warning { color: var(--color-status-warning); }
+.i-icon--error { color: var(--color-status-error); }
+.i-icon--info { color: var(--color-status-info); }
+
+/* 用 @icon-park/svg 内联时，把 strokeWidth 传成 "var(--icon-stroke-width)"（Chrome / Edge / Safari 都支持在 SVG 表现属性里用 var()），
+   描边粗细就也由 token 决定；--icon-stroke-width 由 dist/tokens.css 定义。 */
