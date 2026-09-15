@@ -57,7 +57,7 @@ jobs:
         run: sudo apt-get update -q && sudo apt-get install -y -q fonts-noto-cjk >/dev/null && fc-list | grep -c "Noto Sans CJK" | xargs echo "Noto CJK faces:"
       - name: steward（guard / status）
         run: git clone --depth 1 https://github.com/WYCM9527/skills.git skills
-      - name: 依赖（file: 链接到种子与工具）
+      - name: "依赖（file: 链接到种子与工具）"
         working-directory: citrine/testbed/${{ matrix.project }}/app
         run: npm ci --no-audit --no-fund
       - name: guard current · status unified
