@@ -9,6 +9,7 @@
 //   node ds.mjs upgrade  [--project <dir>] [--dry-run] [--ref <tag>] [--from <dir|tgz>]
 //                        [--resolve <decisions.json>] [--keep-local-all] [--take-upstream-all] [--json]
 //   node ds.mjs restore  [--project <dir>] [--files a,b] [--all] [--from <dir>]  # 快照被改时恢复
+//   node ds.mjs export   --to <dir> [--system <id|路径|npm包名>] [--with element-plus,shadcn] [--dry-run] [--force]   # 纯 CSS 交付（非 Node 项目）
 //   node ds.mjs agents   [--project <dir>] [--stack <栈>] [--write]              # 默认只打印；--write 新建或追加
 //   node ds.mjs steward  locate|install [--project <dir>]
 //   node ds.mjs self-update
@@ -306,6 +307,53 @@ const commands = {
     writeManifest({ ...m, snapshotHashes: hashDir(snapDir) });
   },
 
+  /** 纯 CSS 交付：给 Flask / Django / PHP 模板这类非 Node 项目。来源 = --system（路径 / id / npm 名）或本项目的快照；目标目录里的导出文件视为只读，改过要 --force。 */
+  export() {
+    const to = args.to || fail('缺 --to <目录>（如 Flask 的 static/citrine）');
+    // 来源
+    let srcDir = null;
+    if (args.system) {
+      const asPath = resolve(args.system);
+      if (existsSync(asPath) && readIdentity(asPath)) srcDir = asPath;
+      else if (existsSync(join(project, 'node_modules', args.system)) && readIdentity(join(project, 'node_modules', args.system))) srcDir = join(project, 'node_modules', args.system);
+      else { const hit = detect(project).systems.find((s) => s.identity.id === args.system || s.identity.upstream.npm === args.system); if (hit) srcDir = join(project, hit.dir); }
+    } else if (readManifest()) srcDir = snapshotDirOf(readManifest());
+    if (!srcDir) fail('找不到来源：用 --system <种子目录|id|npm 包名>，或在已接入的项目里运行（用它的快照）');
+    const identity = readIdentity(srcDir);
+    const spec = identity.export || fail(`${identity.id} 的 design-system.json 没有 export 字段（未声明纯 CSS 交付）`);
+    const withGroups = String(args.with || '').split(',').filter(Boolean);
+    for (const g of withGroups) if (!spec.optional?.[g]) fail(`--with ${g} 不在可选组里；可用：${Object.keys(spec.optional || {}).join(' / ') || '（无）'}`);
+    const files = [...spec.core, ...withGroups.flatMap((g) => spec.optional[g])];
+    for (const f of files) if (!existsSync(join(srcDir, f))) fail(`来源缺 ${f}${f.includes('/dist/') ? '（token 产物未构建：在种子目录 build-tokens 后再导出）' : ''}`);
+    // 目标现状
+    const dest = resolve(to);
+    const manifestFile = join(dest, 'design-system.export.json');
+    const prev = existsSync(manifestFile) ? readJson(manifestFile) : null;
+    if (prev && !args.force) {
+      const edited = Object.entries(prev.files).filter(([name, h]) => existsSync(join(dest, name)) && sha(join(dest, name)) !== h).map(([n]) => n);
+      if (edited.length) fail(`目标里的导出文件被本地改过：${edited.join(', ')}。导出文件是只读的——项目差异请写在自己的样式文件里；确认要覆盖就加 --force。`, 3);
+    }
+    // 写入（带版本头）
+    const dry = !!args['dry-run'];
+    const header = (name) => `/* ${identity.name}（${identity.id}）${identity.version} · ${name} · design-system-adopter export ${today()}\n   只读：升级用 ds.mjs export 再导出一次覆盖；项目差异写在自己的样式文件里，只引用这里的变量。 */\n`;
+    const outFiles = {}; const report = { added: [], updated: [], unchanged: [] };
+    if (!dry) mkdirSync(dest, { recursive: true });
+    for (const f of files) {
+      const name = basename(f);
+      const text = header(name) + readFileSync(join(srcDir, f), 'utf8');
+      const h = shaText(text);
+      outFiles[name] = h;
+      if (!prev?.files?.[name]) report.added.push(name); else if (prev.files[name] !== h) report.updated.push(name); else report.unchanged.push(name);
+      if (!dry) writeFileSync(join(dest, name), text);
+    }
+    if (!dry) writeFileSync(manifestFile, JSON.stringify({ system: identity.id, name: identity.name, version: identity.version, exportedAt: today(), source: relative(process.cwd(), srcDir) || '.', groups: withGroups, files: outFiles }, null, 2) + '\n');
+    console.log(`${dry ? '[dry-run] ' : ''}${identity.name} ${prev ? `${prev.version} → ` : ''}${identity.version} 导出到 ${dest}`);
+    for (const k of ['added', 'updated', 'unchanged']) if (report[k].length) console.log(`  ${{ added: '新增', updated: '更新', unchanged: '未变' }[k]}：${report[k].join(', ')}`);
+    if (prev) { const gone = Object.keys(prev.files).filter((n) => !outFiles[n]); if (gone.length) console.log(`  上次导出有、这次没选：${gone.join(', ')}（未删除，确认无引用后手工删）`); }
+    if (spec.usage && !prev) console.log(`\n接线（按顺序 <link>）：\n${spec.usage.split('\n').map((l) => '  ' + l).join('\n')}`);
+    if (!prev) console.log(`\n${spec.note || ''}\n验收：服务器跑起来后 npx citrine-accept pages --url http://127.0.0.1:<port> --tokens ${dest}（页面清单写服务器路径，如 ['orders', '/admin/orders']）。`);
+  },
+
   agents() {
     const m = readManifest() || fail(`没有 ${MANIFEST}；先 init / adopt`);
     const identity = readIdentity(snapshotDirOf(m)) || fail('快照缺 design-system.json');
@@ -331,7 +379,7 @@ const commands = {
   },
 
   help() {
-    console.log(readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').filter((l) => l.startsWith('//')).slice(1, 20).map((l) => l.replace(/^\/\/ ?/, '')).join('\n'));
+    console.log(readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').filter((l) => l.startsWith('//')).slice(1, 21).map((l) => l.replace(/^\/\/ ?/, '')).join('\n'));
   }
 };
 

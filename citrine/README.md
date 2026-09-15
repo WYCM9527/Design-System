@@ -4,7 +4,7 @@
 
 ![Citrine · 实测项目「黄金后台」亮 / 暗模式](docs/screenshots/hero.png)
 
-版本 **2.8.0** · Core 321 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
+版本 **2.9.0** · Core 321 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
 
 ---
 
@@ -147,7 +147,7 @@ patch 只改描述、文档，以及让组件库遵守既有规则的桥接修�
 - shadcn/ui 桥接已在 React 实验项目渲染验证并跑全组件走查（21 个组件、80 个交互元素）；未覆盖的 shadcn 组件（Sheet、Command、Calendar、DataTable、Sonner 等）接入时先按 DESIGN「组件库对照」类推，再跑走查。
 - 三端（桌面 / 窄屏 / 手机）已覆盖：断点 token + recipes / 桥接的手机形态 + `check-narrow` 多档验收（见 DESIGN「三端」）。手机目标是**可用**（导航抽屉、表格内部滚动、浮层贴底全宽、触控命中 44），不做底部 Tab 导航与列表卡片化——真实移动端需求出现时再作为配方提案。
 - 走查页未铺 Tour、Watermark、Affix、Backtop、InfiniteScroll、TableV2 等依赖滚动或运行时的组件。
-- 两个 npm 包（`@wycm9527/citrine`、`@wycm9527/citrine-tools`）已可 `npm pack`，但尚未 `npm publish`：需要决定 scope / 包名与发布账号；仓库内实测项目用 `file:` 链接消费。
+- 两个 npm 包（`@wycm9527/citrine`、`@wycm9527/citrine-tools`）已可 `npm pack`，但尚未 `npm publish`：需要决定 scope / 包名与发布账号；仓库内实测项目用 `file:` 链接消费。非 Node 项目走纯 CSS 渠道（`ds.mjs export`），不依赖发布。
 - Figma 变量尚未与 token 同步。治理工具的四个已知缺陷（尺寸匹配不看属性、注释里的值被计数、`settle --apply` 只写豁免、guard / status 分工不清）已在 [WYCM9527/skills](https://github.com/WYCM9527/skills) 的 `design-system-steward` 0.6.0 修正，本仓库默认克隆的就是它。
 
 ## 方法

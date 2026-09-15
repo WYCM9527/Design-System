@@ -136,6 +136,22 @@ Agent 会依次做：应用骨架（空目录时先问你选栈，给出 create-
 
 合并规则：token 等 JSON **键级**三方合并——你改的键和上游改的键各取各的，同一个键两边都改才问你；`DESIGN.md` 等文档是文件级，选「保留本地 / 取上游 / 写冲突标记手工合」。有冲突时 Agent 会拿着 `.adopter-conflicts.json` 逐条问你，然后 `--resolve`。升级后必跑 `build-tokens → guard → accept`；minor 版本像素会变属预期，对照种子 CHANGELOG。
 
+## 5b. 场景 D：项目不是 Node 工程（Flask / Django / PHP 模板）
+
+装不了 npm 那四样东西没关系——设计系统的交付物本来就是纯 CSS，运行时不需要 Node。**别把变量值手抄进自己的 CSS**（等于 fork 了 token：上游改值你不知道、暗色没有、升级断掉）。
+
+在任何一台有 Node 的机器上（维护者或同事）导出一次：
+
+```bash
+node <adopter>/scripts/ds.mjs export --system /tmp/ds/citrine/seeds/brand-yellow-e --to <项目>/static/citrine
+```
+
+得到 `index.css`（token 亮 + 暗色）、`recipes.css`（页面骨架公共类）和一份清单，文件带版本头。模板 `<head>` 按顺序 `<link>` 这两个文件再接自己的样式；自己的样式只引用变量（`var(--color-text-primary)`），模板直接用配方类（`.page-head / .filter / .status / .act / .form-grid / .stats / .nav` …），三端与暗色（`<html class="dark">`）都内置。导出文件只读，再次 `export` 会拦截被手改的文件。
+
+验收照样能跑：服务器起来后 `npx citrine-accept pages --url http://127.0.0.1:5000 --tokens <项目>/static/citrine`（`narrow` / `focus` 同理），页面清单写服务器路径。升级 = 再 `export` 一次，逐文件告诉你什么变了。对 Agent 说：
+
+> 这个项目是 Flask 模板 + 一个 CSS 文件，不是 Node 项目。按 design-system-adopter 的「非 Node 项目」剧本：导出 Citrine 的纯 CSS 到 static/，把 admin.css 里的颜色 / 字号 / 间距改成引用变量，模板换用配方类，然后用 --url 跑验收给我看。
+
 ## 6. 日常做页面的三条纪律
 
 Agent 在已接入的项目里改 UI 时自动遵守，你验收产出时按这三条看：
@@ -167,6 +183,7 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 | --- | --- |
 | `upgrade` / `steward install` 报下载失败 | 仓库私有：确认本机 `git clone` 该仓库能成功（凭证），或设 `GITHUB_TOKEN`；完全离线用 `upgrade --from <种子目录或 tgz>` |
 | `npm i @wycm9527/citrine` 404 | 包还没发到 registry，用 `file:` 指向克隆里的种子目录（第 2 节） |
+| 项目不是 Node 工程 / 装不了 npm | 走 5b：`ds.mjs export` 出纯 CSS，模板用配方类，验收加 `--url` 与 `--tokens`；不要手抄变量值 |
 | 验收「未找到 Chrome」 | 装 Google Chrome，或 `CHROME=/path/to/chrome npx citrine-accept all` |
 | 验收报低对比 / 品牌色泄漏 / 无名称 | 先按 skill 的 `references/troubleshooting.md` 归因到层：页面自己的问题现场修；组件库默认色 / 命中区属于桥接层，向仓库提，不要用 `!important` 压 |
 | `status` 说快照被本地改动 | 快照只读；`ds.mjs restore --all` 恢复，需要的差异改到 `app.css` 或工作副本 |

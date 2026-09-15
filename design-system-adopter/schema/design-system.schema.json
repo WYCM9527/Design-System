@@ -3,44 +3,190 @@
   "title": "design-system.json（设计系统身份文件）",
   "description": "放在设计系统分发包根目录。design-system-adopter 靠它识别、接入与更新；缺 id / version / upstream / stacks 的目录一律视为用户自建，不纳管。",
   "type": "object",
-  "required": ["id", "name", "version", "upstream", "stacks", "owned"],
+  "required": [
+    "id",
+    "name",
+    "version",
+    "upstream",
+    "stacks",
+    "owned"
+  ],
   "properties": {
-    "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$", "description": "系统唯一 id：快照目录名 design-systems/<id>/、tag 前缀的一部分" },
-    "name": { "type": "string" },
-    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
-    "description": { "type": "string" },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "系统唯一 id：快照目录名 design-systems/<id>/、tag 前缀的一部分"
+    },
+    "name": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "description": {
+      "type": "string"
+    },
     "upstream": {
       "type": "object",
-      "required": ["repo", "path", "tagPrefix"],
+      "required": [
+        "repo",
+        "path",
+        "tagPrefix"
+      ],
       "properties": {
-        "repo": { "type": "string", "description": "GitHub <owner>/<repo>" },
-        "path": { "type": "string", "description": "仓库内的包子路径" },
-        "tagPrefix": { "type": "string", "description": "版本 tag 前缀，如 citrine-v" },
-        "npm": { "type": "string", "description": "npm 包名（可选渠道；也是 bridge import 的路径前缀）" }
+        "repo": {
+          "type": "string",
+          "description": "GitHub <owner>/<repo>"
+        },
+        "path": {
+          "type": "string",
+          "description": "仓库内的包子路径"
+        },
+        "tagPrefix": {
+          "type": "string",
+          "description": "版本 tag 前缀，如 citrine-v"
+        },
+        "npm": {
+          "type": "string",
+          "description": "npm 包名（可选渠道；也是 bridge import 的路径前缀）"
+        }
       }
     },
-    "docs": { "type": "object", "properties": { "design": { "type": "string" }, "changelog": { "type": "string" }, "readme": { "type": "string" } } },
+    "docs": {
+      "type": "object",
+      "properties": {
+        "design": {
+          "type": "string"
+        },
+        "changelog": {
+          "type": "string"
+        },
+        "readme": {
+          "type": "string"
+        }
+      }
+    },
     "stacks": {
       "type": "object",
       "minProperties": 1,
       "additionalProperties": {
         "type": "object",
-        "required": ["entry", "snippet", "notes"],
+        "required": [
+          "entry",
+          "snippet",
+          "notes"
+        ],
         "properties": {
-          "label": { "type": "string" },
-          "entry": { "type": "string", "description": "该栈的桥接入口 CSS（相对包根）" },
-          "extra": { "type": "array", "items": { "type": "string" } },
-          "components": { "type": "string", "description": "配方组件目录" },
-          "snippet": { "type": "string", "description": "样式入口模板（{{BRIDGE}} / {{DIST}} 占位）" },
-          "notes": { "type": "string", "description": "接线要点（AGENTS 模板的 {{STACK_NOTES}} 填充物，{{BRIDGE}} / {{IMPORT}} 占位）" },
-          "scaffold": { "type": "string", "description": "空目录起应用骨架的一行命令（骨架不属于设计系统，仅提示）" }
+          "label": {
+            "type": "string"
+          },
+          "entry": {
+            "type": "string",
+            "description": "该栈的桥接入口 CSS（相对包根）"
+          },
+          "extra": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "components": {
+            "type": "string",
+            "description": "配方组件目录"
+          },
+          "snippet": {
+            "type": "string",
+            "description": "样式入口模板（{{BRIDGE}} / {{DIST}} 占位）"
+          },
+          "notes": {
+            "type": "string",
+            "description": "接线要点（AGENTS 模板的 {{STACK_NOTES}} 填充物，{{BRIDGE}} / {{IMPORT}} 占位）"
+          },
+          "scaffold": {
+            "type": "string",
+            "description": "空目录起应用骨架的一行命令（骨架不属于设计系统，仅提示）"
+          }
         }
       }
     },
-    "accept": { "type": "object", "properties": { "npm": { "type": "string" }, "command": { "type": "string" }, "configTemplate": { "type": "string" } } },
-    "migration": { "type": "object", "properties": { "roles": { "type": "string", "description": "旧规范 → 新 token 的角色对照（机器可读）" }, "guide": { "type": "string" } } },
-    "agents": { "type": "string", "description": "AGENTS.md 模板路径" },
-    "build": { "type": "object", "properties": { "tool": { "type": "string" }, "steward": { "type": "string" } } },
-    "owned": { "type": "array", "items": { "type": "string" }, "description": "上游拥有、随版本升级的文件 glob（相对包根）；工作副本里其余文件（exemptions / MIGRATION / scopes / dist）归项目，升级永不触碰" }
+    "accept": {
+      "type": "object",
+      "properties": {
+        "npm": {
+          "type": "string"
+        },
+        "command": {
+          "type": "string"
+        },
+        "configTemplate": {
+          "type": "string"
+        }
+      }
+    },
+    "migration": {
+      "type": "object",
+      "properties": {
+        "roles": {
+          "type": "string",
+          "description": "旧规范 → 新 token 的角色对照（机器可读）"
+        },
+        "guide": {
+          "type": "string"
+        }
+      }
+    },
+    "agents": {
+      "type": "string",
+      "description": "AGENTS.md 模板路径"
+    },
+    "build": {
+      "type": "object",
+      "properties": {
+        "tool": {
+          "type": "string"
+        },
+        "steward": {
+          "type": "string"
+        }
+      }
+    },
+    "owned": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "上游拥有、随版本升级的文件 glob（相对包根）；工作副本里其余文件（exemptions / MIGRATION / scopes / dist）归项目，升级永不触碰"
+    },
+    "export": {
+      "type": "object",
+      "description": "纯 CSS 交付：core 是必带文件（相对包根，顺序即 link 顺序），optional 是按栈可选的桥接组，usage 是打印给用户的接线片段",
+      "required": [
+        "core"
+      ],
+      "properties": {
+        "note": {
+          "type": "string"
+        },
+        "core": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "optional": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "usage": {
+          "type": "string"
+        }
+      }
+    }
   }
 }

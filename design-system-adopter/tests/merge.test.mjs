@@ -87,15 +87,17 @@ test('端到端：init（folder）→ 本地改 token + DESIGN → upgrade --fro
   sem.color.action['local-only'] = { $type: 'color', $value: '{color.brand.500}', $description: '本地新增' };
   writeFileSync(semPath, JSON.stringify(sem, null, 2) + '\n');
   writeFileSync(join(proj, 'design-system/DESIGN.md'), readFileSync(join(proj, 'design-system/DESIGN.md'), 'utf8') + '\n本地补充的一行。\n');
-  // 造上游 2.7.1：改同一个 tokens 文件的另一处 + 改 DESIGN.md 开头
+  // 造上游（当前版本 patch+1）：改同一个 tokens 文件的另一处 + 改 DESIGN.md 开头
+  const cur = JSON.parse(readFileSync(join(SEED, 'design-system.json'), 'utf8')).version;
+  const next = cur.replace(/(\d+)$/, (m) => String(Number(m) + 1));
   const up = join(tmp(), 'seed-next');
   cpSync(SEED, up, { recursive: true });
   const upId = JSON.parse(readFileSync(join(up, 'design-system.json'), 'utf8'));
-  upId.version = '2.7.1'; writeFileSync(join(up, 'design-system.json'), JSON.stringify(upId, null, 2) + '\n');
+  upId.version = next; writeFileSync(join(up, 'design-system.json'), JSON.stringify(upId, null, 2) + '\n');
   const upSem = JSON.parse(readFileSync(join(up, 'design-system/tokens/semantic.tokens.json'), 'utf8'));
-  upSem.color.action.primary.$description = '上游改了描述（2.7.1）';
+  upSem.color.action.primary.$description = `上游改了描述（${next}）`;
   writeFileSync(join(up, 'design-system/tokens/semantic.tokens.json'), JSON.stringify(upSem, null, 2) + '\n');
-  writeFileSync(join(up, 'design-system/DESIGN.md'), readFileSync(join(up, 'design-system/DESIGN.md'), 'utf8').replace(/^/, '<!-- 2.7.1 -->\n'));
+  writeFileSync(join(up, 'design-system/DESIGN.md'), readFileSync(join(up, 'design-system/DESIGN.md'), 'utf8').replace(/^/, `<!-- ${next} -->\n`));
   // dry-run：tokens 应键级可自动并，DESIGN 应文件级冲突
   const dry = run(['upgrade', '--dry-run', '--from', up]);
   assert.match(dry, /JSON 键级自动合并/);
@@ -109,16 +111,16 @@ test('端到端：init（folder）→ 本地改 token + DESIGN → upgrade --fro
   // tokens 的自动合并已经落盘：本地新增与上游描述并存
   const mergedSem = JSON.parse(readFileSync(semPath, 'utf8'));
   assert.equal(mergedSem.color.action['local-only'].$description, '本地新增');
-  assert.equal(mergedSem.color.action.primary.$description, '上游改了描述（2.7.1）');
+  assert.equal(mergedSem.color.action.primary.$description, `上游改了描述（${next}）`);
   // 决议：DESIGN.md 保留本地 → 完成升级
   const dec = join(proj, 'decisions.json');
   writeFileSync(dec, JSON.stringify({ 'design-system/DESIGN.md': 'local' }));
   const done = run(['upgrade', '--from', up, '--resolve', dec]);
-  assert.match(done, /完成 2\.7\.0 → 2\.7\.1/);
+  assert.match(done, new RegExp(`完成 ${cur.replaceAll('.', '\\.')} → ${next.replaceAll('.', '\\.')}`));
   const manifest = JSON.parse(readFileSync(join(proj, 'design-system/.adopter.json'), 'utf8'));
-  assert.equal(manifest.version, '2.7.1');
+  assert.equal(manifest.version, next);
   assert.match(readFileSync(join(proj, 'design-system/DESIGN.md'), 'utf8'), /本地补充的一行/);
   assert.ok(!existsSync(join(proj, '.adopter-conflicts.json')));
   // 快照推进到 2.7.1
-  assert.equal(JSON.parse(readFileSync(join(proj, 'design-systems/citrine/design-system.json'), 'utf8')).version, '2.7.1');
+  assert.equal(JSON.parse(readFileSync(join(proj, 'design-systems/citrine/design-system.json'), 'utf8')).version, next);
 });

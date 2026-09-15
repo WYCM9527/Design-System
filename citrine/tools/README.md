@@ -14,7 +14,7 @@ DESIGN.md「验收基线」的执行者，对任意项目运行。发布为 npm 
    export const FOCUS = { pages: { orders: '#/orders' }, steps: 80 }
    ```
 
-   演示参数放在 `#` 之前，页面用 `location.search` 读（不要用路由 query）。挂载点 `#app` 或 `#root` 都可以；组件走查页的浮层触发器带 `data-ks-open`（Element 的 `.el-popper` 与 Radix / shadcn 的 popper、`role=menu|listbox|tooltip` 都能识别），弹层带 `data-ks-modal`（`.el-overlay` 或 `role=dialog|alertdialog`）。探针能解析 `rgb()` 之外的 `oklab / oklch / color()` 计算值（Tailwind v4 的 `color-mix`）。
+   演示参数放在 `#` 之前，页面用 `location.search` 读（不要用路由 query）。**服务端渲染项目**（Flask / Django 等，没有构建产物）用 `--url http://127.0.0.1:<port>` 直接扫运行中的服务器：页面清单写服务器路径（`['orders', '/admin/orders?state=empty']`），演示参数放 query；组件走查需要 `--tokens <导出的 CSS 目录>` 来认「来自 token 的颜色」。挂载点 `#app` 或 `#root` 都可以；组件走查页的浮层触发器带 `data-ks-open`（Element 的 `.el-popper` 与 Radix / shadcn 的 popper、`role=menu|listbox|tooltip` 都能识别），弹层带 `data-ks-modal`（`.el-overlay` 或 `role=dialog|alertdialog`）。探针能解析 `rgb()` 之外的 `oklab / oklch / color()` 计算值（Tailwind v4 的 `color-mix`）。
 2. 装包并在 `package.json` 里接命令（目标项目缺省是当前目录，也可 `--project <appDir>`）：
 
    ```bash

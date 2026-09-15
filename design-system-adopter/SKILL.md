@@ -25,6 +25,8 @@ metadata:
 2. **更换现有规范**（项目已有旧样式或旧 design-system/）→ [references/existing-project.md](references/existing-project.md)
 3. **只更新**（已接入，想跟上游版本）→ [references/upgrade.md](references/upgrade.md)
 
+项目**不是 Node 工程**（Flask / Django / PHP / 静态模板，没有 `package.json`）→ 不走上面三条，按 [references/non-node.md](references/non-node.md)：`ds.mjs export` 出纯 CSS 放进 static，模板用配方类，验收用 `--url`。
+
 日常做页面（已接入项目里的普通 UI 需求）不用问，直接按 [references/page-work.md](references/page-work.md)；验收失败按 [references/troubleshooting.md](references/troubleshooting.md) 归因。
 
 ## 命令表（都支持 `--project <dir>`）
@@ -37,6 +39,7 @@ metadata:
 | `ds.mjs status [--offline]` | 快照完整性（hash）、工作副本本地修改、上游最新 tag |
 | `ds.mjs upgrade [--dry-run] [--ref <tag>] [--from <dir\|tgz>] [--resolve <decisions.json>]` | 三方合并升级：JSON 键级自动并（同键冲突才问），markdown 文件级选 local / upstream / markers；冲突写 `.adopter-conflicts.json` 并退出码 3 |
 | `ds.mjs restore [--files a,b\|--all] [--from <dir>]` | 快照被改时从上游 / node_modules 恢复 |
+| `ds.mjs export --to <dir> [--system <id\|路径\|npm包名>] [--with element-plus,shadcn] [--dry-run] [--force]` | 纯 CSS 交付（非 Node 项目）：写 `index.css` + `recipes.css`（+ 可选桥接）带版本头与清单；重导出逐文件列未变 / 更新 / 新增，被手改的导出文件拦截（`--force` 覆盖） |
 | `ds.mjs agents [--stack <栈>] [--write]` | 渲染 AGENTS.md（模板 + 栈要点）；默认只打印，用户确认后再 `--write`（新建或追加，不覆盖） |
 | `ds.mjs steward locate\|install` | 查找 / 安装 design-system-steward（构建、Guard、迁移都靠它） |
 | `ds.mjs self-update` | 用上游仓库 main 更新本 skill 自己 |
@@ -50,3 +53,4 @@ metadata:
 - **分工**：构建 token（`build-tokens.mjs`）、一致性校验（`guard.mjs`）、存量迁移（`audit / migrate / settle`）是 steward 的；批量改写存量样式只允许走 steward `migrate --apply` 的闸门。本 skill 不自己实现这些。
 - 升级后必跑：`build-tokens → guard → 验收命令`（身份文件 `accept.command`）；minor 版本像素会变属预期，对照种子 CHANGELOG。
 - 找不到 steward：给出 `ds.mjs steward install` 让用户确认，不静默下载。
+- 非 Node 项目**不手搬变量值**进项目 CSS，也不建 `design-system/` 工作副本；用 `export` 的 CSS，项目样式只引用变量。

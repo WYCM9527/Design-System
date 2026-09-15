@@ -2,6 +2,14 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.9.0 — 2026-09-15（第三条渠道：纯 CSS 交付，给非 Node 项目）
+
+- **身份文件新增 `export` 字段**：`core`（`design-system/dist/index.css` + `bridge/recipes.css`，顺序即 link 顺序）、`optional`（`element-plus` / `shadcn` 桥接组）、`usage`（接线片段）。adopter 新增 **`ds.mjs export --to <dir> [--system] [--with] [--dry-run] [--force]`**：写带版本头的 CSS 与清单 `design-system.export.json`；重导出逐文件报未变 / 更新 / 新增，被手改的导出文件拦截（退出 3，`--force` 覆盖）。Flask / Django / PHP 模板项目运行时零 Node；迁移旧 CSS 仍可用 steward `audit / migrate`（只读写目录，不要求 Node 工程），但不建 `design-system/` 工作副本。
+- **验收工具 `--url`**：`citrine-accept pages / narrow / focus / components --url http://127.0.0.1:<port>` 直接扫运行中的服务器（不起静态服务器、不要求构建产物），页面清单写服务器路径、演示参数放 query；`--tokens <目录>` 让组件走查在没有 `design-system/dist` 的项目里认导出的 CSS。就绪判定不再依赖 `#app / #root` 挂载点。
+- **recipes 补齐纯 CSS 渠道的三个缺口**（有桥接的项目此前由桥接覆盖，重复无害）：键盘焦点兜底 `:focus-visible` 近黑 2px（排除 `data-slot`，shadcn 走桥接的 ring 模型）与 `prefers-reduced-motion`；`[hidden] { display: none !important }`（模板项目用 `hidden` 切换空态 / 表格时不被配方类的 display 压掉）；纯 CSS 壳层折叠时隐藏品牌文字 `.is-collapsed .app-brand > :not(.logo)`（此前 Vue 项目靠 `v-if`），抽屉态还原。
+- 实测：一个仿 Flask 的服务端渲染站点（两页 + `admin.css` 只引用变量 + 十行原生 JS 抽屉），`export` → `--url` 跑 pages（亮暗 6 状态）/ narrow（1366 折叠 + 390 抽屉）/ focus 全绿。
+- adopter 新增剧本 `references/non-node.md`；SKILL 入口增加「项目不是 Node 工程」分支；GUIDE 5b 节。
+
 ## 2.8.0 — 2026-09-14（三端适配：桌面 / 窄屏 / 手机）
 
 - **断点与触控 token**（Core 315 → 321）：`layout.breakpoint.narrow`（1366，窄屏上限，侧栏默认折叠）、`layout.breakpoint.mobile`（768，手机上限）、`control.hit-touch`（44，粗指针命中区）+ 对应 primitives（`size.viewport.*`、`size.control.touch`）。CSS 媒体查询无法引用 var()：recipes / 桥接里的 `@media` 数值是 token 的**字面镜像**，改 token 必须同步改镜像。

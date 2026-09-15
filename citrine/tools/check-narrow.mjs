@@ -6,21 +6,20 @@
 // 用法：node citrine/tools/check-narrow.mjs [--project <appDir>]   退出码：任一档任一页不达标为 1。
 import { writeFileSync } from 'node:fs';
 import { launch, sleep } from './lib/cdp.mjs';
-import { serve } from './lib/serve.mjs';
-import { APP_DIST, requireDist, outDir, loadConfig, pageUrl } from './lib/paths.mjs';
+import { requireDist, outDir, loadConfig, pageUrl, startServer, resetUrl } from './lib/paths.mjs';
 
 requireDist();
 const OUT = outDir('narrow');
 const cfg = await loadConfig();
 const GLOBAL_PAGES = cfg.NARROW.pages;
 const TIERS = cfg.NARROW.widths || [{ name: 'narrow', width: cfg.NARROW.width || 1366, expect: 'collapsed' }];
-const server = await serve(APP_DIST);
+const server = await startServer();
 const browser = await launch({ width: TIERS[0].width, height: 900 });
 let failed = false;
 try {
   for (const tier of TIERS) {
     await browser.setViewport(tier.width, 900);
-    await browser.resetStorage(`${server.url}/index.html`);
+    await browser.resetStorage(resetUrl(server.url));
     console.log(`\n== ${tier.name}（${tier.width}px · 期望 ${tier.expect}）==`);
     for (const [name, h] of tier.pages || GLOBAL_PAGES) {
       await browser.goto(pageUrl(server.url, h, '', cfg.DEFAULT_QUERY)); await sleep(1500);

@@ -5,8 +5,7 @@
 import { writeFileSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { launch, sleep } from './lib/cdp.mjs';
-import { serve } from './lib/serve.mjs';
-import { APP_DIST, PROJECT, requireDist, outDir, args, parseModes, modeQuery, loadConfig, pageUrl } from './lib/paths.mjs';
+import { PROJECT, requireDist, outDir, args, parseModes, modeQuery, loadConfig, pageUrl, startServer, READY, resetUrl } from './lib/paths.mjs';
 
 const opt = args();
 requireDist();
@@ -19,14 +18,14 @@ const pages = PAGES.filter(([n]) => match(n));
 const OUT = outDir('pages');
 const audit = readFileSync(resolve(import.meta.dirname, 'lib/page-audit.js'), 'utf8');
 
-const server = await serve(APP_DIST);
+const server = await startServer();
 const browser = await launch({ width: 1600, height: 1000 });
 const report = {}; const totals = { small: 0, noName: 0, overflowX: 0, truncated: 0, lowContrast: 0, tinyTargets: 0, dupIds: 0, approved: 0 };
 try {
   for (const mode of modes) {
     for (const [name, spec] of pages) {
-      await browser.resetStorage(`${server.url}/index.html`);
-      await browser.goto(pageUrl(server.url, spec, modeQuery(mode), cfg.DEFAULT_QUERY), "document.readyState === 'complete' && document.querySelector('#app, #root') && document.querySelector('#app, #root').children.length > 0 && document.body.innerText.trim().length > 20");
+      await browser.resetStorage(resetUrl(server.url));
+      await browser.goto(pageUrl(server.url, spec, modeQuery(mode), cfg.DEFAULT_QUERY), READY);
       await sleep(1000);
       let res; try { res = await browser.evalJs(audit); } catch (e) { res = { error: String(e).slice(0, 200) }; }
       res.mode = mode; res.title = await browser.evalJs('document.title');

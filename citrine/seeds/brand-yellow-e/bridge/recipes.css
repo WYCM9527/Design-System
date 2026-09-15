@@ -5,6 +5,7 @@
 
 /* ── 基础 ── */
 *, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }   /* 模板项目用 hidden 属性切换空态 / 表格时，配方类的 display 不得把它压掉 */
 /* 根字号保持浏览器默认 16px：Tailwind 的 rem 刻度（size-4 = 1rem）依赖它，改在 html 上会让 shadcn 的每个尺寸缩 12.5%；正文字号落在 body */
 html { font-family: var(--font-family-body); line-height: var(--text-body-line-height); }
 body { margin: 0; font-size: var(--text-body-size); background: var(--color-bg-page); color: var(--color-text-primary); }
@@ -62,6 +63,7 @@ td .link, .card-head .link, .batch .link, .empty .link, .more-link { display: in
 .app-brand .logo { width: var(--avatar-size-sm); height: var(--avatar-size-sm); border-radius: var(--radius-md); background: var(--color-action-primary); color: var(--color-text-on-primary); display: grid; place-items: center; font-weight: var(--text-weight-logo); font-size: var(--text-title-sm-size); flex: none; overflow: hidden; }
 .app-brand .logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .is-collapsed .app-brand { padding: 0; justify-content: center; }
+.is-collapsed .app-brand > :not(.logo) { display: none; }   /* 纯 CSS 壳层（无框架 v-if）折叠时隐藏品牌文字 */
 .sidebar .el-menu { border-right: 0; flex: 1; padding-top: var(--spacing-2); }
 /* 不用 Element 菜单时的侧栏导航（React / 静态页）：分组标题 + 链接，当前项深黑反转块 + 左侧品牌指示条，与 el-menu 桥接同一形态 */
 .nav { flex: 1; padding: var(--spacing-2); display: flex; flex-direction: column; gap: var(--spacing-0-5); overflow: hidden auto; }
@@ -218,6 +220,14 @@ td .link, .card-head .link, .batch .link, .empty .link, .more-link { display: in
 .stat-strip .cell .value { font-size: var(--text-title-size); font-weight: var(--text-weight-strong); color: var(--color-text-primary); font-variant-numeric: var(--text-numeric-variant); }
 
 /* ── 打印：隐藏导航与按钮，色底转边线 ── */
+/* ── 键盘焦点兜底与减少动态效果：与 element-plus.css / shadcn.css 同一份约定。有桥接时规则重复无害；纯 CSS 渠道（Flask 等无组件库）靠这里拿到近黑 2px 焦点环而不是浏览器默认蓝环。
+      shadcn 组件（data-slot）走桥接的 ring 模型，这里不叠。 ── */
+:where(a, button, [role="button"], [role="menuitem"], [role="tab"], summary, [tabindex]:not([tabindex="-1"])):not([data-slot]):focus-visible { outline: var(--border-width-active) solid var(--color-border-focus); outline-offset: 1px; }
+@media (prefers-reduced-motion: reduce) {
+  :root { --motion-duration-fast: 0ms; --motion-duration-normal: 0ms; --motion-duration-slow: 0ms; }
+  *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+}
+
 /* ── 三端（值是 layout.breakpoint.narrow / mobile = 1366 / 768 的字面镜像，见 DESIGN「三端」；CSS 媒体查询不能用 var()） ── */
 /* 手机（≤ 768）：侧栏离屏抽屉。项目 JS 只需维护 .is-nav-open（汉堡开 / 遮罩与选中菜单关） */
 .menu-btn { display: none; }
@@ -231,6 +241,7 @@ td .link, .card-head .link, .batch .link, .empty .link, .more-link { display: in
   .is-nav-open .sidebar { transform: none; box-shadow: 0 var(--elevation-modal-y) var(--elevation-modal-blur) var(--elevation-modal-color); }
   .is-nav-open .sidebar-mask { display: block; }
   .is-collapsed .app-brand { padding: 0 var(--spacing-4); justify-content: flex-start; }   /* 抽屉里永远是展开形态：折叠态样式全部还原 */
+  .is-collapsed .app-brand > :not(.logo) { display: inline; }
   .is-collapsed .nav-group { display: block; }
   .is-collapsed .nav a, .is-collapsed .nav button { justify-content: flex-start; padding: 0 var(--spacing-3); }
   .is-collapsed .nav .nav-label { display: inline; }

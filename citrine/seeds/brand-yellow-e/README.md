@@ -2,7 +2,7 @@
 
 > 种子目录代号仍是 `brand-yellow-e`（脚本与文档中的路径不变）；系统名称 Citrine（黄晶）见仓库根 README。
 
-版本 2.8.0 · 公司级中后台设计规范（单品牌线）· 纯数据包：本目录即分发单元（npm 包 **`@wycm9527/citrine`**，或整个文件夹直接下载），身份文件 `design-system.json`，接入 / 更新由 [design-system-adopter](../../../design-system-adopter/) skill 驱动 · 变更见 [CHANGELOG.md](CHANGELOG.md)
+版本 2.9.0 · 公司级中后台设计规范（单品牌线）· 纯数据包：本目录即分发单元（npm 包 **`@wycm9527/citrine`**，或整个文件夹直接下载），身份文件 `design-system.json`，接入 / 更新由 [design-system-adopter](../../../design-system-adopter/) skill 驱动 · 变更见 [CHANGELOG.md](CHANGELOG.md)
 
 一套已通过 `design-system-steward` `validate-system` / `build-tokens` / `guard` 的 DTCG 设计系统起点。复制进任何项目就是 Core + dark Theme；视觉效果见 `../../previews/yellow-admin/`：`admin.html` 是工作台，`stress.html` 是登录、列表、表单、详情、反馈、折叠侧栏六类页面的压力测试（方案 S 全部由构建产物驱动）。
 
@@ -43,7 +43,7 @@ Core 共 321 个 token，构建后 `dist/tokens.css` 的变量名就是 `--color
 
 ## 用法
 
-分发单元就是本目录（`design-system/` + `bridge/` + 身份文件 `design-system.json` + 模板），两条渠道等价：npm 包 `@wycm9527/citrine`，或把整个文件夹下载 / 复制到目标项目的 `design-systems/citrine/`。接入、识别与更新由 **design-system-adopter** skill 驱动（安装见仓库根 README），它读 `design-system.json`，与具体设计系统无关：
+分发单元就是本目录（`design-system/` + `bridge/` + 身份文件 `design-system.json` + 模板），三条渠道：npm 包 `@wycm9527/citrine`；把整个文件夹下载 / 复制到目标项目的 `design-systems/citrine/`（前两条等价）；**纯 CSS**——非 Node 项目（Flask / Django / PHP 模板）用 `ds.mjs export --to <static 目录>` 得到 `index.css` + `recipes.css`（+ 可选桥接），运行时零 Node，见身份文件 `export` 字段。接入、识别与更新由 **design-system-adopter** skill 驱动（安装见仓库根 README），它读 `design-system.json`，与具体设计系统无关：
 
 ```bash
 # 装好 adopter skill 之后，对 Agent 说「用 Citrine 起一个后台」即可；等价的手动命令：
