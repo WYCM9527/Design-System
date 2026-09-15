@@ -61,5 +61,5 @@ const ann = computed(() => announcements.find((a) => a.id === route.params.id) |
 .prose table { width: 100%; border-collapse: collapse; margin: 0 0 var(--spacing-4); font-size: var(--text-body-sm-size); }
 .prose th, .prose td { text-align: left; padding: var(--spacing-2-5) var(--spacing-3); border-bottom: var(--border-width-default) solid var(--color-border-default); }
 .prose th { background: var(--color-bg-subtle); color: var(--color-text-secondary); font-weight: var(--text-weight-label); font-size: var(--text-small-size); }
-.prose blockquote { margin: 0 0 var(--spacing-4); padding: var(--spacing-3) var(--spacing-4); border-left: var(--border-width-indicator) solid var(--color-brand-indicator); background: var(--color-bg-selected-subtle); color: var(--color-text-secondary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+.prose blockquote { margin: 0 0 var(--spacing-4); padding: var(--spacing-3) var(--spacing-4); border-left: var(--border-width-indicator) solid var(--color-border-strong); background: var(--color-bg-selected-subtle);   /* 引用块边线用中性 border.strong：品牌指示条只属于数据卡与导航选中，不给正文引用（页面级黄色审计） */ color: var(--color-text-secondary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
 </style>

@@ -38,7 +38,7 @@ DESIGN.md「验收基线」的执行者，对任意项目运行。发布为 npm 
 | 命令 | 检查什么 | 失败条件（退出码 1） |
 | --- | --- | --- |
 | `npm run accept` | 构建 + 项目登记的全部检查 | 任一项失败 |
-| `citrine-accept pages [--modes all\|light,dark] [--only kitchen,apply-*] [--no-shots]` | `PAGES` 登记的全部页面状态 × 亮 / 暗两种模式：对比度（含底色合成）、可访问名称、命中区、横向溢出、nowrap 截断、重复 id、无 alt 图片；逐页截图 | 未批准的低对比、无名称、溢出、重复 id。已批准例外单列为 `approved`；截断与小命中区只提示 |
+| `citrine-accept pages [--modes all\|light,dark] [--only kitchen,apply-*] [--no-shots]` | `PAGES` 登记的全部页面状态 × 亮 / 暗两种模式：对比度（含底色合成）、可访问名称、命中区、横向溢出、nowrap 截断、重复 id、无 alt 图片、**静息品牌黄**（不在允许清单 `lib/yellow-allow.mjs` + 项目 `YELLOW_ALLOW` 内的黄色背景 / 边线 / 文字 / 填充）；逐页截图 | 未批准的低对比、无名称、溢出、重复 id、允许清单外的品牌黄。已批准例外单列为 `approved`；截断与小命中区只提示 |
 | `citrine-accept components [--modes all]` | `KITCHEN` 全组件页：对 600+ 个交互元素连同祖先链强制 `:hover` / `:focus-visible`，浮层与弹层逐个点开 | 状态切换新引入品牌黄、悬停后文字对比掉档、不来自 token 的颜色、浮层 / 弹层打不开 |
 | `citrine-accept narrow` | `NARROW.width`（黄金后台 1366、轻采 1280）：侧栏默认折叠、页面与内容区无横向溢出 | 任一页未折叠或溢出 |
 | `citrine-accept focus [--page orders,apply] [--steps 80]` | 真实 Tab 键遍历 `FOCUS.pages`，每个停靠元素都要有可见焦点环 | 出现 `NO RING` |

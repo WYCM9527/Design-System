@@ -30,3 +30,5 @@ export const NARROW = {   // 三端：narrow 档侧栏折叠，mobile 档侧栏�
 };
 /** Tab 焦点遍历：名字 → 页面 */
 export const FOCUS = { pages: { orders: '#/orders', apply: '#/merchants/apply' }, steps: 80 };
+// 页面级静息黄色的项目合法位置：登录页品牌区是 DESIGN 唯一允许的大面积品牌黄（bg.brand + text.on-brand）
+export const YELLOW_ALLOW = ['.auth-brand'];

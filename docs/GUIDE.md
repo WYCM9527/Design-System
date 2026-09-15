@@ -233,6 +233,8 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 | --- | --- |
 | `upgrade` / `steward install` 报下载失败 | 仓库私有：确认本机 `git clone` 该仓库能成功（凭证），或设 `GITHUB_TOKEN`；完全离线用 `upgrade --from <种子目录或 tgz>` |
 | `npm i @wycm9527/citrine` 404 | 包还没发到 registry，用 `file:` 指向克隆里的种子目录（第 2 节） |
+| 验收报「品牌黄出现在允许清单之外」 | 页面把黄色用成了强调 / 状态（如未读点、引用块边线）——换中性或状态色；确属合法位置（登录品牌区、数据卡骨架）写进 `accept.config.mjs` 的 `YELLOW_ALLOW` 并写理由 |
+| 组件走查被跳过（KITCHEN 为 null） | Element 项目挂 `@wycm9527/citrine/vue/KitchenSink.vue` 到 `/kitchen`，shadcn 拷 `templates/KitchenSink.tsx`，`KITCHEN: '#/kitchen'` |
 | 只想覆盖部分板块 | 多应用各自 `init`；同一应用按路由用范围根（5c）；同屏混排不支持 |
 | 项目不是 Node 工程 / 装不了 npm | 走 5b：`ds.mjs export` 出纯 CSS，模板用配方类，验收加 `--url` 与 `--tokens`；不要手抄变量值 |
 | 验收「未找到 Chrome」 | 装 Google Chrome，或 `CHROME=/path/to/chrome npx citrine-accept all` |

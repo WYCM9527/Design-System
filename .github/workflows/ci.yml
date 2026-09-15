@@ -38,6 +38,22 @@ jobs:
           node skills/design-system-steward/scripts/build-tokens.mjs --project "$PWD/citrine/seeds/brand-yellow-e" | tee /tmp/build.json | grep -q '"valid": true'
           git diff --exit-code -- citrine/seeds/brand-yellow-e/design-system/dist
 
+  checks-windows:
+    name: Windows · adopter 单测 · 角色表 · 版本
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: adopter 单测（路径分隔符 / 复制 / 三方合并在 Windows 上的行为）
+        run: node --test design-system-adopter/tests/merge.test.mjs design-system-adopter/tests/export.test.mjs design-system-adopter/tests/scope.test.mjs
+      - name: 迁移角色表与 token 源一致
+        run: node citrine/seeds/brand-yellow-e/scripts/check-roles.mjs
+      - name: 六处版本号一致
+        run: node citrine/scripts/check-versions.mjs
+
   accept:
     name: 验收 · ${{ matrix.project }}
     runs-on: ubuntu-latest

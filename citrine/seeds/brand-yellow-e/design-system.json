@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/WYCM9527/Design-System/main/design-system-adopter/schema/design-system.schema.json",
   "id": "citrine",
   "name": "Citrine 黄晶",
-  "version": "2.10.0",
+  "version": "2.11.0",
   "description": "公司级中后台设计系统：品牌黄唯一焦点 + 冷灰骨架，亮 / 暗两模式，桌面端（≥ 1280px）。",
   "upstream": {
     "repo": "WYCM9527/Design-System",
@@ -26,7 +26,8 @@
       "components": "bridge/vue",
       "snippet": "templates/entry-element.css",
       "notes": "templates/notes-element.md",
-      "scaffold": "npm create vite@latest <name> -- --template vue && cd <name> && npm i element-plus @icon-park/vue-next vue-router echarts"
+      "scaffold": "npm create vite@latest <name> -- --template vue && cd <name> && npm i element-plus @icon-park/vue-next vue-router echarts",
+      "kitchen": "bridge/vue/KitchenSink.vue"
     },
     "shadcn": {
       "label": "React + Tailwind v4 + shadcn/ui",
@@ -37,7 +38,8 @@
       "components": "bridge/react",
       "snippet": "templates/entry-shadcn.css",
       "notes": "templates/notes-shadcn.md",
-      "scaffold": "npm create vite@latest <name> -- --template react-ts && cd <name> && npm i lucide-react echarts && npm i -D tailwindcss @tailwindcss/vite"
+      "scaffold": "npm create vite@latest <name> -- --template react-ts && cd <name> && npm i lucide-react echarts && npm i -D tailwindcss @tailwindcss/vite",
+      "kitchen": "templates/KitchenSink.tsx"
     }
   },
   "accept": {

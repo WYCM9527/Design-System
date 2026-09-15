@@ -25,6 +25,8 @@ window.__ks = (() => {
     for (const c of colorsIn(cs.boxShadow)) if (isYellow(parse(c))) { push('box-shadow', c); break; }
     for (const c of colorsIn(cs.backgroundImage)) if (isYellow(parse(c))) { push('background-image', c); break; }
     if (el instanceof SVGElement) { if (isYellow(parse(cs.fill))) push('fill', cs.fill); if (parseFloat(cs.strokeWidth) > 0 && isYellow(parse(cs.stroke))) push('stroke', cs.stroke); } };
+  /** 页面级静息黄色审计：列出不在允许清单（el.closest(allowSel)）内的黄色属性。品牌黄只允许出现在主按钮 / 勾选开关选中 / 进度滑杆 / 当前页 / 数据卡描边 / Logo 等固定位置。 */
+  const yellowAudit = (allowSel) => { const out = []; const walk = (el) => { if (!(el instanceof Element) || !visible(el)) return; if (!(allowSel && el.closest(allowSel))) yellowProps(el, out); for (const c of el.children) walk(c); }; walk(document.body); return out.slice(0, 30); };
   const snapshot = (root) => { const out = []; const walk = (el) => { if (!(el instanceof Element) || !visible(el)) return; yellowProps(el, out); for (const c of el.children) walk(c); }; walk(root); return out; };
   const textInfo = (el) => { const cs = getComputedStyle(el); const fg = parse(cs.color); if (!fg || !hasText(el)) return null; const bg = bgOf(el); const f = fg.a < 1 ? blend(fg, bg) : fg; return { fg: cs.color, bg: 'rgb(' + Math.round(bg.r) + ',' + Math.round(bg.g) + ',' + Math.round(bg.b) + ')', ratio: +contrast(f, bg).toFixed(2), size: parseFloat(cs.fontSize), weight: parseInt(cs.fontWeight) }; };
   const probe = (el) => { const yellow = snapshot(el); const texts = []; const walk = (e, d) => { if (!(e instanceof Element) || d > 4 || !visible(e)) return; const t = textInfo(e); if (t) texts.push({ path: path(e), ...t }); for (const c of e.children) walk(c, d + 1); }; walk(el, 0); return { yellow, texts, section: section(el), sig: path(el) }; };
@@ -38,5 +40,5 @@ window.__ks = (() => {
       for (const c of colorsIn(cs.boxShadow)) check(el, 'box-shadow', c); for (const c of colorsIn(cs.backgroundImage)) check(el, 'background-image', c);
       if (el instanceof SVGElement) { check(el, 'fill', cs.fill, cs.fill !== 'none'); check(el, 'stroke', cs.stroke, parseFloat(cs.strokeWidth) > 0); }
       for (const c of el.children) walk(c); }; walk(root); return out; };
-  return { snapshot, probe, visible, sig, section, path, foreign };
+  return { snapshot, probe, visible, sig, section, path, foreign , yellowAudit };
 })();

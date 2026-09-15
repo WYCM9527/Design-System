@@ -14,7 +14,7 @@
 5. **样式入口**：按 init 打印的片段建（通常 `src/styles/globals.css`），同时建一个空的 `app.css`（项目补充，只引用 token）。Vite 配置按 init 打印的注意项（`optimizeDeps.exclude`；`file:` 链接再加 `resolve.preserveSymlinks: true`）。
 6. **项目规则**：`ds.mjs agents --stack <栈>` 渲染 AGENTS.md 全文给用户看，确认后 `--write`。
 7. **第一批页面**：按 [page-work.md](page-work.md) 做——壳层与页面骨架全用配方类（`.app / .sidebar / .nav / .page-head / .filter / .status / .form-*`），组件用桥接过的组件库 + 配方组件，颜色 / 间距 / 字号只写 token 变量。
-8. **验收**：`npm i -D <身份文件 accept.npm>` → 按快照里的 `accept.configTemplate` 建 `accept.config.mjs`（列页面、走查页、窄屏、焦点清单）→ `package.json` 加 `"accept": "npm run build && <accept.command>"` → 跑绿。`.accept/` 与 `.adopter-conflicts.json` 加进 `.gitignore`。
+8. **验收**：`npm i -D <身份文件 accept.npm>` → 挂走查页（身份文件 `stacks.<栈>.kitchen`：Element 直接 import 包里的 `KitchenSink.vue`，shadcn 拷 `templates/KitchenSink.tsx`）到 `/kitchen` → 按快照里的 `accept.configTemplate` 建 `accept.config.mjs`（页面、`KITCHEN`、窄屏、焦点、`YELLOW_ALLOW`）→ `package.json` 加 `"accept": "npm run build && <accept.command>"` → 跑绿。`.accept/` 与 `.adopter-conflicts.json` 加进 `.gitignore`。
 
 ## 常见岔路
 

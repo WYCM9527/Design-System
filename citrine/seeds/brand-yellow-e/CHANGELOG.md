@@ -2,6 +2,13 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.11.0 — 2026-09-15（可嵌入走查页 · 页面级静息黄色审计 · Windows CI）
+
+- **走查页成为种子配方组件**：`bridge/vue/KitchenSink.vue`（Element Plus 全部组件，600+ 交互元素，源自黄金后台走查页，零项目依赖）任何 Element 项目挂到 `/kitchen` 即可跑 `citrine-accept components`；shadcn 项目用 `templates/KitchenSink.tsx`（import 项目的 `@/components/ui/*` 与包里的配方组件，拷进项目）。身份文件 `stacks.<栈>.kitchen` 指向它们。轻采首次跑组件走查：619 个元素 × 亮暗 0 发现——同时证明范围根（`@scope` 包裹）下桥接的 hover / focus 与全局模式完全一致；shadcn-lab 的走查页改为直接用模板。
+- **页面级静息黄色审计**（`scan-pages` 新增失败项）：DESIGN「黄不表达强调」此前只在走查页检查，业务页从没查过。现在每个页面状态都列出品牌黄出现的元素，不在允许清单内即失败。默认清单 `tools/lib/yellow-allow.mjs`（Element / shadcn 桥接与 recipes 的合法位置：主按钮、勾选 / 单选 / 开关选中、进度 / 滑杆、当前页码、当前步骤、时间线主节点、加载转圈、日期面板选中、数据卡描边、Logo、纯 CSS 主按钮、原位确认主按钮、空态 / 结果页 two-tone 插图、结果页大号码 `text.brand`），项目在 `accept.config.mjs` 的 `YELLOW_ALLOW` 追加自己的合法位置并写理由。首次开启在黄金后台抓到两处**真泄漏**：公告列表的未读圆点用品牌黄当强调（改为与顶栏未读计数同用 `action.danger`）、公告详情引用块左边线用品牌指示条（改为 `border.strong`）；轻采登记 `.stat-skel`（统计卡骨架保留数据卡描边）与 `.logo-preview`（企业 Logo 预览），黄金后台登记 `.auth-brand`（登录页品牌区，DESIGN 唯一允许的大面积黄）。
+- **Windows CI**：`checks-windows` job 在 windows-latest 上跑 adopter 单测、角色表、版本一致性。
+- 模板：`accept.config.mjs` 默认 `KITCHEN: '#/kitchen'` 与 `YELLOW_ALLOW: []`；栈要点说明走查页挂法；GUIDE FAQ 补两行。
+
 ## 2.10.0 — 2026-09-15（范围根：同一应用只覆盖部分板块）
 
 - **adopter 新增 `ds.mjs scope --root <class> --to <dir> [--with …]`**：把 token（优先项目工作副本的 dist）、recipes、桥接各自包进 `@scope (html.<root>)` 生成范围包，路由守卫按板块给 `<html>` 加减类——未接入板块的路由下整套设计系统样式不存在，保留旧布局与组件库默认外观。挂在 `html` 而非容器上，Element / Radix teleport 到 body 的浮层一起覆盖；因此板块须按路由分开，同屏混排不支持。

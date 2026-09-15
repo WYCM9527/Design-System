@@ -21,6 +21,7 @@ const routes = [
       { path: 'roles', name: 'roles', component: () => import('./pages/Roles.vue'), meta: { title: '角色权限', menu: 'roles', crumbs: ['系统管理'] } },
       { path: 'settings', name: 'settings', component: () => import('./pages/Settings.vue'), meta: { title: '系统设置', menu: 'settings', crumbs: ['系统管理'] } },
       { path: 'logs', name: 'logs', component: () => import('./pages/Logs.vue'), meta: { title: '操作日志', menu: 'logs', crumbs: ['系统管理'] } },
+      { path: 'kitchen', name: 'kitchen', component: () => import('@wycm9527/citrine/vue/KitchenSink.vue'), meta: { title: '组件走查', crumbs: ['系统管理'] } },   // 种子配方组件：桥接覆盖率走查页，不进侧栏
       { path: 'forbidden', name: 'forbidden', component: () => import('./pages/Forbidden.vue'), meta: { title: '暂无访问权限', crumbs: [] } },
       { path: ':pathMatch(.*)*', name: 'notfound', component: () => import('./pages/NotFound.vue'), meta: { title: '页面不存在', crumbs: [] } }
     ]

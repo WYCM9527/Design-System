@@ -59,7 +59,7 @@ function read(n) { if (n.unread) { n.unread = false; store.unread = Math.max(0, 
 .main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .title { display: flex; align-items: center; gap: var(--spacing-2); font-size: var(--text-body-size); color: var(--color-text-primary); }
 .unread .title { font-weight: var(--text-weight-strong); }
-.unread-dot { width: 6px; height: 6px; border-radius: var(--radius-full); background: var(--color-action-primary-active); flex: none; }  /* 指示灯语义：未读 */
+.unread-dot { width: 6px; height: 6px; border-radius: var(--radius-full); background: var(--color-action-danger); flex: none; }  /* 未读 = 需要注意：与顶栏未读计数同用 action.danger；不用品牌黄（黄不表达强调，2.11.0 页面级黄色审计抓出） */
 .summary { font-size: var(--text-small-size); color: var(--color-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .meta { display: flex; align-items: center; gap: var(--spacing-3); }
 .time { font-size: var(--text-small-size); color: var(--color-text-muted); white-space: nowrap; }

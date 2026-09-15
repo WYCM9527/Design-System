@@ -4,5 +4,6 @@
 - **配方组件**（`{{IMPORT}}/react/*` 由包 exports 映射到种子 `bridge/react/*.tsx`）：`import { StatCard } from '{{IMPORT}}/react/StatCard'`（EChart / TrendChart / TableSkeleton / ConfirmBar + `useInlineConfirm` 同）；图表 option 只写数据与布局，颜色线型来自 `{{IMPORT}}/echarts` 主题；Dialog 内的离开确认用 `ConfirmBar`（原位确认条），不叠第二层弹窗。
 - **图标**：lucide，尺寸类 `i-icon--xs|sm|md|lg|xl|2xl`（recipes 对 `svg` 生效），弱化 `i-icon--muted`；图标按钮必须有 `aria-label` / `title`。
 - **三端**（DESIGN「三端」；断点 1366 / 768 是 `layout.breakpoint.*` 的字面镜像）：窄屏 `.is-collapsed`；手机抽屉 `navOpen` → `.app.is-nav-open` + `.menu-btn`（仅手机显示）+ `.sidebar-mask`，路由切换关闭；Dialog 手机贴底全宽由桥接接管。
+- **走查页**：把种子 `templates/KitchenSink.tsx` 拷进项目（它 import `@/components/ui/*` 与包里的配方组件）挂到 `/kitchen`，`KITCHEN: '#/kitchen'`；页面扫描会审计静息黄色，项目合法位置写进 `YELLOW_ALLOW`。
 - **暗色**：`<html>` 上加 class `dark`，首屏前读 localStorage / `?theme=` 避免闪烁。
 - **Vite / TS**：npm 消费时配 `optimizeDeps.exclude: ['@wycm9527/citrine']`（包里是 `.tsx` 源码）；`file:` 链接消费另需 `resolve.preserveSymlinks: true` 与 tsconfig `preserveSymlinks`（发布后的真实安装不需要）。

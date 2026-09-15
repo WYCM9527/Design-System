@@ -1,10 +1,11 @@
 <script setup>
-// 组件走查页：把 Element Plus 的全部组件铺在一页，供桥接覆盖率扫描（默认 / hover / focus / 选中 / 禁用 / 出错）。
-// 不是业务页面，不进侧栏；`data-ks-open` 标记的浮层由扫描脚本逐个点开，`data-ks-modal` 标记的弹层逐个触发。
+// 组件走查页（种子配方组件，可直接嵌入任何 Element Plus 项目）：把 Element Plus 的全部组件铺在一页，供桥接覆盖率扫描（默认 / hover / focus / 选中 / 禁用 / 出错）。
+// 挂法：路由 `{ path: 'kitchen', component: () => import('@wycm9527/citrine/vue/KitchenSink.vue') }`，accept.config.mjs 的 KITCHEN 填 '#/kitchen'，citrine-accept components 就会对 600+ 个交互元素做 hover / focus 走查。
+// 依赖：Element Plus 全局注册（app.use(ElementPlus)）；不是业务页面，不进侧栏；`data-ks-open` 标记的浮层由扫描脚本逐个点开，`data-ks-modal` 标记的弹层逐个触发。
 // `data-ks-ignore` 标记的元素承载用户数据颜色（取色器、图片），不参与颜色规则判定。
 import { ref, reactive, onMounted, h } from 'vue'
 import { ElMessage, ElNotification } from 'element-plus'
-import { confirmBox } from '@wycm9527/citrine/vue/confirm.js'
+import { confirmBox } from './confirm.js'
 
 const input = ref('黄金后台')
 const num = ref(3)

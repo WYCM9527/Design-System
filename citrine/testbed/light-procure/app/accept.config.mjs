@@ -29,9 +29,11 @@ export const PAGES = [
 ];
 
 export const DEFAULT_QUERY = { role: 'admin' };
-export const KITCHEN = null;   // 全组件走查在黄金后台做一次，这里复用结论
+export const KITCHEN = '#/kitchen';   // 种子的 KitchenSink.vue 挂在 /kitchen（2.11.0 起独立项目也能跑组件走查）
 export const NARROW = {   // 三端：narrow 档侧栏折叠，mobile 档侧栏离屏 + 汉堡可开合（DESIGN「三端」）
   widths: [{ name: 'narrow', width: 1280, expect: 'collapsed' }, { name: 'mobile', width: 390, expect: 'offcanvas' }],
   pages: [['dashboard', '#/'], ['applications', '#/applications'], ['application-new', '?role=applicant#/applications/new'], ['application-detail', '#/applications/pd1'], ['approvals', '?role=approver#/approvals'], ['assets', '#/assets'], ['report', '#/report'], ['org', '#/org'], ['roles', '#/roles'], ['settings', '#/settings'], ['logs', '#/logs']]
 };
 export const FOCUS = { pages: { applications: '#/applications', 'application-new': '?role=applicant#/applications/new', approvals: '?role=approver#/approvals', settings: '#/settings' }, steps: 80 };
+// 页面级静息黄色的项目合法位置（默认清单见 tools/lib/yellow-allow.mjs）：统计卡骨架保留数据卡的品牌指示条；设置页的企业 Logo 预览块本身就是 Logo
+export const YELLOW_ALLOW = ['.stat-skel', '.logo-preview'];
