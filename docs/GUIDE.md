@@ -152,6 +152,18 @@ node <adopter>/scripts/ds.mjs export --system /tmp/ds/citrine/seeds/brand-yellow
 
 > 这个项目是 Flask 模板 + 一个 CSS 文件，不是 Node 项目。按 design-system-adopter 的「非 Node 项目」剧本：导出 Citrine 的纯 CSS 到 static/，把 admin.css 里的颜色 / 字号 / 间距改成引用变量，模板换用配方类，然后用 --url 跑验收给我看。
 
+## 5c. 场景 E：只想覆盖项目里的几个板块
+
+先分清「板块」是哪种：
+
+- **monorepo 里的多个应用**（各自有 `package.json`）→ 什么都不用做：只对要覆盖的应用 `init --project apps/admin`，其余应用天然不受影响；微前端 / iframe 子应用同理。
+- **同一个应用里按路由分的板块**（`/orders` 换、`/legacy-report` 不换）→ **范围根**：`ds.mjs scope --root citrine --to src/styles/citrine-scoped --with element-plus` 把整套 CSS 包进 `@scope (html.citrine)`，样式入口改引这些文件，路由守卫在未接入板块的路由上把 `<html>` 的 `citrine` 类去掉（Vue Router：`meta: { legacy: true }` + 一行 `beforeEach`，命令会打印片段）。未接入板块保留自己的旧布局与组件库默认外观——弹窗、下拉这类 teleport 到 body 的浮层也一起覆盖 / 一起不覆盖，因为都在 `html` 之下。
+- **同一屏上新旧组件混排** → 不支持，整页纳入或整页不纳入。
+
+范围根是**过渡态**：新板块先立住，再按 5 节的二期收编把旧板块逐个纳入，最后去掉范围根回到全局。浏览器下限 `@scope`：Chrome / Edge 118+、Safari 17.4+、Firefox 128+。对 Agent 说：
+
+> 这个项目里只有 /orders 和 /suppliers 两个板块要换成 Citrine，其余板块保持原样。按 design-system-adopter 的「只覆盖部分板块」剧本做范围根，做完打开一个未接入的页面证明它没被影响。
+
 ## 6. 日常做页面的三条纪律
 
 Agent 在已接入的项目里改 UI 时自动遵守，你验收产出时按这三条看：
@@ -183,6 +195,7 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 | --- | --- |
 | `upgrade` / `steward install` 报下载失败 | 仓库私有：确认本机 `git clone` 该仓库能成功（凭证），或设 `GITHUB_TOKEN`；完全离线用 `upgrade --from <种子目录或 tgz>` |
 | `npm i @wycm9527/citrine` 404 | 包还没发到 registry，用 `file:` 指向克隆里的种子目录（第 2 节） |
+| 只想覆盖部分板块 | 多应用各自 `init`；同一应用按路由用范围根（5c）；同屏混排不支持 |
 | 项目不是 Node 工程 / 装不了 npm | 走 5b：`ds.mjs export` 出纯 CSS，模板用配方类，验收加 `--url` 与 `--tokens`；不要手抄变量值 |
 | 验收「未找到 Chrome」 | 装 Google Chrome，或 `CHROME=/path/to/chrome npx citrine-accept all` |
 | 验收报低对比 / 品牌色泄漏 / 无名称 | 先按 skill 的 `references/troubleshooting.md` 归因到层：页面自己的问题现场修；组件库默认色 / 命中区属于桥接层，向仓库提，不要用 `!important` 压 |

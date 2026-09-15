@@ -10,7 +10,8 @@
     "scan:pages": "citrine-accept pages",
     "check:narrow": "citrine-accept narrow",
     "check:focus": "citrine-accept focus",
-    "accept": "npm run build && citrine-accept all"
+    "accept": "npm run build && citrine-accept all",
+    "scope": "node ../../../../design-system-adopter/scripts/ds.mjs scope"
   },
   "dependencies": {
     "@icon-park/vue-next": "^1.4.2",

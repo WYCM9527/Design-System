@@ -51,6 +51,16 @@
 - Scope 只记录相对父级的差异；页面需要完整的 `data-ds-scope` 继承链才会消费对应的运行时 CSS。
 - Theme、单个组件例外和未登记硬编码分别按 Theme、Component Token、Drift 管理，不把它们误建成 Scope。
 
+### 只覆盖部分板块：范围根（与 Scope 相反的方向）
+
+Scope 是「Core 全局生效、某些页面有差异」；**范围根**是「Core 只在某些板块生效、其余板块一个字节不受影响」——同一应用里新旧板块并存时用。做法：把 token + 桥接 + 配方整套包进 `@scope (html.<root>)`（`design-system-adopter` 的 `ds.mjs scope` 生成，根选择器 `:root` / `html` 自动改写为 `:scope`），路由守卫按板块给 `<html>` 加减类。
+
+- **挂在 `html` 上、按路由切换**，不用容器级作用域：Element / Radix 的弹窗、下拉、消息都 teleport 到 `body`，容器罩不住它们，`html` 之下都在范围内。因此板块必须**按路由分开**；同一屏新旧组件混排不支持。
+- 首屏 `<html class="<root>">` 默认带类（多数路由覆盖时），未接入板块的路由在 `beforeEach` 里移除；未接入板块保留自己的旧布局与组件库默认外观。
+- 生成物只读（`scope.manifest.json` 记账），token / 桥接变化后 `build-tokens → ds.mjs scope` 再生成；生成物含字面量，在 `exemptions.json` 登记。验收清单只登记覆盖板块的页面。
+- 浏览器下限：`@scope` 需 Chrome / Edge 118+、Safari 17.4+、Firefox 128+。
+- **这是过渡态**：让新板块先立住，再用「更换现有规范」的二期收编把其他板块逐个纳入，最后摘掉范围根回到全局；不要把它当长期架构。
+
 ## Theme
 
 - Core 默认作用于确认的默认 Theme；已有或经确认新增的模式登记在 `theme-map.json`，其相对 Core 的差异位于 `themes/<id>/`。

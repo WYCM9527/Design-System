@@ -1,8 +1,25 @@
 {
   "version": 1,
   "exemptions": [
-    { "path": "src/styles/bridge/element-plus.css", "reason": "Element Plus 桥接（种子同步副本）：inset 10px/-10px 固定列阴影几何、1px inset 聚焦线、outline-offset 与 radio-button 1px 拼接线，均为 Element 组件内部几何；颜色全部走 token" },
-    { "path": "src/styles/bridge/iconpark.css", "reason": "IconPark 桥接（种子同步副本）：注释里的示意字号，不是样式值" },
-    { "path": "src/data/files.js", "reason": "演示附件样本（canvas 生成的 PNG）里的画布颜色，是图片内容而不是界面样式" }
+    {
+      "path": "src/styles/bridge/element-plus.css",
+      "reason": "Element Plus 桥接（种子同步副本）：inset 10px/-10px 固定列阴影几何、1px inset 聚焦线、outline-offset 与 radio-button 1px 拼接线，均为 Element 组件内部几何；颜色全部走 token"
+    },
+    {
+      "path": "src/styles/bridge/iconpark.css",
+      "reason": "IconPark 桥接（种子同步副本）：注释里的示意字号，不是样式值"
+    },
+    {
+      "path": "src/data/files.js",
+      "reason": "演示附件样本（canvas 生成的 PNG）里的画布颜色，是图片内容而不是界面样式"
+    },
+    {
+      "path": "src/styles/citrine-scoped/**",
+      "reason": "范围根生成物（ds.mjs scope）：token / 桥接 / 配方包进 @scope (html.citrine) 的只读副本，字面量来自 dist 构建产物"
+    },
+    {
+      "path": "src/pages/LegacyReport.vue",
+      "reason": "未接入设计系统的旧板块（范围根狗食）：故意保留旧硬编码样式，用来证明范围根不波及它"
+    }
   ]
 }

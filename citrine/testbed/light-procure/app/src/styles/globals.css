@@ -1,9 +1,10 @@
-/* 样式入口。顺序：Element Plus 基础样式 → 设计系统构建产物 → 桥接（组件库 / 图标）→ 种子配方层（页面骨架公共类）→ 项目补充。
-   桥接与配方直接从 npm 包 @wycm9527/citrine 引入（仓库内是 file: 链接到 seeds/brand-yellow-e），项目里不再放副本。
+/* 样式入口（范围根模式，2.10.0 狗食）：Element Plus 基础样式全局 → 设计系统的 token / 桥接 / 配方全部包在 @scope (html.citrine) 里，
+   只在 <html class="citrine"> 时生效——未接入的旧板块（meta.legacy 路由，如 #/legacy-report）保持 Element 默认外观，一个字节不受影响。
+   citrine-scoped/ 是 ds.mjs scope 的生成物（只读）：token 或桥接变化后 build-tokens → ds.mjs scope 再生成。
    除本文件与 app.css 外，页面样式全部在 .vue 的 <style scoped> 里，并且只引用 token 变量。 */
 @import "element-plus/dist/index.css";
-@import "../../design-system/dist/index.css";
-@import "@wycm9527/citrine/bridge/element-plus.css";
-@import "@wycm9527/citrine/bridge/iconpark.css";
-@import "@wycm9527/citrine/bridge/recipes.css";
+@import "./citrine-scoped/index.css";
+@import "./citrine-scoped/element-plus.css";
+@import "./citrine-scoped/iconpark.css";
+@import "./citrine-scoped/recipes.css";
 @import "./app.css";

@@ -1,0 +1,16 @@
+{
+  "system": "citrine",
+  "version": "2.9.0",
+  "root": "citrine",
+  "generatedAt": "2026-09-15",
+  "groups": [
+    "element-plus"
+  ],
+  "tokensFrom": "design-system/dist（项目工作副本）",
+  "files": {
+    "index.css": "1cbdf8cddc18ed51",
+    "recipes.css": "f559a00352fe1ca8",
+    "element-plus.css": "ca17549e8fedfd99",
+    "iconpark.css": "d195a55cc2d7574e"
+  }
+}

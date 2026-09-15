@@ -4,7 +4,7 @@
 
 ![Citrine · 实测项目「黄金后台」亮 / 暗模式](docs/screenshots/hero.png)
 
-版本 **2.9.0** · Core 321 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
+版本 **2.10.0** · Core 321 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
 
 ---
 
@@ -118,6 +118,10 @@ node <Design-System>/skills/design-system-steward/scripts/guard.mjs --project "$
 | 订单管理 · 手机 | 轻采工作台 · 手机 |
 | --- | --- |
 | ![](docs/screenshots/admin-orders-mobile.png) | ![](docs/screenshots/procure-dashboard-mobile.png) |
+
+**范围根（2.10.0，只覆盖部分板块）**：轻采里新增一个「未接入」的旧报表板块——同一个 SPA，上面是 Citrine 的供应商页，下面的旧报表保持 Element 默认蓝与旧布局，一个字节不受影响。
+
+![](docs/screenshots/procure-scope-root.png)
 
 **React + shadcn/ui 实验室**（[`testbed/shadcn-lab/`](testbed/shadcn-lab/)）：第二条消费路径的渲染验证——按 shadcn new-york 源码手写 21 个组件接种子的 `bridge/shadcn-globals.css`，页面骨架直接复用与组件库无关的 `recipes.css`，配方组件用 `bridge/react/`。全组件走查揪出 8 处需要组件级接管的地方（Tailwind 根字号与 rem 刻度冲突、提示框黄底、遮罩写死黑色、骨架 / 进度轨道、表头与 hover、标签页浮块、勾选命中区、焦点双环），全部修在桥接里；同一套验收工具跑通（页面 × 亮暗、80 个交互元素走查、窄屏、焦点），见 [FINDINGS.md](testbed/shadcn-lab/FINDINGS.md)。
 

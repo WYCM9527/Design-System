@@ -10,6 +10,7 @@
 //                        [--resolve <decisions.json>] [--keep-local-all] [--take-upstream-all] [--json]
 //   node ds.mjs restore  [--project <dir>] [--files a,b] [--all] [--from <dir>]  # 快照被改时恢复
 //   node ds.mjs export   --to <dir> [--system <id|路径|npm包名>] [--with element-plus,shadcn] [--dry-run] [--force]   # 纯 CSS 交付（非 Node 项目）
+//   node ds.mjs scope    --root <class> --to <dir> [--with element-plus] [--system …]                             # 范围根：只覆盖部分路由板块（@scope 包裹）
 //   node ds.mjs agents   [--project <dir>] [--stack <栈>] [--write]              # 默认只打印；--write 新建或追加
 //   node ds.mjs steward  locate|install [--project <dir>]
 //   node ds.mjs self-update
@@ -28,6 +29,7 @@ import { classify, classifyByHash, conflictMarkers, resolveJsonConflict } from '
 import { shaText } from './lib/util.mjs';
 import { locateSteward, installSteward, stewardInstallHint } from './lib/steward.mjs';
 import { renderAgents, resolvePlaceholders, writeAgents } from './lib/agents.mjs';
+import { scopeWrap, guardSnippet } from './lib/scope.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const args = parseArgs();
@@ -172,7 +174,7 @@ const commands = {
     const snapDir = snapshotDirOf(m);
     if (!existsSync(snapDir)) fail(`快照目录不存在：${m.snapshot}`);
     const identity = readIdentity(snapDir) || fail(`快照缺 design-system.json：${m.snapshot}`);
-    console.log(`${m.name}（${m.system}）：清单 ${m.version}（${m.updatedAt}）· 快照里是 ${identity.version} · 来源 ${m.source} · 栈 ${m.stack}`);
+    console.log(`${m.name}（${m.system}）：清单 ${m.version}（${m.updatedAt}）· 快照里是 ${identity.version} · 来源 ${m.source} · 栈 ${m.stack}${m.scopeRoot ? ` · 范围根 html.${m.scopeRoot} → ${m.scopeDir}` : ''}`);
     // 快照完整性
     if (identity.version !== m.version) console.log(`  快照已是 ${identity.version}（清单记录 ${m.version}）：上游内容就位，跑 upgrade 把工作副本合并上来。`);
     else {
@@ -287,6 +289,7 @@ const commands = {
       const delta = idx === -1 ? heads.slice(0, 5) : heads.slice(0, idx);
       if (delta.length) console.log(`\n${m.version} 以来的版本：\n  ` + delta.map((h) => h.replace(/^## /, '')).join('\n  '));
     }
+    if (m.scopeRoot && m.scopeDir) console.log(`\n项目是范围根模式（html.${m.scopeRoot} → ${m.scopeDir}）：build-tokens 之后重跑 ds.mjs scope 再生成范围包。`);
     console.log(`\n完成 ${label}。接下来：build-tokens → guard → ${remoteIdentity.accept?.command || '验收'}（token 变化会带来像素变化，属预期，对照 CHANGELOG）。`);
   },
 
@@ -354,6 +357,47 @@ const commands = {
     if (!prev) console.log(`\n${spec.note || ''}\n验收：服务器跑起来后 npx citrine-accept pages --url http://127.0.0.1:<port> --tokens ${dest}（页面清单写服务器路径，如 ['orders', '/admin/orders']）。`);
   },
 
+  /**
+   * 范围根：只覆盖同一应用里的部分路由板块。把 token（优先项目工作副本的 dist）+ recipes（+ 可选桥接组）各自包进 @scope (html.<root>) 写到目标目录，
+   * 项目样式入口改引这些文件，路由守卫按板块给 <html> 加减类。未接入板块的路由下整套样式不存在。记录到 .adopter.json，upgrade / build 后重跑本命令即可再生成。
+   */
+  scope() {
+    const m = readManifest();
+    const root = args.root || m?.scopeRoot || m?.system || fail('缺 --root <class>（<html class="…">，通常用系统 id）');
+    const to = args.to || m?.scopeDir || fail('缺 --to <目录>（如 src/styles/citrine-scoped）');
+    let srcDir = null;
+    if (args.system) { const p = resolve(args.system); srcDir = existsSync(p) && readIdentity(p) ? p : null; if (!srcDir) { const hit = detect(project).systems.find((s) => s.identity.id === args.system || s.identity.upstream.npm === args.system); if (hit) srcDir = join(project, hit.dir); } }
+    else if (m) srcDir = snapshotDirOf(m);
+    if (!srcDir) fail('找不到来源：--system <种子目录|id|npm 包名>，或在已接入项目里运行');
+    const identity = readIdentity(srcDir);
+    const spec = identity.export || fail(`${identity.id} 未声明 export（纯 CSS 交付）字段，无法生成范围包`);
+    const withGroups = String(args.with || (m?.scopeWith || []).join(',')).split(',').filter(Boolean);
+    for (const g of withGroups) if (!spec.optional?.[g]) fail(`--with ${g} 不在可选组里；可用：${Object.keys(spec.optional || {}).join(' / ')}`);
+    // token：优先项目工作副本的构建产物（含 scope / 本地 token），否则来源 dist
+    const localDist = join(project, 'design-system/dist/index.css');
+    const files = [...spec.core, ...withGroups.flatMap((g) => spec.optional[g])].map((f) => ({ rel: f, from: f.endsWith('/dist/index.css') && existsSync(localDist) ? localDist : join(srcDir, f) }));
+    for (const f of files) if (!existsSync(f.from)) fail(`来源缺 ${f.rel}（token 产物需先 build-tokens）`);
+    const dest = resolve(project, to);
+    const dry = !!args['dry-run'];
+    if (!dry) mkdirSync(dest, { recursive: true });
+    const outFiles = {}; const hoistedAll = new Set();
+    for (const f of files) {
+      const name = basename(f.rel);
+      const { text, hoisted } = scopeWrap(readFileSync(f.from, 'utf8'), root);
+      hoisted.forEach((h) => hoistedAll.add(h));
+      const out = `/* ${identity.name}（${identity.id}）${identity.version} · ${name} · 范围根 html.${root} · design-system-adopter scope ${today()}\n   生成物，只读：token / 桥接变化后重跑 ds.mjs scope 再生成；项目差异写在自己的样式文件里。 */\n` + text;
+      outFiles[name] = shaText(out);
+      if (!dry) writeFileSync(join(dest, name), out);
+    }
+    if (!dry) {
+      writeFileSync(join(dest, 'scope.manifest.json'), JSON.stringify({ system: identity.id, version: identity.version, root, generatedAt: today(), groups: withGroups, tokensFrom: files[0].from === localDist ? 'design-system/dist（项目工作副本）' : '来源 dist', files: outFiles }, null, 2) + '\n');
+      if (m) writeManifest({ ...m, scopeRoot: root, scopeDir: relative(project, dest).split('\\').join('/'), scopeWith: withGroups });
+    }
+    console.log(`${dry ? '[dry-run] ' : ''}范围包 @scope (html.${root}) → ${dest}：${Object.keys(outFiles).join(', ')}${hoistedAll.size ? `（提升到顶层的 at-rule：${[...hoistedAll].join(' / ')}）` : ''}`);
+    console.log(`\n样式入口改引这些文件（替换原来的 dist / 桥接 / recipes import），例如：\n  ${Object.keys(outFiles).map((n) => `@import "./${relative(join(project, 'src/styles'), dest).split('\\').join('/') || '.'}/${n}";`).join('\n  ')}\n首屏 index.html 的 <html> 默认带 class="${root}"（多数路由覆盖时），未接入板块由路由守卫移除：\n${guardSnippet(root, m?.stack || args.stack || 'element-plus').split('\n').map((l) => '  ' + l).join('\n')}`);
+    console.log(`\n注意：生成物含字面量，steward status 会计为债——在 exemptions.json 登记 ${relative(project, dest).split('\\').join('/')}/**（理由：范围根生成物）。浏览器下限：@scope 需 Chrome/Edge 118+、Safari 17.4+、Firefox 128+。同屏新旧混排不支持（按路由分板块）。`);
+  },
+
   agents() {
     const m = readManifest() || fail(`没有 ${MANIFEST}；先 init / adopt`);
     const identity = readIdentity(snapshotDirOf(m)) || fail('快照缺 design-system.json');
@@ -379,7 +423,7 @@ const commands = {
   },
 
   help() {
-    console.log(readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').filter((l) => l.startsWith('//')).slice(1, 21).map((l) => l.replace(/^\/\/ ?/, '')).join('\n'));
+    console.log(readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').filter((l) => l.startsWith('//')).slice(1, 22).map((l) => l.replace(/^\/\/ ?/, '')).join('\n'));
   }
 };
 

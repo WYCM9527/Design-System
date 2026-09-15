@@ -2,6 +2,14 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.10.0 — 2026-09-15（范围根：同一应用只覆盖部分板块）
+
+- **adopter 新增 `ds.mjs scope --root <class> --to <dir> [--with …]`**：把 token（优先项目工作副本的 dist）、recipes、桥接各自包进 `@scope (html.<root>)` 生成范围包，路由守卫按板块给 `<html>` 加减类——未接入板块的路由下整套设计系统样式不存在，保留旧布局与组件库默认外观。挂在 `html` 而非容器上，Element / Radix teleport 到 body 的浮层一起覆盖；因此板块须按路由分开，同屏混排不支持。
+- **`@scope` 语义实测**（Chrome 153）：范围内 `:root` / `html` **不**命中范围根本身，只有 `:scope` 命中——生成器把根选择器（token 的 `:root`、暗色 `:root.dark`、基线 `html`）改写为 `:scope`；`@import / @charset / @theme（Tailwind）/ @layer 语句 / @keyframes / @font-face / @property` 提升到顶层，块形式的 `@layer` / `@media` 留在范围内。`scope.manifest.json` 记账，`.adopter.json` 记 `scopeRoot / scopeDir / scopeWith`，`upgrade` 完成时提醒再生成；`status` 显示范围根。
+- **DESIGN「局部规范」新增「范围根」小节**：与 steward Scope 方向相反（Scope = 全局生效 + 局部差异；范围根 = 局部生效 + 其余不动）；过渡态定位、浏览器下限（Chrome / Edge 118+、Safari 17.4+、Firefox 128+）。
+- **轻采狗食**：整体切到范围根模式（`src/styles/citrine-scoped/` 生成物 + `<html class="citrine">` + `beforeEach` 切类），新增一个「未接入」旧报表板块 `#/legacy-report`（自带旧布局、Element 默认蓝）。实测：覆盖页 token / 黄按钮 / 白侧栏正常，旧板块无 token、Element 默认外观，来回切换正确；覆盖页全量验收全绿。
+- adopter 新增剧本 `references/scope-root.md`；SKILL 入口增加「只覆盖部分板块」分支（先分 monorepo 多应用 / 同一应用路由板块 / 同屏混排）；GUIDE 5c 节；单测 12/12。
+
 ## 2.9.0 — 2026-09-15（第三条渠道：纯 CSS 交付，给非 Node 项目）
 
 - **身份文件新增 `export` 字段**：`core`（`design-system/dist/index.css` + `bridge/recipes.css`，顺序即 link 顺序）、`optional`（`element-plus` / `shadcn` 桥接组）、`usage`（接线片段）。adopter 新增 **`ds.mjs export --to <dir> [--system] [--with] [--dry-run] [--force]`**：写带版本头的 CSS 与清单 `design-system.export.json`；重导出逐文件报未变 / 更新 / 新增，被手改的导出文件拦截（退出 3，`--force` 覆盖）。Flask / Django / PHP 模板项目运行时零 Node；迁移旧 CSS 仍可用 steward `audit / migrate`（只读写目录，不要求 Node 工程），但不建 `design-system/` 工作副本。

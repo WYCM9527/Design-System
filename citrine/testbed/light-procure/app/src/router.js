@@ -24,13 +24,16 @@ const routes = [
       { path: 'forbidden', name: 'forbidden', component: () => import('./pages/Forbidden.vue'), meta: { title: '暂无访问权限', crumbs: [] } },
       { path: ':pathMatch(.*)*', name: 'notfound', component: () => import('./pages/NotFound.vue'), meta: { title: '页面不存在', crumbs: [] } }
     ]
-  }
+  },
+  // 未接入设计系统的旧板块（范围根狗食）：自带旧布局，路由 meta.legacy 让守卫移除 html.citrine，Element 保持默认外观
+  { path: '/legacy-report', name: 'legacy-report', component: () => import('./pages/LegacyReport.vue'), meta: { title: '旧版报表（未接入）', legacy: true } }
 ]
 
 const router = createRouter({ history: createWebHashHistory(), routes })
 
 // 直接访问无权限页面 → 「暂无访问权限」（PRD §2）；记录级权限由页面自己判断
 router.beforeEach((to) => {
+  document.documentElement.classList.toggle('citrine', !to.meta.legacy)   // 范围根：未接入板块下整套设计系统样式不存在
   if (!ready.value) return true   // 数据未就绪时先放行，App.vue 就绪后会重新进入当前路由再判权限
   if (to.meta.menu && !canSee(to.meta.menu)) return { name: 'forbidden', query: { from: to.meta.title } }
   document.title = `${to.meta.title || ''} · ${db.settings?.systemName || '轻采'}`
