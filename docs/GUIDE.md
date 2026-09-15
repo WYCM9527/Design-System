@@ -164,6 +164,44 @@ node <adopter>/scripts/ds.mjs export --system /tmp/ds/citrine/seeds/brand-yellow
 
 > 这个项目里只有 /orders 和 /suppliers 两个板块要换成 Citrine，其余板块保持原样。按 design-system-adopter 的「只覆盖部分板块」剧本做范围根，做完打开一个未接入的页面证明它没被影响。
 
+## 5d. 综合示例：旧项目 + 只覆盖部分板块 + 带一个 Flask 子系统
+
+真实项目往往同时命中 B、E、D 三个场景。下面是一段可整段粘贴、全权交给 Agent 的提示词（方括号处填你的信息）：
+
+> 你现在全权负责把项目 **【项目绝对路径】** 换成公司设计系统 **Citrine**，但只覆盖我指定的板块，其他板块一个字节不能受影响。我不懂技术细节：能自动判断的全部自动做，只在标注【必须问我】的地方停下来问；每一步先用一句话说你在做什么，做完把结果给我看；任何一步失败就停下，用大白话说原因和我该做什么，不要换别的办法绕过去。全程严格按项目里 `.cursor/skills/design-system-adopter/SKILL.md` 及其 references 剧本执行，不自己发明步骤。
+>
+> **〇、准备**
+> 1. 如果 `.cursor/skills/design-system-adopter/` 不存在：`git clone --depth 1 https://github.com/WYCM9527/Design-System.git /tmp/ds`（失败提示权限就停下告诉我要请管理员加 GitHub 权限并 `gh auth login`），然后 `mkdir -p .cursor/skills && cp -R /tmp/ds/design-system-adopter .cursor/skills/`，`npm i file:/tmp/ds/citrine/seeds/brand-yellow-e`，`npm i -D file:/tmp/ds/citrine/tools style-dictionary@5.5.2`。
+> 2. 确认项目在 git 里且工作区干净（`git status`）。不干净就停下让我提交，不要替我提交。
+> 3. 通读 SKILL.md、`references/existing-project.md`、`references/scope-root.md`、`references/non-node.md`。
+>
+> **一、摸底（只读，不改任何文件）**
+> 1. `node .cursor/skills/design-system-adopter/scripts/ds.mjs detect`，告诉我识别到了什么。
+> 2. 找到 design-system-steward（`ds.mjs steward locate`；没有就 `steward install`），跑 `audit`，给我一份工程量报告：旧变量、硬编码字面量、内联样式各多少。
+> 3. 列出这个项目的结构：有哪些应用 / 路由板块 / 目录，用的组件库是什么，有没有非 Node 的子系统（例如 Flask 模板）。然后【必须问我】：这些板块里哪几个要换成 Citrine，哪几个保持原样。我的初步答案：覆盖 **【要覆盖的板块】**，保持原样的有 **【不动的板块】**，另外 **【Flask 子系统路径】** 是 Flask 模板 + 一个 CSS 文件、不是 Node 项目。
+> 4. 如果组件库不是 Element Plus 也不是 shadcn/ui：停下告诉我这是桥接缺口，第一期只能换骨架与 token、组件会保持旧样子，等我决定是否继续。
+>
+> **二、Node 应用的第一期换肤（只覆盖指定板块）**
+> 1. 如果项目已有 `design-system/` 目录，【必须问我】是否同意把它改名为 `design-system.legacy/` 当迁移证据；同意后 `ds.mjs init --system citrine --stack <栈> --legacy-rename`，否则去掉 `--legacy-rename`。
+> 2. steward `build-tokens` → `guard` 必须是 `current`。
+> 3. 因为只覆盖部分板块，用范围根：`ds.mjs scope --root citrine --to src/styles/citrine-scoped --with <桥接组>`；样式入口里把原来的 dist / 桥接 / recipes import 换成 `citrine-scoped/` 里的文件，组件库基础样式保持全局；`index.html` 的 `<html>` 默认带 `class="citrine"`；不覆盖的板块在路由 `meta` 上标 `legacy: true`，加 `router.beforeEach((to) => document.documentElement.classList.toggle('citrine', !to.meta.legacy))`（React 项目按命令打印的片段做）。
+> 4. 旧变量做别名过渡：新建一个过渡样式文件，把旧变量名指向新 token（如 `--text: var(--color-text-primary)`），列出你映射了哪些，映射不了的告诉我。
+> 5. 把 `src/styles/citrine-scoped/**` 和你确认要保持原样的板块目录登记进 `design-system/exemptions.json`，每条写理由。
+> 6. `ds.mjs agents --stack <栈>` 渲染 AGENTS.md 全文给我看，【必须问我】确认后再 `--write`；里面要写清哪些板块归新规范、哪些是旧板块不碰。
+> 7. 建 `accept.config.mjs`，只登记覆盖板块的页面；`npm run build && npx citrine-accept all` 跑到全绿。
+> 8. **自证旧板块没被波及**：打开一个未覆盖的路由，检查 `document.documentElement.classList` 不含 `citrine`、`getComputedStyle(document.documentElement).getPropertyValue('--color-action-primary')` 为空、组件仍是组件库默认外观；把这三项结果连同一张截图给我。
+>
+> **三、Flask 子系统（非 Node，纯 CSS 交付）**
+> 1. `ds.mjs export --system citrine --to <Flask 子系统>/static/citrine`，得到 `index.css`、`recipes.css` 和清单。不要把变量值手抄进任何 CSS。
+> 2. 模板 `<head>` 按顺序 `<link>`：`index.css` → `recipes.css` → 原有的 `admin.css`；暗色靠 `<html class="dark">`。
+> 3. 把 `admin.css` 里的颜色 / 字号 / 间距 / 圆角 / 阴影改成引用变量（可用 steward `migrate --phase replace / settle` 辅助，settle 决策草稿给我确认）；表格列宽、筛选控件宽度这类「按内容定」的像素允许保留。模板的页头 / 筛选栏 / 状态胶囊 / 操作胶囊 / 表单 / 空态换用 recipes 的配方类；显隐切换用 `hidden` 属性。
+> 4. 把 Flask 服务跑起来，`npx citrine-accept pages --url http://127.0.0.1:<端口> --tokens <Flask 子系统>/static/citrine`（`narrow`、`focus` 同理），页面清单写服务器路径。跑到全绿。
+>
+> **四、汇报与交接**
+> 用大白话给我：摸底数字、第一期做了什么、两边验收结果、旧板块自证结果，以及**二期收编清单**——哪些板块还没纳入、待决字面量还有多少、建议的顺序。然后只问我一个问题：「现在开始二期收编，还是先上线看效果？」在我回答前不要动二期。
+>
+> **硬边界**：不改 `design-systems/citrine/` 快照和 `citrine-scoped/` 生成物；配方不够用就记下来作为提案告诉我，不在页面上补样式值，不用 `!important` 压验收；每一处写入前告诉我将发生什么。
+
 ## 6. 日常做页面的三条纪律
 
 Agent 在已接入的项目里改 UI 时自动遵守，你验收产出时按这三条看：
