@@ -22,6 +22,7 @@ mkdir -p .cursor/skills && cp -R /tmp/ds/design-system-adopter .cursor/skills/
 # 2) 拿种子（Citrine 为例，两条渠道等价）
 npm i file:/tmp/ds/citrine/seeds/brand-yellow-e      # npm 渠道（发到 registry 后就是 npm i @wycm9527/citrine）
 #   或：cp -R /tmp/ds/citrine/seeds/brand-yellow-e vendor/   放进项目任意位置，skill 的 detect 会认出来
+#   非 Node 项目：到 Releases 下载 citrine-css-<版本>.tgz（纯 CSS，零工具）
 npm i -D file:/tmp/ds/citrine/tools                   # 验收工具（发布后：npm i -D @wycm9527/citrine-tools）
 ```
 

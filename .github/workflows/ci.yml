@@ -1,0 +1,77 @@
+# CI：改种子 / 桥接 / 工具 / skill 的任何一处，都要过这四道门——
+#   checks：adopter 单测、迁移角色表与 token 源一致、六处版本号一致、种子 dist 与 token 源一致
+#   accept：三个实测项目各自 npm ci → guard current → status unified → 全量验收（页面 × 亮暗 / 组件走查 / 三端 / 焦点 / 黄金后台 E-S 像素对照）
+# 验收在无头 Chrome 上跑（runner 自带 google-chrome），CJK 字体装 fonts-noto-cjk（字体栈里有 Noto Sans CJK SC）。
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: 单测 · 角色表 · 版本 · 种子 dist
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: steward（治理脚本，公开仓库）
+        run: git clone --depth 1 https://github.com/WYCM9527/skills.git skills
+      - name: adopter 单测
+        run: node --test design-system-adopter/tests/merge.test.mjs design-system-adopter/tests/export.test.mjs design-system-adopter/tests/scope.test.mjs
+      - name: 迁移角色表与 token 源一致
+        run: node citrine/seeds/brand-yellow-e/scripts/check-roles.mjs
+      - name: 六处版本号一致
+        run: node citrine/scripts/check-versions.mjs
+      - name: 种子 dist 与 token 源一致（构建后无 diff）
+        run: |
+          (cd citrine/seeds/brand-yellow-e && npm i --no-save --no-package-lock style-dictionary@5.5.2)
+          node skills/design-system-steward/scripts/build-tokens.mjs --project "$PWD/citrine/seeds/brand-yellow-e" | tee /tmp/build.json | grep -q '"valid": true'
+          git diff --exit-code -- citrine/seeds/brand-yellow-e/design-system/dist
+
+  accept:
+    name: 验收 · ${{ matrix.project }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [golden-admin, light-procure, shadcn-lab]
+    env:
+      CHROME_FLAGS: --no-sandbox --disable-dev-shm-usage --disable-gpu
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: CJK 字体（字体栈的 Noto Sans CJK SC，否则中文测宽失真）
+        run: sudo apt-get update -q && sudo apt-get install -y -q fonts-noto-cjk >/dev/null && fc-list | grep -c "Noto Sans CJK" | xargs echo "Noto CJK faces:"
+      - name: steward（guard / status）
+        run: git clone --depth 1 https://github.com/WYCM9527/skills.git skills
+      - name: 依赖（file: 链接到种子与工具）
+        working-directory: citrine/testbed/${{ matrix.project }}/app
+        run: npm ci --no-audit --no-fund
+      - name: guard current · status unified
+        run: |
+          APP="$PWD/citrine/testbed/${{ matrix.project }}/app"
+          node skills/design-system-steward/scripts/guard.mjs --project "$APP" | tee /tmp/guard.json | grep -q '"status": "current"'
+          node skills/design-system-steward/scripts/status.mjs --project "$APP" | tee /tmp/status.json | grep -q '"status": "unified"'
+      - name: 全量验收
+        working-directory: citrine/testbed/${{ matrix.project }}/app
+        run: npm run accept
+      - name: 失败留证（截图与报告）
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: accept-${{ matrix.project }}
+          path: citrine/testbed/${{ matrix.project }}/app/.accept
+          retention-days: 7

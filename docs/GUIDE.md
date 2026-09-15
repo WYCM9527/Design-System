@@ -140,7 +140,7 @@ Agent 会依次做：应用骨架（空目录时先问你选栈，给出 create-
 
 装不了 npm 那四样东西没关系——设计系统的交付物本来就是纯 CSS，运行时不需要 Node。**别把变量值手抄进自己的 CSS**（等于 fork 了 token：上游改值你不知道、暗色没有、升级断掉）。
 
-在任何一台有 Node 的机器上（维护者或同事）导出一次：
+最省事：到仓库 [Releases](https://github.com/WYCM9527/Design-System/releases) 下载最新的 `citrine-css-<版本>.tgz`（就是导出好的 `index.css` + `recipes.css` + Element 桥接），解压进 `static/citrine/`，不需要任何工具。或者在任何一台有 Node 的机器上（维护者或同事）导出一次：
 
 ```bash
 node <adopter>/scripts/ds.mjs export --system /tmp/ds/citrine/seeds/brand-yellow-e --to <项目>/static/citrine
@@ -241,6 +241,11 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 | 手机档验收失败：横向溢出 | 找超出视口的元素（多半是固定宽度）；组件走查页可在 `accept.config.mjs` 的手机档 `pages` 里剔除 |
 | 想看规则原文 | `design-system/DESIGN.md`（配方表、组件库对照、三端、验收基线），改动史在种子 `CHANGELOG.md` |
 
+## 8b. 维护者：发版与 CI
+
+- 每次 push / PR 自动跑 CI：adopter 单测、角色表与 token 源一致、六处版本号一致、种子 `dist` 与源一致，以及三个实测项目的 guard / status / 全量验收（并行三个 job，失败会上传截图与报告为 artifact）。不绿不合。
+- 发版：改 `design-system.json` 与 `package.json` 版本、写 CHANGELOG、`node citrine/scripts/check-versions.mjs` 通过后打 tag `citrine-vX.Y.Z` 推送——`release.yml` 自动建 GitHub Release（说明取 CHANGELOG 段落，附件 = 种子与工具的 npm pack 产物 + 纯 CSS 包）。手动补历史版本：`node citrine/scripts/release.mjs --version X.Y.Z --notes-only`。
+
 ## 9. 反馈回路
 
-这套系统靠真实项目的发现变好：接入过程中任何「配方缺、桥接漏、文档说不清」都值得记下来提到仓库——四个实测项目已经回填了 100 多条，你的项目会再出一批。提案写清场景、期望形态、建议进哪一层（token / 桥接 / 配方 / 组件），维护者按版本策略发新版，你 `upgrade` 即可拿到。
+这套系统靠真实项目的发现变好：接入过程中任何「配方缺、桥接漏、文档说不清」都值得提到仓库——四个实测项目已经回填了 100 多条，你的项目会再出一批。对 Agent 说「把这个提成提案」，它会用 `ds.mjs propose` 生成草稿并给你一个**预填好的 GitHub issue 链接**（场景、期望、建议层、涉及 token 都填好了），你点开提交即可；维护者按版本策略发新版，你 `upgrade` 拿到。

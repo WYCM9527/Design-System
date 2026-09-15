@@ -1,0 +1,73 @@
+name: 设计系统提案（配方 / 桥接 / token / 文档）
+description: 接入项目里「配方不够用、桥接漏了、文档说不清」的地方，提到上游。Agent 可用 ds.mjs propose 生成预填链接。
+title: "[提案] "
+labels: ["proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        写清**场景**和**期望**就够了，进哪一层由维护者最终判断。不要在页面上先糊样式再来提——先用最接近的既有配方顶住。
+  - type: input
+    id: system
+    attributes:
+      label: 设计系统与版本
+      description: 例如 citrine 2.10.0（`ds.mjs status` 第一行）
+      placeholder: citrine 2.10.0
+    validations:
+      required: true
+  - type: dropdown
+    id: stack
+    attributes:
+      label: 技术栈
+      options:
+        - Vue 3 + Element Plus
+        - React + shadcn/ui
+        - 纯 CSS（非 Node 项目）
+        - 其他（在场景里说明）
+    validations:
+      required: true
+  - type: textarea
+    id: scene
+    attributes:
+      label: 场景
+      description: 哪个页面 / 组件 / 交互，遇到了什么；现在是怎么顶住的
+      placeholder: 订单详情的「操作日志」需要竖向时间线，DESIGN 配方表里没有；目前用 el-timeline 默认样式，节点颜色是 Element 蓝
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望形态
+      description: 想要它长什么样、遵守哪些既有规则
+      placeholder: 主节点品牌黄、其余节点 border.default；文字 text.body-sm；与统计卡同级的左侧指示条语言
+    validations:
+      required: true
+  - type: dropdown
+    id: layer
+    attributes:
+      label: 建议进哪一层
+      options:
+        - token（新增 / 修改设计决定）
+        - 桥接（组件库某状态没接管）
+        - 配方 recipes.css（页面骨架公共类）
+        - 配方组件（bridge/vue、bridge/react）
+        - DESIGN 文档（规则说不清 / 缺对照）
+        - 验收工具 / adopter skill
+        - 不确定
+    validations:
+      required: true
+  - type: input
+    id: tokens
+    attributes:
+      label: 涉及的既有 token
+      placeholder: color.brand.indicator, border.default, text.body-sm
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 证据
+      description: 截图、验收输出（citrine-accept 的失败行）、复现路由
+  - type: input
+    id: project
+    attributes:
+      label: 项目
+      placeholder: 仓库名 / 路径，便于维护者复现

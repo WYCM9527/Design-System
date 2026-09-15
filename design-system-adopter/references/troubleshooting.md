@@ -17,6 +17,6 @@
 ## 「配方不够用」的处理路径
 
 1. 确认 DESIGN 配方表真的没有可类推的行（先找最接近的）。
-2. 写清提案：场景、期望形态、建议层（token / 桥接 / recipes / 配方组件）、涉及的既有 token。
-3. 交用户决定：向上游仓库提 issue / PR（种子改动走上游的 CHANGELOG 与版本），或在本项目工作副本做 scope（steward 流程）。
+2. `ds.mjs propose --title "…" --layer <层> --scene "…" --expect "…" [--tokens …]`：生成格式统一的草稿（自动带系统版本与栈）和预填好的 GitHub issue 链接。
+3. 交用户决定：打开链接提交到上游（种子改动走上游的 CHANGELOG 与版本），或在本项目工作副本做 scope（steward 流程）。
 4. 等不及上游时的临时写法放 `app.css`，注释里写「临时，等 <id> 上游」——升级后清理。

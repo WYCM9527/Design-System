@@ -11,6 +11,7 @@
 //   node ds.mjs restore  [--project <dir>] [--files a,b] [--all] [--from <dir>]  # 快照被改时恢复
 //   node ds.mjs export   --to <dir> [--system <id|路径|npm包名>] [--with element-plus,shadcn] [--dry-run] [--force]   # 纯 CSS 交付（非 Node 项目）
 //   node ds.mjs scope    --root <class> --to <dir> [--with element-plus] [--system …]                             # 范围根：只覆盖部分路由板块（@scope 包裹）
+//   node ds.mjs propose  --title "…" [--layer token|bridge|recipes|component|docs|tools] [--scene …] [--expect …] [--tokens a,b] [--write]   # 提案草稿 + 预填 issue 链接
 //   node ds.mjs agents   [--project <dir>] [--stack <栈>] [--write]              # 默认只打印；--write 新建或追加
 //   node ds.mjs steward  locate|install [--project <dir>]
 //   node ds.mjs self-update
@@ -27,7 +28,7 @@ import { detect, readIdentity } from './lib/detect.mjs';
 import { latestTag, downloadSubdir } from './lib/fetch.mjs';
 import { classify, classifyByHash, conflictMarkers, resolveJsonConflict } from './lib/merge.mjs';
 import { shaText } from './lib/util.mjs';
-import { locateSteward, installSteward, stewardInstallHint } from './lib/steward.mjs';
+import { locateSteward, installSteward, stewardInstallHint, stewardInfo, MIN_STEWARD } from './lib/steward.mjs';
 import { renderAgents, resolvePlaceholders, writeAgents } from './lib/agents.mjs';
 import { scopeWrap, guardSnippet } from './lib/scope.mjs';
 
@@ -87,8 +88,8 @@ function printWiring(identity, stackId, source) {
   lines.push(`  3. 构建 token 与校验（steward）：\n     npm i -D ${identity.build?.tool || 'style-dictionary'}\n     node <steward>/scripts/build-tokens.mjs --project "${project}"\n     node <steward>/scripts/guard.mjs --project "${project}"    # 应为 current`);
   if (identity.accept?.npm) lines.push(`  4. 验收：npm i -D ${identity.accept.npm} → 按快照里的 ${identity.accept.configTemplate} 建 accept.config.mjs → npx ${identity.accept.command}`);
   lines.push(`  5. 项目规则：node <adopter>/scripts/ds.mjs agents --stack ${stackId}（展示给用户确认后加 --write）`);
-  const steward = locateSteward(project);
-  lines.push(steward ? `\nsteward 已找到：${steward}` : `\n${stewardInstallHint(project)}`);
+  const sw = stewardInfo(project);
+  lines.push(sw.dir ? `\nsteward 已找到：${sw.dir}（${sw.version || '版本未知'}${sw.ok ? '' : '，过旧'}）${sw.ok ? '' : '\n' + sw.hint}` : `\n${sw.hint}`);
   console.log(lines.join('\n'));
 }
 
@@ -186,6 +187,7 @@ const commands = {
     // 工作副本 vs 快照
     const modified = ownedFiles(identity, [snapDir]).filter((f) => existsSync(join(project, f)) && existsSync(join(snapDir, f)) && sha(join(project, f)) !== sha(join(snapDir, f)));
     console.log(modified.length ? `  工作副本相对快照的本地修改（升级时三方合并保留）：\n    ${modified.join('\n    ')}` : '  工作副本与快照一致（无本地修改）。');
+    { const sw = stewardInfo(project); console.log(sw.dir ? `  steward：${sw.version || '版本未知'}${sw.ok ? '' : `（过旧，需 ≥ ${MIN_STEWARD}）`} · ${sw.dir}` : `  steward：未找到（${sw.hint.split('：')[0]}）`); }
     // 上游最新
     if (!args.offline) {
       const latest = await latestTag(identity.upstream.repo, identity.upstream.tagPrefix);
@@ -398,6 +400,37 @@ const commands = {
     console.log(`\n注意：生成物含字面量，steward status 会计为债——在 exemptions.json 登记 ${relative(project, dest).split('\\').join('/')}/**（理由：范围根生成物）。浏览器下限：@scope 需 Chrome/Edge 118+、Safari 17.4+、Firefox 128+。同屏新旧混排不支持（按路由分板块）。`);
   },
 
+  /**
+   * 提案回流：配方不够用 / 桥接漏了 / 文档说不清时，生成格式统一的提案草稿（含系统版本、栈），打印预填好的 GitHub issue 链接；
+   * --write 存到 design-system/proposals/<日期>-<slug>.md（项目自有目录，升级不触碰）。不在页面上先糊样式再提。
+   */
+  propose() {
+    const m = readManifest();
+    const snapId = m ? readIdentity(snapshotDirOf(m)) : null;
+    const title = args.title || fail('缺 --title "一句话标题"');
+    const LAYERS = { token: 'token（新增 / 修改设计决定）', bridge: '桥接（组件库某状态没接管）', recipes: '配方 recipes.css（页面骨架公共类）', component: '配方组件（bridge/vue、bridge/react）', docs: 'DESIGN 文档（规则说不清 / 缺对照）', tools: '验收工具 / adopter skill', unknown: '不确定' };
+    const STACKS = { 'element-plus': 'Vue 3 + Element Plus', shadcn: 'React + shadcn/ui', css: '纯 CSS（非 Node 项目）' };
+    const layer = LAYERS[args.layer || 'unknown'] || fail(`--layer 取值：${Object.keys(LAYERS).join(' / ')}`);
+    const stack = STACKS[args.stack || m?.stack] || '其他（在场景里说明）';
+    const system = m && snapId ? `${m.system} ${snapId.version}` : (args.system || '（未接入项目，填系统与版本）');
+    const scene = args.scene || '（哪个页面 / 组件 / 交互，遇到了什么；现在怎么顶住的）';
+    const expected = args.expect || '（想要它长什么样、遵守哪些既有规则）';
+    const tokens = args.tokens || '';
+    const evidence = args.evidence || '';
+    const proj = basename(project);
+    const md = `# [提案] ${title}\n\n- 设计系统与版本：${system}\n- 技术栈：${stack}\n- 建议进哪一层：${layer}\n- 涉及的既有 token：${tokens || '—'}\n- 项目：${proj}\n\n## 场景\n\n${scene}\n\n## 期望形态\n\n${expected}\n\n## 证据\n\n${evidence || '（截图 / 验收输出 / 复现路由）'}\n`;
+    console.log(md);
+    const repo = snapId?.upstream?.repo || 'WYCM9527/Design-System';
+    const q = new URLSearchParams({ template: 'design-system-proposal.yml', title: `[提案] ${title}`, labels: 'proposal', system, stack, scene, expected, layer, tokens, evidence, project: proj });
+    console.log(`GitHub 预填链接（打开即可提交）：\nhttps://github.com/${repo}/issues/new?${q}`);
+    if (args.write) {
+      const dir = join(project, 'design-system/proposals'); mkdirSync(dir, { recursive: true });
+      const slug = title.replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '').slice(0, 40) || 'proposal';
+      const file = join(dir, `${today()}-${slug}.md`); writeFileSync(file, md);
+      console.log(`\n草稿已存：${relative(project, file)}（项目自有目录，升级不触碰；提交 issue 后可删或保留作记录）`);
+    }
+  },
+
   agents() {
     const m = readManifest() || fail(`没有 ${MANIFEST}；先 init / adopt`);
     const identity = readIdentity(snapshotDirOf(m)) || fail('快照缺 design-system.json');
@@ -409,7 +442,7 @@ const commands = {
 
   async steward() {
     const sub = args._[1];
-    if (sub === 'locate') { const p = locateSteward(project); console.log(p || stewardInstallHint(project)); if (!p) process.exit(1); }
+    if (sub === 'locate') { const sw = stewardInfo(project); if (!sw.dir) { console.log(sw.hint); process.exit(1); } console.log(sw.dir); console.log(`版本 ${sw.version || '未知'} · adopter 要求 ≥ ${MIN_STEWARD}${sw.ok ? ' · ok' : ' · 过旧'}`); if (!sw.ok) { console.log(sw.hint); process.exit(1); } }
     else if (sub === 'install') { const p = await installSteward(project); console.log(`steward 已安装：${p}`); }
     else fail('用法：steward locate | steward install');
   },
@@ -423,7 +456,7 @@ const commands = {
   },
 
   help() {
-    console.log(readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').filter((l) => l.startsWith('//')).slice(1, 22).map((l) => l.replace(/^\/\/ ?/, '')).join('\n'));
+    console.log(readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').filter((l) => l.startsWith('//')).slice(1, 23).map((l) => l.replace(/^\/\/ ?/, '')).join('\n'));
   }
 };
 

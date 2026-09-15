@@ -2,7 +2,7 @@
 name: design-system-adopter
 description: 把公司发布的设计系统（带 design-system.json 身份文件的种子包，如 Citrine）接入任意 Web 项目并保持更新。用户说「用 XX 设计系统起项目 / 接入设计系统 / 换成公司设计规范 / 更换现有规范 / 升级设计系统 / 设计系统有没有新版本 / update design system」，或项目里出现 design-systems/<id>/ 快照、design-system/.adopter.json 时使用。覆盖：从 0 接入、旧项目换规范（配合 design-system-steward 迁移）、按 tag 拉上游 + 三方合并更新、生成 AGENTS.md 项目规则、验收归因。不用于：治理 / 提炼项目自己的设计系统（那是 design-system-steward）、普通的孤立 UI 修改。
 metadata:
-  version: "0.1.0"
+  version: "0.2.0"
 ---
 
 # Design System Adopter
@@ -43,8 +43,9 @@ metadata:
 | `ds.mjs restore [--files a,b\|--all] [--from <dir>]` | 快照被改时从上游 / node_modules 恢复 |
 | `ds.mjs export --to <dir> [--system <id\|路径\|npm包名>] [--with element-plus,shadcn] [--dry-run] [--force]` | 纯 CSS 交付（非 Node 项目）：写 `index.css` + `recipes.css`（+ 可选桥接）带版本头与清单；重导出逐文件列未变 / 更新 / 新增，被手改的导出文件拦截（`--force` 覆盖） |
 | `ds.mjs scope --root <class> --to <dir> [--with element-plus] [--system …]` | 范围根：token（优先项目 dist）+ recipes + 桥接各自包进 `@scope (html.<root>)`（`:root` / `html` 改写为 `:scope`，`@import / @theme / @keyframes` 提升顶层），打印路由守卫片段；`.adopter.json` 记账，`upgrade` 后提醒再生成 |
+| `ds.mjs propose --title "…" [--layer token\|bridge\|recipes\|component\|docs\|tools] [--scene …] [--expect …] [--tokens a,b] [--write]` | 提案回流：生成格式统一的提案草稿（自动带系统版本与栈）并打印**预填好的 GitHub issue 链接**；`--write` 存到 `design-system/proposals/`。配方不够用 / 桥接漏了 / 文档说不清时用它，不在页面上先糊样式 |
 | `ds.mjs agents [--stack <栈>] [--write]` | 渲染 AGENTS.md（模板 + 栈要点）；默认只打印，用户确认后再 `--write`（新建或追加，不覆盖） |
-| `ds.mjs steward locate\|install` | 查找 / 安装 design-system-steward（构建、Guard、迁移都靠它） |
+| `ds.mjs steward locate\|install` | 查找 / 安装 design-system-steward（构建、Guard、迁移都靠它）；多份拷贝时取版本最高的，低于 0.6.0 会报过旧 |
 | `ds.mjs self-update` | 用上游仓库 main 更新本 skill 自己 |
 
 上游是**私有仓库**时（公司内常态）：`status / upgrade / restore / steward install / self-update` 的网络路径按顺序尝试 `GITHUB_TOKEN` / `GH_TOKEN`（API tarball）→ 匿名 codeload（公开库）→ `git clone --depth 1`（本机 git 凭证）；三条都不通就用 `--from <dir|tgz>` 离线来源。
