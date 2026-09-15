@@ -139,8 +139,9 @@
   --el-button-disabled-text-color: var(--color-text-on-danger);
 }
 .el-button--danger.is-plain { --el-button-text-color: var(--color-status-error); --el-button-bg-color: var(--color-status-error-bg); --el-button-border-color: var(--color-status-error-bg); }
+.el-button.el-button--danger.is-plain { --el-button-hover-bg-color: var(--color-action-danger); --el-button-hover-border-color: var(--color-action-danger); --el-button-active-bg-color: var(--color-action-danger-active); --el-button-active-border-color: var(--color-action-danger-active); }   /* hover 填充走 action.danger（与实心危险按钮同一填充）；Element 默认填 --el-color-danger = status.error，dark 下是为可读性调浅的红，白字只有 3.2:1 */
 /* 行内危险操作（表格操作列、下拉项）：type="danger" 的文字 / 链接按钮 = quiet 浅底 + text.danger 文字，hover 不变色；实底危险按钮只留给最终确认 */
-.el-button.el-button--danger.is-link, .el-button.el-button--danger.is-text { --el-button-text-color: var(--color-text-danger); --el-button-hover-text-color: var(--color-text-danger); --el-button-active-text-color: var(--color-text-danger); --el-button-disabled-text-color: var(--color-text-danger); }   /* 特异性压过下方通用的 .el-button.is-text（链接灰），否则危险与普通操作同色 */
+.el-button.el-button--danger.is-link, .el-button.el-button--danger.is-text { --el-button-text-color: var(--color-text-danger); --el-button-hover-text-color: var(--color-text-danger); --el-button-hover-link-text-color: var(--color-text-danger); --el-button-active-text-color: var(--color-text-danger); --el-button-disabled-text-color: var(--color-text-danger); }   /* 特异性压过下方通用的 .el-button.is-text（链接灰），否则危险与普通操作同色 */
 /* 彩色文字不落在灰底上（用户规则）：危险文字按钮不用 quiet 灰底，而是 error 成对——红字 + 浅红底；hover 反馈用同色发丝边，不换色 */
 .el-button.el-button--danger.is-text:not(.is-disabled), .el-button.el-button--danger.is-text.is-disabled, .el-button.el-button--danger.is-text.is-disabled:hover { background-color: var(--color-status-error-bg); }   /* (0,4,0)：要压过 quiet 的 .el-button.is-text:not(.is-disabled) */
 .el-button.el-button--danger.is-text:not(.is-disabled):hover, .el-button.el-button--danger.is-text:not(.is-disabled):active { background-color: var(--color-status-error-bg); box-shadow: inset 0 0 0 var(--border-width-control) var(--color-status-error); }
@@ -153,7 +154,7 @@
   --el-button-active-border-color: var(--color-border-strong);
 }
 /* 链接型 / 文字型按钮：Element 会把 primary 型链接按钮渲染成黄字，改为中性 + 下划线 */
-.el-button.is-link { --el-button-text-color: var(--color-text-link); --el-button-hover-text-color: var(--color-text-link-hover); --el-button-active-text-color: var(--color-text-link-hover); text-decoration: var(--text-link-decoration); font-style: var(--text-link-style); }
+.el-button.is-link { --el-button-text-color: var(--color-text-link); --el-button-hover-text-color: var(--color-text-link-hover); --el-button-hover-link-text-color: var(--color-text-link-hover);   /* Element 的 .is-link:hover 读的是 hover-link-text-color，类型级默认 primary-light-5（本桥接映射为冷灰 border.strong）→ 白底 1.5:1 */ --el-button-active-text-color: var(--color-text-link-hover); text-decoration: var(--text-link-decoration); font-style: var(--text-link-style); }
 .el-button.is-text { --el-button-text-color: var(--color-text-link); --el-button-hover-text-color: var(--color-text-link-hover); }
 /* 按钮类内容不能裸放在背景上（rc.23）：quiet 静息浅底，hover 升一档。
    Element 给 is-text 写死 background-color: transparent（不走变量），必须属性级覆盖 */
@@ -465,7 +466,7 @@ button, input, select, textarea { font-family: inherit; }
   --el-button-active-text-color: var(--color-text-primary); --el-button-active-bg-color: var(--color-action-secondary-hover); --el-button-active-border-color: var(--color-border-strong);
   --el-button-disabled-text-color: var(--color-text-primary); --el-button-disabled-bg-color: var(--color-bg-surface); --el-button-disabled-border-color: var(--color-border-strong);
 }
-.el-button--success.is-link, .el-button--success.is-text, .el-button--warning.is-link, .el-button--warning.is-text, .el-button--info.is-link, .el-button--info.is-text { --el-button-text-color: var(--color-text-link); --el-button-hover-text-color: var(--color-text-link-hover); --el-button-active-text-color: var(--color-text-link-hover); }
+.el-button--success.is-link, .el-button--success.is-text, .el-button--warning.is-link, .el-button--warning.is-text, .el-button--info.is-link, .el-button--info.is-text { --el-button-text-color: var(--color-text-link); --el-button-hover-text-color: var(--color-text-link-hover); --el-button-hover-link-text-color: var(--color-text-link-hover); --el-button-active-text-color: var(--color-text-link-hover); }
 /* 标签：Element 默认类型是 primary（黄字浅底）→ 按中性状态胶囊；dark 效果 = 反转块；plain = 描边 */
 .el-tag.el-tag--primary { --el-tag-text-color: var(--color-status-neutral); --el-tag-bg-color: var(--color-status-neutral-bg); --el-tag-border-color: var(--color-status-neutral-bg); --el-tag-hover-color: var(--color-text-muted); }
 .el-tag--dark.el-tag--primary { --el-tag-text-color: var(--color-text-on-selected); --el-tag-bg-color: var(--color-action-selected); --el-tag-border-color: var(--color-action-selected); --el-tag-hover-color: var(--color-text-secondary); }
@@ -566,6 +567,8 @@ button, input, select, textarea { font-family: inherit; }
 .el-alert.is-dark .el-alert__description { color: inherit; }
 /* 横向菜单：选中仍是反转块，但左侧竖条是侧栏语义，横排时去掉 */
 .el-menu--horizontal .el-menu-item.is-active::before { display: none; }
+.el-menu.el-menu--horizontal .el-menu-item:not(.is-disabled):not(.is-active):hover, .el-menu.el-menu--horizontal .el-menu-item:not(.is-disabled):not(.is-active):focus { color: var(--el-menu-hover-text-color); }
+.el-menu.el-menu--horizontal .el-menu-item.is-active:hover, .el-menu.el-menu--horizontal .el-menu-item.is-active:focus { background: var(--color-bg-sidebar-selected); color: var(--color-text-sidebar-selected); }   /* 选中项 hover 保持反转块：Element 横向 hover（0,4,0）会把底换成浅灰而字仍是白 */   /* Element 横向菜单 hover 文字取 active-color（反转块的白字）配 hover-bg（浅灰）→ 1.1:1；与侧栏一致用 hover-text-color */
 /* ---- 禁用态 = opacity.disabled，不另造一套灰 ----
    Element 的按钮禁用靠一组 disabled 变量换色（主按钮退成 primary-light-5，被我们映射成边线灰，看起来像次要按钮）。
    把禁用色接回常态色，只留透明度；加载中也不再盖一层淡色——转圈本身就是状态。 */

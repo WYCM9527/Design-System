@@ -1,4 +1,4 @@
-/* Citrine 黄晶（citrine）2.9.0 · recipes.css · 范围根 html.citrine · design-system-adopter scope 2026-09-15
+/* Citrine 黄晶（citrine）2.11.1 · recipes.css · 范围根 html.citrine · design-system-adopter scope 2026-09-15
    生成物，只读：token / 桥接变化后重跑 ds.mjs scope 再生成；项目差异写在自己的样式文件里。 */
 @keyframes tskel-shimmer { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
 
@@ -198,6 +198,15 @@
   /* ── 图表容器：高度用 token 表达（控件高度 × 7 / × 9） ── */
   .chart { height: calc(var(--control-height-md) * 7); width: 100%; }
   .chart.tall { height: calc(var(--control-height-md) * 9); }
+  /* ── 纯 CSS 表格 `.table`（没有组件库的模板项目用；Element / shadcn 走各自桥接）：表头 bg.subtle + text.secondary，单元格 table.cell.padding，行 hover bg.hover，发丝线 ── */
+  .table-wrap { overflow-x: auto; }
+  /* 手机上表格内部横向滚动，文档级不溢出 */
+  .table { width: 100%; border-collapse: collapse; font-size: var(--text-body-sm-size); }
+  .table th, .table td { padding: var(--table-cell-padding-y) var(--table-cell-padding-x); border-bottom: var(--border-width-default) solid var(--color-border-default); text-align: left; vertical-align: middle; white-space: nowrap; }
+  .table th { background: var(--color-bg-subtle); color: var(--color-text-secondary); font-weight: var(--text-weight-label); font-size: var(--text-small-size); }
+  .table tbody tr:hover { background: var(--color-bg-hover); }
+  .table tbody tr:last-child td { border-bottom: 0; }
+  .table .num-col { text-align: right; }
   /* ── 统计卡（bridge/vue/StatCard.vue 与 bridge/react/StatCard.tsx 共用这组类）：数据大字 + 涨跌 + 口径说明，左侧品牌指示条是固定特征 ── */
   .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-stack); }
   .stat-card { background: var(--color-bg-surface); border: var(--border-width-default) solid var(--color-border-default); border-left: var(--border-width-indicator) solid var(--color-brand-indicator); border-radius: var(--radius-lg); box-shadow: 0 var(--elevation-card-y) var(--elevation-card-blur) var(--elevation-card-color); padding: var(--spacing-5) var(--space-card); min-width: 0; }

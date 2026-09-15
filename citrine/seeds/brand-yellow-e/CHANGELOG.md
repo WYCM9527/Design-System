@@ -7,6 +7,12 @@
 - **shadcn 桥接接管表格单元格内边距**：shadcn 默认 `TableCell p-2` / `TableHead h-10 px-2` = 8px，内容贴边、行高 44；现接 `table.cell.padding-x / -y`（20 / 14），与 Element 桥接同一节奏（首列距卡片边 21px、行高 56）；勾选列保留 shadcn 的紧右边。用户反馈「表格内容距离边界太近，没有呼吸感」——桥接层缺口，不是页面问题。
 - **recipes 新增纯 CSS 表格配方 `.table` / `.table-wrap` / `.num-col`**：没有组件库的模板项目（Flask 等）此前要自己写表格样式；现在与 Element 同形（表头 `bg.subtle` + `text.secondary`、单元格 token 内边距、hover、发丝线、外层横向滚动）。
 - DESIGN「组件库对照：shadcn/ui」Table 行补单元格内边距。
+- **走查探针改为禁用过渡后再读状态色**（tools）：此前 `forcePseudoState` 后立即读计算值，Element 按钮 `transition .1s` 进行中——快机器读到近似静息色（**一直在掩盖真实悬停泄漏**），CI 慢机器读到无意义的中间灰（2.11.1 首跑 CI 才暴露）。探针现注入 `* { transition: none; animation-duration: 0s }`，读到的是状态终值。
+- 由此暴露并修掉三处 Element 桥接的悬停 bug（亮暗、全局 / 范围根模式均复现）：
+  - `type=primary link` 按钮 hover 文字变冷灰 `border.strong`（白底 1.5:1）：Element 的 `.is-link:hover` 读的是 `--el-button-hover-link-text-color`（类型级默认 `primary-light-5`），桥接此前只接了 `--el-button-hover-text-color`；现所有 link 按钮 hover 统一为 `text.link-hover`，危险 link 为 `text.danger`。
+  - 横向菜单 `el-menu--horizontal` 项 hover 白字浅底（1.1:1）：Element 横向 hover 文字取 `active-color`（反转块的白字）、底取 `hover-bg`；现非选中项用 `hover-text-color`，选中项 hover 保持反转块。
+  - `type=danger plain` 按钮 dark 下 hover 白字压 `status.error`（为可读性调浅的红，3.2:1）：hover 填充改走 `action.danger`（与实心危险按钮同一填充，亮暗同 `red.700`）。
+- 走查悬停判定新增**成对放行**：白字压 `action.danger`（DESIGN 验收基线已批准的 3.7:1）不再误报——plain / text 危险按钮 hover 变实心时命中。
 
 ## 2.11.0 — 2026-09-15（可嵌入走查页 · 页面级静息黄色审计 · Windows CI）
 

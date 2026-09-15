@@ -291,7 +291,13 @@ const commands = {
       const delta = idx === -1 ? heads.slice(0, 5) : heads.slice(0, idx);
       if (delta.length) console.log(`\n${m.version} 以来的版本：\n  ` + delta.map((h) => h.replace(/^## /, '')).join('\n  '));
     }
-    if (m.scopeRoot && m.scopeDir) console.log(`\n项目是范围根模式（html.${m.scopeRoot} → ${m.scopeDir}）：build-tokens 之后重跑 ds.mjs scope 再生成范围包。`);
+    if (m.scopeRoot && m.scopeDir) {
+      // 范围根项目消费的是 @scope 包裹的生成物，不重生成的话桥接 / recipes 的更新到不了应用（2.11.1 轻采：桥接修了、走查仍复现旧 bug）。
+      // 桥接 / recipes 部分取自刚刷新的快照，token 部分取项目 dist 现状——token 源有变时 build-tokens 之后再跑一次 scope。
+      console.log(`\n范围根模式（html.${m.scopeRoot} → ${m.scopeDir}）：用新快照重生成范围包…`);
+      try { commands.scope(); } catch (e) { console.log(`  重生成失败（${e.message}）——手工跑 ds.mjs scope。`); }
+      console.log(`  token 源有变时：build-tokens → 再跑一次 ds.mjs scope。`);
+    }
     console.log(`\n完成 ${label}。接下来：build-tokens → guard → ${remoteIdentity.accept?.command || '验收'}（token 变化会带来像素变化，属预期，对照 CHANGELOG）。`);
   },
 
