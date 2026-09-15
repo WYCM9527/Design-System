@@ -146,6 +146,9 @@
 /* 表格：表头 bg.subtle + text.secondary，行 hover bg.hover，选中行 bg.selected-subtle（shadcn 默认表头正文色、hover 用 muted 50%） */
 [data-slot="table-header"] { background-color: var(--color-bg-subtle); }
 [data-slot="table-head"] { color: var(--color-text-secondary); font-weight: var(--text-weight-label); }
+/* 单元格内边距接 table.cell.padding-x / -y（20 / 14）：shadcn 默认 p-2 = 8px、表头 h-10，内容贴边没有呼吸感；表头高度改由内边距决定 */
+[data-slot="table-cell"], [data-slot="table-head"] { padding: var(--table-cell-padding-y) var(--table-cell-padding-x); height: auto; }
+[data-slot="table-cell"]:has([role="checkbox"]), [data-slot="table-head"]:has([role="checkbox"]) { padding-right: 0; }   /* 勾选列保持 shadcn 的紧右边 */
 [data-slot="table-row"]:hover { background-color: var(--color-bg-hover); }
 [data-slot="table-row"][data-state="selected"] { background-color: var(--color-bg-selected-subtle); }
 [data-slot="table-row"], [data-slot="table-header"] tr { border-color: var(--color-border-default); }

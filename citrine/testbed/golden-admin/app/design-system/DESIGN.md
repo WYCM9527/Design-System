@@ -176,7 +176,7 @@ Element Plus 由 `bridge/element-plus.css` 逐组件接管；shadcn/ui 由 `brid
 | `Tooltip` | 反转块 | shadcn 默认 `bg-primary`（黄），桥接改为 `bg.inverse` + `text.inverse` |
 | `Dialog` / `AlertDialog` 遮罩 | `bg.overlay` | shadcn 写死 `bg-black/50`，桥接接管 `*-overlay` |
 | `Skeleton` / `Progress` 轨道 | `bg.skeleton` / `border.default` | shadcn 用 `accent`（选中底）与 `primary/20`（黄的洗色），都不是 |
-| `Table` | 表头 `bg.subtle` + `text.secondary` + 500，行 hover `bg.hover`，选中 `bg.selected-subtle` | shadcn 默认表头正文色、hover `muted/50` |
+| `Table` | 表头 `bg.subtle` + `text.secondary` + 500，单元格内边距 `table.cell.padding-x / -y`（20 / 14），行 hover `bg.hover`，选中 `bg.selected-subtle` | shadcn 默认表头正文色、hover `muted/50`、单元格 `p-2` = 8px（内容贴边，2.11.1 桥接接管） |
 | `Checkbox` / `RadioGroup` / `Switch` | 选中黄（允许），命中区 24 | 视觉 16，桥接用伪元素外扩到 `control.hit-min` |
 | `h-8` / `h-9` / `h-10`、`size-9`、`SelectTrigger size` | `control.height.sm / md / lg` | shadcn 三档是 32 / 36 / 40，桥接按 `data-slot` 接到 28 / 34 / 40 |
 | 焦点 | 边线换 `--ring`（= `border.focus`）+ 3px 环 | 桥接把环色从「`--ring` 的 50%」换成 `focus.ring`（16% 灰环）；有 `data-slot` 的元素不再叠全局 outline |

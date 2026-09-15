@@ -2,6 +2,12 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.11.1 — 2026-09-15（表格呼吸感：shadcn 单元格内边距接 token；纯 CSS 表格配方）
+
+- **shadcn 桥接接管表格单元格内边距**：shadcn 默认 `TableCell p-2` / `TableHead h-10 px-2` = 8px，内容贴边、行高 44；现接 `table.cell.padding-x / -y`（20 / 14），与 Element 桥接同一节奏（首列距卡片边 21px、行高 56）；勾选列保留 shadcn 的紧右边。用户反馈「表格内容距离边界太近，没有呼吸感」——桥接层缺口，不是页面问题。
+- **recipes 新增纯 CSS 表格配方 `.table` / `.table-wrap` / `.num-col`**：没有组件库的模板项目（Flask 等）此前要自己写表格样式；现在与 Element 同形（表头 `bg.subtle` + `text.secondary`、单元格 token 内边距、hover、发丝线、外层横向滚动）。
+- DESIGN「组件库对照：shadcn/ui」Table 行补单元格内边距。
+
 ## 2.11.0 — 2026-09-15（可嵌入走查页 · 页面级静息黄色审计 · Windows CI）
 
 - **走查页成为种子配方组件**：`bridge/vue/KitchenSink.vue`（Element Plus 全部组件，600+ 交互元素，源自黄金后台走查页，零项目依赖）任何 Element 项目挂到 `/kitchen` 即可跑 `citrine-accept components`；shadcn 项目用 `templates/KitchenSink.tsx`（import 项目的 `@/components/ui/*` 与包里的配方组件，拷进项目）。身份文件 `stacks.<栈>.kitchen` 指向它们。轻采首次跑组件走查：619 个元素 × 亮暗 0 发现——同时证明范围根（`@scope` 包裹）下桥接的 hover / focus 与全局模式完全一致；shadcn-lab 的走查页改为直接用模板。
