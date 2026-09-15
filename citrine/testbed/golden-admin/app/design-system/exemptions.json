@@ -2,8 +2,6 @@
   "version": 1,
   "exemptions": [
     { "path": "src/styles/app.css", "value": "6px", "reason": "状态徽标圆点直径（组件几何）" },
-    { "path": "src/styles/app.css", "value": "2px", "reason": "徽标上下 padding 微调（组件几何）" },
-    { "path": "src/styles/bridge/element-plus.css", "reason": "Element Plus 桥接：inset 10px/-10px 固定列阴影几何、1px inset 聚焦线、outline-offset 与 radio-button 1px 拼接线，均为 Element 组件内部几何；颜色全部走 token" },
-    { "path": "src/styles/bridge/iconpark.css", "reason": "IconPark 桥接：注释里的示意字号，不是样式值" }
+    { "path": "src/styles/app.css", "value": "2px", "reason": "徽标上下 padding 微调（组件几何）" }
   ]
 }
