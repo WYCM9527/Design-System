@@ -2,6 +2,12 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.11.4 — 2026-09-16（上架 npm registry：`@wycm9527/citrine` 与 `@wycm9527/citrine-tools`）
+
+- **两个包发到 npmjs.org**（首发手工，此后由 `release.yml` 的 `publish` job 随 tag 自动发布，已存在的版本跳过，带 provenance；认证走 npm Trusted Publishing，或退回 Secret `NPM_TOKEN`）。同事安装多了最短的一条路：`npm i @wycm9527/citrine && npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2`（GUIDE §2 方式 A）；文件夹渠道 + Release 直链保留为方式 B（registry 不通 / 想把种子锁进项目 git）。小白版提示词先试 A、失败退 B。
+- 发布元数据修正：两个包补 `publishConfig.access: public`（scoped 包默认私有，否则 `npm publish` 被拒）、`homepage`（GUIDE）、`bugs`；工具包 `repository` 此前指错到 `WYCM9527/skills`，改为 `Design-System`；工具包补 `keywords`。
+- **tools 1.1.1**：仅元数据变化，按「工具有改动必升版本」升号，使 npm 与 Release 上同一版本号内容一致。
+
 ## 2.11.3 — 2026-09-16（分发就绪：公开仓库叙述、团队安全的安装渠道、init 自动推断、暗色生效校验）
 
 - **文档改为公开仓库叙述**（GUIDE §1 / §2 / §2b / §5 / §8 / §8b、三个 README、adopter 参考）：仓库 `WYCM9527/Design-System` 是公开的，删掉所有「请管理员加权限 / gh auth login / GITHUB_TOKEN」步骤；下载失败一律按网络问题处理。

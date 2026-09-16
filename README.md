@@ -4,7 +4,7 @@
 
 | 设计系统 | 定位 | 版本 |
 | --- | --- | --- |
-| [**Citrine · 黄晶**](citrine/) | 中后台 · 品牌黄唯一焦点 + 冷灰骨架 · 亮 / 暗 · 三端（桌面 / 窄屏 / 手机） · Element Plus / shadcn/ui / ECharts 桥接 · 给编码 Agent 的配方与验收基线 | 2.11.3 |
+| [**Citrine · 黄晶**](citrine/) | 中后台 · 品牌黄唯一焦点 + 冷灰骨架 · 亮 / 暗 · 三端（桌面 / 窄屏 / 手机） · Element Plus / shadcn/ui / ECharts 桥接 · 给编码 Agent 的配方与验收基线 | 2.11.4 |
 
 [![Citrine](citrine/docs/screenshots/hero.png)](citrine/)
 
@@ -19,15 +19,15 @@ git clone --depth 1 https://github.com/WYCM9527/Design-System.git /tmp/ds
 # 1) 装 skill 到项目 .cursor/skills/（也可放 ~/.cursor/skills 或 ~/.codex/skills 全局用）
 mkdir -p .cursor/skills && cp -R /tmp/ds/design-system-adopter .cursor/skills/
 
-# 2) 种子放进项目（Citrine 为例）：init 会把它落成 design-systems/citrine/ 快照并用 npm i file:./design-systems/citrine 链接——项目内相对路径，任何机器一样
-cp -R /tmp/ds/citrine/seeds/brand-yellow-e vendor/citrine
+# 2) 种子 + 验收工具 + token 构建器（Citrine 为例）。方式 A：npm registry
+npm i @wycm9527/citrine && npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2
+#   方式 B（连不上 registry / 想把种子锁进项目 git）：种子拷进项目，init 会落成 design-systems/citrine/ 快照并 npm i file:./design-systems/citrine 链接；工具用 Releases 直链
+#   cp -R /tmp/ds/citrine/seeds/brand-yellow-e vendor/citrine
+#   npm i -D https://github.com/WYCM9527/Design-System/releases/latest/download/wycm9527-citrine-tools-1.1.1.tgz style-dictionary@5.5.2
 #   非 Node 项目：到 Releases 下载 citrine-css-<版本>.tgz（纯 CSS，零工具）
-
-# 3) 验收工具 + token 构建器（工具用 Releases 直链，版本以 Releases 页最新为准；发到 npm 后就是 npm i -D @wycm9527/citrine-tools）
-npm i -D https://github.com/WYCM9527/Design-System/releases/latest/download/wycm9527-citrine-tools-1.1.0.tgz style-dictionary@5.5.2
 ```
 
-不要 `npm i file:/tmp/ds/...`：那是只在你电脑上存在的路径，队友 `npm install` 会失败。
+两种方式队友都零配置。唯独不要 `npm i file:/tmp/ds/...`：那是只在你电脑上存在的路径，队友 `npm install` 会失败。
 
 完整上手教程（四件东西的关系、三个场景的提示词与拍板点、命令速查、常见问题）见 [docs/GUIDE.md](docs/GUIDE.md)；不想碰命令行的同学直接粘贴教程 [2b 节的「小白版」整段提示词](docs/GUIDE.md#2b-小白版整段交给-ai)，AI 会自己检查环境、下载、安装、自检。
 

@@ -41,14 +41,15 @@ git clone --depth 1 https://github.com/WYCM9527/Design-System.git /tmp/ds
 cd your-project
 mkdir -p .cursor/skills && cp -R /tmp/ds/design-system-adopter .cursor/skills/
 
-# 3) 种子放进项目（文件夹渠道：随项目提交，队友 clone 后零配置）
-cp -R /tmp/ds/citrine/seeds/brand-yellow-e vendor/citrine   # 放哪都行，init 会把它落成 design-systems/citrine/ 快照，之后 vendor/ 可删
+# 3) 种子 + 验收工具 + token 构建器——方式 A：npm registry（步骤最少；两个包都在 npmjs.org 上）
+npm i @wycm9527/citrine && npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2
 
-# 4) 验收工具 + token 构建器（工具用 Releases 的直链；版本号以 Releases 页最新为准）
-npm i -D https://github.com/WYCM9527/Design-System/releases/latest/download/wycm9527-citrine-tools-1.1.0.tgz style-dictionary@5.5.2
+# 3') 方式 B：文件夹渠道（连不上 npm registry、或想把种子锁进项目 git 时）——种子拷进项目，工具用 Releases 直链
+cp -R /tmp/ds/citrine/seeds/brand-yellow-e vendor/citrine   # 放哪都行，init 会把它落成 design-systems/citrine/ 快照，之后 vendor/ 可删
+npm i -D https://github.com/WYCM9527/Design-System/releases/latest/download/wycm9527-citrine-tools-1.1.1.tgz style-dictionary@5.5.2
 ```
 
-**为什么种子不用 `npm i file:/tmp/ds/...`**：那会把一条只在你电脑上存在的路径写进 `package.json`，队友 `npm install` 直接失败。文件夹渠道把种子快照 `design-systems/citrine/`（约 600K）提交进项目，`init` 打印的 `npm i file:./design-systems/citrine` 是项目内相对路径，任何机器都一样。备选：包发到 npm registry 后可以改用 `npm i @wycm9527/citrine`（adopter 两种来源都认，已接入的项目不必迁）。
+两种方式 adopter 都认，队友都零配置（A 写进 `package.json` 的是版本号，B 是项目内相对路径 `file:./design-systems/citrine`），已接入的项目不必换。**唯独不要 `npm i file:/tmp/ds/...`**：那会把一条只在你电脑上存在的路径写进 `package.json`，队友 `npm install` 直接失败。国内访问 registry.npmjs.org 慢或不通时，`npm config set registry https://registry.npmmirror.com`（镜像同步公开包，通常十分钟内）或改用方式 B。
 
 steward 不用手动装：Agent 走到需要构建时会先找（`~/.cursor/skills`、`~/.codex/skills`、项目 `.cursor/skills`），找不到会给你一行安装命令，你点头它就装（来源是公开仓库 [WYCM9527/skills](https://github.com/WYCM9527/skills)）。
 
@@ -70,14 +71,13 @@ steward 不用手动装：Agent 走到需要构建时会先找（`~/.cursor/skil
 > `git clone --depth 1 https://github.com/WYCM9527/Design-System.git /tmp/ds`
 > 如果失败（超时 / 连不上）：停下，用大白话告诉我「访问 GitHub 失败」，让我处理网络后再重试。不要尝试其他下载方式。
 >
-> **三、安装四件东西**（在项目目录里）
+> **三、安装三件东西**（在项目目录里）
 > 1. skill：`mkdir -p .cursor/skills && cp -R /tmp/ds/design-system-adopter .cursor/skills/`。如果你不是在 Cursor 里运行，就装到你自己的 skill 目录（Codex 是 `~/.codex/skills/`，Claude Code 是项目 `.claude/skills/`）。
-> 2. 设计系统种子（文件夹渠道，随项目提交，队友零配置）：`mkdir -p vendor && cp -R /tmp/ds/citrine/seeds/brand-yellow-e vendor/citrine`。不要用 `npm i file:/tmp/...`——那会把只在这台电脑上存在的路径写进 package.json。
-> 3. 验收与构建工具：先访问 `https://api.github.com/repos/WYCM9527/Design-System/releases/latest`，在 `assets` 里找名字以 `wycm9527-citrine-tools-` 开头的 `browser_download_url`，然后 `npm i -D <那个地址> style-dictionary@5.5.2`。
-> 4. 治理工具：`node .cursor/skills/design-system-adopter/scripts/ds.mjs steward locate`；如果输出「未找到」，就跑 `node .cursor/skills/design-system-adopter/scripts/ds.mjs steward install`。
+> 2. 设计系统种子与验收工具，先试 npm：`npm i @wycm9527/citrine && npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2`。如果报 404 / 超时 / 连不上，改走文件夹渠道：`mkdir -p vendor && cp -R /tmp/ds/citrine/seeds/brand-yellow-e vendor/citrine`，然后访问 `https://api.github.com/repos/WYCM9527/Design-System/releases/latest`，在 `assets` 里找名字以 `wycm9527-citrine-tools-` 开头的 `browser_download_url`，`npm i -D <那个地址> style-dictionary@5.5.2`。两条路都不要用 `npm i file:/tmp/...`——那会把只在这台电脑上存在的路径写进 package.json。
+> 3. 治理工具：`node .cursor/skills/design-system-adopter/scripts/ds.mjs steward locate`；如果输出「未找到」，就跑 `node .cursor/skills/design-system-adopter/scripts/ds.mjs steward install`。
 >
 > **四、自检**（四条都要通过才算装好，任何一条不过就回到对应步骤重做）
-> - `node .cursor/skills/design-system-adopter/scripts/ds.mjs detect` 的输出里有 `[folder] citrine`
+> - `node .cursor/skills/design-system-adopter/scripts/ds.mjs detect` 的输出里有 `citrine`（npm 装的显示 `[npm]`，文件夹渠道显示 `[folder]`）
 > - `node .cursor/skills/design-system-adopter/scripts/ds.mjs steward locate` 输出一个路径
 > - 文件 `.cursor/skills/design-system-adopter/SKILL.md` 存在
 > - 文件 `node_modules/.bin/citrine-accept` 存在
@@ -233,7 +233,7 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 | 现象 | 原因 / 处理 |
 | --- | --- |
 | `upgrade` / `steward install` 报下载失败 | 访问 GitHub 不通（仓库是公开的，不是权限问题）：换网络重试；完全离线用 `upgrade --from <种子目录或 tgz>`（tgz 到 Releases 页下载） |
-| `npm i @wycm9527/citrine` 404 | 包还没发到 npm registry。用第 2 节的文件夹渠道，或 Release 直链 `npm i https://github.com/WYCM9527/Design-System/releases/download/citrine-vX.Y.Z/wycm9527-citrine-X.Y.Z.tgz` |
+| `npm i @wycm9527/citrine` 404 / 超时 | 多半是 registry 访问问题：换镜像 `npm config set registry https://registry.npmmirror.com`，或走第 2 节方式 B（文件夹渠道 + Release 直链） |
 | 队友 `npm install` 报找不到 `file:/tmp/...` 或 `file:../ds/...` | 有人用机器专属路径装了种子 / 工具。改成第 2 节的写法：种子走文件夹渠道（`file:./design-systems/citrine`），工具走 Release 直链 |
 | 验收报「暗色未生效」 | 页面没把 `?theme=dark` 落成 `<html class="dark">`（`index.html` 首屏先读 URL 再读 localStorage）；项目确实没有暗色就 `--modes light` |
 | 验收报「品牌黄出现在允许清单之外」 | 页面把黄色用成了强调 / 状态（如未读点、引用块边线）——换中性或状态色；确属合法位置（登录品牌区、数据卡骨架）写进 `accept.config.mjs` 的 `YELLOW_ALLOW` 并写理由 |
@@ -250,7 +250,7 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 
 - 每次 push / PR 自动跑 CI：adopter 单测、角色表与 token 源一致、六处版本号一致、种子 `dist` 与源一致，以及三个实测项目的 guard / status / 全量验收（并行三个 job，失败会上传截图与报告为 artifact）。不绿不合。
 - 发版：改 `design-system.json` 与 `package.json` 版本、写 CHANGELOG、`node citrine/scripts/check-versions.mjs` 通过后打 tag `citrine-vX.Y.Z` 推送——`release.yml` 自动建 GitHub Release（说明取 CHANGELOG 段落，附件 = 种子与工具的 npm pack 产物 + 纯 CSS 包）。手动补历史版本：`node citrine/scripts/release.mjs --version X.Y.Z --notes-only`。
-- 发到 npm registry（可选，有 npm 账号后）：种子目录与 `citrine/tools` 各 `npm publish --access public`（scope `@wycm9527` 须是你的 npm 用户名或组织）；之后同事可用 `npm i @wycm9527/citrine` / `npm i -D @wycm9527/citrine-tools`，文件夹渠道的项目不受影响。要免手工，把 npm 发布令牌存为仓库 Secret `NPM_TOKEN`，在 `release.yml` 里加一步 `npm publish`。
+- npm 发布是 `release.yml` 的第二个 job：同一个 tag 把 `@wycm9527/citrine` 与 `@wycm9527/citrine-tools` 发到 registry（已存在的版本跳过，所以只升种子不升工具也没事；带 provenance）。认证走 npm **Trusted Publishing**（在 npmjs.com 两个包的 Settings → Trusted Publisher 登记 GitHub `WYCM9527/Design-System` + 工作流 `release.yml`，零密钥）；也可退回仓库 Secret `NPM_TOKEN`（granular token，勾 publish + bypass 2FA）。**工具有改动必升 `citrine/tools/package.json` 的版本号**，否则 registry 上已存在同版本会被跳过、Release 里同名 tgz 内容不同。
 
 ## 9. 反馈回路
 

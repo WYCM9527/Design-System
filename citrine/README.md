@@ -4,7 +4,7 @@
 
 ![Citrine · 实测项目「黄金后台」亮 / 暗模式](docs/screenshots/hero.png)
 
-版本 **2.11.3** · Core 321 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
+版本 **2.11.4** · Core 321 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
 
 ---
 
@@ -64,8 +64,7 @@ git clone https://github.com/WYCM9527/skills.git skills          # 治理工具�
 # 种子是纯数据包（目录 citrine/seeds/brand-yellow-e 即 npm 包 @wycm9527/citrine 的包根，身份文件 design-system.json）；
 # 接入 / 更新由仓库根的 design-system-adopter skill 驱动（安装一行命令见根 README），验收工具是 @wycm9527/citrine-tools（citrine/tools）
 cd /path/to/project
-cp -R <克隆>/citrine/seeds/brand-yellow-e vendor/citrine      # 种子放进项目（文件夹渠道，init 落成 design-systems/citrine/ 快照；发到 npm 后也可 npm i @wycm9527/citrine）
-npm i -D https://github.com/WYCM9527/Design-System/releases/latest/download/wycm9527-citrine-tools-1.1.0.tgz style-dictionary@5.5.2   # 验收工具走 Releases 直链
+npm i @wycm9527/citrine && npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2   # 方式 A：npm registry；方式 B（文件夹渠道 + Releases 直链）见 docs/GUIDE.md §2
 node .cursor/skills/design-system-adopter/scripts/ds.mjs init --system citrine --stack element-plus   # 或 --stack shadcn
 # init：落只读快照 design-systems/citrine/ → 生成工作副本 design-system/ → 写 .adopter.json → 打印该栈的样式入口与接线
 node <Design-System>/skills/design-system-steward/scripts/build-tokens.mjs --project "$PWD"   # → design-system/dist/

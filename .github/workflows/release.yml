@@ -29,3 +29,31 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: node citrine/scripts/release.mjs --version "${GITHUB_REF_NAME#citrine-v}"
+
+  # 同一个 tag 顺带把两个包发到 npm registry（@wycm9527/citrine、@wycm9527/citrine-tools）。已在 registry 的版本跳过，所以只升种子不升工具也没事。
+  # 认证两选一：npm「Trusted Publishing」（在 npmjs.com 包设置里登记 WYCM9527/Design-System 的 release.yml，靠 OIDC，零密钥，推荐）；
+  # 或仓库 Secret NPM_TOKEN（granular token，勾 publish 与 bypass 2FA）。两者都没配时本 job 会失败，但不影响上面的 GitHub Release。
+  publish:
+    needs: release
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: npm ≥ 11.5.1（Trusted Publishing 需要）
+        run: npm install -g npm@latest && npm -v
+      - name: 发布到 npm（已存在的版本跳过）
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -n "$NPM_TOKEN" ]; then echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc; echo "用 NPM_TOKEN 认证"; else echo "未配 NPM_TOKEN，走 Trusted Publishing（OIDC）"; fi
+          for d in citrine/seeds/brand-yellow-e citrine/tools; do
+            N=$(node -p "require('./$d/package.json').name"); V=$(node -p "require('./$d/package.json').version")
+            if [ -n "$(npm view "$N@$V" version 2>/dev/null)" ]; then echo "$N@$V 已在 registry，跳过"; continue; fi
+            (cd "$d" && npm publish --provenance --access public) && echo "已发布 $N@$V"
+          done

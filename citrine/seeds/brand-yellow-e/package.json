@@ -1,12 +1,12 @@
 {
   "name": "@wycm9527/citrine",
-  "version": "2.11.3",
+  "version": "2.11.4",
   "description": "Citrine（黄晶）· 公司级中后台设计系统种子：DTCG token（亮 / 暗）、DESIGN 规范、Element Plus / shadcn/ui / ECharts / IconPark 桥接、页面骨架配方与 Vue / React 配方组件。纯数据包：接入 / 更新由 design-system-adopter skill 驱动（识别 design-system.json）。",
   "license": "MIT",
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "https://github.com/WYCM9527/Design-System.git",
+    "url": "git+https://github.com/WYCM9527/Design-System.git",
     "directory": "citrine/seeds/brand-yellow-e"
   },
   "keywords": [
@@ -66,5 +66,12 @@
     "vue": {
       "optional": true
     }
+  },
+  "homepage": "https://github.com/WYCM9527/Design-System/blob/main/docs/GUIDE.md",
+  "bugs": {
+    "url": "https://github.com/WYCM9527/Design-System/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
