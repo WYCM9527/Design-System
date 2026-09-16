@@ -29,7 +29,7 @@ npm i @wycm9527/citrine && npm i -D @wycm9527/citrine-tools style-dictionary@5.5
 
 两种方式队友都零配置。唯独不要 `npm i file:/tmp/ds/...`：那是只在你电脑上存在的路径，队友 `npm install` 会失败。
 
-完整上手教程（四件东西的关系、三个场景的提示词与拍板点、命令速查、常见问题）见 [docs/GUIDE.md](docs/GUIDE.md)；不想碰命令行的同学直接粘贴教程 [2b 节的「小白版」整段提示词](docs/GUIDE.md#2b-小白版整段交给-ai)，AI 会自己检查环境、下载、安装、自检。
+**没有开发经验、全程靠 AI 的同学看 [docs/TUTORIAL.md（零基础上手教程）](docs/TUTORIAL.md)**：介绍 → 执行步骤 → 后续更新 → 特殊情况 → FAQ，每一步都是可直接粘给 AI 的提示词。完整参考（原理、命令速查、维护者事项）见 [docs/GUIDE.md](docs/GUIDE.md)。
 
 然后对 Agent 说一句话即可，skill 会问「从 0 开始 / 更换现有规范 / 只更新」并走完全流程（接入 → 构建 → 接线 → 项目规则 → 验收）。三段可直接粘贴的提示词：
 
