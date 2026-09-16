@@ -2,6 +2,11 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.11.5 — 2026-09-16（npm 自动发布上线：Trusted Publishing）
+
+- 两个 npm 包在 npmjs.com 登记了 Trusted Publisher（GitHub `WYCM9527/Design-System` · `release.yml`），从本版起打 tag 即自动上架，不再需要本机 `npm publish` 过验证码。本版就是这条链路的首次验证。
+- `check-versions` 多管一处：GUIDE §2 方式 B 与仓库根 README 里写死的工具直链 `wycm9527-citrine-tools-<ver>.tgz` 必须与 `citrine/tools/package.json` 版本一致，否则 CI 失败——此前靠人记着同步。
+
 ## 2.11.4 — 2026-09-16（上架 npm registry：`@wycm9527/citrine` 与 `@wycm9527/citrine-tools`）
 
 - **两个包发到 npmjs.org**（首发手工，此后由 `release.yml` 的 `publish` job 随 tag 自动发布，已存在的版本跳过，带 provenance；认证走 npm Trusted Publishing，或退回 Secret `NPM_TOKEN`）。同事安装多了最短的一条路：`npm i @wycm9527/citrine && npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2`（GUIDE §2 方式 A）；文件夹渠道 + Release 直链保留为方式 B（registry 不通 / 想把种子锁进项目 git）。小白版提示词先试 A、失败退 B。
