@@ -2,6 +2,11 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.11.2 — 2026-09-16（壳层固定图标词表：主题切换 Moon / SunOne）
+
+- **DESIGN「图标」新增壳层固定图标词表**：折叠 `MenuFold` / `MenuUnfold`、汉堡 `HamburgerButton`、通知 `Remind`、搜索 `Search`、用户菜单 `Down`；主题切换显示目标态——亮色下 `Moon`、暗色下 `SunOne`。此前图标选择散落在各项目布局里，两个 Element 项目暗色态用的 `Sunny` 是 IconPark 的**天气图标**（地平线上半个太阳），与 `Moon` 不成对；`Sun` 是实心盘（违背线性）、`DarkMode` 带徽章外框，均排除。shadcn 路径（lucide）给出对应词，其 `Sun` 本就是空心线性。
+- 两个 Element 实测项目换 `SunOne`；`notes-element.md` 模板指向词表。
+
 ## 2.11.1 — 2026-09-15（表格呼吸感：shadcn 单元格内边距接 token；纯 CSS 表格配方）
 
 - **shadcn 桥接接管表格单元格内边距**：shadcn 默认 `TableCell p-2` / `TableHead h-10 px-2` = 8px，内容贴边、行高 44；现接 `table.cell.padding-x / -y`（20 / 14），与 Element 桥接同一节奏（首列距卡片边 21px、行高 56）；勾选列保留 shadcn 的紧右边。用户反馈「表格内容距离边界太近，没有呼吸感」——桥接层缺口，不是页面问题。

@@ -127,6 +127,7 @@ Scope 是「Core 全局生效、某些页面有差异」；**范围根**是「Co
 - 图标不用风格变化表达状态：选中项、激活项的图标保持线性（`icon.theme.active` = outline），状态由底色与指示条承担。若某处确实需要面性外观（如底部 Tab），不要用 IconPark 的 filled（镂空色写死 #FFF，暗色或黄色底上漏白），用 multi-color 传四个颜色 `[描边, 填充, 镂空描边, 镂空填充]` 全部指向 token，见 `bridge/iconpark.config.ts` 的 `activeIconProps()`。
 - two-tone 只用于品牌时刻（空状态插图、引导页）：描边 `color.icon.brand`、填充 `color.icon.two-tone`。工作区内的功能图标一律线性。
 - 图标不单独承载信息：按钮里的图标必须伴随文字或 `aria-label`；状态图标必须与状态文字同时出现。
+- 壳层的固定图标词表（各项目不另选，保证跨项目一致）：侧栏折叠 / 展开 `MenuFold` / `MenuUnfold`，手机汉堡 `HamburgerButton`，通知 `Remind`，全局搜索 `Search`，用户菜单箭头 `Down`；**主题切换显示目标态**——亮色下 `Moon`（去暗色）、暗色下 `SunOne`（去亮色），两个都是线性、同等视觉重量。不用 `Sunny`（IconPark 的天气图标：地平线上半个太阳）、`Sun`（实心盘，违背线性）、`DarkMode`（带徽章外框，偏重）。 shadcn 路径（lucide，见 `templates/notes-shadcn.md`）对应：`PanelLeftClose` / `PanelLeftOpen`、`Menu`、`Bell`、`Search`、`ChevronDown`，主题 `Moon` / `Sun`（lucide 的 Sun 是空心线性，与 `SunOne` 同形）。
 - 接入组件库后，组件内部的功能性图标（下拉箭头、关闭、勾选、分页箭头）允许保留组件库自带的 SVG，不强求替换；业务图标（导航、操作、状态、空状态）一律 IconPark。两套图标在同一屏并存是接入真实组件库不可避免的妥协，实测（Element Plus）证明视觉上可接受。
 
 ## 数据可视化

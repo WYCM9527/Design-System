@@ -4,7 +4,7 @@
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { Home, Order, Audit, Box, Shop, ChartHistogram, TreeDiagram, Permissions, Setting, Log, Remind, Moon, Sunny, MenuFold, MenuUnfold, HamburgerButton, Down, Bug, CheckSmall } from '@icon-park/vue-next'
+import { Home, Order, Audit, Box, Shop, ChartHistogram, TreeDiagram, Permissions, Setting, Log, Remind, Moon, SunOne, MenuFold, MenuUnfold, HamburgerButton, Down, Bug, CheckSmall } from '@icon-park/vue-next'
 import { db } from '../data/db'
 import { session, user, roleLabel, userDept, canSee, switchUser, toggleTheme } from '../data/session'
 import { leaveIfClean } from '../data/guard'
@@ -121,7 +121,7 @@ async function onUser(cmd) {
         </el-popover>
 
         <button class="iconbtn" :class="{ 'is-on': session.theme === 'dark' }" :title="session.theme === 'dark' ? '切换亮色' : '切换暗色'" @click="toggleTheme">
-          <component :is="session.theme === 'dark' ? Sunny : Moon" class="i-icon--lg" />
+          <component :is="session.theme === 'dark' ? SunOne : Moon" class="i-icon--lg" />
         </button>
 
         <el-dropdown trigger="click" @command="onUser">

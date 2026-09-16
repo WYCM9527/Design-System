@@ -3,7 +3,7 @@
 const vAriaLabel = { mounted: (el, b) => el.setAttribute('aria-label', b.value), updated: (el, b) => el.setAttribute('aria-label', b.value) }
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { Home, ChartHistogram, Order, Expenses, Shop, Coupon, Riding, Remind, Peoples, User, Search, Moon, Sunny, MenuFold, MenuUnfold, HamburgerButton, Down } from '@icon-park/vue-next'
+import { Home, ChartHistogram, Order, Expenses, Shop, Coupon, Riding, Remind, Peoples, User, Search, Moon, SunOne, MenuFold, MenuUnfold, HamburgerButton, Down } from '@icon-park/vue-next'
 import { store, roleInfo, canSee, setRole, toggleTheme, ROLES } from '../store'
 
 const route = useRoute(); const router = useRouter()
@@ -74,7 +74,7 @@ function onCommand(cmd) {
           <span v-if="store.unread" class="unread num">{{ store.unread > 99 ? '99+' : store.unread }}</span>
         </button>
         <button class="iconbtn" :class="{ 'is-on': store.theme === 'dark' }" :title="store.theme === 'dark' ? '切换亮色' : '切换暗色'" @click="toggleTheme">
-          <component :is="store.theme === 'dark' ? Sunny : Moon" class="i-icon--lg" />
+          <component :is="store.theme === 'dark' ? SunOne : Moon" class="i-icon--lg" />
         </button>
         <el-dropdown trigger="click" @command="onCommand">
           <span class="user"><span class="avatar">王</span><span class="user-name">王小明 · {{ roleInfo.label }}</span><Down class="i-icon--sm i-icon--muted" /></span>
