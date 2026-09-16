@@ -31,14 +31,19 @@ export function findChrome() {
  * @returns {{ send, evalJs, callOn, close, chrome }}
  */
 export async function launch({ width = 1600, height = 1000, scale = 1, port = 9222 + Math.floor(Math.random() * 500) } = {}) {
-  const profile = mkdtempSync(join(tmpdir(), 'citrine-chrome-'));
-  const chrome = spawn(findChrome(), [
-    `--remote-debugging-port=${port}`, '--headless=new', '--hide-scrollbars', '--no-proxy-server', `--window-size=${width},${height}`,   // 只访问 127.0.0.1：绕开系统代理，否则代理环境下连本机被拒
-    `--force-device-scale-factor=${scale}`, '--no-first-run', '--no-default-browser-check', `--user-data-dir=${profile}`,
+  const spawnChrome = (p) => spawn(findChrome(), [
+    `--remote-debugging-port=${p}`, '--headless=new', '--hide-scrollbars', '--no-proxy-server', `--window-size=${width},${height}`,   // 只访问 127.0.0.1：绕开系统代理，否则代理环境下连本机被拒
+    `--force-device-scale-factor=${scale}`, '--no-first-run', '--no-default-browser-check', `--user-data-dir=${mkdtempSync(join(tmpdir(), 'citrine-chrome-'))}`,
     ...(process.env.CHROME_FLAGS || '').split(/\s+/).filter(Boolean),   // CI / 容器：如 CHROME_FLAGS="--no-sandbox --disable-dev-shm-usage"
     'about:blank',
   ], { stdio: 'ignore' });
-  const targets = await waitFor(async () => { const r = await fetch(`http://127.0.0.1:${port}/json/list`); const j = await r.json(); if (!j.length) throw new Error('no targets'); return j; });
+  // 冷启动的 CI runner 上 Chrome 偶尔 12s 内还没开出调试端口（或随机端口撞车）：等 30s，不行就换端口重启一次
+  let chrome, targets;
+  for (let attempt = 0; ; attempt++) {
+    chrome = spawnChrome(port);
+    try { targets = await waitFor(async () => { const r = await fetch(`http://127.0.0.1:${port}/json/list`); const j = await r.json(); if (!j.length) throw new Error('no targets'); return j; }, 100, 300); break; }
+    catch (e) { try { chrome.kill(); } catch {} if (attempt >= 1) throw new Error(`Chrome 调试端口未就绪（两次尝试）：${e.message}`); port = 9222 + Math.floor(Math.random() * 500); }
+  }
   const ws = new WebSocket(targets.find((t) => t.type === 'page').webSocketDebuggerUrl);
   await new Promise((res, rej) => { ws.onopen = res; ws.onerror = rej; });
   let id = 0; const pending = new Map(); const listeners = [];
