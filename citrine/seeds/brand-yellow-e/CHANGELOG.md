@@ -2,6 +2,15 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.11.3 — 2026-09-16（分发就绪：公开仓库叙述、团队安全的安装渠道、init 自动推断、暗色生效校验）
+
+- **文档改为公开仓库叙述**（GUIDE §1 / §2 / §2b / §5 / §8 / §8b、三个 README、adopter 参考）：仓库 `WYCM9527/Design-System` 是公开的，删掉所有「请管理员加权限 / gh auth login / GITHUB_TOKEN」步骤；下载失败一律按网络问题处理。
+- **安装渠道改为团队安全的写法**：此前 GUIDE 让人 `npm i file:/tmp/ds/...`，会把机器专属路径写进 `package.json`，队友 `npm install` 直接失败（同事视角模拟时发现）。现在种子默认走**文件夹渠道**——拷进项目 → `init` 落成 `design-systems/citrine/` 快照（约 700K，随项目提交）→ `npm i file:./design-systems/citrine`（项目内相对路径）；验收工具走 **Releases 直链** `npm i -D https://github.com/WYCM9527/Design-System/releases/latest/download/wycm9527-citrine-tools-<ver>.tgz`。npm registry 作为「发布后」备选（§8b 写了发布步骤），已接入项目不必迁。
+- **adopter `init` 自动推断**：`--system` 缺省时项目里只检测到一个系统就自动选用；`--stack` 缺省时按 `package.json` 依赖 / 标志文件推断（身份文件新增 `stacks.<id>.detect: { deps, files }`，Citrine：element-plus ← `element-plus`；shadcn ← `class-variance-authority` / `shadcn` / `components.json`），唯一命中才自动选。
+- **adopter `upgrade` / `status` 提示同步 node_modules**：npm 来源的项目页面 import 的桥接在 `node_modules` 里，`upgrade` 只刷快照与工作副本；现按 `package.json` 依赖写法打印对应命令（registry → `npm i <包>@<版>`；Release 直链 → 新版 tgz 地址；`file:` 链接 → 指出链接目标要换），`status` 在 node_modules 版本与清单不一致时警告。
+- **tools 1.1.0**：`pages` 扫描暗色那一遍核对 `DARK_SELECTOR`（模板默认 `html.dark`）是否命中，没命中算失败——此前项目没接 `?theme=dark` 时等于把亮色扫两遍还报「通过」；项目确实没有暗色用 `--modes light`。tools 自 1.0.0 起已有多次改动（`--url`、黄色审计、去过渡探针、Chrome 重试）却未升版本号，Release 里同名 tgz 内容不同会让按直链安装的 lockfile 校验失败；今后 tools 有改动必升版本。
+- 验收配置模板新增 `DARK_SELECTOR`。
+
 ## 2.11.2 — 2026-09-16（壳层固定图标词表：主题切换 Moon / SunOne）
 
 - **DESIGN「图标」新增壳层固定图标词表**：折叠 `MenuFold` / `MenuUnfold`、汉堡 `HamburgerButton`、通知 `Remind`、搜索 `Search`、用户菜单 `Down`；主题切换显示目标态——亮色下 `Moon`、暗色下 `SunOne`。此前图标选择散落在各项目布局里，两个 Element 项目暗色态用的 `Sunny` 是 IconPark 的**天气图标**（地平线上半个太阳），与 `Moon` 不成对；`Sun` 是实心盘（违背线性）、`DarkMode` 带徽章外框，均排除。shadcn 路径（lucide）给出对应词，其 `Sun` 本就是空心线性。

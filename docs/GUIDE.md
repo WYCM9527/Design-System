@@ -28,34 +28,35 @@ your-project/
 ## 1. 前置条件
 
 - Node ≥ 22、本机装有 Google Chrome（验收用；找不到时设环境变量 `CHROME` 指向可执行文件）。
-- 对 `WYCM9527/Design-System` 仓库有读权限（**私有仓库**：本机 `git` 能克隆它即可；升级时也走这条凭证）。
+- 能访问 GitHub（仓库 `WYCM9527/Design-System` 是公开的，不需要账号或权限；`upgrade` 与 steward 安装也走匿名下载）。
 - 项目在 git 里。旧项目换规范前要先提交一次（批量改写存量样式的硬要求）。
 
 ## 2. 安装（5 分钟）
 
 ```bash
-# 1) 拿到仓库（浅克隆即可）
+# 1) 拿到仓库（公开，浅克隆即可）
 git clone --depth 1 https://github.com/WYCM9527/Design-System.git /tmp/ds
 
 # 2) 把 adopter skill 装进你的项目（Cursor 项目级，随仓库共享给协作者；也可拷到 ~/.cursor/skills 或 ~/.codex/skills 全局用）
 cd your-project
 mkdir -p .cursor/skills && cp -R /tmp/ds/design-system-adopter .cursor/skills/
 
-# 3) 拿种子（两条渠道等价，选一条）
-npm i file:/tmp/ds/citrine/seeds/brand-yellow-e     # npm 渠道；包发到 registry 后就是 npm i @wycm9527/citrine
-#   或：cp -R /tmp/ds/citrine/seeds/brand-yellow-e vendor/   放进项目任意位置，skill 能认出来
+# 3) 种子放进项目（文件夹渠道：随项目提交，队友 clone 后零配置）
+cp -R /tmp/ds/citrine/seeds/brand-yellow-e vendor/citrine   # 放哪都行，init 会把它落成 design-systems/citrine/ 快照，之后 vendor/ 可删
 
-# 4) 验收工具
-npm i -D file:/tmp/ds/citrine/tools                  # 发布后：npm i -D @wycm9527/citrine-tools
+# 4) 验收工具 + token 构建器（工具用 Releases 的直链；版本号以 Releases 页最新为准）
+npm i -D https://github.com/WYCM9527/Design-System/releases/latest/download/wycm9527-citrine-tools-1.1.0.tgz style-dictionary@5.5.2
 ```
 
-steward 不用手动装：Agent 走到需要构建时会先找（`~/.cursor/skills`、`~/.codex/skills`、项目 `.cursor/skills`），找不到会给你一行安装命令，你点头它就装。
+**为什么种子不用 `npm i file:/tmp/ds/...`**：那会把一条只在你电脑上存在的路径写进 `package.json`，队友 `npm install` 直接失败。文件夹渠道把种子快照 `design-systems/citrine/`（约 600K）提交进项目，`init` 打印的 `npm i file:./design-systems/citrine` 是项目内相对路径，任何机器都一样。备选：包发到 npm registry 后可以改用 `npm i @wycm9527/citrine`（adopter 两种来源都认，已接入的项目不必迁）。
 
-> 把种子文件夹拷进项目后，`init` 会把它复制成 `design-systems/citrine/` 快照，之后原始下载目录可以删。
+steward 不用手动装：Agent 走到需要构建时会先找（`~/.cursor/skills`、`~/.codex/skills`、项目 `.cursor/skills`），找不到会给你一行安装命令，你点头它就装（来源是公开仓库 [WYCM9527/skills](https://github.com/WYCM9527/skills)）。
+
+> `design-systems/`、`design-system/`、`.cursor/skills/` 都要提交进 git——这就是队友零配置的来源。`.accept/` 与 `.adopter-conflicts.json` 进 `.gitignore`。
 
 ### 2b. 小白版：整段交给 AI
 
-不想碰命令行的同学，打开 Cursor（或 Codex / Claude Code）的 Agent，把下面整段原文粘贴发送即可。它会自己检查环境、下载、安装、自检，只在两处需要你开口（项目名、仓库权限），装好后问你一句「新项目还是旧项目换新」就接着走。
+不想碰命令行的同学，打开 Cursor（或 Codex / Claude Code）的 Agent，把下面整段原文粘贴发送即可。它会自己检查环境、下载、安装、自检，只在一处需要你开口（项目名），装好后问你一句「新项目还是旧项目换新」就接着走。
 
 > 你现在全权负责把公司设计系统 **Citrine** 的整套工作流装进这台电脑的项目里。我是小白，不要问我技术问题：能自动判断的全部自动做，只在标注【必须问我】的地方停下来问；每一步先用一句话说你在做什么，做完把结果给我看；任何一步失败就停下，用大白话告诉我原因和我该做什么，不要自己换别的办法绕过去。
 >
@@ -65,24 +66,24 @@ steward 不用手动装：Agent 走到需要构建时会先找（`~/.cursor/skil
 > 3. Google Chrome（验收截图要用）。没有就装。
 > 4. 看当前目录：已经是前端项目（有 `package.json`）就在这里装；不是的话【必须问我】项目叫什么名字，然后新建这个文件夹、进入、`git init`。
 >
-> **二、下载仓库**（私有仓库）
+> **二、下载仓库**（公开仓库，不需要账号）
 > `git clone --depth 1 https://github.com/WYCM9527/Design-System.git /tmp/ds`
-> 如果失败且提示 403 / 404 / authentication / permission：停下，告诉我「需要请管理员把你的 GitHub 账号加进 WYCM9527/Design-System 仓库，然后在这台电脑登录 GitHub（推荐 `gh auth login`）」，等我说「好了」再重试。不要尝试其他下载方式。
+> 如果失败（超时 / 连不上）：停下，用大白话告诉我「访问 GitHub 失败」，让我处理网络后再重试。不要尝试其他下载方式。
 >
 > **三、安装四件东西**（在项目目录里）
 > 1. skill：`mkdir -p .cursor/skills && cp -R /tmp/ds/design-system-adopter .cursor/skills/`。如果你不是在 Cursor 里运行，就装到你自己的 skill 目录（Codex 是 `~/.codex/skills/`，Claude Code 是项目 `.claude/skills/`）。
-> 2. 设计系统种子：`npm i file:/tmp/ds/citrine/seeds/brand-yellow-e`
-> 3. 验收与构建工具：`npm i -D file:/tmp/ds/citrine/tools style-dictionary@5.5.2`
+> 2. 设计系统种子（文件夹渠道，随项目提交，队友零配置）：`mkdir -p vendor && cp -R /tmp/ds/citrine/seeds/brand-yellow-e vendor/citrine`。不要用 `npm i file:/tmp/...`——那会把只在这台电脑上存在的路径写进 package.json。
+> 3. 验收与构建工具：先访问 `https://api.github.com/repos/WYCM9527/Design-System/releases/latest`，在 `assets` 里找名字以 `wycm9527-citrine-tools-` 开头的 `browser_download_url`，然后 `npm i -D <那个地址> style-dictionary@5.5.2`。
 > 4. 治理工具：`node .cursor/skills/design-system-adopter/scripts/ds.mjs steward locate`；如果输出「未找到」，就跑 `node .cursor/skills/design-system-adopter/scripts/ds.mjs steward install`。
 >
 > **四、自检**（四条都要通过才算装好，任何一条不过就回到对应步骤重做）
-> - `node .cursor/skills/design-system-adopter/scripts/ds.mjs detect` 的输出里有 `citrine`（来源 npm）
+> - `node .cursor/skills/design-system-adopter/scripts/ds.mjs detect` 的输出里有 `[folder] citrine`
 > - `node .cursor/skills/design-system-adopter/scripts/ds.mjs steward locate` 输出一个路径
 > - 文件 `.cursor/skills/design-system-adopter/SKILL.md` 存在
 > - 文件 `node_modules/.bin/citrine-accept` 存在
 >
 > **五、收尾**
-> - 在 `.gitignore` 里确保有 `node_modules/`、`.accept/`、`.adopter-conflicts.json` 三行（没有就加）。
+> - 在 `.gitignore` 里确保有 `node_modules/`、`.accept/`、`.adopter-conflicts.json` 三行（没有就加）；`vendor/`、`design-systems/`、`.cursor/skills/` **不要**忽略。
 > - 通读一遍 `.cursor/skills/design-system-adopter/SKILL.md`。
 > - 用大白话向我汇报：装了哪四样、各放在哪、自检结果。然后只问我一个问题：「这个项目是**从 0 开始**的新项目，还是要把**现有项目换成公司规范**？」我回答后，按 SKILL.md 对应的剧本继续，不要自己发明步骤。
 
@@ -134,7 +135,7 @@ Agent 会依次做：应用骨架（空目录时先问你选栈，给出 create-
 
 流程：`ds.mjs status`（快照是否完整、你本地改过哪些文件、上游最新 tag）→ `upgrade --dry-run`（分类：直接更新 / 上游新增 / 保留本地 / 自动合并 / 冲突）→ 你拍板 → `upgrade`。
 
-合并规则：token 等 JSON **键级**三方合并——你改的键和上游改的键各取各的，同一个键两边都改才问你；`DESIGN.md` 等文档是文件级，选「保留本地 / 取上游 / 写冲突标记手工合」。有冲突时 Agent 会拿着 `.adopter-conflicts.json` 逐条问你，然后 `--resolve`。升级后必跑 `build-tokens → guard → accept`；minor 版本像素会变属预期，对照种子 CHANGELOG。
+合并规则：token 等 JSON **键级**三方合并——你改的键和上游改的键各取各的，同一个键两边都改才问你；`DESIGN.md` 等文档是文件级，选「保留本地 / 取上游 / 写冲突标记手工合」。有冲突时 Agent 会拿着 `.adopter-conflicts.json` 逐条问你，然后 `--resolve`。升级后必跑 `build-tokens → guard → accept`；minor 版本像素会变属预期，对照种子 CHANGELOG。种子若是 npm 来源（`npm i @wycm9527/citrine` 或 Release 直链装的），页面 import 的桥接在 `node_modules` 里，`upgrade` 结束会打印一条 `npm i …` 让它跟上新版——不跑那条，样子不会变；文件夹渠道（`file:./design-systems/citrine`）无此步。范围根项目 `upgrade` 会自动重生成范围包。
 
 ## 5b. 场景 D：项目不是 Node 工程（Flask / Django / PHP 模板）
 
@@ -171,7 +172,7 @@ node <adopter>/scripts/ds.mjs export --system /tmp/ds/citrine/seeds/brand-yellow
 > 你现在全权负责把项目 **【项目绝对路径】** 换成公司设计系统 **Citrine**，但只覆盖我指定的板块，其他板块一个字节不能受影响。我不懂技术细节：能自动判断的全部自动做，只在标注【必须问我】的地方停下来问；每一步先用一句话说你在做什么，做完把结果给我看；任何一步失败就停下，用大白话说原因和我该做什么，不要换别的办法绕过去。全程严格按项目里 `.cursor/skills/design-system-adopter/SKILL.md` 及其 references 剧本执行，不自己发明步骤。
 >
 > **〇、准备**
-> 1. 如果 `.cursor/skills/design-system-adopter/` 不存在：`git clone --depth 1 https://github.com/WYCM9527/Design-System.git /tmp/ds`（失败提示权限就停下告诉我要请管理员加 GitHub 权限并 `gh auth login`），然后 `mkdir -p .cursor/skills && cp -R /tmp/ds/design-system-adopter .cursor/skills/`，`npm i file:/tmp/ds/citrine/seeds/brand-yellow-e`，`npm i -D file:/tmp/ds/citrine/tools style-dictionary@5.5.2`。
+> 1. 如果 `.cursor/skills/design-system-adopter/` 不存在：`git clone --depth 1 https://github.com/WYCM9527/Design-System.git /tmp/ds`（连不上就停下告诉我网络问题），然后 `mkdir -p .cursor/skills && cp -R /tmp/ds/design-system-adopter .cursor/skills/`，种子走文件夹渠道 `mkdir -p vendor && cp -R /tmp/ds/citrine/seeds/brand-yellow-e vendor/citrine`，工具按 2b 节第三步用 Releases 最新的 `wycm9527-citrine-tools-*.tgz` 直链 `npm i -D <地址> style-dictionary@5.5.2`（不要用 `npm i file:/tmp/...`）。
 > 2. 确认项目在 git 里且工作区干净（`git status`）。不干净就停下让我提交，不要替我提交。
 > 3. 通读 SKILL.md、`references/existing-project.md`、`references/scope-root.md`、`references/non-node.md`。
 >
@@ -231,8 +232,10 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 
 | 现象 | 原因 / 处理 |
 | --- | --- |
-| `upgrade` / `steward install` 报下载失败 | 仓库私有：确认本机 `git clone` 该仓库能成功（凭证），或设 `GITHUB_TOKEN`；完全离线用 `upgrade --from <种子目录或 tgz>` |
-| `npm i @wycm9527/citrine` 404 | 包还没发到 registry，用 `file:` 指向克隆里的种子目录（第 2 节） |
+| `upgrade` / `steward install` 报下载失败 | 访问 GitHub 不通（仓库是公开的，不是权限问题）：换网络重试；完全离线用 `upgrade --from <种子目录或 tgz>`（tgz 到 Releases 页下载） |
+| `npm i @wycm9527/citrine` 404 | 包还没发到 npm registry。用第 2 节的文件夹渠道，或 Release 直链 `npm i https://github.com/WYCM9527/Design-System/releases/download/citrine-vX.Y.Z/wycm9527-citrine-X.Y.Z.tgz` |
+| 队友 `npm install` 报找不到 `file:/tmp/...` 或 `file:../ds/...` | 有人用机器专属路径装了种子 / 工具。改成第 2 节的写法：种子走文件夹渠道（`file:./design-systems/citrine`），工具走 Release 直链 |
+| 验收报「暗色未生效」 | 页面没把 `?theme=dark` 落成 `<html class="dark">`（`index.html` 首屏先读 URL 再读 localStorage）；项目确实没有暗色就 `--modes light` |
 | 验收报「品牌黄出现在允许清单之外」 | 页面把黄色用成了强调 / 状态（如未读点、引用块边线）——换中性或状态色；确属合法位置（登录品牌区、数据卡骨架）写进 `accept.config.mjs` 的 `YELLOW_ALLOW` 并写理由 |
 | 组件走查被跳过（KITCHEN 为 null） | Element 项目挂 `@wycm9527/citrine/vue/KitchenSink.vue` 到 `/kitchen`，shadcn 拷 `templates/KitchenSink.tsx`，`KITCHEN: '#/kitchen'` |
 | 只想覆盖部分板块 | 多应用各自 `init`；同一应用按路由用范围根（5c）；同屏混排不支持 |
@@ -247,6 +250,7 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 
 - 每次 push / PR 自动跑 CI：adopter 单测、角色表与 token 源一致、六处版本号一致、种子 `dist` 与源一致，以及三个实测项目的 guard / status / 全量验收（并行三个 job，失败会上传截图与报告为 artifact）。不绿不合。
 - 发版：改 `design-system.json` 与 `package.json` 版本、写 CHANGELOG、`node citrine/scripts/check-versions.mjs` 通过后打 tag `citrine-vX.Y.Z` 推送——`release.yml` 自动建 GitHub Release（说明取 CHANGELOG 段落，附件 = 种子与工具的 npm pack 产物 + 纯 CSS 包）。手动补历史版本：`node citrine/scripts/release.mjs --version X.Y.Z --notes-only`。
+- 发到 npm registry（可选，有 npm 账号后）：种子目录与 `citrine/tools` 各 `npm publish --access public`（scope `@wycm9527` 须是你的 npm 用户名或组织）；之后同事可用 `npm i @wycm9527/citrine` / `npm i -D @wycm9527/citrine-tools`，文件夹渠道的项目不受影响。要免手工，把 npm 发布令牌存为仓库 Secret `NPM_TOKEN`，在 `release.yml` 里加一步 `npm publish`。
 
 ## 9. 反馈回路
 

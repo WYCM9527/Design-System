@@ -1,11 +1,24 @@
 {
   "name": "@wycm9527/citrine-tools",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Citrine 设计系统的验收工具：页面扫描（对比度 / 名称 / 命中区 / 溢出 × 亮暗）、全组件走查（强制 hover / focus 找品牌色泄漏与外来颜色，Element 与 Radix 浮层）、窄屏折叠、Tab 焦点环。无头 Chrome + 原生 CDP，零依赖，Node ≥ 22。",
   "license": "MIT",
   "type": "module",
-  "repository": { "type": "git", "url": "https://github.com/WYCM9527/skills.git", "directory": "citrine/tools" },
-  "engines": { "node": ">=22" },
-  "bin": { "citrine-accept": "./bin/accept.mjs" },
-  "files": ["bin", "lib", "*.mjs", "README.md"]
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WYCM9527/skills.git",
+    "directory": "citrine/tools"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "citrine-accept": "./bin/accept.mjs"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "*.mjs",
+    "README.md"
+  ]
 }

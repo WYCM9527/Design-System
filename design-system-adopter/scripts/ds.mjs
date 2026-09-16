@@ -94,6 +94,37 @@ function printWiring(identity, stackId, source) {
 }
 
 // ---------- 命令 ----------
+/** 按身份文件 stacks.<id>.detect（{ deps: [...], files: [...] }）推断项目用的栈：任一依赖或标志文件命中即候选 */
+const readPkg = (dir) => (existsSync(join(dir, 'package.json')) ? readJson(join(dir, 'package.json')) : {});
+function inferStacks(identity, projectDir) {
+  const pkg = readPkg(projectDir);
+  const deps = { ...(pkg.dependencies || {}), ...(pkg.devDependencies || {}) };
+  return Object.entries(identity.stacks || {}).filter(([, st]) => {
+    const det = st.detect || {};
+    return (det.deps || []).some((d) => d in deps) || (det.files || []).some((f) => existsSync(join(projectDir, f)));
+  }).map(([id]) => id);
+}
+
+/**
+ * npm 来源的项目：页面 import 的桥接在 node_modules/<npm> 里，upgrade 只刷快照与工作副本，包本身要按 package.json 里的依赖写法另行更新。
+ * 返回 { current, cmd, note }：current = node_modules 里的版本；cmd = 把它更到 version 的命令（file: 链接无需命令）。
+ */
+function nodeModulesSync(m, identity, version) {
+  if (!m.npm) return null;
+  const nm = join(project, 'node_modules', m.npm);
+  const current = readIdentity(nm)?.version || null;
+  const pkg = readPkg(project);
+  const spec = (pkg.dependencies || {})[m.npm] || (pkg.devDependencies || {})[m.npm] || null;
+  if (!spec) return { current, cmd: null, note: current ? `node_modules/${m.npm} 存在但 package.json 未声明依赖` : null };
+  if (spec.startsWith('file:')) return { current, cmd: null, note: current && current !== version ? `package.json 用 file: 链接到 ${spec.slice(5)}，其内容是 ${current}——该目录本身要换成 ${version}` : null };
+  const up = identity.upstream || {};
+  if (/^https?:\/\//.test(spec)) {
+    const asset = `${(up.npm || m.npm).replace(/^@/, '').replace('/', '-')}-${version}.tgz`;
+    return { current, cmd: `npm i ${up.repo ? `https://github.com/${up.repo}/releases/download/${up.tagPrefix || ''}${version}/${asset}` : `<新版 ${asset} 的下载地址>`}` };
+  }
+  return { current, cmd: `npm i ${m.npm}@${version}` };
+}
+
 const commands = {
   detect() {
     const d = detect(project);
@@ -109,8 +140,13 @@ const commands = {
   },
 
   init() {
-    const stackId = args.stack || fail('缺 --stack（可用栈见该系统 design-system.json 的 stacks）');
-    const sysArg = args.system || fail('缺 --system <id|路径|npm包名>');
+    // --system 缺省：项目里只检测到一个系统就用它（多个才要求指定）
+    let sysArg = args.system;
+    if (!sysArg) {
+      const d = detect(project);
+      if (d.systems.length === 1) { sysArg = d.systems[0].identity.id; console.log(`未指定 --system，项目里只检测到 ${sysArg}（${d.systems[0].source} · ${d.systems[0].dir}），自动选用。`); }
+      else fail(d.systems.length ? `检测到多个系统（${d.systems.map((x) => x.identity.id).join(' / ')}），用 --system 指定` : '缺 --system，且项目里没检测到任何设计系统：先 npm i 它的包，或把种子文件夹放进项目（任意位置）');
+    }
     const wc = join(project, 'design-system');
     if (existsSync(wc)) {
       if (!args['legacy-rename']) fail(`已存在 ${wc}：这是「更换现有规范」场景——经用户确认后加 --legacy-rename（会把它改名为 design-system.legacy/ 当迁移证据），或先手工处理。`);
@@ -129,6 +165,14 @@ const commands = {
     }
     if (!srcDir) fail(`找不到设计系统「${sysArg}」。先 npm i 它的包，或把种子文件夹放进项目（任意位置，detect 能认出来），再重跑。`);
     const identity = readIdentity(srcDir);
+    // --stack 缺省：按 package.json 依赖 / 标志文件推断（身份文件 stacks.<id>.detect），唯一命中才自动选
+    let stackId = args.stack;
+    if (!stackId) {
+      const hits = inferStacks(identity, project);
+      if (hits.length === 1) { stackId = hits[0]; console.log(`未指定 --stack，按项目依赖推断为 ${stackId}（${identity.stacks[stackId].label}）。`); }
+      else if (Object.keys(identity.stacks).length === 1) stackId = Object.keys(identity.stacks)[0];
+      else fail(`缺 --stack，且无法从依赖推断（${hits.length ? `命中多个：${hits.join(' / ')}` : '一个都没命中'}）；可用：${Object.keys(identity.stacks).join(' / ')}`);
+    }
     if (!identity.stacks[stackId]) fail(`${identity.id} 没有栈 ${stackId}；可用：${Object.keys(identity.stacks).join(' / ')}`);
     // 快照落位
     const snapRel = `design-systems/${identity.id}`;
@@ -188,6 +232,10 @@ const commands = {
     const modified = ownedFiles(identity, [snapDir]).filter((f) => existsSync(join(project, f)) && existsSync(join(snapDir, f)) && sha(join(project, f)) !== sha(join(snapDir, f)));
     console.log(modified.length ? `  工作副本相对快照的本地修改（升级时三方合并保留）：\n    ${modified.join('\n    ')}` : '  工作副本与快照一致（无本地修改）。');
     { const sw = stewardInfo(project); console.log(sw.dir ? `  steward：${sw.version || '版本未知'}${sw.ok ? '' : `（过旧，需 ≥ ${MIN_STEWARD}）`} · ${sw.dir}` : `  steward：未找到（${sw.hint.split('：')[0]}）`); }
+    if (m.source === 'npm') {
+      const ns = nodeModulesSync(m, identity, m.version);
+      if (ns && ns.current !== m.version) console.log(`  ⚠ node_modules/${m.npm} 是 ${ns.current || '未安装'}，清单是 ${m.version}（页面 import 的桥接以 node_modules 为准）${ns.cmd ? `：${ns.cmd}` : ns.note ? `：${ns.note}` : ''}`);
+    }
     // 上游最新
     if (!args.offline) {
       const latest = await latestTag(identity.upstream.repo, identity.upstream.tagPrefix);
@@ -298,7 +346,12 @@ const commands = {
       try { commands.scope(); } catch (e) { console.log(`  重生成失败（${e.message}）——手工跑 ds.mjs scope。`); }
       console.log(`  token 源有变时：build-tokens → 再跑一次 ds.mjs scope。`);
     }
-    console.log(`\n完成 ${label}。接下来：build-tokens → guard → ${remoteIdentity.accept?.command || '验收'}（token 变化会带来像素变化，属预期，对照 CHANGELOG）。`);
+    if (m.source === 'npm') {
+      const ns = nodeModulesSync(m, remoteIdentity, remoteIdentity.version);
+      if (ns?.cmd && ns.current !== remoteIdentity.version) console.log(`\n⚠ 页面 import 的桥接来自 node_modules/${m.npm}（现在是 ${ns.current || '未安装'}），必须同步到 ${remoteIdentity.version}：\n  ${ns.cmd}`);
+      else if (ns?.note) console.log(`\n注意：${ns.note}`);
+    }
+    console.log(`\n完成 ${label}。接下来：${m.source === 'npm' ? '同步 node_modules（上面那条命令）→ ' : ''}build-tokens → guard → ${remoteIdentity.accept?.command || '验收'}（token 变化会带来像素变化，属预期，对照 CHANGELOG）。`);
   },
 
   async restore() {

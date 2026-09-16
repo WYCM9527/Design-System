@@ -1,6 +1,8 @@
 // {{PROJECT}} 的验收清单（@wycm9527/citrine-tools 的 citrine-accept 读取）。
 // 演示参数放在 # 之前（?theme=dark、?state=empty），页面用 location.search 读；名字 → 「?演示参数#路由」。
 // 亮暗两遍：工具用 ?theme=light|dark 打开每个页面——项目要在首屏把它落成 <html class="dark">（index.html 里先读 URL 再读 localStorage，避免闪烁）。
+// 暗色那一遍工具会核对 DARK_SELECTOR 是否命中，没命中算失败（否则等于把亮色扫两遍）；项目确实没有暗色就跑 citrine-accept … --modes light。
+export const DARK_SELECTOR = 'html.dark';
 export const PAGES = [
   ['dashboard', '#/'],
   // ['orders', '#/orders'], ['orders-empty', '?state=empty#/orders'], ['form-invalid', '?state=invalid#/form'], …

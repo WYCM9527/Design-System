@@ -36,7 +36,7 @@ metadata:
 | 命令 | 干什么 |
 | --- | --- |
 | `ds.mjs detect [--json]` | 列出项目里的设计系统候选（快照 / npm 包 / 散落文件夹）、工作副本状态、是否有 legacy |
-| `ds.mjs init --system <id\|路径\|npm包名> --stack <栈> [--legacy-rename]` | 落快照 + 生成工作副本 + 写清单 + 打印该栈接线；已有 `design-system/` 时需用户确认后加 `--legacy-rename` |
+| `ds.mjs init [--system <id\|路径\|npm包名>] [--stack <栈>] [--legacy-rename]` | 落快照 + 生成工作副本 + 写清单 + 打印该栈接线。`--system` 缺省时项目里只检测到一个系统就自动选用；`--stack` 缺省时按 package.json 依赖 / 标志文件推断（身份文件 `stacks.<id>.detect`），唯一命中才自动选，否则报错列出可选；已有 `design-system/` 时需用户确认后加 `--legacy-rename` |
 | `ds.mjs adopt [--system <id>] [--stack <栈>]` | 已有快照 + 工作副本的项目补 `.adopter.json` 清单 |
 | `ds.mjs status [--offline]` | 快照完整性（hash）、工作副本本地修改、上游最新 tag |
 | `ds.mjs upgrade [--dry-run] [--ref <tag>] [--from <dir\|tgz>] [--resolve <decisions.json>]` | 三方合并升级：JSON 键级自动并（同键冲突才问），markdown 文件级选 local / upstream / markers；冲突写 `.adopter-conflicts.json` 并退出码 3 |
@@ -48,7 +48,7 @@ metadata:
 | `ds.mjs steward locate\|install` | 查找 / 安装 design-system-steward（构建、Guard、迁移都靠它）；多份拷贝时取版本最高的，低于 0.6.0 会报过旧 |
 | `ds.mjs self-update` | 用上游仓库 main 更新本 skill 自己 |
 
-上游是**私有仓库**时（公司内常态）：`status / upgrade / restore / steward install / self-update` 的网络路径按顺序尝试 `GITHUB_TOKEN` / `GH_TOKEN`（API tarball）→ 匿名 codeload（公开库）→ `git clone --depth 1`（本机 git 凭证）；三条都不通就用 `--from <dir|tgz>` 离线来源。
+上游是**私有仓库**时：`status / upgrade / restore / steward install / self-update` 的网络路径按顺序尝试 `GITHUB_TOKEN` / `GH_TOKEN`（API tarball）→ 匿名 codeload（公开库）→ `git clone --depth 1`（本机 git 凭证）；三条都不通就用 `--from <dir|tgz>` 离线来源。
 
 ## 硬边界（违反即错）
 

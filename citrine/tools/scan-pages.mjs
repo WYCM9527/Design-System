@@ -33,6 +33,8 @@ try {
       let res; try { res = await browser.evalJs(audit); } catch (e) { res = { error: String(e).slice(0, 200) }; }
       try { await browser.evalJs(PROBE + "; 'ok'"); res.yellow = await browser.evalJs(`__ks.yellowAudit(${JSON.stringify(allowSel)})`); } catch (e) { res.yellow = []; res.yellowError = String(e).slice(0, 120); }
       res.mode = mode; res.title = await browser.evalJs('document.title');
+      // 暗色那一遍要确认页面真的切了主题（?theme=dark → <html class="dark">，见 accept.config 模板）；否则等于把亮色扫两遍还报「通过」
+      if (mode === 'dark') res.darkApplied = await browser.evalJs(`!!document.querySelector(${JSON.stringify(cfg.DARK_SELECTOR || 'html.dark')})`);
       report[`${mode}/${name}`] = res;
       if (!opt['no-shots']) writeFileSync(`${OUT}/${mode}-${name}.png`, await browser.screenshot());
       const counts = Object.fromEntries(['small', 'noName', 'overflowX', 'truncated', 'lowContrast', 'tinyTargets', 'dupIds', 'yellow'].map((k) => [k, (res[k] || []).length]));
@@ -52,6 +54,7 @@ for (const [page, res] of Object.entries(report)) {
   for (const id of res.dupIds || []) fail.push(`${page} 重复 id #${id}`);
   for (const it of res.yellow || []) fail.push(`${page} 品牌黄出现在允许清单之外 ${it.path} ${it.prop} ${it.value}（允许：主按钮 / 勾选开关选中 / 进度滑杆 / 当前页 / 数据卡描边 / Logo；项目合法位置加进 accept.config 的 YELLOW_ALLOW）`);
   if (res.error) fail.push(`${page} 扫描出错 ${res.error}`);
+  if (res.mode === 'dark' && res.darkApplied === false) fail.push(`${page} 暗色未生效：页面没把 ?theme=dark 落成 ${cfg.DARK_SELECTOR || 'html.dark'}（index.html 首屏读 URL 再读 localStorage，见 accept.config 模板）；项目确实没有暗色就用 --modes light`);
 }
 console.log(`\n[${PROJECT}] ${Object.keys(report).length} 个页面状态 · ${JSON.stringify(totals)}\n报告与截图 → ${OUT}`);
 if (fail.length) { console.log('\n未通过：'); fail.slice(0, 40).forEach((f) => console.log('  ' + f)); process.exit(1); }

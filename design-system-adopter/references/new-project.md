@@ -8,7 +8,7 @@
 2. **拿到种子包**（两条渠道，装一个即可）：
    - npm：`npm i <身份文件 upstream.npm>`（如 `@wycm9527/citrine`）；
    - 文件夹：用户把种子文件夹放进项目任意位置（`ds.mjs detect` 能认出来）。
-   仓库未发 registry 时，npm 渠道等价于 `npm i file:<种子路径>`。
+   团队项目优先文件夹渠道：种子拷进项目 → `init` 落成 `design-systems/<id>/` 快照（随项目提交）→ `npm i file:./design-systems/<id>`（项目内相对路径，队友零配置）。**不要** `npm i file:<项目外路径>`——机器专属路径会让队友 `npm install` 失败。包在 npm registry 上时才用 `npm i <包名>`；也可用上游 Releases 的 tgz 直链（`upgrade` 结束会打印同步 node_modules 的命令）。
 3. **接入**：`node <adopter>/scripts/ds.mjs init --system <id> --stack <栈>`。它会：落只读快照 `design-systems/<id>/` → 生成工作副本 `design-system/` → 写 `.adopter.json` → 打印接线步骤（folder 来源会多一行 `npm i file:./design-systems/<id>`，让 import 路径与 npm 一致）。
 4. **构建与校验**（steward）：`npm i -D <身份文件 build.tool>` → `node <steward>/scripts/build-tokens.mjs --project $PWD`（生成 `design-system/dist/`）→ `guard.mjs` 应为 `current`。steward 找不到就 `ds.mjs steward locate`，没有则征得同意后 `ds.mjs steward install`。
 5. **样式入口**：按 init 打印的片段建（通常 `src/styles/globals.css`），同时建一个空的 `app.css`（项目补充，只引用 token）。Vite 配置按 init 打印的注意项（`optimizeDeps.exclude`；`file:` 链接再加 `resolve.preserveSymlinks: true`）。
