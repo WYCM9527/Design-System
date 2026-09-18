@@ -10,8 +10,8 @@ import { FormPage } from './pages/FormPage'
 
 const ROUTES: Record<string, { title: string; group: string; icon: React.ComponentType<{ className?: string }>; page: React.ComponentType }> = {
   '/': { title: '工作台', group: '概览', icon: LayoutDashboard, page: Dashboard },
-  '/orders': { title: '订单管理', group: '业务', icon: ListOrdered, page: Orders },
-  '/form': { title: '新建商户', group: '业务', icon: FilePenLine, page: FormPage },
+  '/orders': { title: '单据管理', group: '业务', icon: ListOrdered, page: Orders },
+  '/form': { title: '新建供应商', group: '业务', icon: FilePenLine, page: FormPage },
   '/kitchen': { title: '组件走查', group: '系统', icon: Boxes, page: Kitchen }
 }
 

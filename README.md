@@ -4,7 +4,7 @@
 
 | 设计系统 | 定位 | 版本 |
 | --- | --- | --- |
-| [**Citrine · 黄晶**](citrine/) | 中后台 · 品牌黄唯一焦点 + 冷灰骨架 · 亮 / 暗 · 三端（桌面 / 窄屏 / 手机） · Element Plus / shadcn/ui / ECharts 桥接 · 给编码 Agent 的配方与验收基线 | 2.11.5 |
+| [**Citrine · 黄晶**](citrine/) | 中后台 · 品牌黄唯一焦点 + 冷灰骨架 · 亮 / 暗 · 三端（桌面 / 窄屏 / 手机） · Element Plus / shadcn/ui / ECharts 桥接 · 给编码 Agent 的配方与验收基线 | 2.11.6 |
 
 [![Citrine](citrine/docs/screenshots/hero.png)](citrine/)
 
@@ -23,7 +23,7 @@ mkdir -p .cursor/skills && cp -R /tmp/ds/design-system-adopter .cursor/skills/
 npm i @wycm9527/citrine && npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2
 #   方式 B（连不上 registry / 想把种子锁进项目 git）：种子拷进项目，init 会落成 design-systems/citrine/ 快照并 npm i file:./design-systems/citrine 链接；工具用 Releases 直链
 #   cp -R /tmp/ds/citrine/seeds/brand-yellow-e vendor/citrine
-#   npm i -D https://github.com/WYCM9527/Design-System/releases/latest/download/wycm9527-citrine-tools-1.1.1.tgz style-dictionary@5.5.2
+#   npm i -D https://github.com/WYCM9527/Design-System/releases/latest/download/wycm9527-citrine-tools-1.1.2.tgz style-dictionary@5.5.2
 #   非 Node 项目：到 Releases 下载 citrine-css-<版本>.tgz（纯 CSS，零工具）
 ```
 

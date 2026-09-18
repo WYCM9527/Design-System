@@ -7,10 +7,10 @@ import { ref, reactive, onMounted, h } from 'vue'
 import { ElMessage, ElNotification } from 'element-plus'
 import { confirmBox } from './confirm.js'
 
-const input = ref('黄金后台')
+const input = ref('示例文本')
 const num = ref(3)
 const textarea = ref('多行文本\n第二行')
-const tags = ref(['早餐', '夜宵'])
+const tags = ref(['办公设备', '耗材'])
 const mention = ref('@王芳 请复核')
 const select = ref('pending')
 const multi = ref(['pending', 'done'])
@@ -50,8 +50,8 @@ const popoverVisible = ref(true)
 const tooltipVisible = ref(true)
 
 const statusOptions = [
-  { value: 'pending', label: '待接单' },
-  { value: 'doing', label: '配送中' },
+  { value: 'pending', label: '待审批' },
+  { value: 'doing', label: '采购中' },
   { value: 'done', label: '已完成' },
   { value: 'off', label: '已停用', disabled: true }
 ]
@@ -64,25 +64,25 @@ const treeData = [
   { id: 'n1', label: '华东区', children: [{ id: 'n2', label: '上海' }, { id: 'n3', label: '杭州' }] },
   { id: 'n4', label: '华南区', children: [{ id: 'n5', label: '深圳', disabled: true }] }
 ]
-const transferData = Array.from({ length: 6 }, (_, i) => ({ key: i, label: `商户 ${i + 1}`, disabled: i === 4 }))
+const transferData = Array.from({ length: 6 }, (_, i) => ({ key: i, label: `供应商 ${i + 1}`, disabled: i === 4 }))
 const rows = [
-  { id: '20260910-0001', merchant: '鲜蔬到家', amount: 156.7, status: 'done', statusText: '已完成' },
-  { id: '20260910-0002', merchant: '老王面馆', amount: 47.8, status: 'pending', statusText: '待接单' },
-  { id: '20260910-0003', merchant: '果然鲜', amount: 1225.9, status: 'cancel', statusText: '已取消' },
-  { id: '20260910-0004', merchant: '川味小厨', amount: 88, status: 'doing', statusText: '配送中' }
+  { id: 'CG-20260910-0001', merchant: '蓝海电子', amount: 156.7, status: 'done', statusText: '已完成' },
+  { id: 'CG-20260910-0002', merchant: '云帆物流', amount: 47.8, status: 'pending', statusText: '待审批' },
+  { id: 'CG-20260910-0003', merchant: '恒信办公', amount: 1225.9, status: 'cancel', statusText: '已取消' },
+  { id: 'CG-20260910-0004', merchant: '星辰科技', amount: 88, status: 'doing', statusText: '采购中' }
 ]
 const form = reactive({ name: '', phone: '138' })
 const rules = { name: [{ required: true, message: '请输入名称', trigger: 'blur' }], phone: [{ min: 11, message: '手机号需 11 位', trigger: 'blur' }] }
 const formRef = ref()
-const querySearch = (q, cb) => cb(['鲜蔬到家', '老王面馆', '果然鲜'].filter((s) => s.includes(q)).map((value) => ({ value })))
+const querySearch = (q, cb) => cb(['蓝海电子', '云帆物流', '恒信办公'].filter((s) => s.includes(q)).map((value) => ({ value })))
 const fileList = ref([{ name: '营业执照.jpg', url: '#' }, { name: '门头照.jpg', url: '#', status: 'fail' }])
 const statusClass = (s) => ({ done: 'success', pending: 'warning', cancel: 'error', doing: 'info' })[s]
 
 function openMessage() { ElMessage({ message: '已保存', type: 'success', duration: 0, showClose: true }) }
 function openMessageWarn() { ElMessage({ message: '库存不足', type: 'warning', duration: 0, showClose: true }) }
 function openMessageErr() { ElMessage({ message: '保存失败', type: 'error', duration: 0, showClose: true }) }
-function openNotification() { ElNotification({ title: '新订单', message: '20260910-0005 已接入', type: 'success', duration: 0 }) }
-function openMessageBox() { confirmBox('确认删除商户「果然鲜」？此操作不可撤销。', '删除确认', { type: 'warning', confirmButtonText: '删除', cancelButtonText: '取消', confirmButtonClass: 'el-button--danger' }).catch(() => {}) }
+function openNotification() { ElNotification({ title: '新申请', message: 'CG-20260910-0005 已提交', type: 'success', duration: 0 }) }
+function openMessageBox() { confirmBox('确认删除供应商「恒信办公」？此操作不可撤销。', '删除确认', { type: 'warning', confirmButtonText: '删除', cancelButtonText: '取消', confirmButtonClass: 'el-button--danger' }).catch(() => {}) }
 
 onMounted(() => {
   formRef.value?.validate(() => {})
@@ -270,7 +270,7 @@ onMounted(() => {
 
     <section class="ks" data-ks="transfer-upload">
       <h2>穿梭框与上传</h2>
-      <el-transfer v-model="transfer" :data="transferData" filterable :titles="['未选商户', '已选商户']" :button-texts="['移出', '移入']" />
+      <el-transfer v-model="transfer" :data="transferData" filterable :titles="['未选供应商', '已选供应商']" :button-texts="['移出', '移入']" />
       <div class="grid mt">
         <el-upload action="#" :auto-upload="false" :file-list="fileList" list-type="text">
           <el-button>选择文件</el-button>
@@ -288,9 +288,9 @@ onMounted(() => {
     <section class="ks" data-ks="form">
       <h2>表单（含校验出错）</h2>
       <el-form ref="formRef" :model="form" :rules="rules" label-width="112px" class="form">
-        <el-form-item label="商户名称" prop="name" required><el-input v-model="form.name" placeholder="必填" /></el-form-item>
+        <el-form-item label="供应商名称" prop="name" required><el-input v-model="form.name" placeholder="必填" /></el-form-item>
         <el-form-item label="联系电话" prop="phone"><el-input v-model="form.phone" /></el-form-item>
-        <el-form-item label="经营类目"><el-select v-model="select" placeholder="请选择"><el-option label="餐饮" value="pending" /></el-select></el-form-item>
+        <el-form-item label="供应类目"><el-select v-model="select" placeholder="请选择"><el-option label="办公设备" value="pending" /></el-select></el-form-item>
         <el-form-item label="说明"><el-input type="textarea" :rows="2" /></el-form-item>
         <el-form-item><el-button type="primary">保存</el-button><el-button>取消</el-button></el-form-item>
       </el-form>
@@ -328,8 +328,8 @@ onMounted(() => {
       <el-table ref="tableRef" :data="rows" row-key="id" stripe border highlight-current-row default-expand-all>
         <el-table-column type="selection" width="44" />
         <el-table-column type="expand"><template #default>展开行内容</template></el-table-column>
-        <el-table-column prop="id" label="订单号" sortable width="160"><template #default="{ row }"><a class="link mono" href="#">{{ row.id }}</a></template></el-table-column>
-        <el-table-column prop="merchant" label="商户" :filters="[{ text: '鲜蔬到家', value: '鲜蔬到家' }]" :filter-method="() => true" />
+        <el-table-column prop="id" label="申请编号" sortable width="160"><template #default="{ row }"><a class="link mono" href="#">{{ row.id }}</a></template></el-table-column>
+        <el-table-column prop="merchant" label="供应商" :filters="[{ text: '蓝海电子', value: '蓝海电子' }]" :filter-method="() => true" />
         <el-table-column prop="amount" label="金额" align="right" sortable><template #default="{ row }"><span class="num">¥ {{ row.amount.toFixed(2) }}</span></template></el-table-column>
         <el-table-column label="状态"><template #default="{ row }"><span class="status" :class="statusClass(row.status)">{{ row.statusText }}</span></template></el-table-column>
         <el-table-column label="操作" fixed="right" width="140"><template #default><el-button text size="small">查看</el-button><el-button text size="small" class="danger">取消</el-button></template></el-table-column>
@@ -347,12 +347,12 @@ onMounted(() => {
         <el-card><template #header>卡片标题</template>卡片内容</el-card>
         <el-card shadow="hover">悬停出阴影的卡片</el-card>
         <el-card v-loading="true" element-loading-text="加载中">加载中的卡片</el-card>
-        <el-statistic title="今日订单" :value="12480" />
-        <el-statistic title="退款率" :value="1.8" suffix="%" :precision="1" />
+        <el-statistic title="本月申请" :value="12480" />
+        <el-statistic title="驳回率" :value="1.8" suffix="%" :precision="1" />
         <el-countdown title="活动倒计时" :value="Date.now() + 1000 * 60 * 60 * 7" />
       </div>
-      <el-descriptions title="商户信息" :column="3" border class="mt">
-        <el-descriptions-item label="名称">鲜蔬到家</el-descriptions-item>
+      <el-descriptions title="供应商信息" :column="3" border class="mt">
+        <el-descriptions-item label="名称">蓝海电子</el-descriptions-item>
         <el-descriptions-item label="电话">138****0000</el-descriptions-item>
         <el-descriptions-item label="状态"><span class="status success">营业中</span></el-descriptions-item>
         <el-descriptions-item label="地址" :span="3">上海市浦东新区张江路 100 号</el-descriptions-item>
@@ -370,8 +370,8 @@ onMounted(() => {
       <div class="grid mt">
         <el-timeline>
           <el-timeline-item timestamp="09:30" type="primary">下单</el-timeline-item>
-          <el-timeline-item timestamp="09:35" type="success">商户接单</el-timeline-item>
-          <el-timeline-item timestamp="09:50" type="warning">骑手取货超时</el-timeline-item>
+          <el-timeline-item timestamp="09:35" type="success">部门负责人已审批</el-timeline-item>
+          <el-timeline-item timestamp="09:50" type="warning">供应商发货超时</el-timeline-item>
           <el-timeline-item timestamp="10:20" type="danger">用户取消</el-timeline-item>
           <el-timeline-item timestamp="10:21" type="info" hollow>系统关单</el-timeline-item>
         </el-timeline>
@@ -408,19 +408,19 @@ onMounted(() => {
 
     <section class="ks" data-ks="nav">
       <h2>导航</h2>
-      <el-page-header title="返回" content="订单详情" class="mt" />
-      <el-breadcrumb separator="/" class="mt"><el-breadcrumb-item to="/">工作台</el-breadcrumb-item><el-breadcrumb-item><a href="#">订单管理</a></el-breadcrumb-item><el-breadcrumb-item>订单详情</el-breadcrumb-item></el-breadcrumb>
+      <el-page-header title="返回" content="申请详情" class="mt" />
+      <el-breadcrumb separator="/" class="mt"><el-breadcrumb-item to="/">工作台</el-breadcrumb-item><el-breadcrumb-item><a href="#">采购申请</a></el-breadcrumb-item><el-breadcrumb-item>申请详情</el-breadcrumb-item></el-breadcrumb>
       <el-menu mode="horizontal" default-active="2" class="mt" :ellipsis="false">
         <el-menu-item index="1">工作台</el-menu-item>
-        <el-menu-item index="2">订单</el-menu-item>
-        <el-sub-menu index="3"><template #title>更多</template><el-menu-item index="3-1">商户</el-menu-item><el-menu-item index="3-2">骑手</el-menu-item></el-sub-menu>
+        <el-menu-item index="2">申请</el-menu-item>
+        <el-sub-menu index="3"><template #title>更多</template><el-menu-item index="3-1">供应商</el-menu-item><el-menu-item index="3-2">资产</el-menu-item></el-sub-menu>
         <el-menu-item index="4" disabled>禁用</el-menu-item>
       </el-menu>
-      <el-steps :active="1" class="mt"><el-step title="下单" description="09:30" /><el-step title="接单" /><el-step title="配送" /><el-step title="完成" /></el-steps>
-      <el-steps :active="2" process-status="error" finish-status="success" class="mt"><el-step title="下单" /><el-step title="接单" /><el-step title="用户取消" /><el-step title="完成" /></el-steps>
+      <el-steps :active="1" class="mt"><el-step title="提交" description="09:30" /><el-step title="审批" /><el-step title="采购" /><el-step title="完成" /></el-steps>
+      <el-steps :active="2" process-status="error" finish-status="success" class="mt"><el-step title="提交" /><el-step title="审批" /><el-step title="申请人撤回" /><el-step title="完成" /></el-steps>
       <el-steps direction="vertical" :active="1" class="mt" style="height: 150px"><el-step title="提交" /><el-step title="审核" /><el-step title="发布" /></el-steps>
-      <el-steps :active="1" simple class="mt"><el-step title="下单" /><el-step title="接单" /><el-step title="完成" /></el-steps>
-      <el-tabs v-model="tab" class="mt"><el-tab-pane label="概览" name="a">概览内容</el-tab-pane><el-tab-pane label="订单" name="b">订单内容</el-tab-pane><el-tab-pane label="禁用" name="c" disabled>—</el-tab-pane></el-tabs>
+      <el-steps :active="1" simple class="mt"><el-step title="提交" /><el-step title="审批" /><el-step title="完成" /></el-steps>
+      <el-tabs v-model="tab" class="mt"><el-tab-pane label="概览" name="a">概览内容</el-tab-pane><el-tab-pane label="申请" name="b">申请内容</el-tab-pane><el-tab-pane label="禁用" name="c" disabled>—</el-tab-pane></el-tabs>
       <el-tabs v-model="tabCard" type="card" class="mt" closable><el-tab-pane label="卡片页签" name="c1">内容</el-tab-pane><el-tab-pane label="第二页" name="c2">内容</el-tab-pane></el-tabs>
       <el-tabs v-model="tabBorder" type="border-card" class="mt"><el-tab-pane label="边框卡片" name="b1">内容</el-tab-pane><el-tab-pane label="第二页" name="b2">内容</el-tab-pane></el-tabs>
       <el-tabs v-model="tabLeft" tab-position="left" class="mt" style="height: 120px"><el-tab-pane label="左侧页签" name="l1">内容</el-tab-pane><el-tab-pane label="第二页" name="l2">内容</el-tab-pane></el-tabs>
@@ -448,7 +448,7 @@ onMounted(() => {
         <el-tooltip content="这是一个 Tooltip" :visible="tooltipVisible" :teleported="false" persistent placement="bottom"><el-button>Tooltip 常显</el-button></el-tooltip>
         <el-tooltip content="浅色 Tooltip" effect="light" :visible="tooltipVisible" :teleported="false" persistent placement="bottom"><el-button>浅色 Tooltip</el-button></el-tooltip>
         <el-popover :visible="popoverVisible" :teleported="false" persistent title="Popover 标题" content="这是 Popover 的内容。" placement="bottom" :width="220"><template #reference><el-button>Popover 常显</el-button></template></el-popover>
-        <el-popconfirm title="确认取消该订单？" confirm-button-text="确认" cancel-button-text="再想想" icon-color="var(--color-status-warning)" :teleported="false" persistent><template #reference><el-button data-ks-open>Popconfirm</el-button></template></el-popconfirm>
+        <el-popconfirm title="确认撤回该申请？" confirm-button-text="确认" cancel-button-text="再想想" icon-color="var(--color-status-warning)" :teleported="false" persistent><template #reference><el-button data-ks-open>Popconfirm</el-button></template></el-popconfirm>
       </el-space>
       <el-space wrap class="mt" style="margin-top: 96px">
         <el-button data-ks-modal="dialog" @click="dialog = true">打开弹窗</el-button>
@@ -459,11 +459,11 @@ onMounted(() => {
         <el-button data-ks-modal="message" @click="openMessageErr">Message 错误</el-button>
         <el-button data-ks-modal="notification" @click="openNotification">Notification</el-button>
       </el-space>
-      <el-dialog v-model="dialog" title="编辑商户" width="480px">
-        <el-form label-width="112px"><el-form-item label="名称"><el-input model-value="鲜蔬到家" /></el-form-item></el-form>
+      <el-dialog v-model="dialog" title="编辑供应商" width="480px">
+        <el-form label-width="112px"><el-form-item label="名称"><el-input model-value="蓝海电子" /></el-form-item></el-form>
         <template #footer><el-button @click="dialog = false">取消</el-button><el-button type="primary" @click="dialog = false">保存</el-button></template>
       </el-dialog>
-      <el-drawer v-model="drawer" title="订单详情" size="480px"><p>抽屉内容</p><el-button type="primary">主操作</el-button></el-drawer>
+      <el-drawer v-model="drawer" title="申请详情" size="480px"><p>抽屉内容</p><el-button type="primary">主操作</el-button></el-drawer>
       <el-divider content-position="left">分隔线</el-divider>
       <el-divider />
     </section>

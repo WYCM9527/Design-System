@@ -1,16 +1,16 @@
 {
   "system": "citrine",
-  "version": "2.11.5",
+  "version": "2.11.6",
   "root": "citrine",
-  "generatedAt": "2026-09-16",
+  "generatedAt": "2026-09-18",
   "groups": [
     "element-plus"
   ],
   "tokensFrom": "design-system/dist（项目工作副本）",
   "files": {
-    "index.css": "85e8a74efb7bd990",
-    "recipes.css": "0fa4506fc8120a0e",
-    "element-plus.css": "bf4a62e0bc985415",
-    "iconpark.css": "04a039a2ea91bce0"
+    "index.css": "11437fd933941fb7",
+    "recipes.css": "de930f18339ecc25",
+    "element-plus.css": "4d34aae12a340772",
+    "iconpark.css": "532a37b6c06e554b"
   }
 }

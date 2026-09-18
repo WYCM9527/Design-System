@@ -24,7 +24,7 @@ export function Orders() {
   const toggle = (id: string) => setSelected((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]))
   return (
     <>
-      <div className="page-head"><div><h1>订单管理</h1><p>共 128 条 · 今日新增 1,286</p></div><div className="actions"><Button variant="outline">导出</Button><Button>新建订单</Button></div></div>
+      <div className="page-head"><div><h1>单据管理</h1><p>共 128 条 · 今日新增 1,286</p></div><div className="actions"><Button variant="outline">导出</Button><Button>新建订单</Button></div></div>
       <section className="card-block">
         <div className="filter">
           <div className="conds">

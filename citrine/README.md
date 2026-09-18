@@ -2,9 +2,9 @@
 
 **黄晶 · 公司级中后台设计系统** — 一个以品牌黄为唯一焦点、冷灰为骨架的 Web 中后台设计系统：DTCG 令牌单一来源、亮 / 暗两种模式、Element Plus、shadcn/ui 与 ECharts 三条桥接、给编码 Agent 的组件配方，以及一套可复跑的验收基线。
 
-![Citrine · 实测项目「黄金后台」亮 / 暗模式](docs/screenshots/hero.png)
+![Citrine · 实测项目「轻采」亮 / 暗模式](docs/screenshots/hero.png)
 
-版本 **2.11.5** · Core 321 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
+版本 **2.11.6** · Core 321 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
 
 ---
 
@@ -77,19 +77,33 @@ node <Design-System>/skills/design-system-steward/scripts/guard.mjs --project "$
 
 ## 实测项目
 
-| 「黄金后台」订单管理 · 亮色 | 订单管理 · 暗色 |
-| --- | --- |
-| ![](docs/screenshots/admin-orders-light.png) | ![](docs/screenshots/admin-orders-dark.png) |
+**接入试点「轻采」**（[`testbed/light-procure/`](testbed/light-procure/)）：一份企业采购与资产后台的 PRD（12 页、3 类角色、单级审批），由四个互不通气的编码 Agent 只靠仓库文档从零实现，每一处"文档没规定、只能自己定"的地方都被记下（[158 条原始笔记](testbed/light-procure/notes/)），集成后按 15 条验收用例走通闭环，94 个页面状态 × 亮暗验收全绿。这次试点把页面骨架配方层（`bridge/recipes.css` + `bridge/vue/`）和仓库级验收工具（`tools/`）逼进了种子——第二个项目不用再看第一个项目的源码；26 条发现与处理见 [FINDINGS.md](testbed/light-procure/FINDINGS.md)。下面的截图全部来自它。
 
-| 数据看板 | 订单详情 · 暗色 |
+| 采购申请列表 · 申请人视角（内容型链接 + 操作胶囊 + ⋯） | 采购申请列表 · 暗色 |
 | --- | --- |
-| ![](docs/screenshots/admin-analytics-light.png) | ![](docs/screenshots/admin-order-detail-dark.png) |
+| ![](docs/screenshots/procure-applications-light.png) | ![](docs/screenshots/procure-applications-dark.png) |
 
-| 登录页（大面积品牌黄唯一允许出现的地方） | 退款审核（盲测产物：Agent 只凭文档完成） |
+| 审批中心（待审批 / 我已处理页签、待办计数） | 审批抽屉 · 暗色（浮层内原位确认） |
 | --- | --- |
-| ![](docs/screenshots/admin-login-light.png) | ![](docs/screenshots/admin-refunds-light.png) |
+| ![](docs/screenshots/procure-approvals-light.png) | ![](docs/screenshots/procure-approvals-drawer-dark.png) |
 
-**全组件走查页**（`#/kitchen`）把 Element Plus 全部组件的静息 / 选中 / 禁用 / 出错状态铺在一页，浮层与弹层逐个点开，亮 / 暗两种模式下对 600+ 个交互元素强制 `:hover` / `:focus-visible`，只报三类硬问题：状态切换新引入的黄色、悬停后对比掉档、不来自 token 的颜色。
+| 表单页（行内录入明细表、贴底操作条） | 申请详情 · 审批人视角 |
+| --- | --- |
+| ![](docs/screenshots/procure-form-light.png) | ![](docs/screenshots/procure-application-detail-approver-light.png) |
+
+| 数据报表（`rankBars` 排行、合计行） | 组织与成员 · 暗色（树当前节点反转块） |
+| --- | --- |
+| ![](docs/screenshots/procure-report-light.png) | ![](docs/screenshots/procure-org-dark.png) |
+
+| 资产台账 | 供应商管理 · 暗色 |
+| --- | --- |
+| ![](docs/screenshots/procure-assets-light.png) | ![](docs/screenshots/procure-suppliers-dark.png) |
+
+| 系统设置（页签各带页脚，危险区独立成卡） | 审批人工作台（计数型趋势整数刻度） |
+| --- | --- |
+| ![](docs/screenshots/procure-settings-light.png) | ![](docs/screenshots/procure-dashboard-approver-light.png) |
+
+**全组件走查页**（种子自带的 `bridge/vue/KitchenSink.vue`，项目挂到 `#/kitchen`）把 Element Plus 全部组件的静息 / 选中 / 禁用 / 出错状态铺在一页，浮层与弹层逐个点开，亮 / 暗两种模式下对 600+ 个交互元素强制 `:hover` / `:focus-visible`，只报三类硬问题：状态切换新引入的黄色、悬停后对比掉档、不来自 token 的颜色。
 
 | 亮色 | 暗色 |
 | --- | --- |
@@ -99,25 +113,11 @@ node <Design-System>/skills/design-system-steward/scripts/guard.mjs --project "$
 
 ![](docs/screenshots/legacy-shop-migrated.png)
 
-**接入试点「轻采」**（[`testbed/light-procure/`](testbed/light-procure/)）：一份与黄金后台无关的 PRD（企业采购与资产后台，12 页、3 类角色、单级审批），由四个互不通气的编码 Agent 只靠仓库文档从零实现，每一处"文档没规定、只能自己定"的地方都被记下（[158 条原始笔记](testbed/light-procure/notes/)），集成后按 15 条验收用例走通闭环，94 个页面状态 × 亮暗验收全绿。这次试点把页面骨架配方层（`bridge/recipes.css` + `bridge/vue/`）和仓库级验收工具（`tools/`）逼进了种子——第二个项目不用再看第一个项目的源码；26 条发现与处理见 [FINDINGS.md](testbed/light-procure/FINDINGS.md)。
-
-| 审批人工作台（计数型趋势整数刻度、待办计数） | 采购申请列表 · 申请人视角（操作胶囊 + ⋯） |
-| --- | --- |
-| ![](docs/screenshots/procure-dashboard-approver-light.png) | ![](docs/screenshots/procure-applications-light.png) |
-
-| 表单页（行内录入明细表、贴底操作条） | 审批抽屉 · 暗色 |
-| --- | --- |
-| ![](docs/screenshots/procure-form-light.png) | ![](docs/screenshots/procure-approvals-drawer-dark.png) |
-
-| 数据报表（`rankBars` 排行、合计行） | 组织与成员 · 暗色（树当前节点反转块） |
-| --- | --- |
-| ![](docs/screenshots/procure-report-light.png) | ![](docs/screenshots/procure-org-dark.png) |
-
 **手机档（390px，2.8.0 三端）**：侧栏离屏抽屉 + 汉堡，表格保留全列内部滚动，浮层贴底全宽，触控命中 44。
 
-| 订单管理 · 手机 | 轻采工作台 · 手机 |
+| 工作台 · 手机 | 采购申请 · 手机 |
 | --- | --- |
-| ![](docs/screenshots/admin-orders-mobile.png) | ![](docs/screenshots/procure-dashboard-mobile.png) |
+| ![](docs/screenshots/procure-dashboard-mobile.png) | ![](docs/screenshots/procure-applications-mobile.png) |
 
 **范围根（2.10.0，只覆盖部分板块）**：轻采里新增一个「未接入」的旧报表板块——同一个 SPA，上面是 Citrine 的供应商页，下面的旧报表保持 Element 默认蓝与旧布局，一个字节不受影响。
 
@@ -125,9 +125,9 @@ node <Design-System>/skills/design-system-steward/scripts/guard.mjs --project "$
 
 **React + shadcn/ui 实验室**（[`testbed/shadcn-lab/`](testbed/shadcn-lab/)）：第二条消费路径的渲染验证——按 shadcn new-york 源码手写 21 个组件接种子的 `bridge/shadcn-globals.css`，页面骨架直接复用与组件库无关的 `recipes.css`，配方组件用 `bridge/react/`。全组件走查揪出 8 处需要组件级接管的地方（Tailwind 根字号与 rem 刻度冲突、提示框黄底、遮罩写死黑色、骨架 / 进度轨道、表头与 hover、标签页浮块、勾选命中区、焦点双环），全部修在桥接里；同一套验收工具跑通（页面 × 亮暗、80 个交互元素走查、窄屏、焦点），见 [FINDINGS.md](testbed/shadcn-lab/FINDINGS.md)。
 
-| 组件走查 · 亮色 | 工作台 · 暗色（与 Vue 版同形） |
+| 组件走查 · 亮色（`templates/KitchenSink.tsx`） | 组件走查 · 暗色 |
 | --- | --- |
-| ![](docs/screenshots/shadcn-kitchen-light.png) | ![](docs/screenshots/shadcn-dashboard-dark.png) |
+| ![](docs/screenshots/shadcn-kitchen-light.png) | ![](docs/screenshots/shadcn-kitchen-dark.png) |
 
 ## 验收基线
 
@@ -151,7 +151,7 @@ patch 只改描述、文档，以及让组件库遵守既有规则的桥接修�
 - shadcn/ui 桥接已在 React 实验项目渲染验证并跑全组件走查（21 个组件、80 个交互元素）；未覆盖的 shadcn 组件（Sheet、Command、Calendar、DataTable、Sonner 等）接入时先按 DESIGN「组件库对照」类推，再跑走查。
 - 三端（桌面 / 窄屏 / 手机）已覆盖：断点 token + recipes / 桥接的手机形态 + `check-narrow` 多档验收（见 DESIGN「三端」）。手机目标是**可用**（导航抽屉、表格内部滚动、浮层贴底全宽、触控命中 44），不做底部 Tab 导航与列表卡片化——真实移动端需求出现时再作为配方提案。
 - 走查页未铺 Tour、Watermark、Affix、Backtop、InfiniteScroll、TableV2 等依赖滚动或运行时的组件。
-- 两个 npm 包（`@wycm9527/citrine`、`@wycm9527/citrine-tools`）已可 `npm pack`、随每个 Release 作为附件发布，但尚未 `npm publish`：需要决定 scope / 包名与发布账号；仓库内实测项目用 `file:` 链接消费。非 Node 项目走纯 CSS 渠道（Release 附件 `citrine-css-<版本>.tgz` 或 `ds.mjs export`），不依赖发布。
+- 两个 npm 包（`@wycm9527/citrine`、`@wycm9527/citrine-tools`）已发布到 npmjs.org，并随每个 Release 附带 tgz；仓库内实测项目用 `file:` 链接消费种子本身。非 Node 项目走纯 CSS 渠道（Release 附件 `citrine-css-<版本>.tgz` 或 `ds.mjs export`），不依赖 npm。
 - Figma 变量尚未与 token 同步。治理工具的四个已知缺陷（尺寸匹配不看属性、注释里的值被计数、`settle --apply` 只写豁免、guard / status 分工不清）已在 [WYCM9527/skills](https://github.com/WYCM9527/skills) 的 `design-system-steward` 0.6.0 修正，本仓库默认克隆的就是它。
 
 ## 方法

@@ -48,7 +48,7 @@ npm i @wycm9527/citrine && npm i -D @wycm9527/citrine-tools style-dictionary@5.5
 
 # 3') 方式 B：文件夹渠道（连不上 npm registry、或想把种子锁进项目 git 时）——种子拷进项目，工具用 Releases 直链
 cp -R /tmp/ds/citrine/seeds/brand-yellow-e vendor/citrine   # 放哪都行，init 会把它落成 design-systems/citrine/ 快照，之后 vendor/ 可删
-npm i -D https://github.com/WYCM9527/Design-System/releases/latest/download/wycm9527-citrine-tools-1.1.1.tgz style-dictionary@5.5.2
+npm i -D https://github.com/WYCM9527/Design-System/releases/latest/download/wycm9527-citrine-tools-1.1.2.tgz style-dictionary@5.5.2
 ```
 
 两种方式 adopter 都认，队友都零配置（A 写进 `package.json` 的是版本号，B 是项目内相对路径 `file:./design-systems/citrine`），已接入的项目不必换。**唯独不要 `npm i file:/tmp/ds/...`**：那会把一条只在你电脑上存在的路径写进 `package.json`，队友 `npm install` 直接失败。国内访问 registry.npmjs.org 慢或不通时，`npm config set registry https://registry.npmmirror.com`（镜像同步公开包，通常十分钟内）或改用方式 B。

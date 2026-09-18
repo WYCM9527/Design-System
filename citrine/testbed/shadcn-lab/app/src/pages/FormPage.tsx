@@ -19,7 +19,7 @@ export function FormPage() {
   const requestClose = async () => { if (note.trim() && !(await leave.ask({ message: '备注尚未保存，关闭后会丢失。', confirmText: '确定关闭', cancelText: '继续填写' }))) return; setOpen(false); setNote('') }
   return (
     <>
-      <div className="page-head"><div><h1>新建商户</h1><p>带 * 的为必填项</p></div></div>
+      <div className="page-head"><div><h1>新建供应商</h1><p>带 * 的为必填项</p></div></div>
       <form className="form-page card-block" onSubmit={(e) => e.preventDefault()} noValidate>
         <div className="card-head"><h2>基本信息</h2></div>
         <div className="form-grid">

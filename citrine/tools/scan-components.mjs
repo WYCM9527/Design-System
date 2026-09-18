@@ -90,7 +90,7 @@ try {
       const before = await evalJs(`[...document.querySelectorAll(${POPPER_SEL})].filter((p) => __ks.visible(p)).length`);
       const info = await evalJs(`(() => { const o = document.querySelectorAll("[data-ks-open]")[${i}]; const type = o.getAttribute("data-ks-type") || ""; const t = type === "dropdown" ? (o.querySelector(".el-dropdown__caret-button") || o.querySelector(".el-tooltip__trigger") || o.querySelector(".el-button") || o) : (o.matches("button, .el-button") ? o : (o.querySelector("input, .el-select__wrapper, .el-button") || o)); t.scrollIntoView({ block: "center" }); const r = t.getBoundingClientRect(); return { label: __ks.path(o), type, x: r.left + r.width / 2, y: r.top + r.height / 2 } })()`);
       for (const type of ['mousePressed', 'mouseReleased']) await send('Input.dispatchMouseEvent', { type, x: info.x, y: info.y, button: 'left', clickCount: 1 });
-      if (info.type === 'autocomplete') { await sleep(200); await send('Input.insertText', { text: '鲜' }); }
+      if (info.type === 'autocomplete') { await sleep(200); await send('Input.insertText', { text: '电' }); }   // 输入的字要能命中走查页联想示例数据（蓝海电子），弹层才会打开
       await sleep(600);
       const cnt = await evalJs(`[...document.querySelectorAll(${POPPER_SEL})].filter((p) => __ks.visible(p)).length`);
       if (cnt <= before) { findings.push({ kind: 'popper-not-opened', target: info.label }); continue; }
