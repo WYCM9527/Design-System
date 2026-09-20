@@ -97,7 +97,7 @@ steward 不用手动装：Agent 走到需要构建时会先找（`~/.cursor/skil
 
 Agent 会依次做：应用骨架（空目录时先问你选栈，给出 create-vite 命令）→ `ds.mjs init`（落快照 + 工作副本 + 清单，打印接线）→ steward `build-tokens` / `guard` → 写样式入口与 Vite 配置 → 渲染 `AGENTS.md` 给你看 → 做页面 → 建 `accept.config.mjs` → `npm run accept`。
 
-**你要拍板的点**：选栈；`AGENTS.md` 写入前看一眼；steward 安装。**完成标志**：`guard` 输出 `current`，`npm run accept` 四项全「通过」。
+**你要拍板的点**：选栈；`AGENTS.md` 写入前看一眼；steward 安装。**完成标志**：`guard` 输出 `current`，`npm run accept` 四项全「通过」。最后一步是 `ds.mjs ci`（见 5e）把这两项接进 CI。
 
 ## 4. 场景 B：旧项目换成公司规范
 
@@ -123,7 +123,7 @@ Agent 会依次做：应用骨架（空目录时先问你选栈，给出 create-
 | --- | --- | --- | --- |
 | 一 · 换肤 | steward `audit` 报工程量 → `init --legacy-rename`（原 `design-system/` 改名 `design-system.legacy/` 当证据，会先问你）→ 构建 → 挂桥接 → 旧变量做别名过渡 | 组件库部分立刻变成新样子（占页面视觉七八成）；页面扫描列出的二期清单 | 1–2 天 |
 | 二 · 收编 | steward `migrate adopt / replace` 自动处理无歧义项 → `settle` 时用种子的角色对照表起草决策文件给你确认 → 页面结构逐页换配方类 | `MIGRATION.md` 对照与回滚；验收数字逐批变绿 | 3–10 天看规模 |
-| 三 · 收尾 | `status` 到 unified、`guard` 到 current、写 `AGENTS.md`、验收进 CI | 干净的项目 | 半天 |
+| 三 · 收尾 | `status` 到 unified、`guard` 到 current、写 `AGENTS.md`、`ds.mjs ci` 验收进 CI | 干净的项目 | 半天 |
 
 **Agent 会在这四处停下问你**：工作区不干净要先提交；把原有的 `design-system/`（若有）改名为 `design-system.legacy/` 当迁移证据；写入 `AGENTS.md`；二期 `settle` 的决策文件（旧角色 → 新 token 的映射草稿）过目确认。其余步骤不需要你介入。
 
@@ -205,6 +205,21 @@ node <adopter>/scripts/ds.mjs export --system /tmp/ds/citrine/seeds/brand-yellow
 >
 > **硬边界**：不改 `design-systems/citrine/` 快照和 `citrine-scoped/` 生成物；配方不够用就记下来作为提案告诉我，不在页面上补样式值，不用 `!important` 压验收；每一处写入前告诉我将发生什么。
 
+## 5e. 验收进 CI（门禁）
+
+接入完成后，规则只是被 AI「看见」（`AGENTS.md` 每次对话自动加载），没有东西**强制**它——AI 改完页面是否记得跑验收，取决于模型的遵从度。唯一不依赖这点的机制是把验收放进 CI：
+
+```bash
+node .cursor/skills/design-system-adopter/scripts/ds.mjs ci --dry-run   # 先看
+node .cursor/skills/design-system-adopter/scripts/ds.mjs ci             # 写 .github/workflows/design-system.yml
+```
+
+工作流在每次 PR 与推 main 时跑：`status --strict`（上游快照没被手改）→ steward 就位（仓库里没有就临时安装）→ `build-tokens` → `guard` 必须 `current` → `npm run build` → `citrine-accept all` 四项全绿；失败时把 `.accept/` 的报告与截图上传为 artifact。steward `status` 只打印（换规范收尾前不要求 unified，收尾后把那一行改成门禁）。前置：adopter 与 `accept.config.mjs` 在仓库里；runner 自带 Chrome，工作流会装中文字体。GitLab / Jenkins 照里面的 shell 步骤搬即可。
+
+对 Agent 说：
+
+> 把设计系统验收接进 CI：按 design-system-adopter 用 `ds.mjs ci --dry-run` 把工作流给我看，我确认后写入并提交。
+
 ## 6. 日常做页面的三条纪律
 
 Agent 在已接入的项目里改 UI 时自动遵守，你验收产出时按这三条看：
@@ -224,6 +239,7 @@ node $A init --system citrine --stack element-plus   # 或 --stack shadcn；已�
 node $A status [--offline]              # 快照完整性、本地修改、上游最新
 node $A upgrade --dry-run               # 预览升级；去掉 --dry-run 执行；--resolve decisions.json 提交冲突决议
 node $A agents --stack element-plus     # 渲染 AGENTS.md；确认后加 --write
+node $A ci [--dry-run]                  # 写 GitHub Actions 门禁（status --strict → guard → 构建 → 验收）
 node $A steward locate|install          # 找 / 装治理工具
 npx citrine-accept all                  # 验收：pages → components → narrow → focus；单跑某项：citrine-accept pages
 ```

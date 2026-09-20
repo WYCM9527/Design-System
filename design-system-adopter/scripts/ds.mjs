@@ -5,7 +5,7 @@
 //   node ds.mjs detect   [--project <dir>] [--json]
 //   node ds.mjs init     --system <id|路径|npm包名> --stack <栈> [--project <dir>] [--legacy-rename]
 //   node ds.mjs adopt    [--system <id>] [--stack <栈>] [--project <dir>]        # 已有快照 + 工作副本的项目补 .adopter.json
-//   node ds.mjs status   [--project <dir>] [--offline]
+//   node ds.mjs status   [--project <dir>] [--offline] [--strict]   # --strict：快照被手改 / steward 过旧 → 退出 1（CI 用）
 //   node ds.mjs upgrade  [--project <dir>] [--dry-run] [--ref <tag>] [--from <dir|tgz>]
 //                        [--resolve <decisions.json>] [--keep-local-all] [--take-upstream-all] [--json]
 //   node ds.mjs restore  [--project <dir>] [--files a,b] [--all] [--from <dir>]  # 快照被改时恢复
@@ -13,12 +13,13 @@
 //   node ds.mjs scope    --root <class> --to <dir> [--with element-plus] [--system …]                             # 范围根：只覆盖部分路由板块（@scope 包裹）
 //   node ds.mjs propose  --title "…" [--layer token|bridge|recipes|component|docs|tools] [--scene …] [--expect …] [--tokens a,b] [--write]   # 提案草稿 + 预填 issue 链接
 //   node ds.mjs agents   [--project <dir>] [--stack <栈>] [--write]              # 默认只打印；--write 新建或追加
+//   node ds.mjs ci       [--project <dir>] [--to <path>] [--no-accept] [--dry-run] [--force]   # 写 GitHub Actions 门禁：快照完整 → guard current → 构建 → 验收全绿
 //   node ds.mjs steward  locate|install [--project <dir>]
 //   node ds.mjs self-update
 //
 // 布局：design-systems/<id>/ = 上游只读快照（三方合并的 base；npm 只是下载渠道）；design-system/ = 工作副本（steward 治理）。
 // 状态文件 design-system/.adopter.json；冲突清单 .adopter-conflicts.json（项目根）。退出码：0 成功 · 1 失败 · 2 用法/前置 · 3 有待决冲突。
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, realpathSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -218,6 +219,7 @@ const commands = {
     const m = readManifest() || fail(`没有 ${MANIFEST}；先 init（从 0）或 adopt（已有快照 + 工作副本）`);
     const snapDir = snapshotDirOf(m);
     if (!existsSync(snapDir)) fail(`快照目录不存在：${m.snapshot}`);
+    const strictFail = [];   // --strict（CI 门禁）：快照被手改 / steward 过旧 → 退出 1
     const identity = readIdentity(snapDir) || fail(`快照缺 design-system.json：${m.snapshot}`);
     console.log(`${m.name}（${m.system}）：清单 ${m.version}（${m.updatedAt}）· 快照里是 ${identity.version} · 来源 ${m.source} · 栈 ${m.stack}${m.scopeRoot ? ` · 范围根 html.${m.scopeRoot} → ${m.scopeDir}` : ''}`);
     // 快照完整性
@@ -225,13 +227,14 @@ const commands = {
     else {
       const now = hashDir(snapDir);
       const changed = Object.keys({ ...m.snapshotHashes, ...now }).filter((f) => m.snapshotHashes[f] !== now[f]);
+      if (changed.length) strictFail.push(`快照被手改 ${changed.length} 个文件`);
       if (changed.length) console.log(`  ⚠ 快照被本地改动（快照应只读，改动会让三方合并失去基线）：\n    ${changed.slice(0, 20).join('\n    ')}${changed.length > 20 ? `\n    …共 ${changed.length} 个` : ''}\n    用 restore 恢复，需要的差异改在工作副本 / app.css，公共诉求向上游提。`);
       else console.log('  快照完整（hash 与清单一致）。');
     }
     // 工作副本 vs 快照
     const modified = ownedFiles(identity, [snapDir]).filter((f) => existsSync(join(project, f)) && existsSync(join(snapDir, f)) && sha(join(project, f)) !== sha(join(snapDir, f)));
     console.log(modified.length ? `  工作副本相对快照的本地修改（升级时三方合并保留）：\n    ${modified.join('\n    ')}` : '  工作副本与快照一致（无本地修改）。');
-    { const sw = stewardInfo(project); console.log(sw.dir ? `  steward：${sw.version || '版本未知'}${sw.ok ? '' : `（过旧，需 ≥ ${MIN_STEWARD}）`} · ${sw.dir}` : `  steward：未找到（${sw.hint.split('：')[0]}）`); }
+    { const sw = stewardInfo(project); console.log(sw.dir ? `  steward：${sw.version || '版本未知'}${sw.ok ? '' : `（过旧，需 ≥ ${MIN_STEWARD}）`} · ${sw.dir}` : `  steward：未找到（${sw.hint.split('：')[0]}）`); if (sw.dir && !sw.ok) strictFail.push(`steward 过旧（需 ≥ ${MIN_STEWARD}）`); }
     if (m.source === 'npm') {
       const ns = nodeModulesSync(m, identity, m.version);
       if (ns && ns.current !== m.version) console.log(`  ⚠ node_modules/${m.npm} 是 ${ns.current || '未安装'}，清单是 ${m.version}（页面 import 的桥接以 node_modules 为准）${ns.cmd ? `：${ns.cmd}` : ns.note ? `：${ns.note}` : ''}`);
@@ -243,6 +246,7 @@ const commands = {
       else if (semverCompare(latest.version, identity.version) > 0) console.log(`  上游有新版本：${latest.tag}（快照 ${identity.version}）→ 跑 upgrade [--dry-run] 升级。`);
       else console.log(`  已是上游最新（${latest.tag}）。`);
     }
+    if (args.strict && strictFail.length) { console.error(`\n--strict 未通过：${strictFail.join('；')}`); process.exit(1); }
   },
 
   async upgrade() {
@@ -499,6 +503,85 @@ const commands = {
     console.log(how === 'created' ? '已新建 AGENTS.md' : '已把设计系统区块追加到既有 AGENTS.md 末尾');
   },
 
+  /**
+   * 项目 CI 门禁（GitHub Actions）：PR / 推送时跑「快照未被手改 → steward 就位 → token 构建 → guard current → 项目构建 → 验收全绿」。
+   * 这是唯一不依赖 Agent 是否照 AGENTS.md 做事的机制。adopter 与 steward 需在仓库里（CI 机器上没有你的全局 skill 目录）。
+   */
+  ci() {
+    const m = readManifest() || fail(`没有 ${MANIFEST}；先 init / adopt`);
+    const identity = readIdentity(snapshotDirOf(m)) || fail('快照缺 design-system.json');
+    const real = (d) => { try { return realpathSync(d); } catch { return d; } };   // macOS 的 /var → /private/var 符号链接会让 relative 误判成项目外
+    const adopterRel = relative(real(project), real(resolve(HERE, '..'))).split('\\').join('/');
+    if (!adopterRel || adopterRel.startsWith('..') || adopterRel.startsWith('/')) fail(`adopter 装在项目外（${resolve(HERE, '..')}），CI 机器上没有它。把它拷进项目并提交：mkdir -p .cursor/skills && cp -R "${resolve(HERE, '..')}" .cursor/skills/design-system-adopter，再用项目内的 ds.mjs 生成。`);
+    const pkg = readPkg(project);
+    const accept = identity.accept?.command || null;
+    if (accept && !existsSync(join(project, 'accept.config.mjs')) && !args['no-accept']) fail(`项目还没有 accept.config.mjs（验收清单）：按快照里的 ${identity.accept.configTemplate || 'templates/accept.config.mjs'} 建一份，或加 --no-accept 先只做 guard 门禁。`);
+    const withAccept = !!accept && !args['no-accept'];
+    if (!pkg.scripts?.build) console.log('注意：package.json 没有 build 脚本，工作流里的「项目构建」步骤会失败——加一个，或生成后手工删掉那一步。');
+    const lock = existsSync(join(project, 'pnpm-lock.yaml')) ? 'pnpm' : existsSync(join(project, 'yarn.lock')) ? 'yarn' : existsSync(join(project, 'package-lock.json')) ? 'npm-ci' : 'npm';
+    const install = { pnpm: 'corepack enable && pnpm install --frozen-lockfile', yarn: 'corepack enable && yarn install --immutable', 'npm-ci': 'npm ci', npm: 'npm install' }[lock];
+    const runBuild = { pnpm: 'pnpm run build', yarn: 'yarn build', 'npm-ci': 'npm run build', npm: 'npm run build' }[lock];
+    const runAccept = { pnpm: `pnpm exec ${accept} all`, yarn: `yarn ${accept} all`, 'npm-ci': `npx ${accept} all`, npm: `npx ${accept} all` }[lock];
+    const cache = lock === 'npm' ? '' : `\n          cache: ${lock === 'npm-ci' ? 'npm' : lock}`;
+    const sw = stewardInfo(project);
+    const stewardRel = sw.dir ? relative(real(project), real(sw.dir)).split('\\').join('/') : null;
+    const stewardInRepo = stewardRel && !stewardRel.startsWith('..') && !stewardRel.startsWith('/');
+    if (!stewardInRepo) console.log(`注意：steward ${sw.dir ? `在项目外（${sw.dir}）` : '未找到'}，CI 会在运行时从公开仓库安装（多几秒）。想固定版本就 ds.mjs steward install 装进项目并提交。`);
+    const yml = `# 由 design-system-adopter \`ds.mjs ci\` 生成（${identity.name} ${identity.version} · ${new Date().toISOString().slice(0, 10)}）。
+# 设计系统门禁：快照未被手改 → steward 就位 → token 构建 → guard current → 项目构建${withAccept ? ' → 验收全绿（页面 × 亮暗 · 组件走查 · 三端 · 焦点）' : ''}。
+# 这是唯一不依赖 Agent 是否照 AGENTS.md 做事的机制；不绿不合。改验收清单在 accept.config.mjs，不要在这里放宽。
+name: Design System
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+
+jobs:
+  design-system:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      CHROME_FLAGS: --no-sandbox --disable-dev-shm-usage --disable-gpu   # runner 自带 google-chrome
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22${cache}
+      - name: 中文字体（截图与文本测量用 Noto Sans CJK）
+        run: sudo apt-get update -q && sudo apt-get install -y -q fonts-noto-cjk >/dev/null
+      - name: 依赖
+        run: ${install}
+      - name: 快照未被手改 · steward 就位
+        run: |
+          A=${adopterRel}/scripts/ds.mjs
+          node "$A" status --offline --strict
+          if OUT=$(node "$A" steward locate 2>/dev/null); then S=$(echo "$OUT" | head -1); else node "$A" steward install >/dev/null; S=$(node "$A" steward locate | head -1); fi
+          echo "STEWARD=$S" >> "$GITHUB_ENV"
+      - name: token 构建 · guard current
+        run: |
+          node "$STEWARD/scripts/build-tokens.mjs" --project "$PWD" | tee /tmp/build.json | grep -q '"valid": true'
+          node "$STEWARD/scripts/guard.mjs" --project "$PWD" | tee /tmp/guard.json | grep -q '"status": "current"' || { echo "::error::guard 不是 current——工作副本与构建产物不一致，本地跑 build-tokens 后提交 dist"; exit 1; }
+          node "$STEWARD/scripts/status.mjs" --project "$PWD" > /tmp/status.json && node -e 'const s = JSON.parse(require("fs").readFileSync("/tmp/status.json", "utf8")); console.log("steward status:", s.status, "（信息项；换规范收尾后要当门禁，把本行改成 test unified = " + s.status + "）")'
+      - name: 项目构建
+        run: ${runBuild}
+${withAccept ? `      - name: 验收（清单在 accept.config.mjs）
+        run: ${runAccept}
+      - name: 失败时上传验收报告与截图
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: design-system-accept
+          path: .accept
+          if-no-files-found: ignore
+` : ''}`;
+    const to = resolve(project, args.to || '.github/workflows/design-system.yml');
+    if (args['dry-run']) { console.log(yml); console.log(`\n[dry-run] 未写入；目标 ${relative(project, to)}`); return; }
+    if (existsSync(to) && !args.force) fail(`已存在 ${relative(project, to)}；--force 覆盖，或 --to 换路径`);
+    mkdirSync(dirname(to), { recursive: true }); writeFileSync(to, yml);
+    console.log(`已写 ${relative(project, to)}（${withAccept ? 'guard + 验收' : '仅 guard'} 门禁）。提交后每次 PR / 推送 main 自动跑；首次运行约 ${withAccept ? '5–10' : '2'} 分钟。${stewardInRepo ? '' : '\nsteward 会在 CI 里临时安装；建议 ds.mjs steward install 装进项目并提交以固定版本。'}\nGitLab / 其他 CI：步骤就是上面几条 shell，照搬即可。`);
+  },
+
   async steward() {
     const sub = args._[1];
     if (sub === 'locate') { const sw = stewardInfo(project); if (!sw.dir) { console.log(sw.hint); process.exit(1); } console.log(sw.dir); console.log(`版本 ${sw.version || '未知'} · adopter 要求 ≥ ${MIN_STEWARD}${sw.ok ? ' · ok' : ' · 过旧'}`); if (!sw.ok) { console.log(sw.hint); process.exit(1); } }
@@ -515,7 +598,7 @@ const commands = {
   },
 
   help() {
-    console.log(readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').filter((l) => l.startsWith('//')).slice(1, 23).map((l) => l.replace(/^\/\/ ?/, '')).join('\n'));
+    console.log(readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').filter((l) => l.startsWith('//')).slice(1, 24).map((l) => l.replace(/^\/\/ ?/, '')).join('\n'));
   }
 };
 

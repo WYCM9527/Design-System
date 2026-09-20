@@ -2,6 +2,12 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.11.9 — 2026-09-20（adopter 0.3.0：`ds.mjs ci` 项目 CI 门禁）
+
+- **新增 `ds.mjs ci`**：写出 `.github/workflows/design-system.yml`——PR / 推 main 时跑「`status --strict`（上游快照未被手改）→ steward 就位（仓库里没有就临时从公开仓库安装）→ `build-tokens` → `guard` 必须 current → 项目构建 → 验收全绿」，失败上传 `.accept/` 报告与截图；steward `status` 只打印（换规范收尾前不要求 unified）。按 lockfile 自动选 npm / pnpm / yarn；adopter 装在项目外时拒绝并给拷贝命令；没有 `accept.config.mjs` 时要求先建（或 `--no-accept` 只做 guard）。背景：接入完成后规则只是被 Agent「看见」（AGENTS.md 自动加载），没有东西强制——这是唯一不依赖 Agent 是否照做的机制。模板在临时项目里逐步执行验证（含 `status --strict` 篡改快照后退出 1 的反向用例），单测 `tests/ci.test.mjs`。
+- **`ds.mjs status --strict`**：快照被手改 / steward 过旧 → 退出 1，供 CI。
+- 文档：GUIDE 新增 5e「验收进 CI」与命令速查；TUTORIAL 新增第 5 步（可粘贴的提示词）；新项目剧本第 9 步、换规范三期与 SKILL 命令表同步。编辑器钩子 / pre-commit 暂不做（静态字面量扫描有误报风险，等真实项目样本再校准）。
+
 ## 2.11.8 — 2026-09-20（级联审计：同类特异性问题排查与修正）
 
 2.11.7 之后对全部页面做了一次**级联倒置审计**（新脚本 `citrine/scripts/audit-cascade.mjs`：对每个元素每个属性，找种子里位置更后却因特异性更低而输掉的声明；三个实测项目 × 三档宽度），把"靠书写顺序覆盖却被前面高特异性规则压住"这一类问题一次查完：

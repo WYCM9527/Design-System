@@ -26,7 +26,7 @@
 
 ## 第三期 · 收尾
 
-steward `status` 到 `unified`、`guard` 到 `current`；`ds.mjs agents --write`（确认后）写项目规则防回潮；验收进 CI；`design-system.legacy/` 与 `theme-compat.css` 确认无引用后删除。
+steward `status` 到 `unified`、`guard` 到 `current`；`ds.mjs agents --write`（确认后）写项目规则防回潮；验收进 CI（`ds.mjs ci`，先 `--dry-run` 给用户看；收尾后可把工作流里 steward status 那行改成要求 unified）；`design-system.legacy/` 与 `theme-compat.css` 确认无引用后删除。
 
 ## 常见岔路
 

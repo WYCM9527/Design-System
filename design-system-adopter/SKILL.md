@@ -2,7 +2,7 @@
 name: design-system-adopter
 description: 把公司发布的设计系统（带 design-system.json 身份文件的种子包，如 Citrine）接入任意 Web 项目并保持更新。用户说「用 XX 设计系统起项目 / 接入设计系统 / 换成公司设计规范 / 更换现有规范 / 升级设计系统 / 设计系统有没有新版本 / update design system」，或项目里出现 design-systems/<id>/ 快照、design-system/.adopter.json 时使用。覆盖：从 0 接入、旧项目换规范（配合 design-system-steward 迁移）、按 tag 拉上游 + 三方合并更新、生成 AGENTS.md 项目规则、验收归因。不用于：治理 / 提炼项目自己的设计系统（那是 design-system-steward）、普通的孤立 UI 修改。
 metadata:
-  version: "0.2.0"
+  version: "0.3.0"
 ---
 
 # Design System Adopter
@@ -45,6 +45,8 @@ metadata:
 | `ds.mjs scope --root <class> --to <dir> [--with element-plus] [--system …]` | 范围根：token（优先项目 dist）+ recipes + 桥接各自包进 `@scope (html.<root>)`（`:root` / `html` 改写为 `:scope`，`@import / @theme / @keyframes` 提升顶层），打印路由守卫片段；`.adopter.json` 记账，`upgrade` 后提醒再生成 |
 | `ds.mjs propose --title "…" [--layer token\|bridge\|recipes\|component\|docs\|tools] [--scene …] [--expect …] [--tokens a,b] [--write]` | 提案回流：生成格式统一的提案草稿（自动带系统版本与栈）并打印**预填好的 GitHub issue 链接**；`--write` 存到 `design-system/proposals/`。配方不够用 / 桥接漏了 / 文档说不清时用它，不在页面上先糊样式 |
 | `ds.mjs agents [--stack <栈>] [--write]` | 渲染 AGENTS.md（模板 + 栈要点）；默认只打印，用户确认后再 `--write`（新建或追加，不覆盖） |
+| `ds.mjs ci [--to <path>] [--no-accept] [--dry-run] [--force]` | 写 GitHub Actions 门禁 `.github/workflows/design-system.yml`：PR / 推 main 时跑「`status --strict`（快照未被手改）→ steward 就位 → `build-tokens` → `guard` current → 项目构建 → 验收全绿」，失败上传 `.accept/`。**这是唯一不依赖 Agent 是否照 AGENTS.md 做事的机制**，新项目接入完成、旧项目三期收尾时都要做；adopter 须在仓库里（全局装的会拒绝并给拷贝命令）；没有 `accept.config.mjs` 先建（或 `--no-accept` 只做 guard） |
+| `ds.mjs status --strict` | 供 CI：快照被手改 / steward 过旧 → 退出 1 |
 | `ds.mjs steward locate\|install` | 查找 / 安装 design-system-steward（构建、Guard、迁移都靠它）；多份拷贝时取版本最高的，低于 0.6.0 会报过旧 |
 | `ds.mjs self-update` | 用上游仓库 main 更新本 skill 自己 |
 

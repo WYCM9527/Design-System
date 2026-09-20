@@ -27,7 +27,7 @@ jobs:
       - name: steward（治理脚本，公开仓库）
         run: git clone --depth 1 https://github.com/WYCM9527/skills.git skills
       - name: adopter 单测
-        run: node --test design-system-adopter/tests/merge.test.mjs design-system-adopter/tests/export.test.mjs design-system-adopter/tests/scope.test.mjs
+        run: node --test design-system-adopter/tests/merge.test.mjs design-system-adopter/tests/export.test.mjs design-system-adopter/tests/scope.test.mjs design-system-adopter/tests/ci.test.mjs
       - name: 迁移角色表与 token 源一致
         run: node citrine/seeds/brand-yellow-e/scripts/check-roles.mjs
       - name: 六处版本号一致
@@ -48,7 +48,7 @@ jobs:
         with:
           node-version: 22
       - name: adopter 单测（路径分隔符 / 复制 / 三方合并在 Windows 上的行为）
-        run: node --test design-system-adopter/tests/merge.test.mjs design-system-adopter/tests/export.test.mjs design-system-adopter/tests/scope.test.mjs
+        run: node --test design-system-adopter/tests/merge.test.mjs design-system-adopter/tests/export.test.mjs design-system-adopter/tests/scope.test.mjs design-system-adopter/tests/ci.test.mjs
       - name: 迁移角色表与 token 源一致
         run: node citrine/seeds/brand-yellow-e/scripts/check-roles.mjs
       - name: 六处版本号一致
