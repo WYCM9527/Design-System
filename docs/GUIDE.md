@@ -250,6 +250,7 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 
 ## 8b. 维护者：发版与 CI
 
+- 改了 `recipes.css` / 桥接后，除 CI 外再跑一次级联审计：`node citrine/scripts/audit-cascade.mjs --dist citrine/testbed/golden-admin/app/dist --pages "?theme=light#/kitchen,?role=admin#/orders"`——找「位置更后却因特异性更低而输掉」的声明（2.11.7 汉堡按钮那类问题，pages / narrow / focus 看不出来）。输出需人判断，口径写在脚本末尾。
 - 每次 push / PR 自动跑 CI：adopter 单测、角色表与 token 源一致、六处版本号一致、种子 `dist` 与源一致，以及三个实测项目的 guard / status / 全量验收（并行三个 job，失败会上传截图与报告为 artifact）。不绿不合。
 - 发版：改 `design-system.json` 与 `package.json` 版本、写 CHANGELOG、`node citrine/scripts/check-versions.mjs` 通过后打 tag `citrine-vX.Y.Z` 推送——`release.yml` 自动建 GitHub Release（说明取 CHANGELOG 段落，附件 = 种子与工具的 npm pack 产物 + 纯 CSS 包）。手动补历史版本：`node citrine/scripts/release.mjs --version X.Y.Z --notes-only`。
 - npm 发布是 `release.yml` 的第二个 job：同一个 tag 把 `@wycm9527/citrine` 与 `@wycm9527/citrine-tools` 发到 registry（已存在的版本跳过，所以只升种子不升工具也没事；带 provenance）。认证走 npm **Trusted Publishing**（已在 npmjs.com 两个包的 Settings → Trusted Publisher 登记 GitHub `WYCM9527/Design-System` + 工作流 `release.yml`，零密钥，2.11.5 起生效）；换仓库或改工作流文件名要重新登记；也可退回仓库 Secret `NPM_TOKEN`（granular token，勾 publish + bypass 2FA）。**工具有改动必升 `citrine/tools/package.json` 的版本号**，否则 registry 上已存在同版本会被跳过、Release 里同名 tgz 内容不同。

@@ -2,6 +2,15 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.11.8 — 2026-09-20（级联审计：同类特异性问题排查与修正）
+
+2.11.7 之后对全部页面做了一次**级联倒置审计**（新脚本 `citrine/scripts/audit-cascade.mjs`：对每个元素每个属性，找种子里位置更后却因特异性更低而输掉的声明；三个实测项目 × 三档宽度），把"靠书写顺序覆盖却被前面高特异性规则压住"这一类问题一次查完：
+
+- **recipes：删掉 `.act, td .act` / `.link, td .link` / `.link.danger, td .link.danger` 及触屏块里的 `td .act` / `td .link` 重复前缀**——与 2.11.7 的 `.topbar .iconbtn` 同一写法。逐属性比对 80 个表格内元素的计算样式，确认这些前缀从未产生过任何效果（唯一差异是 `.act.more-link` 的 `min-height` 0 → 24，而 `.act` 本有显式 `height: 24`），纯属隐患。配方类今后一律单类选择器（文件里加了说明）。
+- **Element 桥接：面包屑当前页字重**——Element 的 `.el-breadcrumb__item:last-child .el-breadcrumb__inner` (0,3,0) 把当前页压回 400，桥接只覆盖了颜色；现同特异性重申 500（DESIGN：面包屑 500）。手机档顶栏只显示当前页，此前看到的正是 400。
+- **Element 桥接：小尺寸分段选择器中间项直角**——`.el-radio-button--small .el-radio-button__inner` (0,2,0) 的 `border-radius: 0` 压过桥接的 `radius.full`，首尾项有 (0,3,0) 规则兜着、选中首项时看不出来，选中中间项就是方块；小尺寸规则里重申圆角。`el-checkbox-button` 桥接此前**没有**小尺寸规则（会拿到 Element 的直角 + 5px 内边距），补齐与 radio-button 同形的一条。`el-segmented` 小尺寸经测正常。
+- 审计里其余条目（plain 按钮禁用态走描边样式、Element 组合上下文规则压过基类、组件自身颜色压过 recipes 的 `a` reset 等）均为有意的层级，已在脚本输出的判断口径里写明。维护者改 recipes / 桥接后复跑：`node citrine/scripts/audit-cascade.mjs --dist <app/dist> --pages "…"`。
+
 ## 2.11.7 — 2026-09-20（recipes：汉堡 / 折叠按钮三端显隐失效——同事反馈）
 
 - **`recipes.css` 的 `.iconbtn` 规则去掉多余的 `.topbar .iconbtn`**。此前该选择器把 `display: grid` 抬到 (0,2,0)，压过后面 `.menu-btn { display: none }` 与手机档 `.menu-btn { display: inline-grid } / .collapse-btn { display: none }`（均为 (0,1,0)），结果汉堡与折叠按钮在所有断点同时可见——2.4.0 配方层抽出时带进来的，三个实测项目和纯 CSS 交付都受影响，截图里顶栏一直并排着两个按钮而没人起疑。同事在纯 CSS 导出（2.11.5）里发现并给出完整归因，按其建议 A 修复：`.iconbtn:hover / .is-on / .unread` 不受影响。纯 CSS 项目升级 = 重新 `export` 一次。

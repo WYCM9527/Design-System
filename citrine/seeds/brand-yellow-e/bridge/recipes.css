@@ -28,13 +28,14 @@ svg.i-icon--muted { color: var(--color-icon-muted); }
 
 /* ── 链接四层（DESIGN 视觉语言·链接） ── */
 /* 内容型：订单号、名称——下划线 + 斜体；等宽数字型不斜体 */
-.link, td .link { color: var(--color-text-link); text-decoration: var(--text-link-decoration); font-style: var(--text-link-style); cursor: pointer; }
+/* 配方类一律单类选择器：不加 td / .topbar 等后代前缀抬特异性（2.11.7 汉堡按钮事故的根因），后面的状态 / 三端规则靠书写顺序覆盖 */
+.link { color: var(--color-text-link); text-decoration: var(--text-link-decoration); font-style: var(--text-link-style); cursor: pointer; }
 .link:hover { color: var(--color-text-link-hover); }
-.link.danger, td .link.danger { color: var(--color-text-danger); }
+.link.danger { color: var(--color-text-danger); }
 .link.danger:hover { color: var(--color-text-danger); }
 .link.mono, .mono.link { font-style: normal; }
 /* 操作型：动词（编辑 / 详情 / 改派 / 催单…）——同色胶囊描边，行内胶囊档 control.height.xs、text.body-sm、400；<a> 与 <button> 同形 */
-.act, td .act { color: var(--color-text-link); font-family: inherit; font-size: var(--text-body-sm-size); font-weight: var(--font-weight-regular); text-decoration: none; font-style: normal; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: var(--spacing-1); height: var(--control-height-xs); min-height: 0; padding: 0 var(--spacing-2); border: var(--border-width-default) solid currentColor; border-radius: var(--radius-full); line-height: 1; white-space: nowrap; }
+.act { color: var(--color-text-link); font-family: inherit; font-size: var(--text-body-sm-size); font-weight: var(--font-weight-regular); text-decoration: none; font-style: normal; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: var(--spacing-1); height: var(--control-height-xs); min-height: 0; padding: 0 var(--spacing-2); border: var(--border-width-default) solid currentColor; border-radius: var(--radius-full); line-height: 1; white-space: nowrap; }
 .act:hover { color: var(--color-text-link-hover); background: var(--color-bg-hover); }
 .act.danger, .act.danger:hover { color: var(--color-text-danger); }
 .act.danger:hover { background: var(--color-status-error-bg); }
@@ -278,7 +279,7 @@ td .link, .card-head .link, .batch .link, .empty .link, .more-link { display: in
 }
 /* 触屏：命中区升到 control.hit-touch，视觉不变（min-height 拉高由 flex 居中吸收） */
 @media (pointer: coarse) {
-  .act, td .act, .go, .link, td .link, .more-link, .iconbtn, .title-link { min-height: var(--control-hit-touch); }
+  .act, .go, .link, .more-link, .iconbtn, .title-link { min-height: var(--control-hit-touch); }
   .chip button.x { min-width: var(--control-hit-touch); height: var(--control-hit-touch); }
 }
 

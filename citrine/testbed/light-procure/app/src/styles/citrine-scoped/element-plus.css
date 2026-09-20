@@ -1,4 +1,4 @@
-/* Citrine 黄晶（citrine）2.11.7 · element-plus.css · 范围根 html.citrine · design-system-adopter scope 2026-09-20
+/* Citrine 黄晶（citrine）2.11.8 · element-plus.css · 范围根 html.citrine · design-system-adopter scope 2026-09-20
    生成物，只读：token / 桥接变化后重跑 ds.mjs scope 再生成；项目差异写在自己的样式文件里。 */
 @scope (html.citrine) {
   /* Element Plus 桥接：把 Element Plus 的全局 CSS 变量指向设计系统的语义 token。
@@ -228,8 +228,8 @@
   .el-radio-button__inner, .el-radio-button:first-child .el-radio-button__inner, .el-radio-button:last-child .el-radio-button__inner {
     border: 0; outline: 0; box-shadow: none; background: transparent; color: var(--color-text-secondary); border-radius: var(--radius-full);
     height: calc(var(--control-height-md) - 2 * var(--control-segmented-inset) - 2 * var(--border-width-default)); line-height: 1; padding: 0 var(--spacing-3-5); display: inline-flex; align-items: center; }
-  .el-radio-button--small .el-radio-button__inner, .el-radio-button--small:first-child .el-radio-button__inner, .el-radio-button--small:last-child .el-radio-button__inner { height: calc(var(--control-height-sm) - 2 * var(--control-segmented-inset) - 2 * var(--border-width-default)); font-size: var(--text-small-size); padding: 0 var(--spacing-2-5); }
-  /* 首尾项选择器特异性与上面持平，小尺寸才压得过 */
+  .el-radio-button--small .el-radio-button__inner, .el-radio-button--small:first-child .el-radio-button__inner, .el-radio-button--small:last-child .el-radio-button__inner { height: calc(var(--control-height-sm) - 2 * var(--control-segmented-inset) - 2 * var(--border-width-default)); font-size: var(--text-small-size); padding: 0 var(--spacing-2-5); border-radius: var(--radius-full); }
+  /* 首尾项选择器特异性与上面持平，小尺寸才压得过；border-radius 必须在这里重申——Element 的 --small 规则 (0,2,0) 会把中间项压回直角（2.11.8 级联审计发现） */
   .el-radio-button__inner:hover { color: var(--color-text-primary); }
   .el-radio-button__original-radio:checked + .el-radio-button__inner { background: var(--color-action-selected); color: var(--color-text-on-selected); box-shadow: none; }
   .el-radio-button__original-radio:disabled + .el-radio-button__inner { background: transparent; color: var(--color-text-secondary); opacity: var(--opacity-disabled); }
@@ -359,7 +359,8 @@
   .el-timeline-item__tail { border-left-color: var(--color-border-default); }
   .el-timeline-item__timestamp { color: var(--color-text-muted); font-size: var(--text-small-size); }
   .el-breadcrumb__inner, .el-breadcrumb__inner a { color: var(--color-text-secondary); font-weight: var(--text-weight-label); }
-  .el-breadcrumb__item:last-child .el-breadcrumb__inner { color: var(--color-text-primary); }
+  .el-breadcrumb__item:last-child .el-breadcrumb__inner { color: var(--color-text-primary); font-weight: var(--text-weight-label); }
+  /* Element 的 :last-child 规则 (0,3,0) 会把当前页压回 400，这里同特异性补回 500（DESIGN：面包屑 500） */
   .el-breadcrumb__separator { color: var(--color-text-muted); }
   .el-upload-dragger { background: var(--color-bg-subtle); border-color: var(--color-border-strong); border-radius: var(--radius-md); }
   .el-upload-dragger:hover, .el-upload-dragger.is-dragover { border-color: var(--color-border-focus); background: var(--color-bg-selected); }
@@ -492,6 +493,8 @@
   .el-checkbox-button__inner, .el-checkbox-button:first-child .el-checkbox-button__inner, .el-checkbox-button:last-child .el-checkbox-button__inner {
     border: 0; outline: 0; box-shadow: none; background: transparent; color: var(--color-text-secondary); border-radius: var(--radius-full); font-weight: var(--font-weight-regular);
     height: calc(var(--control-height-md) - 2 * var(--control-segmented-inset) - 2 * var(--border-width-default)); line-height: 1; padding: 0 var(--spacing-3-5); display: inline-flex; align-items: center; }
+  .el-checkbox-button--small .el-checkbox-button__inner, .el-checkbox-button--small:first-child .el-checkbox-button__inner, .el-checkbox-button--small:last-child .el-checkbox-button__inner { height: calc(var(--control-height-sm) - 2 * var(--control-segmented-inset) - 2 * var(--border-width-default)); font-size: var(--text-small-size); padding: 0 var(--spacing-2-5); border-radius: var(--radius-full); }
+  /* 与 radio-button 分段同形；Element 的 --small 规则 (0,2,0) 会给直角 + 5px 内边距，必须在同特异性上重申 */
   .el-checkbox-button__inner:hover { color: var(--color-text-primary); }
   .el-checkbox-button.is-checked .el-checkbox-button__inner, .el-checkbox-button.is-checked:first-child .el-checkbox-button__inner { background-color: var(--color-action-selected); color: var(--color-text-on-selected); border-color: transparent; box-shadow: none; font-weight: var(--font-weight-medium); }
   .el-checkbox-button.is-disabled .el-checkbox-button__inner { background: transparent; color: var(--color-text-secondary); opacity: var(--opacity-disabled); border-color: transparent; }
