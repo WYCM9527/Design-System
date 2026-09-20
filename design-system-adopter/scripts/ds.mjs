@@ -21,7 +21,7 @@
 // 状态文件 design-system/.adopter.json；冲突清单 .adopter-conflicts.json（项目根）。退出码：0 成功 · 1 失败 · 2 用法/前置 · 3 有待决冲突。
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, realpathSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { basename, dirname, join, relative, resolve } from 'node:path';
+import { basename, dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { parseArgs, sha, walk, matchesAny, copyDir, isSymlink, readJson, semverCompare, fail } from './lib/util.mjs';
@@ -512,7 +512,7 @@ const commands = {
     const identity = readIdentity(snapshotDirOf(m)) || fail('快照缺 design-system.json');
     const real = (d) => { try { return realpathSync(d); } catch { return d; } };   // macOS 的 /var → /private/var 符号链接会让 relative 误判成项目外
     const adopterRel = relative(real(project), real(resolve(HERE, '..'))).split('\\').join('/');
-    if (!adopterRel || adopterRel.startsWith('..') || adopterRel.startsWith('/')) fail(`adopter 装在项目外（${resolve(HERE, '..')}），CI 机器上没有它。把它拷进项目并提交：mkdir -p .cursor/skills && cp -R "${resolve(HERE, '..')}" .cursor/skills/design-system-adopter，再用项目内的 ds.mjs 生成。`);
+    if (!adopterRel || adopterRel.startsWith('..') || isAbsolute(adopterRel) || /^[A-Za-z]:/.test(adopterRel)) fail(`adopter 装在项目外（${resolve(HERE, '..')}），CI 机器上没有它。把它拷进项目并提交：mkdir -p .cursor/skills && cp -R "${resolve(HERE, '..')}" .cursor/skills/design-system-adopter，再用项目内的 ds.mjs 生成。`);
     const pkg = readPkg(project);
     const accept = identity.accept?.command || null;
     if (accept && !existsSync(join(project, 'accept.config.mjs')) && !args['no-accept']) fail(`项目还没有 accept.config.mjs（验收清单）：按快照里的 ${identity.accept.configTemplate || 'templates/accept.config.mjs'} 建一份，或加 --no-accept 先只做 guard 门禁。`);
@@ -525,7 +525,7 @@ const commands = {
     const cache = lock === 'npm' ? '' : `\n          cache: ${lock === 'npm-ci' ? 'npm' : lock}`;
     const sw = stewardInfo(project);
     const stewardRel = sw.dir ? relative(real(project), real(sw.dir)).split('\\').join('/') : null;
-    const stewardInRepo = stewardRel && !stewardRel.startsWith('..') && !stewardRel.startsWith('/');
+    const stewardInRepo = stewardRel && !stewardRel.startsWith('..') && !isAbsolute(stewardRel) && !/^[A-Za-z]:/.test(stewardRel);
     if (!stewardInRepo) console.log(`注意：steward ${sw.dir ? `在项目外（${sw.dir}）` : '未找到'}，CI 会在运行时从公开仓库安装（多几秒）。想固定版本就 ds.mjs steward install 装进项目并提交。`);
     const yml = `# 由 design-system-adopter \`ds.mjs ci\` 生成（${identity.name} ${identity.version} · ${new Date().toISOString().slice(0, 10)}）。
 # 设计系统门禁：快照未被手改 → steward 就位 → token 构建 → guard current → 项目构建${withAccept ? ' → 验收全绿（页面 × 亮暗 · 组件走查 · 三端 · 焦点）' : ''}。
@@ -575,11 +575,11 @@ ${withAccept ? `      - name: 验收（清单在 accept.config.mjs）
           path: .accept
           if-no-files-found: ignore
 ` : ''}`;
-    const to = resolve(project, args.to || '.github/workflows/design-system.yml');
-    if (args['dry-run']) { console.log(yml); console.log(`\n[dry-run] 未写入；目标 ${relative(project, to)}`); return; }
-    if (existsSync(to) && !args.force) fail(`已存在 ${relative(project, to)}；--force 覆盖，或 --to 换路径`);
+    const to = resolve(project, args.to || '.github/workflows/design-system.yml'); const toRel = relative(project, to).split('\\').join('/');
+    if (args['dry-run']) { console.log(yml); console.log(`\n[dry-run] 未写入；目标 ${toRel}`); return; }
+    if (existsSync(to) && !args.force) fail(`已存在 ${toRel}；--force 覆盖，或 --to 换路径`);
     mkdirSync(dirname(to), { recursive: true }); writeFileSync(to, yml);
-    console.log(`已写 ${relative(project, to)}（${withAccept ? 'guard + 验收' : '仅 guard'} 门禁）。提交后每次 PR / 推送 main 自动跑；首次运行约 ${withAccept ? '5–10' : '2'} 分钟。${stewardInRepo ? '' : '\nsteward 会在 CI 里临时安装；建议 ds.mjs steward install 装进项目并提交以固定版本。'}\nGitLab / 其他 CI：步骤就是上面几条 shell，照搬即可。`);
+    console.log(`已写 ${toRel}（${withAccept ? 'guard + 验收' : '仅 guard'} 门禁）。提交后每次 PR / 推送 main 自动跑；首次运行约 ${withAccept ? '5–10' : '2'} 分钟。${stewardInRepo ? '' : '\nsteward 会在 CI 里临时安装；建议 ds.mjs steward install 装进项目并提交以固定版本。'}\nGitLab / 其他 CI：步骤就是上面几条 shell，照搬即可。`);
   },
 
   async steward() {
