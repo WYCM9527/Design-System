@@ -80,7 +80,7 @@ td .link, .card-head .link, .batch .link, .empty .link, .more-link { display: in
 .topbar { height: var(--layout-topbar-height); display: flex; align-items: center; gap: var(--spacing-3); padding: 0 var(--space-gutter); background: var(--color-bg-surface); border-bottom: var(--border-width-default) solid var(--color-border-default); position: sticky; top: 0; z-index: var(--layer-sticky); }
 .topbar .search { width: var(--layout-search-width); margin-left: auto; }
 .topbar .spacer { margin-left: auto; }
-.topbar .iconbtn, .iconbtn { position: relative; width: var(--control-height-md); height: var(--control-height-md); border-radius: var(--radius-md); display: grid; place-items: center; color: var(--color-icon-default); cursor: pointer; background: transparent; border: 0; padding: 0; }
+.iconbtn { position: relative; width: var(--control-height-md); height: var(--control-height-md); border-radius: var(--radius-md); display: grid; place-items: center; color: var(--color-icon-default); cursor: pointer; background: transparent; border: 0; padding: 0; }
 .iconbtn:hover { background: var(--color-bg-hover); color: var(--color-text-primary); }
 .iconbtn.is-on { background: var(--color-bg-selected); color: var(--color-text-selected); }
 /* 未读计数：贴图标右上角；底色 action.danger（亮暗都是深红，白字够对比），不用 status.error */

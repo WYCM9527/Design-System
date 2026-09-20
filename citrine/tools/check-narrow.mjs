@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // 三端响应：按项目登记的多档宽度检查。窄屏档（expect: collapsed）侧栏应默认折叠；手机档（expect: offcanvas）侧栏应离屏、
 // 汉堡（.menu-btn）可唤出抽屉、点遮罩（.sidebar-mask）可关闭；所有档位文档级无横向溢出（表格容器内部滚动允许）。
+// 显隐互斥：窄屏 / 桌面档 .menu-btn 必须隐藏，手机档 .collapse-btn 必须隐藏（两者都在页面上时才断言；2.11.7 之前 recipes 的 .topbar .iconbtn 特异性压过显隐规则，pages / narrow / focus 三绿仍漏过）。
 // 配置：accept.config.mjs 的 NARROW —— 旧形态 { width, pages } 仍支持（视为单一 collapsed 档）；
 // 新形态 { widths: [{ name, width, expect: 'collapsed' | 'offcanvas', pages? }], pages }——档位可用自己的 pages 覆盖全局（如把组件走查页从手机档剔除：内部工具页含 390 放不下的固宽组件面板，不属于「手机可用」目标）。
 // 用法：node citrine/tools/check-narrow.mjs [--project <appDir>]   退出码：任一档任一页不达标为 1。
@@ -31,11 +32,12 @@ try {
           sidebarVisible: !!r && r.right > 0 && r.width > 0,
           sidebarW: r ? Math.round(r.width) : 0,
           menuBtn: !!document.querySelector('.menu-btn') && getComputedStyle(document.querySelector('.menu-btn')).display !== 'none',
+          collapseBtn: !!document.querySelector('.collapse-btn') && getComputedStyle(document.querySelector('.collapse-btn')).display !== 'none',
           docOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
           mainOverflow: [...document.querySelectorAll('main *')].filter((e) => { const cs = getComputedStyle(e); return e.scrollWidth > e.clientWidth + 1 && !['hidden', 'auto', 'scroll'].includes(cs.overflowX) && e.getBoundingClientRect().right > document.documentElement.clientWidth; }).slice(0, 5).map((e) => e.tagName + '.' + String(e.className || '').slice(0, 40)),
         };
       })()`);
-      let ok, extra = {};
+      let ok, extra = {}; const why = [];
       if (tier.expect === 'offcanvas') {
         // 手机：初始侧栏离屏 + 汉堡可见 → 点开抽屉 → 点遮罩关闭
         const drawer = await browser.evalJs(`(async () => {
@@ -51,15 +53,23 @@ try {
           return out;
         })()`);
         extra = drawer;
-        ok = !base.sidebarVisible && base.menuBtn && drawer.opened && drawer.closed && base.docOverflow <= 0 && base.mainOverflow.length === 0;
+        if (base.sidebarVisible) why.push('侧栏未离屏');
+        if (!base.menuBtn) why.push('汉堡 .menu-btn 不存在或不可见');
+        if (base.collapseBtn) why.push('折叠按钮 .collapse-btn 在手机档仍可见');
+        if (!drawer.opened) why.push('点汉堡后抽屉未打开');
+        if (!drawer.closed) why.push('点遮罩后抽屉未关闭');
       } else {
-        ok = base.collapsed && base.docOverflow <= 0 && base.mainOverflow.length === 0;
+        if (!base.collapsed) why.push('侧栏未折叠（.app 无 is-collapsed）');
+        if (base.menuBtn) why.push('汉堡 .menu-btn 在非手机档仍可见');
       }
+      if (base.docOverflow > 0) why.push(`文档横向溢出 ${base.docOverflow}px`);
+      if (base.mainOverflow.length) why.push(`元素溢出 ${base.mainOverflow.join(', ')}`);
+      ok = why.length === 0;
       if (!ok) failed = true;
-      console.log(`${ok ? 'ok  ' : 'FAIL'} ${name.padEnd(16)} ${JSON.stringify({ ...base, ...extra })}`);
+      console.log(`${ok ? 'ok  ' : 'FAIL'} ${name.padEnd(16)} ${JSON.stringify({ ...base, ...extra })}${why.length ? '\n     ↳ ' + why.join('；') : ''}`);
       writeFileSync(`${OUT}/${tier.name}-${name}.png`, await browser.screenshot());
     }
   }
 } finally { browser.close(); server.close(); }
 console.log(`\n截图 → ${OUT}`);
-if (failed) process.exit(1); console.log(`通过：${TIERS.map((t) => `${t.width}px ${t.expect === 'offcanvas' ? '侧栏离屏、抽屉可开合' : '侧栏折叠'}`).join('；')}；均无横向溢出。`);
+if (failed) process.exit(1); console.log(`通过：${TIERS.map((t) => `${t.width}px ${t.expect === 'offcanvas' ? '侧栏离屏、抽屉可开合、折叠按钮隐藏' : '侧栏折叠、汉堡隐藏'}`).join('；')}；均无横向溢出。`);

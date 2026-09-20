@@ -2,6 +2,12 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.11.7 — 2026-09-20（recipes：汉堡 / 折叠按钮三端显隐失效——同事反馈）
+
+- **`recipes.css` 的 `.iconbtn` 规则去掉多余的 `.topbar .iconbtn`**。此前该选择器把 `display: grid` 抬到 (0,2,0)，压过后面 `.menu-btn { display: none }` 与手机档 `.menu-btn { display: inline-grid } / .collapse-btn { display: none }`（均为 (0,1,0)），结果汉堡与折叠按钮在所有断点同时可见——2.4.0 配方层抽出时带进来的，三个实测项目和纯 CSS 交付都受影响，截图里顶栏一直并排着两个按钮而没人起疑。同事在纯 CSS 导出（2.11.5）里发现并给出完整归因，按其建议 A 修复：`.iconbtn:hover / .is-on / .unread` 不受影响。纯 CSS 项目升级 = 重新 `export` 一次。
+- **tools 1.1.3：`narrow` 补显隐互斥断言**——窄屏 / 桌面档 `.menu-btn` 计算值必须为 `none`，手机档 `.collapse-btn` 必须为 `none`（页面上有该元素才断言）；失败时逐条打印原因（此前只有一行 JSON）。用旧构建复跑确认新断言能抓到这个 bug，修后三项目通过。此前 pages / narrow / focus 三绿仍会漏过，属于验收盲区。
+- README 截图全部重拍（顶栏不再并排两个按钮）。
+
 ## 2.11.6 — 2026-09-18（走查页示例文案中性化；README 图示改用「轻采」）
 
 - **`bridge/vue/KitchenSink.vue` 与 `templates/KitchenSink.tsx` 的示例文案改为中性的企业采购语境**（供应商 / 采购申请 / 审批人 / 资产），不再是外卖后台的订单 / 商户 / 骑手 / 店名——走查页会被每个接入项目原样挂到 `/kitchen`，旧文案容易让人误以为规范属于某个外卖平台。组件结构、`data-ks` 分组与走查脚本的探测点不变。
