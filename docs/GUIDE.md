@@ -283,6 +283,7 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 5. **门禁**：`node skills/web-to-design-system/scripts/publish-check.mjs --seed <id>/seeds/<id>` 全 ✔（0.x 想带着 `[推断]` 先发就 `--allow-inferred`，CHANGELOG 写清）；`node scripts/check-versions.mjs --system <id>` 通过。
 6. **发版**：PR 合并 → 打 tag `<id>-v0.1.0` 推送 → Release 自动建。消费者按第 2 节的方式 B 接入（拷 `<id>/seeds/<id>` 进项目，`ds.mjs init --system <id> --stack css|element-plus|shadcn`），升级走 `ds.mjs status / upgrade`。
 7. **法律边界**：种子里只有度量值（颜色、尺寸、字重），不放来源站点的 logo、图标字体、商用字体文件；字体栈里出现商用字体要在 DESIGN 注明授权情况。
+8. **上不上 npm（默认不上）**：提炼出的种子不带 `publishConfig`，不进 registry——文件夹渠道（`npm i file:./design-systems/<id>`）与 Release 直链已经够 adopter 接入和按 tag 升级，npm 只是对 Node 项目省一步。满足三件事再上：`publish-check` 全 ✔ 且没有未确认的 `[推断]`、组件库桥接走查过、至少一个真实项目接入。上的时候给种子 `package.json` 加 `"publishConfig": { "access": "public" }`、把 license 从 `UNLICENSED` 改成明确许可、在 npmjs 登记 Trusted Publisher，`release.yml` 会自动发。要付费分发就不走公开 npm：私有仓库 + 付费后加协作者，adopter 用 `GITHUB_TOKEN` 拉私有上游。（2026-09-22 记录，待第一套系统达到条件时执行。）
 
 ## 9. 反馈回路
 
