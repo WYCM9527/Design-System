@@ -1,5 +1,5 @@
 # CI：改种子 / 桥接 / 工具 / skill 的任何一处，都要过这四道门——
-#   checks：adopter 单测、迁移角色表与 token 源一致、六处版本号一致、种子 dist 与 token 源一致
+#   checks：adopter 单测、Citrine 迁移角色表与 token 源一致、每个设计系统六处版本号一致、每个种子 dist 与 token 源一致（系统清单来自 scripts/systems.mjs）
 #   accept：三个实测项目各自 npm ci → guard current → status unified → 全量验收（页面 × 亮暗 / 组件走查 / 三端 / 焦点 / 黄金后台 E-S 像素对照）
 # 验收在无头 Chrome 上跑（runner 自带 google-chrome），CJK 字体装 fonts-noto-cjk（字体栈里有 Noto Sans CJK SC）。
 name: CI
@@ -28,15 +28,18 @@ jobs:
         run: git clone --depth 1 https://github.com/WYCM9527/skills.git skills
       - name: adopter 单测
         run: node --test design-system-adopter/tests/merge.test.mjs design-system-adopter/tests/export.test.mjs design-system-adopter/tests/scope.test.mjs design-system-adopter/tests/ci.test.mjs
-      - name: 迁移角色表与 token 源一致
+      - name: Citrine 迁移角色表与 token 源一致
         run: node citrine/seeds/brand-yellow-e/scripts/check-roles.mjs
-      - name: 六处版本号一致
-        run: node citrine/scripts/check-versions.mjs
-      - name: 种子 dist 与 token 源一致（构建后无 diff）
+      - name: 每个设计系统六处版本号一致
+        run: node scripts/check-versions.mjs
+      - name: 每个种子 dist 与 token 源一致（构建后无 diff）
         run: |
-          (cd citrine/seeds/brand-yellow-e && npm i --no-save --no-package-lock style-dictionary@5.5.2)
-          node skills/design-system-steward/scripts/build-tokens.mjs --project "$PWD/citrine/seeds/brand-yellow-e" | tee /tmp/build.json | grep -q '"valid": true'
-          git diff --exit-code -- citrine/seeds/brand-yellow-e/design-system/dist
+          for SEED in $(node scripts/systems.mjs --seed-dirs); do
+            echo "== $SEED"
+            (cd "$SEED" && npm i --no-save --no-package-lock --no-audit --no-fund style-dictionary@5.5.2)
+            node skills/design-system-steward/scripts/build-tokens.mjs --project "$PWD/$SEED" | tee /tmp/build.json | grep -q '"valid": true'
+          done
+          git diff --exit-code -- $(node scripts/systems.mjs --dist-paths)
 
   checks-windows:
     name: Windows · adopter 单测 · 角色表 · 版本
@@ -49,10 +52,10 @@ jobs:
           node-version: 22
       - name: adopter 单测（路径分隔符 / 复制 / 三方合并在 Windows 上的行为）
         run: node --test design-system-adopter/tests/merge.test.mjs design-system-adopter/tests/export.test.mjs design-system-adopter/tests/scope.test.mjs design-system-adopter/tests/ci.test.mjs
-      - name: 迁移角色表与 token 源一致
+      - name: Citrine 迁移角色表与 token 源一致
         run: node citrine/seeds/brand-yellow-e/scripts/check-roles.mjs
-      - name: 六处版本号一致
-        run: node citrine/scripts/check-versions.mjs
+      - name: 每个设计系统六处版本号一致
+        run: node scripts/check-versions.mjs
 
   accept:
     name: 验收 · ${{ matrix.project }}

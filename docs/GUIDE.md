@@ -267,9 +267,22 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 ## 8b. 维护者：发版与 CI
 
 - 改了 `recipes.css` / 桥接后，除 CI 外再跑一次级联审计：`node citrine/scripts/audit-cascade.mjs --dist citrine/testbed/golden-admin/app/dist --pages "?theme=light#/kitchen,?role=admin#/orders"`——找「位置更后却因特异性更低而输掉」的声明（2.11.7 汉堡按钮那类问题，pages / narrow / focus 看不出来）。输出需人判断，口径写在脚本末尾。
-- 每次 push / PR 自动跑 CI：adopter 单测、角色表与 token 源一致、六处版本号一致、种子 `dist` 与源一致，以及三个实测项目的 guard / status / 全量验收（并行三个 job，失败会上传截图与报告为 artifact）。不绿不合。
-- 发版：改 `design-system.json` 与 `package.json` 版本、写 CHANGELOG、`node citrine/scripts/check-versions.mjs` 通过后打 tag `citrine-vX.Y.Z` 推送——`release.yml` 自动建 GitHub Release（说明取 CHANGELOG 段落，附件 = 种子与工具的 npm pack 产物 + 纯 CSS 包）。手动补历史版本：`node citrine/scripts/release.mjs --version X.Y.Z --notes-only`。
-- npm 发布是 `release.yml` 的第二个 job：同一个 tag 把 `@wycm9527/citrine` 与 `@wycm9527/citrine-tools` 发到 registry（已存在的版本跳过，所以只升种子不升工具也没事；带 provenance）。认证走 npm **Trusted Publishing**（已在 npmjs.com 两个包的 Settings → Trusted Publisher 登记 GitHub `WYCM9527/Design-System` + 工作流 `release.yml`，零密钥，2.11.5 起生效）；换仓库或改工作流文件名要重新登记；也可退回仓库 Secret `NPM_TOKEN`（granular token，勾 publish + bypass 2FA）。**工具有改动必升 `citrine/tools/package.json` 的版本号**，否则 registry 上已存在同版本会被跳过、Release 里同名 tgz 内容不同。
+- 仓库里「一个设计系统」= `<id>/seeds/<seed-name>/design-system.json`（目录名 `<id>` 与身份文件 id 一致）。`node scripts/systems.mjs` 列出全部系统；CI、版本检查、发版都从这份清单走，不写死某个系统。
+- 每次 push / PR 自动跑 CI：adopter 单测、Citrine 角色表与 token 源一致、**每个系统**六处版本号一致（`scripts/check-versions.mjs`）、**每个种子** `dist` 与源一致（循环 `build-tokens` 后 `git diff` 必须为空——所以 `dist/` 要随种子提交），以及三个实测项目的 guard / status / 全量验收（并行三个 job，失败会上传截图与报告为 artifact）。不绿不合。
+- 发版（任意系统）：改种子 `design-system.json` 与 `package.json` 版本、写种子 CHANGELOG、更新种子 README 版本行（`版本 x.y.z · `）、`<id>/README.md` 版本行（`版本 **x.y.z**`）与仓库根 README 表格里该系统的行，`node scripts/check-versions.mjs --system <id>` 通过后打 tag `<id>-vX.Y.Z` 推送——`release.yml` 从 tag 解析出 `<id>` 与版本，自动建 GitHub Release（说明取该种子 CHANGELOG 段落，附件 = 种子 npm pack + `<id>/tools` 的 npm pack（有的话）+ 纯 CSS 包 `<id>-css-X.Y.Z.tgz`）。手动补历史版本：`node scripts/release.mjs --system <id> --version X.Y.Z --notes-only`；本地预演加 `--dry-run`。
+- npm 发布是 `release.yml` 的第二个 job：同一个 tag 把该系统里 **`package.json` 带 `publishConfig` 的包**发到 registry（Citrine 的种子与工具带；web-to-design-system 提炼出来的种子默认不带，只走文件夹 / Release 直链渠道——要上 npm 就加 `"publishConfig": { "access": "public" }` 并先登记 Trusted Publisher）。已存在的版本跳过，所以只升种子不升工具也没事；带 provenance。认证走 npm **Trusted Publishing**（在 npmjs.com 每个包的 Settings → Trusted Publisher 登记 GitHub `WYCM9527/Design-System` + 工作流 `release.yml`，零密钥；Citrine 两个包 2.11.5 起生效，**新包要先登记**）；换仓库或改工作流文件名要重新登记；也可退回仓库 Secret `NPM_TOKEN`（granular token，勾 publish + bypass 2FA）。**工具有改动必升 `<id>/tools/package.json` 的版本号**，否则 registry 上已存在同版本会被跳过、Release 里同名 tgz 内容不同。
+
+## 8c. 维护者：新增一个设计系统（从网站提炼）
+
+用 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) skill（放在本仓库根的 `skills/` 克隆里，`.cursor/skills/web-to-design-system` 已链接）：
+
+1. **取证 + 起草**：对 Agent 说「把 https://… 按我们的规范提炼成设计系统 `<id>`」，它会用 agent-browser 取证（建议给 2～4 个页面：首页 + 表单页 + 列表页）、起草 token、给你看 `audit-summary.md`（品牌族判定、观察 / 推断 / 缺口）。
+2. **核对**：逐角色核对草稿——判错的观察改 alias、推断项确认或改值、core 层缺口三选一（补证据 / 按规则推断并标注 / 写明不需要）；品牌决定（选中态用品牌色还是反转块、链接靠色相还是下划线、暗色是否纳管）由你拍板。
+3. **落进仓库**：`scaffold-system.mjs --into-repo <仓库根> --id <id> --name "<名称>" --description "<一句定位>" --with-citrine-bridges citrine/seeds/brand-yellow-e --build`——写到 `<id>/seeds/<id>/`，`upstream` 由仓库远端与实际路径推出，顺带写 `<id>/README.md` 与根 README 表格行，`dist/` 构建好。`--with-citrine-bridges` 把 Citrine 的 Element Plus / shadcn / recipes / ECharts 桥接拷来当起点，并在 AUDIT「桥接缺口」列出桥接引用但新系统没有的变量——每行决定「补 token」还是「删规则」，再挂走查页亮 / 暗过一遍；不拷就只有纯 CSS 栈可接入。
+4. **写文档**：`DESIGN.md`「待填写 / 待确认」清零（只写角色名与规则，不写数值）；`AUDIT.md` 贴对比度报告、处理推断清单与缺口；`migration/roles.json` 的 `hints` 补旧系统独有的变量名 / 色值。
+5. **门禁**：`node skills/web-to-design-system/scripts/publish-check.mjs --seed <id>/seeds/<id>` 全 ✔（0.x 想带着 `[推断]` 先发就 `--allow-inferred`，CHANGELOG 写清）；`node scripts/check-versions.mjs --system <id>` 通过。
+6. **发版**：PR 合并 → 打 tag `<id>-v0.1.0` 推送 → Release 自动建。消费者按第 2 节的方式 B 接入（拷 `<id>/seeds/<id>` 进项目，`ds.mjs init --system <id> --stack css|element-plus|shadcn`），升级走 `ds.mjs status / upgrade`。
+7. **法律边界**：种子里只有度量值（颜色、尺寸、字重），不放来源站点的 logo、图标字体、商用字体文件；字体栈里出现商用字体要在 DESIGN 注明授权情况。
 
 ## 9. 反馈回路
 

@@ -1,10 +1,12 @@
 # Design-System
 
-存放公司级设计系统。每个设计系统一个目录，各自带种子（tokens + 桥接 + 身份文件 `design-system.json`）、预览、实测项目与变更史。两个配套工具：**design-system-adopter**（本仓库根，把设计系统接进项目并跟版本，任何带身份文件的系统通用）与 **design-system-steward**（[WYCM9527/skills](https://github.com/WYCM9527/skills)，项目内治理：构建 / Guard / 存量迁移）。
+存放公司级设计系统。每个设计系统一个目录，各自带种子（tokens + 桥接 + 身份文件 `design-system.json`）、预览、实测项目与变更史。三个配套工具：**design-system-adopter**（本仓库根，把设计系统接进项目并跟版本，任何带身份文件的系统通用）、**design-system-steward**（[WYCM9527/skills](https://github.com/WYCM9527/skills)，项目内治理：构建 / Guard / 存量迁移）与 **web-to-design-system**（[WYCM9527/skills](https://github.com/WYCM9527/skills/tree/main/web-to-design-system)，从任意网站实测提炼一套按本仓库 token 规范组织的新种子——语义角色与 Citrine 对齐、过 steward 三绿、可被 adopter 接入；克隆 skills 仓库到本仓库根的 `skills/` 后，`.cursor/skills/web-to-design-system` 链接即生效）。
 
 | 设计系统 | 定位 | 版本 |
 | --- | --- | --- |
 | [**Citrine · 黄晶**](citrine/) | 中后台 · 品牌黄唯一焦点 + 冷灰骨架 · 亮 / 暗 · 三端（桌面 / 窄屏 / 手机） · Element Plus / shadcn/ui / ECharts 桥接 · 给编码 Agent 的配方与验收基线 | 2.11.9 |
+
+一行一个系统，目录 `<id>/seeds/<seed-name>/` 带身份文件就算一个（`node scripts/systems.mjs` 列清单）；从网站提炼新系统的流程见 [docs/GUIDE.md §8c](docs/GUIDE.md#8c-维护者新增一个设计系统从网站提炼)。
 
 [![Citrine](citrine/docs/screenshots/hero.png)](citrine/)
 
