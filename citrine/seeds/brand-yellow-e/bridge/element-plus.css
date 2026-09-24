@@ -277,6 +277,9 @@
 .el-dropdown-menu__item.is-danger { color: var(--color-text-danger); }
 .el-dropdown-menu__item.is-danger:not(.is-disabled):hover, .el-dropdown-menu__item.is-danger:not(.is-disabled):focus { background: var(--color-status-error-bg); color: var(--color-text-danger); }
 
+/* ---- 统计数字（el-statistic）：数据大字走 text.display 的 DIN 系字体 ---- */
+.el-statistic__number { font-family: var(--text-display-family); font-weight: var(--text-display-weight); letter-spacing: var(--text-display-tracking); }
+
 /* ---- 菜单（侧栏）---- */
 .el-menu {
   --el-menu-bg-color: var(--color-bg-sidebar);

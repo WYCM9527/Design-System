@@ -4,7 +4,7 @@
 
 | 设计系统 | 定位 | 版本 |
 | --- | --- | --- |
-| [**Citrine · 黄晶**](citrine/) | 中后台 · 品牌黄唯一焦点 + 冷灰骨架 · 亮 / 暗 · 三端（桌面 / 窄屏 / 手机） · Element Plus / shadcn/ui / ECharts 桥接 · 给编码 Agent 的配方与验收基线 | 2.11.9 |
+| [**Citrine · 黄晶**](citrine/) | 中后台 · 品牌黄唯一焦点 + 冷灰骨架 · 亮 / 暗 · 三端（桌面 / 窄屏 / 手机） · Element Plus / shadcn/ui / ECharts 桥接 · 给编码 Agent 的配方与验收基线 | 2.12.0 |
 
 一行一个系统，目录 `<id>/seeds/<seed-name>/` 带身份文件就算一个（`node scripts/systems.mjs` 列清单）；从网站提炼新系统的流程见 [docs/GUIDE.md §8c](docs/GUIDE.md#8c-维护者新增一个设计系统从网站提炼)。
 

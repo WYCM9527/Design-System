@@ -276,14 +276,15 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 
 用 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) skill（放在本仓库根的 `skills/` 克隆里，`.cursor/skills/web-to-design-system` 已链接）：
 
-1. **取证 + 起草**：对 Agent 说「把 https://… 按我们的规范提炼成设计系统 `<id>`」，它会用 agent-browser 取证（建议给 2～4 个页面：首页 + 表单页 + 列表页）、起草 token、给你看 `audit-summary.md`（品牌族判定、观察 / 推断 / 缺口）。
-2. **核对**：逐角色核对草稿——判错的观察改 alias、推断项确认或改值、core 层缺口三选一（补证据 / 按规则推断并标注 / 写明不需要）；品牌决定（选中态用品牌色还是反转块、链接靠色相还是下划线、暗色是否纳管）由你拍板。
-3. **落进仓库**：`scaffold-system.mjs --into-repo <仓库根> --id <id> --name "<名称>" --description "<一句定位>" --with-citrine-bridges citrine/seeds/brand-yellow-e --build`——写到 `<id>/seeds/<id>/`，`upstream` 由仓库远端与实际路径推出，顺带写 `<id>/README.md` 与根 README 表格行，`dist/` 构建好。`--with-citrine-bridges` 把 Citrine 的 Element Plus / shadcn / recipes / ECharts 桥接拷来当起点，并在 AUDIT「桥接缺口」列出桥接引用但新系统没有的变量——每行决定「补 token」还是「删规则」，再挂走查页亮 / 暗过一遍；不拷就只有纯 CSS 栈可接入。
-4. **写文档**：`DESIGN.md`「待填写 / 待确认」清零（只写角色名与规则，不写数值）；`AUDIT.md` 贴对比度报告、处理推断清单与缺口；`migration/roles.json` 的 `hints` 补旧系统独有的变量名 / 色值。
-5. **门禁**：`node skills/web-to-design-system/scripts/publish-check.mjs --seed <id>/seeds/<id>` 全 ✔（0.x 想带着 `[推断]` 先发就 `--allow-inferred`，CHANGELOG 写清）；`node scripts/check-versions.mjs --system <id>` 通过。
-6. **发版**：PR 合并 → 打 tag `<id>-v0.1.0` 推送 → Release 自动建。消费者按第 2 节的方式 B 接入（拷 `<id>/seeds/<id>` 进项目，`ds.mjs init --system <id> --stack css|element-plus|shadcn`），升级走 `ds.mjs status / upgrade`。
-7. **法律边界**：种子里只有度量值（颜色、尺寸、字重），不放来源站点的 logo、图标字体、商用字体文件；字体栈里出现商用字体要在 DESIGN 注明授权情况。
-8. **上不上 npm（默认不上）**：提炼出的种子不带 `publishConfig`，不进 registry——文件夹渠道（`npm i file:./design-systems/<id>`）与 Release 直链已经够 adopter 接入和按 tag 升级，npm 只是对 Node 项目省一步。满足三件事再上：`publish-check` 全 ✔ 且没有未确认的 `[推断]`、组件库桥接走查过、至少一个真实项目接入。上的时候给种子 `package.json` 加 `"publishConfig": { "access": "public" }`、把 license 从 `UNLICENSED` 改成明确许可、在 npmjs 登记 Trusted Publisher，`release.yml` 会自动发。要付费分发就不走公开 npm：私有仓库 + 付费后加协作者，adopter 用 `GITHUB_TOKEN` 拉私有上游。（2026-09-22 记录，待第一套系统达到条件时执行。）
+1. **定类型**：先说清这套规范给什么用——内置 `website` 通用网站 / `product` 产品应用 / `admin` 中后台，公司自己的类型放本仓库根 `system-types/<id>/`（见那里的 README；`node skills/web-to-design-system/scripts/list-types.mjs` 列出全部）。类型决定哪些角色必须处理、允许推断哪些、DESIGN 用哪套配方词汇、要不要组件库桥接——不是所有系统都给中后台用，官网不会被写成中后台底座。
+2. **取证 + 起草**：对 Agent 说「把 https://… 按我们的规范提炼成 `<类型>` 设计系统 `<id>`」，它会用 agent-browser 取证（页面按类型定义里的 `pages` 建议给 2～4 个）、起草 token（`--type <id>`）、给你看 `audit-summary.md`（系统类型、品牌族判定、观察 / 推断 / 必须处理的缺口 / 可选未填）。
+3. **核对**：逐角色核对草稿——判错的观察改 alias、推断项确认或改值、「必须处理的缺口」三选一（补证据 / 按规则推断并标注 / 写明不需要）、「可选角色未填」不发明值；品牌决定（选中态用品牌色还是反转块、链接靠色相还是下划线、暗色是否纳管）由你拍板。
+4. **落进仓库**：`scaffold-system.mjs --into-repo <仓库根> --id <id> --name "<名称>" --description "<一句定位>" [--with-citrine-bridges citrine/seeds/brand-yellow-e] --build`——写到 `<id>/seeds/<id>/`，`upstream` 由仓库远端与实际路径推出，身份文件写 `type`，顺带写 `<id>/README.md` 与根 README 表格行，`dist/` 构建好。`--with-citrine-bridges` 只对类型定义 `bridges: true` 的（product / admin）有意义：把 Citrine 的 Element Plus / shadcn / recipes / ECharts 桥接拷来当起点，并在 AUDIT「桥接缺口」列出桥接引用但新系统没有的变量——每行决定「补 token」还是「删规则」，再挂走查页亮 / 暗过一遍；通用网站不拷，纯 CSS 栈接入。
+5. **写文档**：`DESIGN.md`「待填写 / 待确认」清零（只写角色名与规则，不写数值）；`AUDIT.md` 贴对比度报告、处理推断清单与缺口；`migration/roles.json` 的 `hints` 补旧系统独有的变量名 / 色值。
+6. **门禁**：`node skills/web-to-design-system/scripts/publish-check.mjs --seed <id>/seeds/<id>` 全 ✔（0.x 想带着 `[推断]` 先发就 `--allow-inferred`，CHANGELOG 写清）；`node scripts/check-versions.mjs --system <id>` 通过。
+7. **发版**：PR 合并 → 打 tag `<id>-v0.1.0` 推送 → Release 自动建。消费者按第 2 节的方式 B 接入（拷 `<id>/seeds/<id>` 进项目，`ds.mjs init --system <id> --stack css|element-plus|shadcn`），升级走 `ds.mjs status / upgrade`。
+8. **法律边界**：种子里只有度量值（颜色、尺寸、字重），不放来源站点的 logo、图标字体、商用字体文件；字体栈里出现商用字体要在 DESIGN 注明授权情况。
+9. **上不上 npm（默认不上）**：提炼出的种子不带 `publishConfig`，不进 registry——文件夹渠道（`npm i file:./design-systems/<id>`）与 Release 直链已经够 adopter 接入和按 tag 升级，npm 只是对 Node 项目省一步。满足三件事再上：`publish-check` 全 ✔ 且没有未确认的 `[推断]`、组件库桥接走查过、至少一个真实项目接入。上的时候给种子 `package.json` 加 `"publishConfig": { "access": "public" }`、把 license 从 `UNLICENSED` 改成明确许可、在 npmjs 登记 Trusted Publisher，`release.yml` 会自动发。要付费分发就不走公开 npm：私有仓库 + 付费后加协作者，adopter 用 `GITHUB_TOKEN` 拉私有上游。（2026-09-22 记录，待第一套系统达到条件时执行。）
 
 ## 9. 反馈回路
 

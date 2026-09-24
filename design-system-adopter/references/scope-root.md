@@ -17,7 +17,7 @@
 4. `<html>` 默认带 `class="<root>"`（多数路由覆盖时）；路由守卫：Vue Router 在未接入板块的路由 `meta` 上标 `legacy: true`，`router.beforeEach((to) => document.documentElement.classList.toggle('<root>', !to.meta.legacy))`；React 按路径前缀切（命令会打印片段）。
 5. `exemptions.json` 登记 `src/styles/citrine-scoped/**`（范围根生成物）；未接入板块的目录如需保留旧硬编码也登记并写明理由。
 6. 验收清单只登记覆盖板块的页面。另外**必须自证旧板块没被波及**：打开一个未接入路由，`document.documentElement.classList` 不含 root，`getComputedStyle(document.documentElement).getPropertyValue('--color-action-primary')` 为空，组件是组件库默认外观。
-7. 以后 token / 桥接变化：`upgrade` 完成时**自动**用新快照重生成范围包（桥接 / recipes 立即生效）；token 源有变（上游改了 token、或本地改 token）再 `build-tokens → ds.mjs scope` 跑一次，让 token 部分也换成新 dist。不重生成的话桥接更新到不了应用——范围包是生成物快照，不是引用。
+7. 以后 token / 桥接变化：`upgrade` 完成时**自动**先用 steward 重建 token（dist），再用新快照与新 dist 重生成范围包——桥接 / recipes / token 一次到位。只有找不到 steward 时才需手工 `build-tokens → ds.mjs scope`；本地自己改 token 后也是这两步。不重生成的话桥接更新到不了应用——范围包是生成物快照，不是引用。
 
 ## 硬边界
 

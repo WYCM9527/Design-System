@@ -206,7 +206,7 @@ td .link, .card-head .link, .batch .link, .empty .link, .more-link { display: in
 .stat-card__label { display: flex; align-items: center; gap: var(--spacing-1); color: var(--color-text-secondary); font-size: var(--text-body-sm-size); }
 .stat-card__hint { display: inline-grid; place-items: center; width: var(--control-hit-min); height: var(--control-hit-min); margin: calc((var(--control-hit-min) - var(--size-icon-sm)) / -2) 0; padding: 0; border: 0; border-radius: var(--radius-full); background: transparent; color: var(--color-icon-muted); cursor: help; font: inherit; }
 .stat-card__hint:hover { color: var(--color-text-primary); background: var(--color-bg-hover); }
-.stat-card__value { font-size: var(--text-display-size); font-weight: var(--text-display-weight); line-height: var(--text-display-line-height); margin: var(--spacing-1-5) 0 var(--spacing-1); letter-spacing: var(--text-display-tracking); color: var(--color-text-primary); }
+.stat-card__value { font-family: var(--text-display-family); font-size: var(--text-display-size); font-weight: var(--text-display-weight); line-height: var(--text-display-line-height); margin: var(--spacing-1-5) 0 var(--spacing-1); letter-spacing: var(--text-display-tracking); color: var(--color-text-primary); }
 .stat-card__delta { font-size: var(--text-small-size); }   /* 颜色交给 .up / .down */
 .stat-card__note { color: var(--color-text-muted); font-size: var(--text-small-size); }
 
@@ -227,7 +227,7 @@ td .link, .card-head .link, .batch .link, .empty .link, .more-link { display: in
 .stat-strip .cell.is-clickable { cursor: pointer; }
 .stat-strip .cell.is-clickable:hover { background: var(--color-bg-hover); }
 .stat-strip .cell.is-active { border-color: var(--color-border-focus); color: var(--color-text-primary); }
-.stat-strip .cell .value { font-size: var(--text-title-size); font-weight: var(--text-weight-strong); color: var(--color-text-primary); font-variant-numeric: var(--text-numeric-variant); }
+.stat-strip .cell .value { font-family: var(--text-display-family); font-size: var(--text-title-size); font-weight: var(--text-weight-strong); color: var(--color-text-primary); font-variant-numeric: var(--text-numeric-variant); }
 
 /* ── 打印：隐藏导航与按钮，色底转边线 ── */
 /* ── 键盘焦点兜底与减少动态效果：与 element-plus.css / shadcn.css 同一份约定。有桥接时规则重复无害；纯 CSS 渠道（Flask 等无组件库）靠这里拿到近黑 2px 焦点环而不是浏览器默认蓝环。

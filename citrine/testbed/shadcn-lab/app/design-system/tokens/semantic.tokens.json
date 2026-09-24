@@ -510,6 +510,11 @@
         "$type": "fontWeight",
         "$value": "{font.weight.bold}",
         "$description": "数据大字 700：重点感的另一半来自字重；正文强调仍是 600。"
+      },
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.numeric}",
+        "$description": "数据大字用 DIN 系（用户决定：KPI 数字要有'数据感'，与中文标签在字形上拉开）。"
       }
     },
     "weight": {

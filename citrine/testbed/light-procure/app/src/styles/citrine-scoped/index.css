@@ -1,4 +1,4 @@
-/* Citrine 黄晶（citrine）2.11.9 · index.css · 范围根 html.citrine · design-system-adopter scope 2026-09-20
+/* Citrine 黄晶（citrine）2.12.0 · index.css · 范围根 html.citrine · design-system-adopter scope 2026-09-24
    生成物，只读：token / 桥接变化后重跑 ds.mjs scope 再生成；项目差异写在自己的样式文件里。 */
 @scope (html.citrine) {
   :scope {
@@ -193,6 +193,7 @@
     --font-family-body: var(--font-family-sans);
     --font-family-mono: 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
     --font-family-code: var(--font-family-mono);
+    --font-family-numeric: DIN-Bold, D-DIN, 'DIN Alternate', Bahnschrift, Barlow, -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Segoe UI', 'Microsoft YaHei', Roboto, 'Helvetica Neue', Arial, 'Noto Sans CJK SC', sans-serif;
     --font-letter-spacing-tight: -0.01em;
     --font-letter-spacing-wide: 0.06em;
     --font-line-height-normal: 1.6;
@@ -303,6 +304,7 @@
     --text-body-size: var(--font-size-md);
     --text-body-sm-size: var(--font-size-sm);
     --text-caption-size: var(--font-size-xs);
+    --text-display-family: var(--font-family-numeric);
     --text-display-line-height: var(--font-line-height-tight);
     --text-display-size: var(--font-size-4xl);
     --text-display-tracking: var(--font-letter-spacing-tight);

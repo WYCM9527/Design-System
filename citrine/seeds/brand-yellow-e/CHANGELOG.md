@@ -2,6 +2,13 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.12.0 — 2026-09-24（数据大字换 DIN 系字体）
+
+- **新增 token `font.family.numeric`**（`DIN-Bold, D-DIN, DIN Alternate, Bahnschrift, Barlow, 正文栈`）与 **`text.display.family`**：统计卡数字（`.stat-card__value`）、状态条数字（`.stat-strip .value`）、Element `el-statistic` 的数字改用 DIN 系字体——用户决定：KPI 数字要有"数据感"，与中文标签在字形上拉开。`DIN-Bold` 是免费 D-DIN 的 Bold 面对外暴露的族名（也是设计稿常写的名字）；项目有授权 DIN Pro / FF DIN 时在 `app.css` 用 `@font-face` 声明为 `DIN-Bold` 即被优先选中；没装 DIN 的机器 macOS 落到系统自带 DIN Alternate（只有 Bold 面）、Windows 落到 Bahnschrift，都是 DIN 血统，再退到 Barlow / 正文无衬线。种子不分发字体文件（授权与体积）。
+- **只用于数据大字**：表格金额、单号、输入值仍是正文字体 + `text.numeric.variant`（等宽数字）——Bold 面在 14px 上太重，且 D-DIN 没有等宽数字。DESIGN「字体」与统计卡配方行同步。
+- 肉眼可见的影响：所有统计卡 / KPI 数字字形变化（DIN 更窄、更硬），中文与符号（¥ / % / ,）由字体栈回退到正文字体。
+- adopter：`upgrade` 现在找到 steward 就先 `build-tokens` 再重生成范围包（此前先 scope 后由人 build-tokens，本次在轻采上新 token 在范围包里是 undefined、字体没生效才发现）；`完成` 提示随之只剩 guard → 验收。
+
 ## 2.11.9 — 2026-09-20（adopter 0.3.0：`ds.mjs ci` 项目 CI 门禁）
 
 - **新增 `ds.mjs ci`**：写出 `.github/workflows/design-system.yml`——PR / 推 main 时跑「`status --strict`（上游快照未被手改）→ steward 就位（仓库里没有就临时从公开仓库安装）→ `build-tokens` → `guard` 必须 current → 项目构建 → 验收全绿」，失败上传 `.accept/` 报告与截图；steward `status` 只打印（换规范收尾前不要求 unified）。按 lockfile 自动选 npm / pnpm / yarn；adopter 装在项目外时拒绝并给拷贝命令；没有 `accept.config.mjs` 时要求先建（或 `--no-accept` 只做 guard）。背景：接入完成后规则只是被 Agent「看见」（AGENTS.md 自动加载），没有东西强制——这是唯一不依赖 Agent 是否照做的机制。模板在临时项目里逐步执行验证（含 `status --strict` 篡改快照后退出 1 的反向用例），单测 `tests/ci.test.mjs`。

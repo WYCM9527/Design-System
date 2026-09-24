@@ -27,6 +27,11 @@
     "description": {
       "type": "string"
     },
+    "type": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "系统类型 id：这套规范给什么类型的产品用（内置 website 通用网站 / product 产品应用 / admin 中后台，公司可在 Design-System 仓库 system-types/ 自定义）。由 web-to-design-system 写入，adopter 只当元数据展示；可缺省。"
+    },
     "upstream": {
       "type": "object",
       "required": [

@@ -1,4 +1,4 @@
-/* Citrine 黄晶（citrine）2.11.9 · element-plus.css · 范围根 html.citrine · design-system-adopter scope 2026-09-20
+/* Citrine 黄晶（citrine）2.12.0 · element-plus.css · 范围根 html.citrine · design-system-adopter scope 2026-09-24
    生成物，只读：token / 桥接变化后重跑 ds.mjs scope 再生成；项目差异写在自己的样式文件里。 */
 @scope (html.citrine) {
   /* Element Plus 桥接：把 Element Plus 的全局 CSS 变量指向设计系统的语义 token。
@@ -286,6 +286,8 @@
   /* 下拉里的危险项：桥接约定类 is-danger（Element 的 dropdown-item 没有 type）。红字；hover 底是浅红而不是灰——彩色文字不落在灰底上 */
   .el-dropdown-menu__item.is-danger { color: var(--color-text-danger); }
   .el-dropdown-menu__item.is-danger:not(.is-disabled):hover, .el-dropdown-menu__item.is-danger:not(.is-disabled):focus { background: var(--color-status-error-bg); color: var(--color-text-danger); }
+  /* ---- 统计数字（el-statistic）：数据大字走 text.display 的 DIN 系字体 ---- */
+  .el-statistic__number { font-family: var(--text-display-family); font-weight: var(--text-display-weight); letter-spacing: var(--text-display-tracking); }
   /* ---- 菜单（侧栏）---- */
   .el-menu {
     --el-menu-bg-color: var(--color-bg-sidebar);

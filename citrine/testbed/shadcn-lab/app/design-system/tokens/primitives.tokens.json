@@ -951,6 +951,27 @@
           "Liberation Mono",
           "monospace"
         ]
+      },
+      "numeric": {
+        "$type": "fontFamily",
+        "$value": [
+          "DIN-Bold",
+          "D-DIN",
+          "DIN Alternate",
+          "Bahnschrift",
+          "Barlow",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "PingFang SC",
+          "Segoe UI",
+          "Microsoft YaHei",
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "Noto Sans CJK SC",
+          "sans-serif"
+        ],
+        "$description": "数据大字字体栈（DIN 系）。DIN-Bold 是免费 D-DIN 的 Bold 面对外暴露的族名，也是设计稿常写的名字；项目有授权 DIN Pro / FF DIN 时在 app.css 用 @font-face 声明为 'DIN-Bold' 即被优先选中。未装任何 DIN 的机器：macOS 用系统自带 DIN Alternate（只有 Bold 面，正合数据大字），Windows 用 Bahnschrift（DIN 1451 系），再退到 Barlow 与正文无衬线。只给 text.display（统计卡 / 报表 KPI / el-statistic）；表格金额等正文数字仍用正文字体 + tabular-nums——Bold 面在 14px 上太重，且 D-DIN 没有等宽数字。"
       }
     },
     "size": {

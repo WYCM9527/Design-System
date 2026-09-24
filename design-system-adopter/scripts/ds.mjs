@@ -343,19 +343,28 @@ const commands = {
       const delta = idx === -1 ? heads.slice(0, 5) : heads.slice(0, idx);
       if (delta.length) console.log(`\n${m.version} 以来的版本：\n  ` + delta.map((h) => h.replace(/^## /, '')).join('\n  '));
     }
+    // 升级后先构建 token（steward 在的话）：工作副本的 token 源刚被合并，dist 不重建就是旧值；范围根项目更依赖它——范围包里的 token 部分取自 dist。
+    let built = false;
+    { const sw = stewardInfo(project);
+      if (sw.dir && sw.ok) {
+        const r = spawnSync(process.execPath, [join(sw.dir, 'scripts/build-tokens.mjs'), '--project', project], { encoding: 'utf8' });
+        built = r.status === 0 && /"valid":\s*true/.test(r.stdout || '');
+        console.log(built ? `\n已用 steward 重建 token（design-system/dist）。` : `\n⚠ steward build-tokens 未成功（${(r.stderr || r.stdout || '').trim().split('\n').pop() || '未知'}）——手工跑后再 guard。`);
+      } else console.log(`\n未找到可用 steward，跳过 build-tokens：请手工 build-tokens → guard${m.scopeRoot ? ' → ds.mjs scope' : ''}。`);
+    }
     if (m.scopeRoot && m.scopeDir) {
       // 范围根项目消费的是 @scope 包裹的生成物，不重生成的话桥接 / recipes 的更新到不了应用（2.11.1 轻采：桥接修了、走查仍复现旧 bug）。
-      // 桥接 / recipes 部分取自刚刷新的快照，token 部分取项目 dist 现状——token 源有变时 build-tokens 之后再跑一次 scope。
-      console.log(`\n范围根模式（html.${m.scopeRoot} → ${m.scopeDir}）：用新快照重生成范围包…`);
+      // 顺序：先 build-tokens 再 scope——范围包的 token 部分取自 dist（2.12.0 轻采：先 scope 后 build-tokens，新 token 在范围包里是 undefined）。
+      console.log(`范围根模式（html.${m.scopeRoot} → ${m.scopeDir}）：用新快照${built ? '与新 dist ' : ''}重生成范围包…`);
       try { commands.scope(); } catch (e) { console.log(`  重生成失败（${e.message}）——手工跑 ds.mjs scope。`); }
-      console.log(`  token 源有变时：build-tokens → 再跑一次 ds.mjs scope。`);
+      if (!built) console.log(`  dist 未重建：build-tokens 之后必须再跑一次 ds.mjs scope，否则范围包里的新 token 是 undefined。`);
     }
     if (m.source === 'npm') {
       const ns = nodeModulesSync(m, remoteIdentity, remoteIdentity.version);
       if (ns?.cmd && ns.current !== remoteIdentity.version) console.log(`\n⚠ 页面 import 的桥接来自 node_modules/${m.npm}（现在是 ${ns.current || '未安装'}），必须同步到 ${remoteIdentity.version}：\n  ${ns.cmd}`);
       else if (ns?.note) console.log(`\n注意：${ns.note}`);
     }
-    console.log(`\n完成 ${label}。接下来：${m.source === 'npm' ? '同步 node_modules（上面那条命令）→ ' : ''}build-tokens → guard → ${remoteIdentity.accept?.command || '验收'}（token 变化会带来像素变化，属预期，对照 CHANGELOG）。`);
+    console.log(`\n完成 ${label}。接下来：${m.source === 'npm' ? '同步 node_modules（上面那条命令）→ ' : ''}${built ? '' : 'build-tokens → '}guard → ${remoteIdentity.accept?.command || '验收'}（token 变化会带来像素变化，属预期，对照 CHANGELOG）。`);
   },
 
   async restore() {
