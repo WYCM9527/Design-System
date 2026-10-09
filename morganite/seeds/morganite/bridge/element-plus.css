@@ -160,6 +160,7 @@
    Element 给 is-text 写死 background-color: transparent（不走变量），必须属性级覆盖 */
 .el-button.is-text:not(.is-disabled) { background-color: var(--color-action-quiet); }
 .el-button.is-text:not(.is-disabled):hover, .el-button.is-text:not(.is-disabled):active { background-color: var(--color-action-quiet-hover); }
+.el-table .el-button.is-text:not(.is-disabled):not(.el-button--danger):hover, .el-table .el-button.is-text:not(.is-disabled):not(.el-button--danger):active { background-color: transparent; }   /* 表格里只变色不叠底（antd 表格操作链接）：行悬停已有底色，再叠一层会把文字压到 4.5 以下——暗色选中行再悬停曾只有 3.41:1 */
 .el-button { font-weight: var(--text-weight-label); }
 .el-tabs__item { font-weight: var(--text-weight-label); }   /* 标签页默认项是标签类文字；选中项由下方规则升档。侧栏菜单项与分段选择器不在此列（rc.20 / rc.31）：反转块组件默认 400、选中 500 */
 .el-radio-button__inner { font-weight: var(--font-weight-regular); }   /* 分段选择器默认项 400（Element 默认给 600；rc.31 用户反馈 500 仍过重） */

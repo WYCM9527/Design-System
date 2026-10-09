@@ -92,7 +92,7 @@
 | --- | --- | --- | --- |
 | 主按钮 | `color.action.primary` / `-hover` / `-active` | `color.text.on-primary` | 高度 `control.height.md`，圆角 `radius.md` |
 | 次要按钮 | `color.bg.surface`，hover `color.action.secondary-hover` | `color.text.primary` | `color.border.strong`，圆角 `radius.md` |
-| 文字按钮（quiet） | `color.action.quiet` / `-hover` | `color.text.primary` | 无边线 |
+| 文字按钮（quiet） | `color.action.quiet` / `-hover`；表格里悬停不加底，只变色（行悬停已有底色） | `color.text.primary` | 无边线 |
 | 危险按钮 | `color.action.danger` / `-hover` / `-active` | `color.text.on-danger` | — |
 | 禁用态（任何控件） | 不换色 | 不换色 | `opacity.disabled` |
 | 链接 | — | `color.text.link`，hover `color.text.link-hover` | 无下划线 `text.link.decoration`，常规字重 `text.weight.label` |
@@ -138,7 +138,6 @@
   - 卡片 / 分隔线 `color.border.default` 对页面底（亮色）——用户指定很浅的半透明黑边线（2026-10-09），卡片靠白底与页面底的底色差定形，边线只做轻提示；回补路径：把 `color.border.default` 指回 `color.neutral.300`（与控件描边同档，过 1.3 底线）。暗色边线不受影响。
   - 金底白字：`color.text.on-primary` / `color.text.on-brand` 对 `color.action.primary`（亮 / 暗），以及亮色侧栏当前项 `color.text.sidebar-selected` 对 `color.bg.sidebar-selected`——都低于正文 4.5 底线（主按钮之外，分页当前页、日期选中日、主色徽标、深色 / 勾选标签也是这一对）；用户指定金底放白字（2026-10-09，深字显脏）。勾选标记这类图形对金底刚好过 3:1。回补路径：文字改回 `color.neutral.900`（深字），或把金底压深到 `color.brand.600` 一档（白字可过 4.5）；侧栏当前项也可恢复奶油金底配深金字。暗色侧栏当前项不受影响。
   - 暗色链接 / 文字按钮压在悬停行与气泡上（`color.text.link` 对悬停后的底，约 4.3:1）——用户 2026-10-09 决定保持暗色链接色；回补路径：暗色 `color.text.link` 改指 `color.brand.300`（约 6.1:1）。
-  - 亮色表格文字按钮悬停：行悬停与按钮悬停底叠加后深金字约 4.2–4.4:1——用户 2026-10-09 决定保持叠底；回补路径：表格里的文字按钮悬停不加底色（antd 表格操作链接的做法）。
 - **可访问名称**：所有按钮、链接、菜单项有名称；图片有 alt。
 - **溢出与截断**：任何模式、任何页面无横向溢出；nowrap 文字无截断。
 - **键盘焦点**：Tab 遍历每个可聚焦元素都能看出焦点：按钮、链接、菜单项有焦点环，输入类控件边线变成 `color.border.focus`。
