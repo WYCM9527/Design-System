@@ -1,6 +1,6 @@
 {
   "name": "@wycm9527/morganite",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Morganite 玫瑰金 · 从 https://preview.pro.ant.design/dashboard/analysis、https://preview.pro.ant.design/list/table-list、https://preview.pro.ant.design/form/basic-form、https://preview.pro.ant.design/list/table-list#新建弹窗、https://preview.pro.ant.design/list/table-list#详情抽屉 实测提炼的设计系统种子：DTCG token、DESIGN 规范、基础 CSS 桥接。纯数据包：接入 / 更新由 design-system-adopter skill 驱动（识别 design-system.json）。",
   "license": "UNLICENSED",
   "type": "module",

@@ -52,6 +52,9 @@
 | 小号数字字体（2026-10-09） | 表格数字退回正文字体，只有数据大字用 D-DIN-PRO | `text.numeric.family` 改指 `font.family.body`（表格金额与日期、百分比、涨跌、图表数值、页码），配 `text.numeric.variant` 等宽数字，金额列小数点重新上下对齐；`text.display.family` 仍是 D-DIN-PRO（统计卡、KPI、`el-statistic`）。原因：D-DIN-PRO 窄体细笔画在 12px 下显得小而轻 |
 | 暗色筹码底（2026-10-09） | 保持亮金 10% | `color.bg.chip` 的暗色值 `color.brand.300-a10` 由推断改为确认 |
 | 推断值确认（2026-10-09） | 89 条 `[推断]` 按组确认 | 亮色 56 个语义角色、暗色 33 个值全部改为 `[确认]`，值不变（被它们引用的 41 个原语一起改）；单独问过的 6 项都保持：警示橙、成功祖母绿、弱化文字 58% 黑、占位符 45% 黑、最小字号 12px、勾选框边线 0.6px（说明由「1px」更正） |
+| 验收工具（2026-10-09） | 沿用 citrine-accept，写一份 Morganite 的验收清单 | 身份文件加 `accept`（`@wycm9527/citrine-tools` · `citrine-accept all` · `templates/accept.config.mjs`）；citrine-accept 新增项目可配的 `APPROVED_CONTRAST`（Citrine 的内置例外不变），组件走查的背景改为逐层合成（修掉半透明叠底被算成纯黑 / 纯白的误报）；`morganite/testbed/element-lab` 跑 pages / components / narrow / focus |
+| 暗色链接与表格文字按钮悬停（2026-10-09） | 都保持现状 | 验收报出暗色链接 / 文字按钮在悬停行与气泡上约 4.3:1、亮色表格文字按钮悬停叠底后约 4.2–4.4:1，登记为例外（DESIGN「已批准的例外」，验收清单 `minRatio: 4.2`）；暗色选中行再悬停时文字按钮只有 3.41:1，比决定时给的数字低，另行确认 |
+| 发版「最新」标记（2026-10-09） | 发版脚本只让 Citrine 标为最新 | Morganite 0.1.0 发版时成了 GitHub「最新」，README / GUIDE 里 `releases/latest/download` 的 citrine-tools 直链随之 404，已手动把 Citrine 2.12.0 改回最新；`scripts/release.mjs` 对 Citrine 以外的系统加 `--latest=false` |
 | 按预期预览图默认调整（2026-09-29，列出后用户未反对） | 圆角加大、卡片标题字距小标题、KPI 数字半粗、图表配色只用金 + 灰 + 绿、图表提示气泡深金底、表头底深一档、卡片阴影更大更柔（2026-10-09 去掉）、顶栏搜索胶囊 | `radius.md / lg / xl`、`text.tracking.caps`、`text.display.weight`、`color.chart.*`、`color.chart.tooltip`、`color.bg.subtle`、`elevation.card.*`；配方 `.card-head h2`、`.topbar .search`；ECharts 桥接 |
 | 组件库桥接 | 带 Citrine 的 Element Plus / shadcn / 配方 / ECharts 桥接当起点 | `bridge/`，缺口见「桥接缺口」 |
 | 预览 | 虚拟页面（工作台 / 表单 / 抽屉 × 亮暗）确认像「Pro + 金色」 | `preview/` |
@@ -154,6 +157,8 @@
 
 卡片边线对页面底原本不过线（antd 分隔线 `#f0f0f0` 亮色 1.05:1、暗色实测 1.27:1），用户决定加深而不是登记例外：亮色 1.31:1、暗色 1.59:1。2026-10-09 用户改为 6% 黑：亮色降到 1.13:1，登记为例外；暗色不变（1.59:1）。
 
+验收工具（citrine-accept，`morganite/testbed/element-lab`）在悬停态另报出三类：暗色链接 / 文字按钮压在悬停行、气泡上约 4.3:1，亮色表格文字按钮悬停时行悬停与按钮悬停底叠加、深金字约 4.2–4.4:1——用户 2026-10-09 都决定保持，登记为例外（见 DESIGN「已批准的例外」）；暗色表格文字按钮在选中行上再悬停（三层叠底 #414141）金字只有 3.41:1，待确认，验收清单不放行。
+
 为过底线而偏离 antd 原值的角色（原值写在 primitive 描述里）：
 
 - `color.border.strong`：antd 控件描边 `#d9d9d9` 加深一级到 `#d8d8d8`；`color.border.default` 原与它同档，2026-10-09 起改为 6% 黑（不再过底线，见上表例外）；暗色 `color.border.default` 用 antd 暗色 colorBorderSecondary。
@@ -226,7 +231,8 @@ Element Plus 实测（2026-10-09，`morganite/testbed/element-lab`，逐条记�
 - 桥接沿用 Citrine 的实现：Element Plus 栈的 extra 带 IconPark 桥接，而本系统图标库登记为 `@ant-design/icons`，接入前决定用哪套图标；桥接里其他 Citrine 式的组件习惯（操作胶囊等配方）还没按 antd 的做法逐个走查（选中块已改，见用户决定表）。
 - 开关关闭态：用户决定保持 `color.border.strong` 轨道（2026-10-09），白滑块对轨道约 1.4:1，关闭态主要靠滑块位置与文字标签区分；若在低对比屏上看不清，改指 `color.data.inactive`（25% 黑，antd 原值）即可。
 - Element 选中块已在实测项目里亮 / 暗核对（日期面板、徽标、标签、评分、树、两种分页）；引导指示点、表头单选筛选、树拖放目标没有在真实组件里看过。分段类（单选 / 多选按钮组、`el-segmented`）当前项是灰轨道上的白块，亮色下对轨道约 1.09:1，主要靠字重与字色区分。
-- 没有验收工具：身份文件没有 `accept`，AGENTS 模板的验收只写 build + guard，`ds.mjs ci` 也只能做 guard。是否沿用 citrine-accept 并写一份 Morganite 的验收清单，待决定。
+- 验收工具沿用 Citrine 的 citrine-accept（身份文件 `accept`、清单模板 `templates/accept.config.mjs`）：Morganite 的例外靠 `APPROVED_CONTRAST`，要 citrine-tools ≥ 1.2.0——仓库内已生效，npm 上的 1.2.0 随 Citrine 下次发版。品牌黄审计对 Morganite 的金不生效（工具判黄范围是色相 40–64°、饱和度 ≥ 0.55），金色用错位置不会被自动发现。
+- 暗色表格文字按钮在选中行上再悬停只有 3.41:1（选中行底 + 行悬停 + 按钮悬停三层叠加），待确认：可改暗色链接色、去掉表格里文字按钮的悬停底，或登记为例外。
 - `.stat-strip` 自带 `margin-bottom`，放进带 gap 的内容区会和 gap 叠成双倍间距（效果预览里单独抵消了）。
 - 词表外的 11 个语义名跟随 Citrine 桥接，若词表以后收编或改名，需要同步。
 - 成功色 `color.status.success*` 与「涨」统一成同一种祖母绿，用户 2026-10-09 确认保持；若要回到 antd 的绿，改回 antd green 色板即可。

@@ -3,4 +3,4 @@
 - **表格数字列**：Element 表格没有数字列配方，金额、日期列在 `el-table-column` 上加 `class-name="num"`（配方 `.num`：正文字体 + 等宽数字，金额列小数点上下对齐），单号包一层 `.mono`；统计数字用 `el-statistic` 或 `StatCard`，自动走 D-DIN-PRO。
 - **页面骨架用配方类，不自己重写**（`recipes.css`）：壳层 `.app/.sidebar/.topbar`、页头 `.page-head`、筛选栏 `.filter`、状态胶囊 `.status.*`、操作胶囊 `.act`、表单页 `.form-page`、空态 `.empty`、统计卡 `.stats`；配方组件在 `{{IMPORT}}/vue/*`（StatCard / EChart / TrendChart / TableSkeleton / ConfirmBar），图表主题来自 `{{IMPORT}}/echarts`（运行时读 token）。
 - **另一模式**：按 `design-system/theme-map.json` 的激活方式切换（class 激活 = `<html class="dark">`）；不要引 Element 的 dark css-vars。
-- **验收**：改完 UI 运行 steward `guard.mjs --project $PWD`（应为 `current`）与 `status.mjs`；对比度基线用 `check-contrast.mjs --system design-system`。
+- **验收**：改完 UI 运行 steward `guard.mjs --project $PWD`（应为 `current`）与 `status.mjs`；对比度基线用 `check-contrast.mjs --system design-system`；页面 / 组件 / 三端 / 焦点用 citrine-accept：`npm i -D @wycm9527/citrine-tools`（≥ 1.2.0 才认 Morganite 的例外清单），按种子 `templates/accept.config.mjs` 建 `accept.config.mjs`，`package.json` 加 `"accept": "npm run build && citrine-accept all"`（`KITCHEN` 挂 `{{IMPORT}}/vue/KitchenSink.vue`）。

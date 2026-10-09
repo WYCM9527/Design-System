@@ -2,6 +2,13 @@
 
 版本策略：patch 只改描述与文档；minor 新增或修改 token（视觉会变、名字不变，条目里写清肉眼可见的影响）；major 才改名或删除 token。
 
+## 0.1.1 — 2026-10-09
+
+- 接入验收工具（用户决定沿用 Citrine 的 citrine-accept）：身份文件加 `accept`，新增 `templates/accept.config.mjs`（三端按 992 / 390，已批准的对比度例外写在 `APPROVED_CONTRAST`）；AGENTS 模板与 Element / shadcn 说明写明验收命令。需要 citrine-tools ≥ 1.2.0（仓库内已生效，npm 随 Citrine 下次发版）。
+- 桥接修正（验收发现）：Element 输入框前后缀（¥、元、搜索图标）改用 `color.text.muted`（原为占位符色，填充底上 3.3:1）；进度条渐变下垫同色实底，视觉不变、条内白字的底色可被正确读取。肉眼可见：输入框前后缀文字略深。
+- 对比度例外登记（用户 2026-10-09 决定保持）：暗色链接 / 文字按钮压在悬停行与气泡上约 4.3:1；亮色表格文字按钮悬停叠底后约 4.2–4.4:1。暗色选中行再悬停时文字按钮 3.41:1 待确认。
+- 实测项目 `morganite/testbed/element-lab` 跑通 citrine-accept：页面、三端、焦点通过；组件走查只剩上一条待确认。
+
 ## 0.1.0 — 2026-10-09
 
 - 初版。以 Ant Design Pro v6 为视觉底座（2026-09-28 底座调研后由用户选定），由 web-to-design-system 从 Pro 演示站的工作台、查询表格、基础表单实测提炼，另手动补测暗黑（Pro「暗色风格（实验功能）」）、表格选中行、新建弹窗与详情抽屉；缺口用 antd 官方 `design.md`、ProLayout 源码默认 token 与 Pro 源码补齐。

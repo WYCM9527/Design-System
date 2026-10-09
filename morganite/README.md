@@ -2,7 +2,7 @@
 
 **中后台 · Ant Design Pro v6 底座 · 玫瑰金 #B98D44 金底白字 + antd 纯灰骨架 · 亮 / 暗 · Element Plus / shadcn/ui / ECharts 桥接**
 
-版本 **0.1.0** · Core 342 个 token · dark 64 条 delta · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 [Pro 演示站](https://preview.pro.ant.design/dashboard/analysis)的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 变更见 [CHANGELOG](seeds/morganite/CHANGELOG.md)
+版本 **0.1.1** · Core 342 个 token · dark 64 条 delta · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 [Pro 演示站](https://preview.pro.ant.design/dashboard/analysis)的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 变更见 [CHANGELOG](seeds/morganite/CHANGELOG.md)
 
 一句话：保留 Ant Design 的交互结构、密度与纯灰骨架，把品牌色换成玫瑰金——金底放白字（主按钮、侧栏当前项；暗色侧栏当前项是金色暗底 + 亮金字），链接 / 选中 / 焦点取同色系深一档；输入框为填充式（Pro v6 原样）。圆角、0.6px 描边、卡片标题、图表配色（只用金 + 灰 + 绿、绿涨红跌）按一张预期预览图调整过；卡片不投影，只留一条很浅的边线。
 

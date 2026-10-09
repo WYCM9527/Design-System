@@ -23,6 +23,8 @@ node $SKILL/build-tokens.mjs --project "$PWD"    # 生成 design-system/dist
 node $SKILL/guard.mjs --project "$PWD"           # 应为 current
 ```
 
+验收：`npm run accept`（构建 + `citrine-accept all`：页面 × 亮暗、组件走查、三端、焦点），清单在 `app/accept.config.mjs`，工具以 `file:` 链接仓库里的 `citrine/tools`。
+
 种子的 token 改了以后，工作副本要跟着同步（`ds.mjs upgrade --from ../../../seeds/morganite`，或重新 `init`），再构建。
 
 ## 页面与参数
