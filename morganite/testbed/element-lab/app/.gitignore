@@ -3,3 +3,4 @@ dist/
 # 种子预览截图是重拍产物（种子仓库同样忽略），本地从种子目录 init 时会被一起复制进工作副本
 design-system/preview/shots/
 design-system/preview/static/
+.accept/

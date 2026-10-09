@@ -6,7 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "scan:pages": "citrine-accept pages",
+    "scan:components": "citrine-accept components",
+    "check:narrow": "citrine-accept narrow",
+    "check:focus": "citrine-accept focus",
+    "accept": "npm run build && citrine-accept all"
   },
   "dependencies": {
     "@icon-park/vue-next": "^1.4.2",
@@ -18,6 +23,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.9",
+    "@wycm9527/citrine-tools": "file:../../../../citrine/tools",
     "style-dictionary": "^5.5.2",
     "vite": "^8.3.4"
   }

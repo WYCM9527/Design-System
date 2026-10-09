@@ -176,6 +176,7 @@
   --el-input-bg-color: var(--color-bg-input);
   --el-input-text-color: var(--color-text-primary);
   --el-input-placeholder-color: var(--color-text-placeholder);
+  --el-input-icon-color: var(--color-text-muted);   /* 前后缀（¥、元、搜索图标）：Element 默认取占位符色，填充底上只有 3.3:1，前后缀是有意义的文字 */
   --el-input-border-radius: var(--radius-md);
 }
 /* 默认 */
@@ -225,7 +226,7 @@
 .el-slider { --el-slider-main-bg-color: var(--color-action-primary-active); --el-slider-runway-bg-color: var(--color-bg-selected); --el-slider-button-size: var(--icon-size-md); }
 /* 进度填充是同色饱和度渐变（DESIGN 图表条）：HSB 明度不变，左端饱和度 × chart.gradient.saturation、右端原色；状态类只换 --fill。
    先写实色兜底（不支持相对颜色语法时用它）；状态规则也写整段 background，免得 Element 自带的状态 background-color 垫在渐变下面 */
-.el-progress-bar__inner, .el-progress.is-success .el-progress-bar__inner, .el-progress.is-exception .el-progress-bar__inner, .el-progress.is-warning .el-progress-bar__inner, .el-progress.is-muted .el-progress-bar__inner { background: var(--fill); background: linear-gradient(to right, hwb(from var(--fill) h calc(w + (100 - w - b) * (1 - var(--chart-gradient-saturation))) b), var(--fill)); }
+.el-progress-bar__inner, .el-progress.is-success .el-progress-bar__inner, .el-progress.is-exception .el-progress-bar__inner, .el-progress.is-warning .el-progress-bar__inner, .el-progress.is-muted .el-progress-bar__inner { background: var(--fill); background: linear-gradient(to right, hwb(from var(--fill) h calc(w + (100 - w - b) * (1 - var(--chart-gradient-saturation))) b), var(--fill)) var(--fill); }   /* 渐变下垫同色实底：视觉不变，对比度工具读得到深端底色（条内百分比是白字） */
 .el-progress-bar__inner { --fill: var(--color-action-primary-active); }
 .el-progress.is-success .el-progress-bar__inner { --fill: var(--color-status-success); }
 .el-progress.is-exception .el-progress-bar__inner { --fill: var(--color-status-error); }
