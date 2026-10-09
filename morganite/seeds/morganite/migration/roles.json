@@ -1,0 +1,743 @@
+{
+  "description": "旧规范 → morganite 的角色对照（机器可读版，由 web-to-design-system 生成）。migrate --phase settle 起草决策文件时用它：按角色映射，不按色值找最接近的灰。properties 是该角色出现的 CSS 属性上下文；hints 是旧变量名 / 注释里常见的字样——这里只有通用词，请把旧系统独有的变量名与色值补进去。noEquivalent 列旧系统里在新系统没有对应物的东西（如某种深色 hover、淡色选中底）及替代写法，由维护者按 DESIGN.md 填写。",
+  "noEquivalent": [
+    {
+      "legacy": "HTML 内联样式",
+      "note": "guard 会把内联字面量算作 Drift。",
+      "replacement": "抽成 class 再引用 token",
+      "var": null
+    },
+    {
+      "legacy": "antd 菜单选中态：主色 1 阶浅底 + 主色文字（Menu itemSelectedBg）",
+      "note": "Ant Design Pro 的侧栏本来是中性浅灰；本系统亮色侧栏当前项是主色底块 + 白字（用户指定），暗色是金色暗底 + 亮金字。",
+      "replacement": "color.bg.sidebar-selected + color.text.sidebar-selected（暗色 delta 为金色暗底 + 亮金字）",
+      "var": "--color-bg-sidebar-selected"
+    },
+    {
+      "legacy": "antd 主色按钮白字（colorTextLightSolid）",
+      "note": "本系统同样金底白字（用户指定）；白字对主色只有 3.02:1，已登记为例外。",
+      "replacement": "color.text.on-primary（白字）",
+      "var": "--color-text-on-primary"
+    },
+    {
+      "legacy": "antd 警示金黄（colorWarning #faad14 一族）",
+      "note": "与品牌金同色相，改用 antd 橙色系。",
+      "replacement": "color.status.warning / color.status.warning-bg",
+      "var": "--color-status-warning"
+    },
+    {
+      "legacy": "描边式输入框边线（variant outlined）",
+      "note": "本系统输入框为填充式，静息无边线；悬停才出现边线。",
+      "replacement": "color.bg.input；悬停 color.border.strong，聚焦 color.border.focus",
+      "var": "--color-bg-input"
+    },
+    {
+      "legacy": "antd 按钮底部 2px 投影（primaryShadow / defaultShadow）",
+      "note": "不纳管。",
+      "replacement": "去掉，不补 token",
+      "var": null
+    }
+  ],
+  "roles": [
+    {
+      "hints": [
+        "text",
+        "font-color",
+        "foreground",
+        "正文",
+        "主文字",
+        "#333",
+        "#303133",
+        "#1f2937",
+        "--ant-color-text",
+        "@text-color",
+        "rgba(0,0,0,0.88)",
+        "rgba(0,0,0,0.85)",
+        "#1f1f1f"
+      ],
+      "note": "文字三档按角色对应，不按色值找最接近的灰。",
+      "properties": [
+        "color"
+      ],
+      "role": "正文色",
+      "to": "color.text.primary",
+      "var": "--color-text-primary"
+    },
+    {
+      "hints": [
+        "secondary",
+        "subtitle",
+        "次要",
+        "#606266",
+        "#4b5563",
+        "--ant-color-text-secondary",
+        "@text-color-secondary",
+        "rgba(0,0,0,0.65)",
+        "rgba(0,0,0,0.45)",
+        "#595959"
+      ],
+      "note": "",
+      "properties": [
+        "color"
+      ],
+      "role": "次要文字",
+      "to": "color.text.secondary",
+      "var": "--color-text-secondary"
+    },
+    {
+      "hints": [
+        "muted",
+        "disabled-text",
+        "placeholder-text",
+        "弱化",
+        "辅助",
+        "#909399",
+        "#999",
+        "#9ca3af",
+        "--ant-color-text-tertiary",
+        "--ant-color-text-description",
+        "rgba(0,0,0,0.45)",
+        "#8c8c8c"
+      ],
+      "note": "弱化文字仍要 ≥ 4.5:1；占位符另有 color.text.placeholder。",
+      "properties": [
+        "color"
+      ],
+      "role": "弱化文字",
+      "to": "color.text.muted",
+      "var": "--color-text-muted"
+    },
+    {
+      "hints": [
+        "placeholder",
+        "占位",
+        "--ant-color-text-placeholder",
+        "--ant-color-text-quaternary",
+        "@input-placeholder-color",
+        "rgba(0,0,0,0.25)",
+        "#bfbfbf"
+      ],
+      "note": "",
+      "properties": [
+        "color"
+      ],
+      "role": "占位符",
+      "to": "color.text.placeholder",
+      "var": "--color-text-placeholder"
+    },
+    {
+      "hints": [
+        "border",
+        "divider",
+        "分割线",
+        "边线",
+        "#dcdfe6",
+        "#e4e7ed",
+        "#e5e7eb",
+        "--ant-color-border-secondary",
+        "--ant-color-split",
+        "@border-color-split",
+        "#f0f0f0",
+        "rgba(5,5,5,0.06)"
+      ],
+      "note": "输入框边线用 color.border.input。",
+      "properties": [
+        "border-color",
+        "border",
+        "outline-color",
+        "box-shadow"
+      ],
+      "role": "边线",
+      "to": "color.border.default",
+      "var": "--color-border-default"
+    },
+    {
+      "hints": [
+        "input-border",
+        "输入框边",
+        "--ant-color-border",
+        "@border-color-base",
+        "#d9d9d9"
+      ],
+      "note": "",
+      "properties": [
+        "border-color",
+        "border"
+      ],
+      "role": "输入框边线",
+      "to": "color.border.input",
+      "var": "--color-border-input"
+    },
+    {
+      "hints": [
+        "page-bg",
+        "body-bg",
+        "页面底",
+        "#f5f7fa",
+        "#f0f2f5",
+        "#f9fafb",
+        "--ant-color-bg-layout",
+        "@layout-body-background",
+        "#f5f5f5"
+      ],
+      "note": "",
+      "properties": [
+        "background",
+        "background-color"
+      ],
+      "role": "页面底",
+      "to": "color.bg.page",
+      "var": "--color-bg-page"
+    },
+    {
+      "hints": [
+        "section",
+        "表头底",
+        "分区",
+        "muted-bg",
+        "#f5f5f5",
+        "--ant-color-fill-alter",
+        "@background-color-light",
+        "@table-header-bg",
+        "#fafafa"
+      ],
+      "note": "表头、浅分区。",
+      "properties": [
+        "background",
+        "background-color"
+      ],
+      "role": "分区底",
+      "to": "color.bg.subtle",
+      "var": "--color-bg-subtle"
+    },
+    {
+      "hints": [
+        "card",
+        "white",
+        "surface",
+        "#fff",
+        "#ffffff",
+        "--ant-color-bg-container",
+        "@component-background"
+      ],
+      "note": "同一个旧白值在新系统里可能是三个语义：卡片 bg.surface、输入框 bg.input、浮层 bg.elevated。",
+      "properties": [
+        "background",
+        "background-color"
+      ],
+      "role": "卡片白",
+      "to": "color.bg.surface",
+      "var": "--color-bg-surface"
+    },
+    {
+      "hints": [
+        "input-bg",
+        "输入框底",
+        "--ant-color-fill-tertiary",
+        "filled",
+        "rgba(0,0,0,0.04)"
+      ],
+      "note": "",
+      "properties": [
+        "background",
+        "background-color"
+      ],
+      "role": "输入框底",
+      "to": "color.bg.input",
+      "var": "--color-bg-input"
+    },
+    {
+      "hints": [
+        "popover",
+        "dialog-bg",
+        "dropdown-bg",
+        "浮层",
+        "弹窗",
+        "--ant-color-bg-elevated",
+        "@popover-background"
+      ],
+      "note": "",
+      "properties": [
+        "background",
+        "background-color"
+      ],
+      "role": "浮层底",
+      "to": "color.bg.elevated",
+      "var": "--color-bg-elevated"
+    },
+    {
+      "hints": [
+        "hover-bg",
+        "hover",
+        "悬停",
+        "--ant-control-item-bg-hover",
+        "--ant-color-fill-tertiary",
+        "@item-hover-bg",
+        "rgba(0,0,0,0.04)"
+      ],
+      "note": "",
+      "properties": [
+        "background",
+        "background-color"
+      ],
+      "role": "悬停底",
+      "to": "color.bg.hover",
+      "var": "--color-bg-hover"
+    },
+    {
+      "hints": [
+        "brand",
+        "primary",
+        "主色",
+        "accent",
+        "--ant-color-primary",
+        "@primary-color",
+        "#1677ff",
+        "#1890ff"
+      ],
+      "note": "一个旧主色变量在新系统里可能是多个语义（按钮 / 指示条 / 大面积 / 图表），按用途拆，不能一对一替换。",
+      "properties": [
+        "background",
+        "background-color"
+      ],
+      "role": "主色 · 按钮填充",
+      "to": "color.action.primary",
+      "var": "--color-action-primary"
+    },
+    {
+      "hints": [
+        "primary-hover",
+        "主色悬停",
+        "--ant-color-primary-hover",
+        "@primary-5",
+        "#4096ff",
+        "#40a9ff"
+      ],
+      "note": "",
+      "properties": [
+        "background",
+        "background-color"
+      ],
+      "role": "主色 · 按钮悬停",
+      "to": "color.action.primary-hover",
+      "var": "--color-action-primary-hover"
+    },
+    {
+      "hints": [
+        "indicator",
+        "active-bar",
+        "指示条",
+        "选中条",
+        "--ant-color-primary",
+        "ink-bar"
+      ],
+      "note": "",
+      "properties": [
+        "background",
+        "background-color",
+        "border-color",
+        "border-left",
+        "border-bottom"
+      ],
+      "role": "主色 · 指示条",
+      "to": "color.brand.indicator",
+      "var": "--color-brand-indicator"
+    },
+    {
+      "hints": [
+        "login",
+        "hero",
+        "大面积",
+        "banner"
+      ],
+      "note": "",
+      "properties": [
+        "background",
+        "background-color"
+      ],
+      "role": "主色 · 大面积",
+      "to": "color.bg.brand",
+      "var": "--color-bg-brand"
+    },
+    {
+      "hints": [
+        "chart",
+        "图表",
+        "series"
+      ],
+      "note": "",
+      "properties": [
+        "fill",
+        "stroke",
+        "background"
+      ],
+      "role": "主色 · 图表",
+      "to": "color.chart.1",
+      "var": "--color-chart-1"
+    },
+    {
+      "hints": [
+        "on-primary",
+        "primary-foreground",
+        "按钮文字",
+        "--ant-color-text-light-solid",
+        "#fff"
+      ],
+      "note": "",
+      "properties": [
+        "color"
+      ],
+      "role": "主按钮文字",
+      "to": "color.text.on-primary",
+      "var": "--color-text-on-primary"
+    },
+    {
+      "hints": [
+        "success",
+        "成功",
+        "#67c23a",
+        "#52c41a",
+        "#16a34a",
+        "--ant-color-success",
+        "--ant-color-success-text",
+        "@success-color",
+        "#389e0d"
+      ],
+      "note": "状态色是文字色，配 -bg 浅底；填充只给危险按钮。",
+      "properties": [
+        "color",
+        "background",
+        "background-color"
+      ],
+      "role": "成功",
+      "to": "color.status.success",
+      "var": "--color-status-success"
+    },
+    {
+      "hints": [
+        "success-bg",
+        "success-light",
+        "成功浅底",
+        "--ant-color-success-bg",
+        "#f6ffed"
+      ],
+      "note": "",
+      "properties": [
+        "background",
+        "background-color"
+      ],
+      "role": "成功浅底",
+      "to": "color.status.success-bg",
+      "var": "--color-status-success-bg"
+    },
+    {
+      "hints": [
+        "warning",
+        "warn",
+        "警示",
+        "#e6a23c",
+        "#faad14",
+        "#d97706",
+        "--ant-color-warning",
+        "--ant-color-warning-text",
+        "@warning-color",
+        "#d48806"
+      ],
+      "note": "",
+      "properties": [
+        "color",
+        "background",
+        "background-color"
+      ],
+      "role": "警示",
+      "to": "color.status.warning",
+      "var": "--color-status-warning"
+    },
+    {
+      "hints": [
+        "warning-bg",
+        "warning-light",
+        "警示浅底",
+        "--ant-color-warning-bg",
+        "#fffbe6"
+      ],
+      "note": "",
+      "properties": [
+        "background",
+        "background-color"
+      ],
+      "role": "警示浅底",
+      "to": "color.status.warning-bg",
+      "var": "--color-status-warning-bg"
+    },
+    {
+      "hints": [
+        "error",
+        "danger-text",
+        "错误",
+        "#f56c6c",
+        "#ff4d4f",
+        "#dc2626",
+        "--ant-color-error",
+        "--ant-color-error-text",
+        "@error-color",
+        "#cf1322"
+      ],
+      "note": "",
+      "properties": [
+        "color",
+        "background",
+        "background-color"
+      ],
+      "role": "错误",
+      "to": "color.status.error",
+      "var": "--color-status-error"
+    },
+    {
+      "hints": [
+        "error-bg",
+        "error-light",
+        "错误浅底",
+        "--ant-color-error-bg",
+        "#fff2f0",
+        "#fff1f0"
+      ],
+      "note": "",
+      "properties": [
+        "background",
+        "background-color"
+      ],
+      "role": "错误浅底",
+      "to": "color.status.error-bg",
+      "var": "--color-status-error-bg"
+    },
+    {
+      "hints": [
+        "info",
+        "提示",
+        "#909399",
+        "#1890ff",
+        "--ant-color-info",
+        "--ant-color-info-text",
+        "@info-color",
+        "#1677ff"
+      ],
+      "note": "",
+      "properties": [
+        "color",
+        "background",
+        "background-color"
+      ],
+      "role": "信息",
+      "to": "color.status.info",
+      "var": "--color-status-info"
+    },
+    {
+      "hints": [
+        "info-bg",
+        "info-light",
+        "--ant-color-info-bg",
+        "#e6f4ff",
+        "#e6f7ff"
+      ],
+      "note": "",
+      "properties": [
+        "background",
+        "background-color"
+      ],
+      "role": "信息浅底",
+      "to": "color.status.info-bg",
+      "var": "--color-status-info-bg"
+    },
+    {
+      "hints": [
+        "danger",
+        "destructive",
+        "delete",
+        "危险",
+        "--ant-color-error",
+        "--ant-color-error-hover",
+        "dangerous",
+        "#ff4d4f"
+      ],
+      "note": "配 color.text.on-danger；不要复用 status.error（暗色下会变浅）。",
+      "properties": [
+        "background",
+        "background-color"
+      ],
+      "role": "危险按钮填充",
+      "to": "color.action.danger",
+      "var": "--color-action-danger"
+    },
+    {
+      "hints": [
+        "link",
+        "a-color",
+        "链接",
+        "#409eff",
+        "#1677ff",
+        "--ant-color-link",
+        "@link-color"
+      ],
+      "note": "链接是否保留色相看 DESIGN；等宽数字型链接不斜体。",
+      "properties": [
+        "color"
+      ],
+      "role": "链接",
+      "to": "color.text.link",
+      "var": "--color-text-link"
+    },
+    {
+      "hints": [
+        "focus",
+        "ring",
+        "焦点",
+        "--ant-color-primary-border",
+        "--ant-line-width-focus",
+        "#91caff",
+        "#91d5ff"
+      ],
+      "note": "",
+      "properties": [
+        "outline-color",
+        "box-shadow",
+        "border-color"
+      ],
+      "role": "焦点环",
+      "to": "color.focus.ring",
+      "var": "--color-focus-ring"
+    },
+    {
+      "hints": [
+        "1px",
+        "--ant-line-width",
+        "@border-width-base"
+      ],
+      "note": "",
+      "properties": [
+        "border-width",
+        "border"
+      ],
+      "role": "1px 边线宽",
+      "to": "border.width.default",
+      "var": "--border-width-default"
+    },
+    {
+      "hints": [
+        "4px",
+        "6px",
+        "8px",
+        "--ant-border-radius",
+        "@border-radius-base"
+      ],
+      "note": "按容器层级取 radius.md（控件）或 radius.lg（卡片），不逐像素对应。",
+      "properties": [
+        "border-radius"
+      ],
+      "role": "小圆角（4–8px）",
+      "to": "radius.md",
+      "var": "--radius-md"
+    },
+    {
+      "hints": [
+        "12px",
+        "16px",
+        "--ant-border-radius-lg"
+      ],
+      "note": "",
+      "properties": [
+        "border-radius"
+      ],
+      "role": "大圆角（卡片）",
+      "to": "radius.lg",
+      "var": "--radius-lg"
+    },
+    {
+      "hints": [
+        "14px",
+        "13px",
+        "16px",
+        "--ant-font-size",
+        "@font-size-base"
+      ],
+      "note": "尺寸按角色进阶梯；同一个 px 出现在 padding 时另按间距阶梯归。",
+      "properties": [
+        "font-size"
+      ],
+      "role": "正文字号",
+      "to": "text.body.size",
+      "var": "--text-body-size"
+    },
+    {
+      "hints": [
+        "gap",
+        "间距",
+        "--ant-margin-lg",
+        "gutter 24"
+      ],
+      "note": "页面级留白只用 space.inline / stack / gutter / card 四个；控件内部用 spacing.*。",
+      "properties": [
+        "gap",
+        "margin",
+        "padding"
+      ],
+      "role": "块间距",
+      "to": "space.stack",
+      "var": "--space-stack"
+    },
+    {
+      "hints": [
+        "padding",
+        "内边距",
+        "--ant-padding-lg",
+        "@card-padding-base"
+      ],
+      "note": "",
+      "properties": [
+        "padding"
+      ],
+      "role": "卡片内边距",
+      "to": "space.card",
+      "var": "--space-card"
+    },
+    {
+      "hints": [
+        "height",
+        "控件高",
+        "36px",
+        "32px",
+        "40px",
+        "--ant-control-height",
+        "@height-base"
+      ],
+      "note": "",
+      "properties": [
+        "height",
+        "min-height",
+        "line-height"
+      ],
+      "role": "控件高度",
+      "to": "control.height.md",
+      "var": "--control-height-md"
+    },
+    {
+      "hints": [
+        "shadow",
+        "阴影",
+        "box-shadow",
+        "--ant-box-shadow-tertiary",
+        "--ant-box-shadow-card"
+      ],
+      "note": "阴影拆成 y / blur / color 三件：box-shadow: 0 var(--elevation-card-y) var(--elevation-card-blur) var(--elevation-card-color)。",
+      "properties": [
+        "box-shadow"
+      ],
+      "role": "卡片阴影",
+      "to": "elevation.card.color",
+      "var": "--elevation-card-color"
+    }
+  ],
+  "skipped": [],
+  "system": "morganite",
+  "version": 1
+}

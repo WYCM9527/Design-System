@@ -1,0 +1,6 @@
+/* shadcn/ui 项目的 globals.css 模板（复制式接入用；从 npm 包接入时项目自己写这三行即可）。
+   顺序：Tailwind → 设计系统构建产物 → 桥接本体 → 配方层。路径按项目实际调整；由 skill 的 integrate 写入。 */
+@import "tailwindcss";
+@import "../design-system/dist/index.css";
+@import "./shadcn.css";
+@import "./recipes.css";

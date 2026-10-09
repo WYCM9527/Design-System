@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>玫瑰金后台 · Morganite 效果预览</title>
+  <link rel="stylesheet" href="../../seeds/morganite/design-system/dist/index.css">
+  <link rel="stylesheet" href="../../seeds/morganite/bridge/base.css">
+  <link rel="stylesheet" href="../../seeds/morganite/bridge/recipes.css">
+  <link rel="stylesheet" href="admin.css">
+  <link rel="stylesheet" href="components.css">
+  <script>(function () { var q = new URLSearchParams(location.search).get("theme"), t = q; try { if (q) localStorage.setItem("morganite-theme", q); else t = localStorage.getItem("morganite-theme"); } catch (e) {} if (t === "dark") document.documentElement.classList.add("dark"); })();</script>
+</head>
+<body>
+  <div class="app">
+    <div class="main">
+      <main class="content" data-route="dashboard">
+        <div class="page-bar">
+          <span class="section-label">分析概览</span>
+          <div class="right">
+            <div class="seg" role="group" aria-label="统计周期"><button type="button">本周</button><button type="button" class="is-on">本月</button><button type="button">本年</button></div>
+            <button class="btn" type="button" data-toast="报表已开始导出，完成后会通知你"><svg class="icon icon--sm"><use href="#i-file"/></svg>导出报表</button>
+            <a class="btn btn--primary" href="#/transactions/new"><svg class="icon icon--sm"><use href="#i-plus"/></svg>新建交易</a>
+          </div>
+        </div>
+
+        <div class="board">
+          <section class="panel" aria-labelledby="h-perf">
+            <div class="card-head">
+              <h2 id="h-perf">组合表现</h2>
+              <div class="right">
+                <button class="pill-select" type="button">近 8 个月<svg class="icon icon--sm"><use href="#i-down"/></svg></button>
+                <button class="iconbtn" type="button" aria-label="更多操作"><svg class="icon"><use href="#i-more"/></svg></button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="kpi-row">
+                <div><div class="kpi">5.42%</div><div class="kpi-note">本月增长</div></div>
+                <div class="right"><div class="kpi-sm">¥2,485,000</div><div class="kpi-note">当前市值</div></div>
+              </div>
+              <div class="lc" id="perf" role="img" aria-label="组合市值近 8 个月走势，8 月 235.7 万，9 月 248.5 万；灰色面积为业绩基准"></div>
+              <div class="legend"><span class="c1"><i></i>组合市值</span><span><i class="is-bench"></i>业绩基准</span></div>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="h-wealth">
+            <div class="card-head">
+              <h2 id="h-wealth">总资产</h2>
+              <div class="right"><button class="iconbtn" type="button" aria-label="更多操作"><svg class="icon"><use href="#i-more"/></svg></button></div>
+            </div>
+            <div class="card-body">
+              <div>
+                <div class="kpi-row"><div class="kpi">¥32,780,900</div><span class="delta up">+7.8%</span></div>
+                <div class="kpi-note">较上月 · 截至今日 15:00</div>
+              </div>
+              <div class="lc no-y" id="wealth" role="img" aria-label="总资产近 6 个月走势，9 月 3,278 万"></div>
+              <ul class="kv-list">
+                <li>股票账户<b>¥23,210,020</b></li>
+                <li>债券账户<b>¥6,860,120</b></li>
+                <li>本月收益<b class="up">+¥2,360,900</b></li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="h-alloc">
+            <div class="card-head">
+              <h2 id="h-alloc">资产配置</h2><span class="sub">按市值</span>
+              <div class="right"><button class="iconbtn" type="button" aria-label="更多操作"><svg class="icon"><use href="#i-more"/></svg></button></div>
+            </div>
+            <div class="card-body">
+              <div class="alloc">
+                <div class="donut" id="donut" role="img" aria-label="资产配置：股票 42%、固定收益 28%、房地产 15%、另类投资 8%、现金 7%">
+                  <div class="donut__center"><span class="kpi-sm">¥3,278 万</span><span class="kpi-note">总市值</span></div>
+                </div>
+                <ul class="alloc-list">
+                  <li class="c1"><i></i><span>股票</span><span class="pct">42%</span><span class="amt">¥1,376.8 万</span></li>
+                  <li class="c2"><i></i><span>固定收益</span><span class="pct">28%</span><span class="amt">¥917.9 万</span></li>
+                  <li class="c5"><i></i><span>房地产</span><span class="pct">15%</span><span class="amt">¥491.7 万</span></li>
+                  <li class="c4"><i></i><span>另类投资</span><span class="pct">8%</span><span class="amt">¥262.2 万</span></li>
+                  <li class="c3"><i></i><span>现金</span><span class="pct">7%</span><span class="amt">¥229.5 万</span></li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="h-market">
+            <div class="card-head">
+              <h2 id="h-market">市场情绪</h2><span class="sub">近 5 个交易日成交热度</span>
+            </div>
+            <div class="card-body">
+              <div>
+                <div class="bars" id="bars" role="img" aria-label="三大指数近 5 个交易日成交热度"></div>
+                <div class="bars-x"><span>9/21</span><span>9/22</span><span>9/23</span><span>9/24</span><span>9/25</span></div>
+              </div>
+              <div class="legend"><span class="c1"><i></i>沪深 300</span><span class="c6"><i></i>纳斯达克</span><span class="c5"><i></i>道琼斯</span></div>
+              <ul class="index-list">
+                <li><span>沪深 300</span><span class="val">3,892.61</span><span class="delta up">+0.8%</span></li>
+                <li><span>纳斯达克</span><span class="val">18,240.32</span><span class="delta up">+1.2%</span></li>
+                <li><span>道琼斯</span><span class="val">42,118.05</span><span class="delta down">−0.5%</span></li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="h-tx">
+            <div class="card-head">
+              <h2 id="h-tx">近期交易</h2>
+              <div class="right"><a class="go" href="#/transactions">查看全部<svg class="icon icon--sm"><use href="#i-right"/></svg></a></div>
+            </div>
+            <div class="table-wrap">
+              <table class="table">
+                <thead><tr><th>日期</th><th>说明</th><th>类别</th><th>状态</th><th class="amt">金额</th></tr></thead>
+                <tbody>
+                  <tr><td class="num">09/28</td><td><a class="title-link" href="#/transactions/detail">定投 · 沪深 300 ETF</a></td><td><span class="cat">基金</span></td><td><span class="status success">已完成</span></td><td class="amt">−¥5,000.00</td></tr>
+                  <tr><td class="num">09/27</td><td><a class="title-link" href="#/transactions/detail">房产投资 · 季度分红</a></td><td><span class="cat">不动产</span></td><td><span class="status success">已到账</span></td><td class="amt up">+¥2,500.00</td></tr>
+                  <tr><td class="num">09/26</td><td><a class="title-link" href="#/transactions/detail">国债逆回购</a></td><td><span class="cat">固收</span></td><td><span class="status info">处理中</span></td><td class="amt">−¥120,000.00</td></tr>
+                  <tr><td class="num">09/25</td><td><a class="title-link" href="#/transactions/detail">外汇兑换 · 美元</a></td><td><span class="cat">外汇</span></td><td><span class="status warning">待确认</span></td><td class="amt">−¥30,000.00</td></tr>
+                  <tr><td class="num">09/24</td><td><a class="title-link" href="#/transactions/detail">赎回 · 货币基金</a></td><td><span class="cat">现金</span></td><td><span class="status error">已驳回</span></td><td class="amt">¥8,000.00</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="h-goals">
+            <div class="card-head">
+              <h2 id="h-goals">目标进度</h2>
+              <div class="right"><button class="iconbtn" type="button" aria-label="更多操作"><svg class="icon"><use href="#i-more"/></svg></button></div>
+            </div>
+            <div class="card-body">
+              <ul class="goals">
+                <li><div class="top"><span>退休储备</span><b>78%</b></div><div class="track"><div class="fill" style="width: 78%"></div></div><span class="sub">已存 ¥6,240,000 / 目标 ¥8,000,000</span></li>
+                <li><div class="top"><span>置业计划</span><b>62%</b></div><div class="track"><div class="fill is-neutral" style="width: 62%"></div></div><span class="sub">已存 ¥3,100,000 / 目标 ¥5,000,000</span></li>
+                <li><div class="top"><span>子女教育</span><b>45%</b></div><div class="track"><div class="fill is-neutral" style="width: 45%"></div></div><span class="sub">已存 ¥900,000 / 目标 ¥2,000,000</span></li>
+              </ul>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <main class="content" data-route="transactions" hidden>
+        <div class="page-head">
+          <div>
+            <h1>交易记录</h1>
+            <p>查询、筛选与批量处理近 90 天的交易，点单号进入详情。</p>
+          </div>
+          <div class="actions">
+            <button class="btn" type="button" data-toast="已按当前条件导出 1,286 条"><svg class="icon icon--sm"><use href="#i-download"/></svg>导出</button>
+            <a class="btn btn--primary" href="#/transactions/new"><svg class="icon icon--sm"><use href="#i-plus"/></svg>新建交易</a>
+          </div>
+        </div>
+
+        <div class="stat-strip" role="group" aria-label="按状态快速筛选">
+          <button class="cell is-clickable is-active" type="button">全部<span class="value">1,286</span></button>
+          <button class="cell is-clickable" type="button">处理中<span class="value">18</span></button>
+          <button class="cell is-clickable" type="button">待确认<span class="value">6</span></button>
+          <button class="cell is-clickable" type="button">已驳回<span class="value">3</span></button>
+        </div>
+
+        <section class="panel" aria-label="交易列表">
+          <div class="filter">
+            <div class="conds">
+              <label class="input-affix w-search"><svg class="icon icon--sm"><use href="#i-search"/></svg><input type="search" placeholder="单号 / 产品 / 账户" aria-label="关键词"></label>
+              <span class="select"><select class="input" aria-label="交易类型"><option>全部类型</option><option selected>基金</option><option>固收</option><option>外汇</option><option>不动产</option><option>现金</option></select><svg class="icon"><use href="#i-down"/></svg></span>
+              <span class="select"><select class="input" aria-label="状态"><option>全部状态</option><option selected>处理中</option><option>待确认</option><option>已完成</option><option>已驳回</option></select><svg class="icon"><use href="#i-down"/></svg></span>
+              <label class="input-affix w-date"><svg class="icon icon--sm"><use href="#i-calendar"/></svg><input type="text" value="2026-07-01 ~ 2026-09-29" aria-label="日期范围"></label>
+            </div>
+            <div class="acts">
+              <button class="btn btn--quiet" type="button">重置</button>
+              <button class="btn" type="button"><svg class="icon icon--sm"><use href="#i-filter"/></svg>查询</button>
+            </div>
+          </div>
+
+          <div class="chips" aria-label="已选条件">
+            <span class="chip">类型：基金<button class="x" type="button" aria-label="移除条件 类型：基金"><svg class="icon icon--sm"><use href="#i-close"/></svg></button></span>
+            <span class="chip">状态：处理中<button class="x" type="button" aria-label="移除条件 状态：处理中"><svg class="icon icon--sm"><use href="#i-close"/></svg></button></span>
+            <span class="chip">金额 ≥ ¥10,000<button class="x" type="button" aria-label="移除条件 金额"><svg class="icon icon--sm"><use href="#i-close"/></svg></button></span>
+            <button class="link" type="button">清除全部</button>
+          </div>
+
+          <div class="batch">
+            <span>已选 <b data-selected-count>2</b> 项</span>
+            <div class="right">
+              <button class="act" type="button" data-toast="已导出所选交易">批量导出</button>
+              <button class="act" type="button" data-toast="已标记为已核对">标记已核对</button>
+              <button class="act danger" type="button" data-open="modal-revoke">撤销</button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="check-col"><label class="check"><input type="checkbox" data-select-all aria-label="全选本页"><span class="box"></span></label></th>
+                  <th>交易单号</th><th>说明</th><th>类别</th><th>时间</th><th class="amt">金额</th><th>状态</th><th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="is-selected"><td><label class="check"><input type="checkbox" checked aria-label="选择 TX20260928001"><span class="box"></span></label></td><td><a class="link mono" href="#/transactions/detail">TX20260928001</a></td><td><a class="title-link" href="#/transactions/detail">定投 · 沪深 300 ETF</a><span class="sub">招商银行 · 尾号 6621</span></td><td><span class="cat">基金</span></td><td class="num">09-28 10:24</td><td class="amt">−¥5,000.00</td><td><span class="status info">处理中</span></td><td><a class="act" href="#/transactions/detail">详情</a><button class="act danger" type="button" data-open="modal-revoke">撤销</button></td></tr>
+                <tr><td><label class="check"><input type="checkbox" aria-label="选择 TX20260927014"><span class="box"></span></label></td><td><a class="link mono" href="#/transactions/detail">TX20260927014</a></td><td><a class="title-link" href="#/transactions/detail">房产投资 · 季度分红</a><span class="sub">信托计划 · 鹏城三号</span></td><td><span class="cat">不动产</span></td><td class="num">09-27 16:05</td><td class="amt up">+¥2,500.00</td><td><span class="status success">已到账</span></td><td><a class="act" href="#/transactions/detail">详情</a><button class="act danger" type="button" disabled title="已到账的交易不能撤销">撤销</button></td></tr>
+                <tr class="is-selected"><td><label class="check"><input type="checkbox" checked aria-label="选择 TX20260926008"><span class="box"></span></label></td><td><a class="link mono" href="#/transactions/detail">TX20260926008</a></td><td><a class="title-link" href="#/transactions/detail">国债逆回购 · GC007</a><span class="sub">华泰证券 · 尾号 0932</span></td><td><span class="cat">固收</span></td><td class="num">09-26 09:31</td><td class="amt">−¥120,000.00</td><td><span class="status info">处理中</span></td><td><a class="act" href="#/transactions/detail">详情</a><button class="act danger" type="button" data-open="modal-revoke">撤销</button></td></tr>
+                <tr><td><label class="check"><input type="checkbox" aria-label="选择 TX20260925021"><span class="box"></span></label></td><td><a class="link mono" href="#/transactions/detail">TX20260925021</a></td><td><a class="title-link" href="#/transactions/detail">外汇兑换 · 美元</a><span class="sub">中国银行 · 尾号 1187</span></td><td><span class="cat">外汇</span></td><td class="num">09-25 14:48</td><td class="amt">−¥30,000.00</td><td><span class="status warning">待确认</span></td><td><a class="act" href="#/transactions/detail">详情</a><button class="act danger" type="button" data-open="modal-revoke">撤销</button></td></tr>
+                <tr><td><label class="check"><input type="checkbox" aria-label="选择 TX20260924003"><span class="box"></span></label></td><td><a class="link mono" href="#/transactions/detail">TX20260924003</a></td><td><a class="title-link" href="#/transactions/detail">赎回 · 货币基金</a><span class="sub">招商银行 · 尾号 6621</span></td><td><span class="cat">现金</span></td><td class="num">09-24 11:02</td><td class="amt">¥8,000.00</td><td><span class="status error">已驳回</span></td><td><a class="act" href="#/transactions/detail">详情</a><button class="act danger" type="button" disabled title="已驳回的交易不能撤销">撤销</button></td></tr>
+                <tr><td><label class="check"><input type="checkbox" aria-label="选择 TX20260923017"><span class="box"></span></label></td><td><a class="link mono" href="#/transactions/detail">TX20260923017</a></td><td><a class="title-link" href="#/transactions/detail">申购 · 纳斯达克 100 指数</a><span class="sub">招商银行 · 尾号 6621</span></td><td><span class="cat">基金</span></td><td class="num">09-23 10:15</td><td class="amt">−¥20,000.00</td><td><span class="status success">已完成</span></td><td><a class="act" href="#/transactions/detail">详情</a><button class="act danger" type="button" disabled title="已完成的交易不能撤销">撤销</button></td></tr>
+                <tr><td><label class="check"><input type="checkbox" aria-label="选择 TX20260922006"><span class="box"></span></label></td><td><a class="link mono" href="#/transactions/detail">TX20260922006</a></td><td><a class="title-link" href="#/transactions/detail">黄金积存 · 月度定投</a><span class="sub">工商银行 · 尾号 4410</span></td><td><span class="cat">另类</span></td><td class="num">09-22 08:00</td><td class="amt">−¥3,000.00</td><td><span class="status neutral">已撤销</span></td><td><a class="act" href="#/transactions/detail">详情</a><button class="act danger" type="button" disabled title="已撤销">撤销</button></td></tr>
+                <tr><td><label class="check"><input type="checkbox" aria-label="选择 TX20260921011"><span class="box"></span></label></td><td><a class="link mono" href="#/transactions/detail">TX20260921011</a></td><td><a class="title-link" href="#/transactions/detail">基金分红 · 再投资</a><span class="sub">招商银行 · 尾号 6621</span></td><td><span class="cat">基金</span></td><td class="num">09-21 15:30</td><td class="amt up">+¥1,268.40</td><td><span class="status success">已到账</span></td><td><a class="act" href="#/transactions/detail">详情</a><button class="act danger" type="button" disabled title="已到账的交易不能撤销">撤销</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pager">
+            <nav class="pagination" aria-label="分页">
+              <span class="total">共 1,286 条</span>
+              <button class="page" type="button" disabled aria-label="上一页"><svg class="icon"><use href="#i-left"/></svg></button>
+              <button class="page" type="button" aria-current="page">1</button>
+              <button class="page" type="button">2</button>
+              <button class="page" type="button">3</button>
+              <button class="page" type="button">4</button>
+              <button class="page" type="button">5</button>
+              <span class="page ellipsis" aria-hidden="true">…</span>
+              <button class="page" type="button">65</button>
+              <button class="page" type="button" aria-label="下一页"><svg class="icon"><use href="#i-chevron"/></svg></button>
+              <span class="select is-inline"><select class="input" aria-label="每页条数"><option>20 条 / 页</option><option>50 条 / 页</option><option>100 条 / 页</option></select><svg class="icon"><use href="#i-down"/></svg></span>
+            </nav>
+          </div>
+        </section>
+      </main>
+
+      <main class="content" data-route="transactions/new" hidden>
+        <div class="page-head">
+          <div>
+            <h1>新建交易</h1>
+            <p>填写交易信息，提交后进入复核；带 * 的为必填项。</p>
+          </div>
+        </div>
+
+        <div class="alert info" role="note"><svg class="icon"><use href="#i-info"/></svg><div class="text"><b>大额交易需要两人复核</b>单笔超过 ¥500,000 的交易会分派两位复核人，预计 1 个工作日内完成。</div></div>
+
+        <section class="panel" aria-labelledby="h-basic">
+          <div class="card-head"><h2 id="h-basic">基本信息</h2></div>
+          <div class="form-grid">
+            <div class="field">
+              <label class="req" for="f-type">交易类型</label>
+              <span class="select"><select class="input" id="f-type"><option>申购</option><option>赎回</option><option selected>定期定投</option><option>转账</option></select><svg class="icon"><use href="#i-down"/></svg></span>
+            </div>
+            <div class="field">
+              <label class="req" for="f-product">产品</label>
+              <label class="input-affix"><svg class="icon icon--sm"><use href="#i-search"/></svg><input id="f-product" value="沪深 300 ETF（510300）"></label>
+              <span class="help">支持代码、名称或拼音首字母</span>
+            </div>
+            <div class="field is-error">
+              <label class="req" for="f-amount">交易金额</label>
+              <label class="input-affix"><span class="affix">¥</span><input id="f-amount" value="150,000.00" aria-invalid="true" aria-describedby="f-amount-err"><span class="affix">元</span></label>
+              <span class="field-error" id="f-amount-err">超出可用余额 ¥128,000.00</span>
+            </div>
+            <div class="field">
+              <label class="req" for="f-date">交易日期</label>
+              <input class="input" id="f-date" type="date" value="2026-09-30">
+            </div>
+            <div class="field">
+              <label for="f-account">资金账户</label>
+              <span class="select"><select class="input" id="f-account"><option>招商银行 · 尾号 6621</option><option>华泰证券 · 尾号 0932</option><option>工商银行 · 尾号 4410</option></select><svg class="icon"><use href="#i-down"/></svg></span>
+            </div>
+            <div class="field">
+              <label for="f-fee">手续费</label>
+              <input class="input" id="f-fee" value="¥0.00（本月免费）" disabled>
+              <span class="help">本月前 3 笔免手续费</span>
+            </div>
+            <div class="field">
+              <span class="label">风险偏好</span>
+              <div class="choices" role="radiogroup" aria-label="风险偏好">
+                <label class="radio"><input type="radio" name="risk"><span class="dot"></span>稳健</label>
+                <label class="radio"><input type="radio" name="risk" checked><span class="dot"></span>平衡</label>
+                <label class="radio"><input type="radio" name="risk"><span class="dot"></span>进取</label>
+                <label class="radio"><input type="radio" name="risk" disabled><span class="dot"></span>激进（未开通）</label>
+              </div>
+            </div>
+            <div class="field">
+              <span class="label">复核人</span>
+              <div class="ro">提交后由系统自动分配</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="h-more">
+          <div class="card-head"><h2 id="h-more">通知与附件</h2></div>
+          <div class="form-grid">
+            <div class="field">
+              <span class="label">通知方式</span>
+              <div class="choices">
+                <label class="check"><input type="checkbox" checked><span class="box"></span>站内信</label>
+                <label class="check"><input type="checkbox" checked><span class="box"></span>短信</label>
+                <label class="check"><input type="checkbox"><span class="box"></span>邮件</label>
+              </div>
+            </div>
+            <div class="field">
+              <span class="label">自动复投</span>
+              <div class="choices"><label class="switch"><input type="checkbox" checked><span class="track"></span>分红到账后自动买入</label></div>
+            </div>
+            <div class="field span2">
+              <label for="f-note">备注</label>
+              <textarea class="input" id="f-note" placeholder="选填，最多 200 字"></textarea>
+              <span class="help">备注只有复核人可见</span>
+            </div>
+            <div class="field span2">
+              <span class="label">附件</span>
+              <label class="upload-zone"><svg class="icon"><use href="#i-upload"/></svg><b>点击或拖拽文件到这里上传</b><span class="sub">支持 PDF、JPG，单个不超过 10 MB</span><input type="file" aria-label="上传附件"></label>
+            </div>
+          </div>
+        </section>
+
+        <div class="form-foot is-sticky">
+          <a class="btn btn--quiet" href="#/transactions">取消</a>
+          <button class="btn" type="button" data-toast="草稿已保存">保存草稿</button>
+          <button class="btn btn--primary" type="button" data-toast="已提交复核，可在交易记录里查看进度">提交复核</button>
+        </div>
+      </main>
+
+      <main class="content" data-route="transactions/detail" hidden>
+        <div class="page-head">
+          <div>
+            <div class="title-row"><h1>定投 · 沪深 300 ETF</h1><span class="status info">处理中</span></div>
+            <p>单号 <span class="mono">TX20260928001</span> · 创建于 2026-09-28 10:24 · 发起人 王晓明</p>
+          </div>
+          <div class="actions">
+            <button class="btn" type="button" data-toast="单号已复制"><svg class="icon icon--sm"><use href="#i-copy"/></svg>复制单号</button>
+            <button class="btn" type="button" data-open="drawer-edit"><svg class="icon icon--sm"><use href="#i-edit"/></svg>编辑备注</button>
+            <div class="popover-anchor">
+              <button class="btn" type="button" aria-haspopup="menu" aria-expanded="false">更多<svg class="icon icon--sm"><use href="#i-down"/></svg></button>
+              <div class="menu" role="menu" hidden>
+                <button class="menu-item" role="menuitem" type="button" data-toast="已开始下载凭证"><svg class="icon"><use href="#i-download"/></svg>下载凭证</button>
+                <button class="menu-item" role="menuitem" type="button" data-toast="已发起重新核对"><svg class="icon"><use href="#i-refresh"/></svg>重新核对</button>
+                <div class="menu-sep" role="separator"></div>
+                <button class="menu-item danger" role="menuitem" type="button" data-open="modal-revoke"><svg class="icon"><use href="#i-trash"/></svg>撤销交易</button>
+              </div>
+            </div>
+            <button class="btn btn--primary" type="button" data-toast="已确认到账">确认到账</button>
+          </div>
+        </div>
+
+        <section class="panel" aria-labelledby="h-steps">
+          <div class="card-head"><h2 id="h-steps">处理进度</h2></div>
+          <div class="card-body">
+            <div class="steps">
+              <div class="step is-done"><span class="ix"><svg class="icon"><use href="#i-check"/></svg></span><div class="body"><div class="title">提交</div><span class="sub">09-28 10:24 · 王晓明</span></div></div>
+              <div class="step is-done"><span class="ix"><svg class="icon"><use href="#i-check"/></svg></span><div class="body"><div class="title">复核</div><span class="sub">09-28 14:02 · 李静</span></div></div>
+              <div class="step is-current"><span class="ix">3</span><div class="body"><div class="title">清算</div><span class="sub">预计 09-29 15:00 前完成</span></div></div>
+              <div class="step"><span class="ix">4</span><div class="body"><div class="title">到账</div><span class="sub">等待清算完成</span></div></div>
+            </div>
+          </div>
+        </section>
+
+        <div class="two-col">
+          <section class="panel" aria-labelledby="h-info">
+            <div class="card-head"><h2 id="h-info">交易信息</h2></div>
+            <div class="card-body">
+              <dl class="desc">
+                <div><dt>交易类型</dt><dd>定期定投</dd></div>
+                <div><dt>产品</dt><dd>沪深 300 ETF（510300）</dd></div>
+                <div><dt>交易金额</dt><dd class="num">¥5,000.00</dd></div>
+                <div><dt>成交份额</dt><dd class="num">1,284.52 份</dd></div>
+                <div><dt>手续费</dt><dd class="num">¥0.00</dd></div>
+                <div><dt>资金账户</dt><dd>招商银行 · 尾号 6621</dd></div>
+                <div><dt>复核人</dt><dd>李静</dd></div>
+                <div><dt>风险等级</dt><dd><span class="cat">R3 · 平衡</span></dd></div>
+                <div class="span2"><dt>备注</dt><dd>每月 28 日定投，遇节假日顺延。</dd></div>
+              </dl>
+            </div>
+          </section>
+          <section class="panel" aria-labelledby="h-log">
+            <div class="card-head"><h2 id="h-log">处理记录</h2></div>
+            <div class="card-body">
+              <ol class="timeline">
+                <li class="is-current"><b>进入清算</b><span class="sub">2026-09-29 09:00 · 系统</span></li>
+                <li><b>复核通过</b><span class="sub">2026-09-28 14:02 · 李静</span></li>
+                <li class="is-error"><b>复核退回：附件不清晰</b><span class="sub">2026-09-28 11:30 · 李静</span></li>
+                <li><b>提交交易</b><span class="sub">2026-09-28 10:24 · 王晓明</span></li>
+              </ol>
+            </div>
+          </section>
+        </div>
+
+        <section class="panel" aria-label="关联信息">
+          <div class="tabs" role="tablist" aria-label="关联信息">
+            <button class="tab" role="tab" type="button" aria-selected="true" aria-controls="tab-docs">关联单据</button>
+            <button class="tab" role="tab" type="button" aria-selected="false" aria-controls="tab-files" tabindex="-1">附件（2）</button>
+            <button class="tab" role="tab" type="button" aria-selected="false" aria-controls="tab-audit" tabindex="-1">操作日志</button>
+          </div>
+          <div id="tab-docs" role="tabpanel">
+            <div class="table-wrap">
+              <table class="table">
+                <thead><tr><th>单据号</th><th>类型</th><th>生成时间</th><th class="amt">金额</th><th>状态</th></tr></thead>
+                <tbody>
+                  <tr><td class="mono">PZ20260928-0231</td><td>扣款凭证</td><td class="num">09-28 10:25</td><td class="amt">¥5,000.00</td><td><span class="status success">已生成</span></td></tr>
+                  <tr><td class="mono">QS20260929-0087</td><td>清算单</td><td class="num">09-29 09:00</td><td class="amt">¥5,000.00</td><td><span class="status info">处理中</span></td></tr>
+                  <tr><td class="mono">DZ20260929-0087</td><td>到账回单</td><td class="num">—</td><td class="amt">—</td><td><span class="status neutral">未生成</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div id="tab-files" role="tabpanel" hidden>
+            <div class="card-body">
+              <div class="file-row"><svg class="icon"><use href="#i-file"/></svg><div class="text">定投协议.pdf<span class="sub">286 KB · 09-28 10:22 上传</span></div><button class="act" type="button" data-toast="已开始下载">下载</button></div>
+              <div class="file-row"><svg class="icon"><use href="#i-file"/></svg><div class="text">风险测评结果.jpg<span class="sub">1.2 MB · 09-28 11:40 重新上传</span></div><button class="act" type="button" data-toast="已开始下载">下载</button></div>
+            </div>
+          </div>
+          <div id="tab-audit" role="tabpanel" hidden>
+            <div class="empty"><div class="illu"><svg class="icon"><use href="#i-file"/></svg></div><b>暂无操作日志</b><span>交易完成后，日志会归档到这里</span></div>
+          </div>
+        </section>
+      </main>
+
+      <main class="content" data-route="settings" hidden>
+        <div class="page-head">
+          <div>
+            <h1>系统设置</h1>
+            <p>个人资料、通知、安全与外观偏好，修改后立即生效。</p>
+          </div>
+        </div>
+
+        <section class="panel" aria-label="设置">
+          <div class="tabs" role="tablist" aria-label="设置分类">
+            <button class="tab" role="tab" type="button" aria-selected="false" aria-controls="s-profile" tabindex="-1">个人资料</button>
+            <button class="tab" role="tab" type="button" aria-selected="true" aria-controls="s-notify">通知</button>
+            <button class="tab" role="tab" type="button" aria-selected="false" aria-controls="s-security" tabindex="-1">安全</button>
+            <button class="tab" role="tab" type="button" aria-selected="false" aria-controls="s-look" tabindex="-1">外观</button>
+          </div>
+
+          <div id="s-profile" role="tabpanel" hidden>
+            <div class="hform">
+              <div class="field"><span class="label">头像</span><div class="avatar-row"><span class="avatar">王</span><button class="btn btn--sm" type="button" data-toast="头像上传建设中">更换头像</button></div></div>
+              <div class="field"><label class="req" for="p-name">姓名</label><input class="input" id="p-name" value="王晓明"></div>
+              <div class="field"><label class="req" for="p-phone">手机</label><label class="input-affix"><svg class="icon icon--sm"><use href="#i-phone"/></svg><input id="p-phone" value="138 **** 6621"></label><span class="help">用于登录验证与大额交易提醒</span></div>
+              <div class="field"><label for="p-mail">邮箱</label><label class="input-affix"><svg class="icon icon--sm"><use href="#i-mail"/></svg><input id="p-mail" value="wangxm@morganite.cn"></label></div>
+              <div class="field"><label for="p-dept">所在部门</label><span class="select"><select class="input" id="p-dept"><option>财富管理部</option><option>风控合规部</option><option>运营中心</option></select><svg class="icon"><use href="#i-down"/></svg></span></div>
+              <div class="field"><label for="p-bio">个人简介</label><textarea class="input" id="p-bio" placeholder="一句话介绍自己"></textarea></div>
+              <div class="foot"><button class="btn btn--primary" type="button" data-toast="资料已保存">保存</button><button class="btn btn--quiet" type="button">重置</button></div>
+            </div>
+          </div>
+
+          <div id="s-notify" role="tabpanel">
+            <div class="card-body"><div class="alert info"><svg class="icon"><use href="#i-info"/></svg><div class="text">通知设置对网页、App 与短信同时生效；风险类通知不受免打扰影响。</div></div></div>
+            <div class="setting"><div class="text"><b>交易状态变更</b><span class="sub">提交、复核、清算与到账时通知</span></div><label class="switch"><input type="checkbox" checked aria-label="交易状态变更"><span class="track"></span></label></div>
+            <div class="setting"><div class="text"><b>大额交易提醒</b><span class="sub">单笔超过 ¥100,000 时额外短信提醒</span></div><label class="switch"><input type="checkbox" checked aria-label="大额交易提醒"><span class="track"></span></label></div>
+            <div class="setting"><div class="text"><b>市场行情日报</b><span class="sub">每个交易日 18:00 推送</span></div><label class="switch"><input type="checkbox" aria-label="市场行情日报"><span class="track"></span></label></div>
+            <div class="setting"><div class="text"><b>营销活动</b><span class="sub">合规要求，机构账户不可开启</span></div><label class="switch"><input type="checkbox" disabled aria-label="营销活动"><span class="track"></span></label></div>
+            <div class="setting"><div class="text"><b>通知渠道</b><span class="sub">至少保留一个渠道</span></div><div class="choices"><label class="check"><input type="checkbox" checked><span class="box"></span>站内信</label><label class="check"><input type="checkbox" checked><span class="box"></span>短信</label><label class="check"><input type="checkbox"><span class="box"></span>邮件</label></div></div>
+            <div class="setting"><div class="text"><b>免打扰时段</b><span class="sub">期间只推送风险类通知</span></div><span class="select is-inline"><select class="input" aria-label="免打扰时段"><option>22:00 – 08:00</option><option>23:00 – 07:00</option><option>不开启</option></select><svg class="icon"><use href="#i-down"/></svg></span></div>
+          </div>
+
+          <div id="s-security" role="tabpanel" hidden>
+            <div class="setting"><div class="text"><b>登录密码</b><span class="sub">上次修改于 3 个月前</span></div><button class="act" type="button" data-toast="已发送修改链接到手机">修改</button></div>
+            <div class="setting"><div class="text"><b>两步验证</b><span class="sub">登录与大额交易时需要短信验证码</span></div><span class="status success">已开启</span><label class="switch"><input type="checkbox" checked aria-label="两步验证"><span class="track"></span></label></div>
+            <div class="setting"><div class="text"><b>MacBook Pro · Chrome</b><span class="sub">上海 · 当前设备</span></div><span class="badge brand">本机</span></div>
+            <div class="setting"><div class="text"><b>iPhone 16 · 玫瑰金 App</b><span class="sub">上海 · 2 小时前活跃</span></div><button class="act danger" type="button" data-toast="该设备已下线">下线</button></div>
+            <div class="setting"><div class="text"><b>注销账户</b><span class="sub">注销后数据保留 30 天，期间可联系管理员恢复</span></div><button class="btn btn--danger btn--sm" type="button" data-open="modal-close">注销账户</button></div>
+          </div>
+
+          <div id="s-look" role="tabpanel" hidden>
+            <div class="setting"><div class="text"><b>主题</b><span class="sub">与顶栏的亮 / 暗切换同步</span></div><div class="seg" role="group" aria-label="主题"><button type="button" data-theme-set="light">亮色</button><button type="button" data-theme-set="dark">暗色</button></div></div>
+            <div class="setting"><div class="text"><b>界面密度</b><span class="sub">影响表格行高与卡片留白（效果预览未接入）</span></div><div class="choices" role="radiogroup" aria-label="界面密度"><label class="radio"><input type="radio" name="density"><span class="dot"></span>紧凑</label><label class="radio"><input type="radio" name="density" checked><span class="dot"></span>默认</label><label class="radio"><input type="radio" name="density"><span class="dot"></span>宽松</label></div></div>
+            <div class="setting"><div class="text"><b>默认折叠侧栏</b><span class="sub">窄屏下始终折叠</span></div><label class="switch"><input type="checkbox" aria-label="默认折叠侧栏"><span class="track"></span></label></div>
+          </div>
+        </section>
+      </main>
+
+      <main class="content" data-route="kitchen" hidden>
+        <div class="page-head">
+          <div>
+            <h1>组件走查</h1>
+            <p>按 DESIGN.md「组件配方」逐行铺开每种组件的各个状态；悬停、按下、聚焦用强制类直接展示。切到暗色再看一遍。</p>
+          </div>
+          <div class="actions"><a class="btn" href="#/login"><svg class="icon icon--sm"><use href="#i-logout"/></svg>登录页</a></div>
+        </div>
+
+        <div class="ks-grid">
+          <section class="panel wide" aria-labelledby="k-btn">
+            <div class="card-head"><h2 id="k-btn">按钮</h2><span class="sub">主按钮金底白字，悬停与按下都加深</span></div>
+            <div class="card-body">
+              <div>
+                <div class="ks-row"><span class="ks-label">主按钮</span><button class="btn btn--primary" type="button">默认</button><button class="btn btn--primary is-hover" type="button">悬停</button><button class="btn btn--primary is-active" type="button">按下</button><button class="btn btn--primary" type="button" disabled>禁用</button></div>
+                <div class="ks-row"><span class="ks-label">次要按钮</span><button class="btn" type="button">默认</button><button class="btn is-hover" type="button">悬停</button><button class="btn" type="button" disabled>禁用</button></div>
+                <div class="ks-row"><span class="ks-label">文字按钮</span><button class="btn btn--quiet" type="button">默认</button><button class="btn btn--quiet is-hover" type="button">悬停</button><button class="btn btn--quiet" type="button" disabled>禁用</button></div>
+                <div class="ks-row"><span class="ks-label">危险按钮</span><button class="btn btn--danger" type="button">默认</button><button class="btn btn--danger is-hover" type="button">悬停</button><button class="btn btn--danger is-active" type="button">按下</button><button class="btn btn--danger" type="button" disabled>禁用</button></div>
+                <div class="ks-row"><span class="ks-label">尺寸与图标</span><button class="btn btn--primary btn--sm" type="button">小号</button><button class="btn btn--primary" type="button">默认</button><button class="btn btn--primary btn--lg" type="button">大号</button><button class="btn" type="button"><svg class="icon icon--sm"><use href="#i-download"/></svg>带图标</button><button class="iconbtn" type="button" aria-label="更多操作"><svg class="icon"><use href="#i-more"/></svg></button><button class="iconbtn" type="button" aria-label="通知，3 条未读"><svg class="icon"><use href="#i-bell"/></svg><span class="unread">3</span></button></div>
+                <div class="ks-row"><span class="ks-label">链接四层</span><a class="link" href="#">内容链接</a><a class="link mono" href="#">TX20260928001</a><button class="act" type="button">编辑</button><button class="act danger" type="button">删除</button><button class="act" type="button" disabled>不可用</button><a class="title-link" href="#">标题型链接</a><a class="go" href="#">查看全部<svg class="icon icon--sm"><use href="#i-right"/></svg></a></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel wide" aria-labelledby="k-input">
+            <div class="card-head"><h2 id="k-input">输入类</h2><span class="sub">填充式；聚焦只加深边线</span></div>
+            <div class="card-body">
+              <div class="ks-cells">
+                <div class="field"><label for="k1">静息</label><input class="input" id="k1" placeholder="请输入"></div>
+                <div class="field"><label for="k2">悬停</label><input class="input is-hover" id="k2" placeholder="请输入"></div>
+                <div class="field"><label for="k3">聚焦</label><input class="input is-focus" id="k3" value="沪深 300"></div>
+                <div class="field is-error"><label for="k4">出错</label><input class="input" id="k4" value="150,000.00" aria-invalid="true"><span class="field-error">超出可用余额</span></div>
+                <div class="field"><label for="k5">禁用</label><input class="input" id="k5" value="¥0.00" disabled></div>
+                <div class="field"><span class="label">只读</span><div class="ro">系统自动分配</div></div>
+                <div class="field"><label for="k7">前后缀</label><label class="input-affix"><span class="affix">¥</span><input id="k7" value="5,000.00"><span class="affix">元</span></label></div>
+                <div class="field"><label for="k8">选择器</label><span class="select"><select class="input" id="k8"><option>定期定投</option><option>申购</option></select><svg class="icon"><use href="#i-down"/></svg></span></div>
+                <div class="field"><label for="k9">日期</label><input class="input" id="k9" type="date" value="2026-09-30"></div>
+                <div class="field"><label for="k10">搜索</label><label class="input-affix"><svg class="icon icon--sm"><use href="#i-search"/></svg><input id="k10" placeholder="单号 / 产品"></label></div>
+              </div>
+              <div class="field"><label for="k11">文本域</label><textarea class="input" id="k11" placeholder="选填，最多 200 字"></textarea><span class="help">帮助文字用 text.muted</span></div>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="k-choice">
+            <div class="card-head"><h2 id="k-choice">选择控件</h2><span class="sub">选中 action.primary，勾为白色</span></div>
+            <div class="card-body">
+              <div>
+                <div class="ks-row"><span class="ks-label">勾选框</span><label class="check"><input type="checkbox"><span class="box"></span>未选</label><label class="check"><input type="checkbox" checked><span class="box"></span>已选</label><label class="check"><input type="checkbox"><span class="box is-mixed"></span>半选</label><label class="check"><input type="checkbox" disabled><span class="box"></span>禁用</label><label class="check"><input type="checkbox" checked disabled><span class="box"></span>禁用已选</label></div>
+                <div class="ks-row"><span class="ks-label">单选</span><label class="radio"><input type="radio" name="kr"><span class="dot"></span>未选</label><label class="radio"><input type="radio" name="kr" checked><span class="dot"></span>已选</label><label class="radio"><input type="radio" name="kr2" disabled><span class="dot"></span>禁用</label><label class="radio"><input type="radio" name="kr3" checked disabled><span class="dot"></span>禁用已选</label></div>
+                <div class="ks-row"><span class="ks-label">开关</span><label class="switch"><input type="checkbox"><span class="track"></span>关</label><label class="switch"><input type="checkbox" checked><span class="track"></span>开</label><label class="switch"><input type="checkbox" disabled><span class="track"></span>禁用</label><label class="switch"><input type="checkbox" checked disabled><span class="track"></span>禁用开</label></div>
+                <div class="ks-row"><span class="ks-label">分段选择器</span><div class="seg" role="group" aria-label="统计周期"><button type="button">本周</button><button type="button" class="is-on">本月</button><button type="button">本年</button></div><button class="pill-select" type="button">近 8 个月<svg class="icon icon--sm"><use href="#i-down"/></svg></button></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="k-tag">
+            <div class="card-head"><h2 id="k-tag">标签与状态</h2><span class="sub">状态色是文字色，配同色浅底</span></div>
+            <div class="card-body">
+              <div>
+                <div class="ks-row"><span class="ks-label">状态胶囊</span><span class="status success">已完成</span><span class="status info">处理中</span><span class="status warning">待确认</span><span class="status error">已驳回</span><span class="status neutral">已撤销</span></div>
+                <div class="ks-row"><span class="ks-label">徽标 / 标签</span><span class="badge brand">本机</span><span class="cat">基金</span><span class="cat">R3 · 平衡</span></div>
+                <div class="ks-row"><span class="ks-label">条件筹码</span><span class="chip">类型：基金<button class="x" type="button" aria-label="移除条件"><svg class="icon icon--sm"><use href="#i-close"/></svg></button></span><span class="chip">金额 ≥ ¥10,000<button class="x" type="button" aria-label="移除条件"><svg class="icon icon--sm"><use href="#i-close"/></svg></button></span></div>
+                <div class="ks-row"><span class="ks-label">计数与头像</span><button class="iconbtn" type="button" aria-label="消息，12 条未读"><svg class="icon"><use href="#i-chat"/></svg><span class="unread">12</span></button><span class="avatar">王</span><span class="avatar">LJ</span></div>
+                <div class="ks-row"><span class="ks-label">涨跌</span><span class="delta up">+7.8%</span><span class="delta down">−0.5%</span><span class="delta up">+¥2,360,900</span></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="k-alert">
+            <div class="card-head"><h2 id="k-alert">提示条</h2><span class="sub">status 浅底 + 同色字，radius.lg</span></div>
+            <div class="card-body">
+              <div class="alert info"><svg class="icon"><use href="#i-info"/></svg><div class="text"><b>系统维护通知</b>10 月 12 日 02:00 – 04:00 暂停清算。</div></div>
+              <div class="alert success"><svg class="icon"><use href="#i-success"/></svg><div class="text"><b>复核通过</b>交易已进入清算，预计今日 15:00 前到账。</div></div>
+              <div class="alert warning"><svg class="icon"><use href="#i-warning"/></svg><div class="text"><b>余额不足</b>下一期定投前请补足 ¥2,000.00。</div></div>
+              <div class="alert error"><svg class="icon"><use href="#i-error"/></svg><div class="text"><b>扣款失败</b>银行卡已过期，请更换资金账户。</div><button class="iconbtn close" type="button" aria-label="关闭提示"><svg class="icon icon--sm"><use href="#i-close"/></svg></button></div>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="k-nav">
+            <div class="card-head"><h2 id="k-nav">导航</h2><span class="sub">标签页、分页、面包屑、步骤条</span></div>
+            <div class="card-body">
+              <div class="tabs" role="tablist" aria-label="示例标签页"><button class="tab" role="tab" type="button" aria-selected="true">关联单据</button><button class="tab" role="tab" type="button" aria-selected="false" tabindex="-1">附件（2）</button><button class="tab" role="tab" type="button" aria-selected="false" tabindex="-1">操作日志</button></div>
+              <nav class="pagination" aria-label="示例分页"><span class="total">共 86 条</span><button class="page" type="button" disabled aria-label="上一页"><svg class="icon"><use href="#i-left"/></svg></button><button class="page" type="button">1</button><button class="page" type="button" aria-current="page">2</button><button class="page" type="button">3</button><span class="page ellipsis" aria-hidden="true">…</span><button class="page" type="button">9</button><button class="page" type="button" aria-label="下一页"><svg class="icon"><use href="#i-chevron"/></svg></button></nav>
+              <nav class="crumbs" aria-label="示例面包屑"><a href="#">交易</a><span class="sep">/</span><a href="#">交易记录</a><span class="sep">/</span><span>TX20260928001</span></nav>
+              <div class="steps">
+                <div class="step is-done"><span class="ix"><svg class="icon"><use href="#i-check"/></svg></span><div class="body"><div class="title">已完成</div></div></div>
+                <div class="step is-current"><span class="ix">2</span><div class="body"><div class="title">进行中</div></div></div>
+                <div class="step"><span class="ix">3</span><div class="body"><div class="title">未开始</div></div></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="k-float">
+            <div class="card-head"><h2 id="k-float">浮层</h2><span class="sub">下拉 / Tooltip / Toast / 弹窗 / 抽屉</span></div>
+            <div class="card-body">
+              <div class="ks-row">
+                <div class="menu" role="menu" aria-label="示例下拉菜单">
+                  <button class="menu-item" role="menuitem" type="button"><svg class="icon"><use href="#i-download"/></svg>下载凭证</button>
+                  <button class="menu-item is-hover" role="menuitem" type="button"><svg class="icon"><use href="#i-refresh"/></svg>重新核对（悬停）</button>
+                  <div class="menu-sep" role="separator"></div>
+                  <button class="menu-item danger" role="menuitem" type="button"><svg class="icon"><use href="#i-trash"/></svg>撤销交易</button>
+                </div>
+                <div class="stack">
+                  <span class="tooltip">Tooltip：单号复制后 3 秒内有效</span>
+                  <div class="toast" role="status"><svg class="icon icon--sm"><use href="#i-success"/></svg><span>深色 Toast：备注已保存</span></div>
+                </div>
+              </div>
+              <div class="ks-row">
+                <button class="btn" type="button" data-open="ks-modal">打开弹窗</button>
+                <button class="btn" type="button" data-open="ks-drawer">打开抽屉</button>
+                <button class="btn" type="button" data-toast="这是一条深色 Toast">弹出 Toast</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="k-progress">
+            <div class="card-head"><h2 id="k-progress">进度与加载</h2><span class="sub">进度填充 action.primary-active，中性序列 chart.4</span></div>
+            <div class="card-body">
+              <ul class="goals">
+                <li><div class="top"><span>品牌色填充</span><b>78%</b></div><div class="track"><div class="fill" style="width: 78%"></div></div></li>
+                <li><div class="top"><span>中性序列</span><b>45%</b></div><div class="track"><div class="fill is-neutral" style="width: 45%"></div></div></li>
+              </ul>
+              <div class="tskel" aria-label="表格加载中" role="status">
+                <div class="tskel-head"><span class="cell" style="width: 30%"><i class="bar head"></i></span><span class="cell" style="width: 40%"><i class="bar head"></i></span><span class="cell" style="width: 30%"><i class="bar head"></i></span></div>
+                <div class="tskel-row"><span class="cell" style="width: 30%"><i class="bar"></i></span><span class="cell" style="width: 40%"><i class="bar"></i></span><span class="cell" style="width: 30%"><i class="bar short"></i></span></div>
+                <div class="tskel-row"><span class="cell" style="width: 30%"><i class="bar"></i></span><span class="cell" style="width: 40%"><i class="bar"></i></span><span class="cell" style="width: 30%"><i class="bar short"></i></span></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="k-empty">
+            <div class="card-head"><h2 id="k-empty">空状态</h2><span class="sub">插图 illustration.size.md，大图标 icon.size.2xl</span></div>
+            <div class="empty"><div class="illu"><svg class="icon"><use href="#i-search"/></svg></div><b>没有符合条件的交易</b><span>换个关键词，或者<button class="link" type="button">清除全部条件</button></span></div>
+          </section>
+
+          <section class="panel" aria-labelledby="k-desc">
+            <div class="card-head"><h2 id="k-desc">描述列表与时间线</h2><span class="sub">详情页的键值与处理记录</span></div>
+            <div class="card-body">
+              <div class="stack">
+                <dl class="desc">
+                  <div><dt>交易类型</dt><dd>定期定投</dd></div>
+                  <div><dt>交易金额</dt><dd class="num">¥5,000.00</dd></div>
+                  <div><dt>资金账户</dt><dd>招商银行 · 尾号 6621</dd></div>
+                  <div><dt>风险等级</dt><dd><span class="cat">R3 · 平衡</span></dd></div>
+                </dl>
+                <ol class="timeline">
+                  <li class="is-current"><b>当前节点</b><span class="sub">主色描边</span></li>
+                  <li class="is-error"><b>异常节点</b><span class="sub">status.error 描边</span></li>
+                  <li><b>普通节点</b><span class="sub">border.strong 描边</span></li>
+                </ol>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel wide" aria-labelledby="k-data">
+            <div class="card-head"><h2 id="k-data">表格</h2><span class="sub">选中行与悬停同色 bg.hover，再悬停深一档 bg.selected-hover</span></div>
+            <div class="table-wrap">
+              <table class="table">
+                <thead><tr><th class="check-col"><label class="check"><input type="checkbox" data-select-all aria-label="全选"><span class="box"></span></label></th><th>单号</th><th>说明</th><th class="amt">金额</th><th>状态</th></tr></thead>
+                <tbody>
+                  <tr class="is-selected"><td><label class="check"><input type="checkbox" checked aria-label="选择第一行"><span class="box"></span></label></td><td class="mono">TX20260928001</td><td>选中行（与悬停同色）</td><td class="amt">−¥5,000.00</td><td><span class="status info">处理中</span></td></tr>
+                  <tr><td><label class="check"><input type="checkbox" aria-label="选择第二行"><span class="box"></span></label></td><td class="mono">TX20260927014</td><td>普通行（悬停出 bg.hover）</td><td class="amt up">+¥2,500.00</td><td><span class="status success">已到账</span></td></tr>
+                  <tr><td><label class="check"><input type="checkbox" aria-label="选择第三行"><span class="box"></span></label></td><td class="mono">TX20260924003</td><td>普通行</td><td class="amt">¥8,000.00</td><td><span class="status error">已驳回</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <main class="content" data-route="empty" hidden>
+        <section class="result">
+          <div class="illu"><svg class="icon"><use id="empty-icon" href="#i-case"/></svg></div>
+          <h3 id="empty-title">资产组合正在建设中</h3>
+          <p id="empty-desc">这个模块还没有接入数据。可以先回工作台看总览，或者去交易记录查明细。</p>
+          <div class="acts"><a class="btn btn--primary" href="#/dashboard">返回工作台</a><a class="btn" href="#/transactions">查看交易记录</a></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="login" data-route="login" hidden>
+    <section class="login-brand" aria-label="玫瑰金后台">
+      <div class="app-brand"><span class="logo">M</span><span>玫瑰金后台</span></div>
+      <div>
+        <div class="slogan">让每一笔财富<br>都有迹可循</div>
+        <p class="lead">资产、交易与复核，一处看清。</p>
+      </div>
+      <p class="lead">Morganite · 玫瑰金</p>
+    </section>
+
+    <section class="login-panel">
+      <form class="login-card" onsubmit="return false">
+        <h1>登录</h1>
+        <p class="secondary">使用企业账号登录玫瑰金后台</p>
+        <div class="tabs" role="tablist" aria-label="登录方式">
+          <button class="tab" role="tab" type="button" aria-selected="true" aria-controls="lg-pass">账号密码</button>
+          <button class="tab" role="tab" type="button" aria-selected="false" aria-controls="lg-sms" tabindex="-1">手机验证码</button>
+        </div>
+        <div id="lg-pass" role="tabpanel">
+          <div class="field"><label for="lg-user">账号</label><label class="input-affix"><svg class="icon icon--sm"><use href="#i-user"/></svg><input id="lg-user" value="wangxiaoming" autocomplete="username"></label></div>
+          <div class="field"><label for="lg-pwd">密码</label><label class="input-affix"><svg class="icon icon--sm"><use href="#i-lock"/></svg><input id="lg-pwd" type="password" value="morganite" autocomplete="current-password"><button class="iconbtn" type="button" aria-label="显示密码" onclick="var i = document.getElementById('lg-pwd'); i.type = i.type === 'password' ? 'text' : 'password';"><svg class="icon icon--sm"><use href="#i-eye"/></svg></button></label></div>
+        </div>
+        <div id="lg-sms" role="tabpanel" hidden>
+          <div class="field"><label for="lg-phone">手机号</label><label class="input-affix"><svg class="icon icon--sm"><use href="#i-phone"/></svg><input id="lg-phone" placeholder="请输入手机号" inputmode="numeric"></label></div>
+          <div class="field"><label for="lg-code">验证码</label><div class="code-row"><input class="input" id="lg-code" placeholder="6 位数字" inputmode="numeric"><button class="btn" type="button" data-toast="验证码已发送">获取验证码</button></div></div>
+        </div>
+        <div class="login-row"><label class="check"><input type="checkbox" checked><span class="box"></span>7 天内自动登录</label><a class="link" href="#" data-toast="已发送重置链接到绑定手机">忘记密码</a></div>
+        <a class="btn btn--primary btn--lg btn--block" href="#/dashboard">登录</a>
+        <div class="divider-text">其他方式</div>
+        <div class="login-alt"><button class="btn" type="button" data-toast="企业微信扫码登录建设中">企业微信</button><button class="btn" type="button" data-toast="钉钉扫码登录建设中">钉钉</button></div>
+        <p class="login-foot">登录即表示同意《服务协议》与《隐私政策》 · Morganite 0.1.0</p>
+      </form>
+    </section>
+  </div>
+
+  <div class="layer" id="modal-revoke" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-revoke-title">
+      <div class="modal-head"><svg class="icon state"><use href="#i-warning"/></svg><h3 id="modal-revoke-title">撤销这笔交易？</h3></div>
+      <div class="modal-body">撤销后资金原路退回，已产生的手续费不予退还；此操作不能恢复。</div>
+      <div class="modal-foot"><button class="btn" type="button" data-close>取消</button><button class="btn btn--danger" type="button" data-toast="已提交撤销申请" data-close-after>确认撤销</button></div>
+    </div>
+  </div>
+
+  <div class="layer is-drawer" id="drawer-edit" hidden>
+    <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-edit-title">
+      <div class="drawer-head"><h3 id="drawer-edit-title">编辑备注</h3><button class="iconbtn" type="button" data-close aria-label="关闭"><svg class="icon"><use href="#i-close"/></svg></button></div>
+      <div class="drawer-body">
+        <div class="field"><label for="d-note">备注</label><textarea class="input" id="d-note">每月 28 日定投，遇节假日顺延。</textarea><span class="help">最多 200 字，复核人可见</span></div>
+        <div class="field"><span class="label">定投提醒</span><div class="choices"><label class="switch"><input type="checkbox" checked><span class="track"></span>扣款前一天提醒我</label></div></div>
+        <div class="field"><span class="label">可见范围</span><div class="choices" role="radiogroup" aria-label="可见范围"><label class="radio"><input type="radio" name="vis" checked><span class="dot"></span>仅复核人</label><label class="radio"><input type="radio" name="vis"><span class="dot"></span>团队可见</label></div></div>
+      </div>
+      <div class="drawer-foot"><button class="btn" type="button" data-close>取消</button><button class="btn btn--primary" type="button" data-toast="备注已保存" data-close-after>保存</button></div>
+    </aside>
+  </div>
+
+  <div class="layer" id="modal-close" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-close-title">
+      <div class="modal-head"><svg class="icon state"><use href="#i-warning"/></svg><h3 id="modal-close-title">确定注销账户？</h3></div>
+      <div class="modal-body">注销后你将无法登录，名下的进行中交易会被自动撤销。数据保留 30 天，期间可联系管理员恢复。</div>
+      <div class="modal-foot"><button class="btn" type="button" data-close>再想想</button><button class="btn btn--danger" type="button" data-toast="已提交注销申请" data-close-after>确认注销</button></div>
+    </div>
+  </div>
+
+  <div class="layer" id="ks-modal" hidden>
+    <div class="modal modal--md" role="dialog" aria-modal="true" aria-labelledby="ks-modal-title">
+      <div class="modal-head"><h3 id="ks-modal-title">新建定投计划</h3><button class="iconbtn" type="button" data-close aria-label="关闭"><svg class="icon"><use href="#i-close"/></svg></button></div>
+      <div class="modal-body">
+        <div class="field"><label class="req" for="m-product">产品</label><input class="input" id="m-product" value="沪深 300 ETF（510300）"></div>
+        <div class="field"><label class="req" for="m-amount">每期金额</label><label class="input-affix"><span class="affix">¥</span><input id="m-amount" value="5,000.00"></label></div>
+      </div>
+      <div class="modal-foot"><button class="btn" type="button" data-close>取消</button><button class="btn btn--primary" type="button" data-toast="定投计划已创建" data-close-after>创建</button></div>
+    </div>
+  </div>
+
+  <div class="layer is-drawer" id="ks-drawer" hidden>
+    <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="ks-drawer-title">
+      <div class="drawer-head"><h3 id="ks-drawer-title">筛选条件</h3><button class="iconbtn" type="button" data-close aria-label="关闭"><svg class="icon"><use href="#i-close"/></svg></button></div>
+      <div class="drawer-body">
+        <h4 class="drawer-h">交易</h4>
+        <div class="field"><label for="dr-type">交易类型</label><span class="select"><select class="input" id="dr-type"><option>全部类型</option><option>基金</option></select><svg class="icon"><use href="#i-down"/></svg></span></div>
+        <div class="field"><span class="label">状态</span><div class="choices"><label class="check"><input type="checkbox" checked><span class="box"></span>处理中</label><label class="check"><input type="checkbox"><span class="box"></span>待确认</label><label class="check"><input type="checkbox"><span class="box"></span>已完成</label></div></div>
+        <h4 class="drawer-h">金额</h4>
+        <div class="field"><label for="dr-min">最低金额</label><label class="input-affix"><span class="affix">¥</span><input id="dr-min" value="10,000"></label></div>
+      </div>
+      <div class="drawer-foot"><button class="btn btn--quiet" type="button" data-close>重置</button><button class="btn btn--primary" type="button" data-toast="已应用筛选" data-close-after>应用</button></div>
+    </aside>
+  </div>
+
+  <script src="shell.js"></script>
+  <script>
+    // 图表：按数据画成 SVG；颜色全部来自 admin.css 里引用的 token 类，切换亮 / 暗不需要重画
+    const W = 1000, H = 300;
+    const smooth = (pts) => pts.reduce((d, p, i) => {
+      if (i === 0) return `M${p[0]},${p[1]}`;
+      const p0 = pts[i - 2] || pts[i - 1], p1 = pts[i - 1], p3 = pts[i + 1] || p;
+      const t = 0.18;
+      return `${d} C${p1[0] + (p[0] - p0[0]) * t},${p1[1] + (p[1] - p0[1]) * t} ${p[0] - (p3[0] - p1[0]) * t},${p[1] - (p3[1] - p1[1]) * t} ${p[0]},${p[1]}`;
+    }, "");
+
+    function lineChart(el, { labels, values, bench, min, max, ticks, tickLabel, tip, short, dots }) {
+      const x = (i) => (i / (values.length - 1)) * W;
+      const y = (v) => H - ((v - min) / (max - min)) * H;
+      const pts = values.map((v, i) => [x(i), y(v)]);
+      const id = `grad-${el.id}`;
+      const grid = (ticks || []).map((t) => `<line class="grid-line" x1="0" x2="${W}" y1="${y(t)}" y2="${y(t)}"/>`).join("");
+      const benchLine = bench ? smooth(bench.map((v, i) => [x(i), y(v)])) : "";
+      const benchPath = bench ? `<path class="bench" d="${benchLine} L${W},${H} L0,${H} Z"/><path class="bench-line" d="${benchLine}"/>` : "";
+      const line = smooth(pts);
+      const svg = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="area-top"/><stop offset="1" class="area-bottom"/></linearGradient></defs>${grid}${benchPath}<path d="${line} L${W},${H} L0,${H} Z" fill="url(#${id})"/><path class="line" d="${line}"/></svg>`;
+      const pos = (i) => `left:${(x(i) / W) * 100}%;top:${(y(values[i]) / H) * 100}%`;
+      const dotIdx = dots === "last" ? [values.length - 1] : values.map((_, i) => i);
+      const dotHtml = dotIdx.map((i) => `<span class="lc__dot${tip && tip.i === i ? " is-on" : ""}" style="${pos(i)}"></span>`).join("");
+      const tipHtml = tip ? `<span class="lc__guide" style="left:${(x(tip.i) / W) * 100}%"></span><span class="lc__tip" style="${pos(tip.i)}">${tip.text}</span>` : "";
+      const yAxis = ticks ? `<div class="lc__y">${ticks.slice().reverse().map((t) => `<span>${tickLabel(t)}</span>`).join("")}</div>` : "";
+      el.innerHTML = `${yAxis}<div class="lc__plot${short ? " is-short" : ""}">${svg}${tipHtml}${dotHtml}</div><div class="lc__x">${labels.map((l, i) => `<span style="left:${(x(i) / W) * 100}%">${l}</span>`).join("")}</div>`;
+    }
+
+    lineChart(document.getElementById("perf"), {
+      labels: ["2 月", "3 月", "4 月", "5 月", "6 月", "7 月", "8 月", "9 月"],
+      values: [118, 131, 126, 149, 168, 196, 235.7, 248.5],
+      bench: [110, 116, 121, 128, 137, 146, 154, 166],
+      min: 100, max: 300, ticks: [100, 150, 200, 250, 300], tickLabel: (t) => `${t} 万`,
+      tip: { i: 6, text: "¥2,357,000" },
+    });
+    lineChart(document.getElementById("wealth"), {
+      labels: ["4 月", "5 月", "6 月", "7 月", "8 月", "9 月"],
+      values: [2890, 2935, 3010, 2980, 3042, 3278],
+      min: 2800, max: 3320, short: true, dots: "last",
+    });
+
+    // 环形图：圆周按占比切段，段间留一点空隙
+    (function donut(el, parts) {
+      const r = 46, C = 2 * Math.PI * r, gap = 1.6;
+      let off = 0;
+      const segs = parts.map(([cls, v]) => {
+        const len = (v / 100) * C;
+        const s = `<circle class="${cls}" cx="60" cy="60" r="${r}" stroke-dasharray="${Math.max(len - gap, 0)} ${C}" stroke-dashoffset="${-off}"/>`;
+        off += len;
+        return s;
+      }).join("");
+      el.insertAdjacentHTML("afterbegin", `<svg viewBox="0 0 120 120" aria-hidden="true">${segs}</svg>`);
+    })(document.getElementById("donut"), [["c1", 42], ["c2", 28], ["c5", 15], ["c4", 8], ["c3", 7]]);
+
+    // 柱状图：每个交易日三根柱
+    document.getElementById("bars").innerHTML = [[62, 48, 36], [70, 58, 40], [55, 62, 44], [78, 66, 38], [84, 72, 46]]
+      .map((day) => `<div class="day">${day.map((v, k) => `<i class="${["c1", "c6", "c5"][k]}" style="height:${v}%"></i>`).join("")}</div>`).join("");
+
+  </script>
+</body>
+</html>

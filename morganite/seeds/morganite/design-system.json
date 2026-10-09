@@ -1,0 +1,108 @@
+{
+  "$schema": "https://raw.githubusercontent.com/WYCM9527/Design-System/main/design-system-adopter/schema/design-system.schema.json",
+  "id": "morganite",
+  "name": "Morganite 玫瑰金",
+  "version": "0.1.0",
+  "description": "中后台 · Ant Design Pro v6 底座 · 玫瑰金 #B98D44 金底白字 + antd 纯灰骨架 · 亮 / 暗 · Element Plus / shadcn/ui / ECharts 桥接",
+  "upstream": {
+    "repo": "WYCM9527/Design-System",
+    "path": "morganite/seeds/morganite",
+    "tagPrefix": "morganite-v",
+    "npm": "@wycm9527/morganite"
+  },
+  "docs": {
+    "design": "design-system/DESIGN.md",
+    "changelog": "CHANGELOG.md",
+    "readme": "README.md"
+  },
+  "stacks": {
+    "css": {
+      "label": "纯 CSS（任意栈）",
+      "entry": "bridge/base.css",
+      "extra": [],
+      "snippet": "templates/entry-css.css",
+      "notes": "templates/notes-css.md",
+      "detect": {
+        "files": []
+      }
+    },
+    "element-plus": {
+      "label": "Vue 3 + Element Plus",
+      "entry": "bridge/element-plus.css",
+      "extra": [
+        "bridge/iconpark.css",
+        "bridge/recipes.css"
+      ],
+      "components": "bridge/vue",
+      "snippet": "templates/entry-element-plus.css",
+      "notes": "templates/notes-element-plus.md",
+      "scaffold": "npm create vite@latest <name> -- --template vue && cd <name> && npm i element-plus @icon-park/vue-next vue-router echarts",
+      "kitchen": "bridge/vue/KitchenSink.vue",
+      "detect": {
+        "deps": [
+          "element-plus"
+        ]
+      }
+    },
+    "shadcn": {
+      "label": "React + Tailwind v4 + shadcn/ui",
+      "entry": "bridge/shadcn.css",
+      "extra": [
+        "bridge/recipes.css"
+      ],
+      "components": "bridge/react",
+      "snippet": "templates/entry-shadcn.css",
+      "notes": "templates/notes-shadcn.md",
+      "scaffold": "npm create vite@latest <name> -- --template react-ts && cd <name> && npm i lucide-react echarts && npm i -D tailwindcss @tailwindcss/vite",
+      "detect": {
+        "deps": [
+          "class-variance-authority",
+          "shadcn"
+        ],
+        "files": [
+          "components.json"
+        ]
+      }
+    }
+  },
+  "export": {
+    "note": "纯 CSS 交付：非 Node 项目用 ds.mjs export --to <static 目录> 得到 index.css + base.css，按顺序 <link>，项目样式只引用变量。",
+    "core": [
+      "design-system/dist/index.css",
+      "bridge/base.css",
+      "bridge/recipes.css"
+    ],
+    "optional": {
+      "element-plus": [
+        "bridge/element-plus.css",
+        "bridge/iconpark.css"
+      ],
+      "shadcn": [
+        "bridge/shadcn.css"
+      ]
+    },
+    "usage": "<link rel=\"stylesheet\" href=\"index.css\">  <!-- token（默认模式）+ 其他模式 delta -->\n<link rel=\"stylesheet\" href=\"base.css\">   <!-- 基础桥接：body / 标题 / 链接 / 表单控件 / 焦点 / 减少动态效果 -->\n<link rel=\"stylesheet\" href=\"你的样式.css\">  <!-- 只引用 var(--color-*) / var(--spacing-*) 等变量，不写色值与像素 -->"
+  },
+  "migration": {
+    "roles": "migration/roles.json",
+    "guide": "README.md#从旧规范迁移"
+  },
+  "agents": "templates/AGENTS.md",
+  "build": {
+    "tool": "style-dictionary@5.5.2",
+    "steward": "design-system-steward"
+  },
+  "owned": [
+    "design-system/DESIGN.md",
+    "design-system/AUDIT.md",
+    "design-system/style-dictionary.config.mjs",
+    "design-system/scope-map.json",
+    "design-system/theme-map.json",
+    "design-system/tokens/**",
+    "design-system/themes/**",
+    "bridge/**",
+    "templates/**",
+    "migration/**"
+  ],
+  "type": "admin"
+}

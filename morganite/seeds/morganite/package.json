@@ -1,0 +1,55 @@
+{
+  "name": "@wycm9527/morganite",
+  "version": "0.1.0",
+  "description": "Morganite 玫瑰金 · 从 https://preview.pro.ant.design/dashboard/analysis、https://preview.pro.ant.design/list/table-list、https://preview.pro.ant.design/form/basic-form、https://preview.pro.ant.design/list/table-list#新建弹窗、https://preview.pro.ant.design/list/table-list#详情抽屉 实测提炼的设计系统种子：DTCG token、DESIGN 规范、基础 CSS 桥接。纯数据包：接入 / 更新由 design-system-adopter skill 驱动（识别 design-system.json）。",
+  "license": "UNLICENSED",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "files": [
+    "bridge",
+    "design-system",
+    "!design-system/dist",
+    "design-system.json",
+    "templates",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./design-system/*": "./design-system/*",
+    "./bridge/*": "./bridge/*",
+    "./echarts": {
+      "default": "./bridge/echarts.js",
+      "types": "./bridge/echarts.d.ts"
+    },
+    "./iconpark.config": "./bridge/iconpark.config.ts",
+    "./vue/*": "./bridge/vue/*",
+    "./react/*": "./bridge/react/*.tsx"
+  },
+  "peerDependencies": {
+    "@icon-park/vue-next": "^1.4.0",
+    "echarts": "^5.0.0 || ^6.0.0",
+    "element-plus": "^2.7.0",
+    "react": "^18.0.0 || ^19.0.0",
+    "vue": "^3.4.0"
+  },
+  "peerDependenciesMeta": {
+    "@icon-park/vue-next": {
+      "optional": true
+    },
+    "echarts": {
+      "optional": true
+    },
+    "element-plus": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    }
+  }
+}
