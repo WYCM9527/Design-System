@@ -7,6 +7,7 @@ import { resolve } from 'node:path';
 import { launch, sleep } from './lib/cdp.mjs';
 import { PROJECT, requireDist, outDir, args, parseModes, modeQuery, loadConfig, pageUrl, startServer, READY, resetUrl } from './lib/paths.mjs';
 import { YELLOW_ALLOW } from './lib/yellow-allow.mjs';
+import { normalizeApproved } from './lib/approved.mjs';
 
 const opt = args();
 requireDist();
@@ -19,7 +20,8 @@ const pages = PAGES.filter(([n]) => match(n));
 const OUT = outDir('pages');
 const audit = readFileSync(resolve(import.meta.dirname, 'lib/page-audit.js'), 'utf8');
 const PROBE = readFileSync(resolve(import.meta.dirname, 'lib/component-probe.js'), 'utf8');
-const allowSel = [...YELLOW_ALLOW, ...(cfg.YELLOW_ALLOW || [])].join(', ');   // 页面级静息黄色的允许清单：默认 + 项目追加
+const allowSel = [...YELLOW_ALLOW, ...(cfg.YELLOW_ALLOW || [])].join(', ');
+const approvedJs = `window.__ACCEPT_APPROVED__ = ${JSON.stringify(normalizeApproved(cfg.APPROVED_CONTRAST))}; 1`;   // 项目登记的已批准对比度例外，页面审计据此把对应低对比计入 approved   // 页面级静息黄色的允许清单：默认 + 项目追加
 
 const server = await startServer();
 const browser = await launch({ width: 1600, height: 1000 });
@@ -30,7 +32,7 @@ try {
       await browser.resetStorage(resetUrl(server.url));
       await browser.goto(pageUrl(server.url, spec, modeQuery(mode), cfg.DEFAULT_QUERY), READY);
       await sleep(1000);
-      let res; try { res = await browser.evalJs(audit); } catch (e) { res = { error: String(e).slice(0, 200) }; }
+      let res; try { await browser.evalJs(approvedJs); res = await browser.evalJs(audit); } catch (e) { res = { error: String(e).slice(0, 200) }; }
       try { await browser.evalJs(PROBE + "; 'ok'"); res.yellow = await browser.evalJs(`__ks.yellowAudit(${JSON.stringify(allowSel)})`); } catch (e) { res.yellow = []; res.yellowError = String(e).slice(0, 120); }
       res.mode = mode; res.title = await browser.evalJs('document.title');
       // 暗色那一遍要确认页面真的切了主题（?theme=dark → <html class="dark">，见 accept.config 模板）；否则等于把亮色扫两遍还报「通过」

@@ -27,7 +27,9 @@
   }
   // 已批准的品牌例外（DESIGN「验收基线」）：success / warning / error 文字色，危险按钮白字；占位符（亮 neutral.400 / 暗 neutral.500）
   const APPROVED_FG = new Set(['rgb(11, 158, 116)', 'rgb(215, 103, 18)', 'rgb(238, 72, 75)', 'rgb(156, 163, 175)', 'rgb(102, 109, 123)']);
-  const isApproved = (x) => APPROVED_FG.has(x.fg) || (x.fg === 'rgb(255, 255, 255)' && x.bg === 'rgb(238,72,75)');
+  const near = (p, q) => !!p && !!q && Math.abs(p.r - q.r) <= 1 && Math.abs(p.g - q.g) <= 1 && Math.abs(p.b - q.b) <= 1 && Math.abs((p.a ?? 1) - (q.a ?? 1)) <= 0.02;
+  const projectApproved = window.__ACCEPT_APPROVED__ || [];   /* 项目 accept.config.mjs 的 APPROVED_CONTRAST，由 scan-pages 注入 */
+  const isApproved = (x) => APPROVED_FG.has(x.fg) || (x.fg === 'rgb(255, 255, 255)' && x.bg === 'rgb(238,72,75)') || projectApproved.some((a) => near(parse(x.fg), a.fg) && (!a.bg || near(parse(x.bg), a.bg)) && (!a.minRatio || x.cr >= a.minRatio));
   const low = [...seenLow.values()].filter((x) => !x.disabled);
   out.small = [...seenSmall.values()]; out.lowContrast = low.filter((x) => !isApproved(x)); out.approvedExceptions = low.filter(isApproved).length;
   document.querySelectorAll('button, a, [role="button"], [role="menuitem"], [role="tab"], input, select, textarea').forEach((el) => {

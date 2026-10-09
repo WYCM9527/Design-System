@@ -6,6 +6,7 @@ import { existsSync, writeFileSync, readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { launch, sleep } from './lib/cdp.mjs';
 import { TOKENS_DIST, requireDist, outDir, args, parseModes, modeQuery, loadConfig, pageUrl, startServer, resetUrl } from './lib/paths.mjs';
+import { normalizeApproved, isApprovedPair } from './lib/approved.mjs';
 
 const opt = args(); requireDist();
 const cfg = await loadConfig();
@@ -17,6 +18,8 @@ const PROBE = readFileSync(resolve(import.meta.dirname, 'lib/component-probe.js'
 const APPROVED_FG = new Set(['rgb(11, 158, 116)', 'rgb(215, 103, 18)', 'rgb(238, 72, 75)', 'rgb(0, 165, 110)', 'rgb(203, 126, 0)', 'rgb(235, 99, 120)']);
 // 已批准的「前景 on 背景」组合（DESIGN 验收基线：危险按钮白字压 action.danger = red.700 3.7:1，亮暗同值）——plain / text 危险按钮 hover 变成实心危险按钮时命中
 const APPROVED_PAIRS = new Set(['rgb(255, 255, 255)|rgb(238,72,75)', 'rgb(255, 255, 255)|rgb(238, 72, 75)']);
+// 项目登记的已批准对比度例外（accept.config.mjs 的 APPROVED_CONTRAST，见 lib/approved.mjs）
+const PROJECT_APPROVED = normalizeApproved(cfg.APPROVED_CONTRAST);
 // token 颜色集合（rgb 三元组），取自构建产物：不在集合里的可见颜色就是"外来颜色"
 const tokenRgbs = (() => { const set = new Set(); const files = existsSync(resolve(TOKENS_DIST, 'tokens.css')) ? [resolve(TOKENS_DIST, 'tokens.css'), ...readdirSync(resolve(TOKENS_DIST, 'themes')).map((f) => resolve(TOKENS_DIST, 'themes', f))] : readdirSync(TOKENS_DIST).filter((f) => f.endsWith('.css')).map((f) => resolve(TOKENS_DIST, f));   /* --tokens 指向 export 出来的目录时只有 index.css */ for (const f of files) for (const m of readFileSync(f, 'utf8').matchAll(/#([0-9a-fA-F]{6})([0-9a-fA-F]{2})?\b/g)) set.add([0, 2, 4].map((i) => parseInt(m[1].slice(i, i + 2), 16)).join(',')); return [...set]; })();
 const TARGET_SEL = 'button, a, input, textarea, label, li, [role], [tabindex], .el-radio, .el-checkbox, .el-switch, .el-tag, .el-select__wrapper, .el-input__wrapper, .el-textarea__inner, .el-table__row, .el-table__cell, .el-pager li, .el-step, .el-tree-node__content, .el-collapse-item__header, .el-tabs__item, .el-menu-item, .el-sub-menu__title, .el-dropdown-menu__item, .el-select-dropdown__item, .el-cascader-node, .el-date-table td, .el-date-table-cell, .el-time-spinner__item, .el-transfer-panel__item, .el-upload-list__item, .el-upload-dragger, .el-segmented__item, .el-slider__button, .el-rate__item, .el-card, .el-link, .el-breadcrumb__inner, .el-page-header__back, .el-anchor__link, .el-timeline-item__node, .el-calendar-day, .el-check-tag, .el-input-number__increase, .el-input-number__decrease, .el-icon, .el-tag__close, .el-select__caret, .el-input__clear, .el-input__password, .el-month-table td, .el-year-table td, .el-picker-panel__shortcut, .el-picker-panel__icon-btn, .el-time-panel__btn, .el-dialog__headerbtn, .el-drawer__close-btn, .el-message-box__headerbtn, .el-message__closeBtn, .el-notification__closeBtn, .el-alert__close-btn, .el-color-dropdown__btns button, .el-carousel__arrow, .el-collapse-item__arrow, .el-table__expand-icon, .caret-wrapper, .el-table-filter__list-item, .el-upload';
@@ -50,7 +53,7 @@ async function probeNodes(tree, nodeIds, findings, budget) {
       if (!st) continue;
       const restKeys = new Set(rest.yellow.map(key));
       for (const y of st.yellow) if (!restKeys.has(key(y))) findings.push({ kind: state[0] + '-yellow', section: y.section, target: rest.sig, path: y.path, prop: y.prop, value: y.value });
-      if (state[0] === 'hover') for (const t of st.texts) { if (APPROVED_FG.has(t.fg) || APPROVED_PAIRS.has(t.fg + '|' + t.bg)) continue; const r0 = rest.texts.find((x) => x.path === t.path); const need = t.size >= 24 || (t.size >= 18.66 && t.weight >= 700) ? 3 : 4.5; if (t.ratio < need && (!r0 || r0.ratio >= need || t.ratio < r0.ratio - 0.5)) findings.push({ kind: 'hover-contrast', section: rest.section, target: rest.sig, path: t.path, ratio: t.ratio, was: r0?.ratio, fg: t.fg, bg: t.bg }); }
+      if (state[0] === 'hover') for (const t of st.texts) { if (APPROVED_FG.has(t.fg) || APPROVED_PAIRS.has(t.fg + '|' + t.bg) || isApprovedPair(t.fg, t.bg, PROJECT_APPROVED, t.ratio)) continue; const r0 = rest.texts.find((x) => x.path === t.path); const need = t.size >= 24 || (t.size >= 18.66 && t.weight >= 700) ? 3 : 4.5; if (t.ratio < need && (!r0 || r0.ratio >= need || t.ratio < r0.ratio - 0.5)) findings.push({ kind: 'hover-contrast', section: rest.section, target: rest.sig, path: t.path, ratio: t.ratio, was: r0?.ratio, fg: t.fg, bg: t.bg }); }
     }
     n++;
   }

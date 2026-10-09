@@ -12,6 +12,8 @@ DESIGN.md「验收基线」的执行者，对任意项目运行。发布为 npm 
    export const KITCHEN = '#/kitchen'                     // 全组件走查页；没有就 null，scan:components 会跳过
    export const NARROW = { width: 1366, pages: [['orders', '#/orders'], …] }
    export const FOCUS = { pages: { orders: '#/orders' }, steps: 80 }
+   // 可选：本项目所用设计系统的已批准对比度例外（不是 Citrine 的系统需要；Citrine 的例外已内置）
+   export const APPROVED_CONTRAST = [{ fg: '#FFFFFF', bg: '#B98D44', why: '金底白字' }, { fg: 'rgba(0, 0, 0, 0.45)', why: '占位符' }, { fg: '#8A6530', minRatio: 4.2, why: '叠加悬停底' }]
    ```
 
    演示参数放在 `#` 之前，页面用 `location.search` 读（不要用路由 query）。**服务端渲染项目**（Flask / Django 等，没有构建产物）用 `--url http://127.0.0.1:<port>` 直接扫运行中的服务器：页面清单写服务器路径（`['orders', '/admin/orders?state=empty']`），演示参数放 query；组件走查需要 `--tokens <导出的 CSS 目录>` 来认「来自 token 的颜色」。挂载点 `#app` 或 `#root` 都可以；组件走查页的浮层触发器带 `data-ks-open`（Element 的 `.el-popper` 与 Radix / shadcn 的 popper、`role=menu|listbox|tooltip` 都能识别），弹层带 `data-ks-modal`（`.el-overlay` 或 `role=dialog|alertdialog`）。探针能解析 `rgb()` 之外的 `oklab / oklch / color()` 计算值（Tailwind v4 的 `color-mix`）。
@@ -51,5 +53,11 @@ DESIGN.md「验收基线」的执行者，对任意项目运行。发布为 npm 
 3. 跑 `npm run accept`，结果记进该项目的 `FINDINGS.md`。
 
 ## 判定口径来自哪里
+
+别的设计系统（如 Morganite）用 `APPROVED_CONTRAST` 登记自己的例外：`fg` 必填，`bg` 可选（不写表示这个前景色在任何底上都算批准，如占位符），`minRatio` 可选（只放行实测不低于它的情况，再低照样报）；颜色写十六进制或 `rgb()`，按通道 ±1 匹配。页面扫描与组件走查都认它，实现见 `lib/approved.mjs`。它应当是该系统 DESIGN / AUDIT 已登记例外的镜像。
+
+组件走查的背景按祖先链由底向上逐层合成（与页面审计同一算法）：此前半透明叠半透明会被当成不透明，两层 4% 黑悬停底被算成纯黑，误报「悬停后对比掉档」。
+
+以上两项在仓库内已生效，版本号随 Citrine 下次发版升到 1.2.0；在那之前 npm 上的 1.1.3 不认 `APPROVED_CONTRAST`。
 
 阈值、已批准的例外（三对状态色、危险按钮白字、占位符）与"静息态允许出现黄色的六类元素"都写在 `design-system/DESIGN.md`「验收基线」；脚本里的常量是它的镜像（`lib/page-audit.js` 的 `APPROVED_FG`、`scan-components.mjs` 的 `APPROVED_FG` 与判黄阈值）。改了基线先改文档，再改这里。
