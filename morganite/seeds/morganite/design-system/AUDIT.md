@@ -27,7 +27,7 @@
 | 品牌主色 | 自定义 `#AE8A50`（白字 3.21:1、深字 5.14:1 → 金底放深字）；2026-10-09 提亮为 `#B98D44`，同日改为金底放白字，见下 | `color.brand.*`、`color.action.primary*`、`color.text.on-primary`、链接 / 选中 / 焦点取深一档 |
 | 中性色 | 纯灰，沿用 antd | `color.neutral.*`（半透明黑 / 白叠加） |
 | 暗色 | 纳管亮 / 暗两套 | `themes/dark/`（64 条 delta） |
-| 状态色 | 沿用 antd 功能色，压深到文字可读 | `color.status.*`；警示改用 antd 橙色系避开品牌金（见推断清单，待确认） |
+| 状态色 | 沿用 antd 功能色，压深到文字可读 | `color.status.*`；警示改用 antd 橙色系避开品牌金（2026-10-09 用户确认保持） |
 | 输入框 | 填充式（Pro v6 演示站原样） | `color.bg.input`、`color.border.input`（透明） |
 | 卡片边线 | 加深到过对页面底 1.3 的底线（表格行线随之变深），不登记例外（2026-10-09 被替代，见「卡片（2026-10-09）」） | `color.neutral.300` 由观察值加深一级、`color.border.default` / `-strong` 同值；暗色 `color.neutral.800` |
 | 侧栏（2026-09-29） | 保留宽侧栏；当前项改成奶油金底 + 深金字（预期预览图；亮色当前项 2026-10-09 改为主色底块白字，见下） | `color.bg.sidebar-selected` → `color.brand.50`、`color.text.sidebar-selected` → `color.brand.600`；暗色同一逻辑：金色暗底 + 亮金字；去掉 Citrine 桥接里的左侧指示条与加粗 |
@@ -51,6 +51,7 @@
 | Element 选中块（2026-10-09） | 「反转块」按 antd 改主色系 | 本系统 `color.action.selected` 是白块，只留给分段类（`el-segmented`，以及桥接里画成灰轨道内胶囊的单选 / 多选按钮组）；日期选中日（原为白底白字，看不见）、主色徽标、深色标签、勾选标签、引导指示点改为 `color.action.primary` + `color.text.on-primary`；评分填充星改为 `color.action.primary`；树当前节点与拖放目标改为奶金浅底 `color.bg.selected-subtle` + 正文字；表头筛选选中项与下拉选中项同款（`color.bg.selected` + `color.text.selected`）。待测试项目实际渲染核对 |
 | 小号数字字体（2026-10-09） | 表格数字退回正文字体，只有数据大字用 D-DIN-PRO | `text.numeric.family` 改指 `font.family.body`（表格金额与日期、百分比、涨跌、图表数值、页码），配 `text.numeric.variant` 等宽数字，金额列小数点重新上下对齐；`text.display.family` 仍是 D-DIN-PRO（统计卡、KPI、`el-statistic`）。原因：D-DIN-PRO 窄体细笔画在 12px 下显得小而轻 |
 | 暗色筹码底（2026-10-09） | 保持亮金 10% | `color.bg.chip` 的暗色值 `color.brand.300-a10` 由推断改为确认 |
+| 推断值确认（2026-10-09） | 89 条 `[推断]` 按组确认 | 亮色 56 个语义角色、暗色 33 个值全部改为 `[确认]`，值不变（被它们引用的 41 个原语一起改）；单独问过的 6 项都保持：警示橙、成功祖母绿、弱化文字 58% 黑、占位符 45% 黑、最小字号 12px、勾选框边线 0.6px（说明由「1px」更正） |
 | 按预期预览图默认调整（2026-09-29，列出后用户未反对） | 圆角加大、卡片标题字距小标题、KPI 数字半粗、图表配色只用金 + 灰 + 绿、图表提示气泡深金底、表头底深一档、卡片阴影更大更柔（2026-10-09 去掉）、顶栏搜索胶囊 | `radius.md / lg / xl`、`text.tracking.caps`、`text.display.weight`、`color.chart.*`、`color.chart.tooltip`、`color.bg.subtle`、`elevation.card.*`；配方 `.card-head h2`、`.topbar .search`；ECharts 桥接 |
 | 组件库桥接 | 带 Citrine 的 Element Plus / shadcn / 配方 / ECharts 桥接当起点 | `bridge/`，缺口见「桥接缺口」 |
 | 预览 | 虚拟页面（工作台 / 表单 / 抽屉 × 亮暗）确认像「Pro + 金色」 | `preview/` |
@@ -58,72 +59,74 @@
 ## 角色覆盖
 
 - 观察（有实测证据）：70 个
-- 确认（用户拍板的品牌决定，含按预期预览图的调整）：52 个
-- 推断（按 antd 规格或规则补的默认值）：56 个——`$description` 以 `[推断]` 开头，接入前逐条确认，确认后改为 `[确认]`
+- 确认（用户拍板的品牌决定，含按预期预览图的调整与 2026-10-09 按组确认的原推断值）：108 个
+- 推断：0 个——原有 56 个按 antd 规格或规则补的默认值，2026-10-09 用户按组确认，前缀已改为 `[确认]`（下表留作来源追溯）
 - 必须处理的缺口（按系统类型）：0 个
 - 可选角色未填：3 个——这个系统类型不要求、本次也没证据；有证据再填，不发明值
 - 词表外的语义名：20 个，全部来自 Citrine 桥接的扩展（`text.display.family`、`text.link.style`、`text.weight.logo`、`avatar.size.sm / md`、`control.hit-touch`、`control.segmented-inset`、`icon.size.2xl`、`illustration.size.md`、`layout.search.width`、`opacity.on-primary-muted`、`color.chart.sequential.1…5`，以及本系统新增的 `color.chart.tooltip`、`chart.gradient.saturation`、`text.numeric.family`、`color.bg.chip`），名字与 Citrine 一致、值按 antd / Pro / 预期预览图
 
 ### 推断角色清单
 
+2026-10-09 用户按组确认了下表全部 56 条，值不变；其中警示橙、成功祖母绿、弱化文字 58% 黑、占位符 45% 黑、最小字号 12px、勾选框边线 0.6px 是单独问过、确认保持的。
+
 | 角色 | 别名 | 推断依据 | 确认状态 |
 | --- | --- | --- | --- |
-| `color.bg.skeleton` | `{color.neutral.black-a6}` | antd Skeleton 底 rgba(0,0,0,0.06) | 待确认 |
-| `color.bg.skeleton-highlight` | `{color.neutral.black-a15}` | antd Skeleton 流光 rgba(0,0,0,0.15) | 待确认 |
-| `color.bg.readonly` | `{color.neutral.black-a4}` | antd 禁用 / 只读容器底 colorBgContainerDisabled rgba(0,0,0,0.04) | 待确认 |
-| `color.bg.mask` | `{color.neutral.white-a50}` | antd Spin 局部加载遮罩：容器底白 50% | 待确认 |
-| `color.bg.selected-hover` | `{color.neutral.black-a6}` | 表格选中行已与悬停同色（用户决定），再悬停深一档用 6% 黑；暗色 12% 白 | 待确认 |
-| `color.text.muted` | `{color.neutral.black-a58}` | antd 第三档 rgba(0,0,0,0.45) 达不到弱化文字 4.5:1，压到 0.58 | 待确认 |
-| `color.text.placeholder` | `{color.neutral.black-a45}` | 演示站占位符 rgba(0,0,0,0.25) 对白 1.84:1（低于占位符底线 3）；改用 antd 第三档 0.45（3.36:1） | 待确认 |
-| `color.text.sidebar-muted` | `{color.neutral.black-a58}` | 侧栏分组标题 / 页脚：ProLayout 原值 0.45 压侧栏底 #f5f5f5 只有 3.31:1，与 `color.text.muted` 同取 0.58（5.19:1）；暗色 0.45 → 0.50 白（5.32:1） | 待确认 |
-| `color.text.inverse` | `{color.white}` | Tooltip / 反色底上的白字 | 待确认 |
-| `color.text.on-danger` | `{color.white}` | 危险按钮白字（对 #cf1322 5.57:1） | 待确认 |
-| `color.text.on-overlay` | `{color.neutral.black-a88}` | 遮罩 45% 黑叠在 #f5f5f5 上偏浅（合成 #878787），用正文色 | 待确认 |
-| `color.action.secondary-hover` | `{color.neutral.black-a4}` | 次要按钮悬停底 rgba(0,0,0,0.04)（悬停探针）；antd 描边按钮悬停改的是边线与文字色，桥接用底色表达 | 待确认 |
-| `color.status.success` | `{color.emerald.700}` | 成功与「涨」统一成预期预览图的祖母绿（对浅底 4.6:1）；原为 antd green-8 #237804 | 待确认 |
-| `color.status.success-bg` | `{color.emerald.50}` | 成功浅底（与涨同一绿） | 待确认 |
-| `color.status.warning` | `{color.orange.8}` | antd orange-8 #ad4e00（对浅底 5.09:1）；antd 默认警示 gold 与品牌金同色相，改用橙色系 | 待确认 |
-| `color.status.warning-bg` | `{color.orange.1}` | antd orange-1 #fff7e6 | 待确认 |
-| `color.status.neutral` | `{color.neutral.black-a65}` | 中性状态文字借用次要文字 0.65 | 待确认 |
-| `color.control.knob` | `{color.white}` | 开关滑块白色（antd Switch handle） | 待确认 |
-| `color.chart.area` | `{color.brand.500-a16}` | 面积填充：品牌金 16% | 待确认 |
-| `color.chart.sequential.1` | `{color.neutral.200}` | 顺序色：四档灰 + 品牌金封顶（与 Citrine 用法一致），按离散分段使用 | 待确认 |
-| `color.chart.sequential.2` | `{color.neutral.300}` | 顺序色第二档（排行榜非前三名） | 待确认 |
-| `color.chart.sequential.3` | `{color.neutral.500}` | 顺序色第三档 | 待确认 |
-| `color.chart.sequential.4` | `{color.cat.charcoal}` | 顺序色第四档 | 待确认 |
-| `color.chart.sequential.5` | `{color.brand.500}` | 顺序色封顶：品牌金（排行榜前三名） | 待确认 |
-| `color.data.inactive` | `{color.neutral.black-a25}` | 已结束的进度条用禁用色 rgba(0,0,0,0.25) | 待确认 |
-| `border.width.control` | `{border.width.thin}` | 勾选框 / 单选框边线 1px | 待确认 |
-| `border.width.active` | `{border.width.bold}` | 页签墨条 / 选中下划线 2px | 待确认 |
-| `border.width.indicator` | `{border.width.bold}` | 指示条 2px | 待确认 |
-| `control.height.lg` | `{size.control.lg}` | 大控件 40px（antd controlHeightLG） | 待确认 |
-| `control.hit-min` | `{size.hit-min}` | 图标控件最小命中区 24px | 待确认 |
-| `control.hit-touch` | `{size.control.touch}` | 触屏命中区 40px | 待确认 |
-| `control.segmented-inset` | `{spacing.0-5}` | 分段选择器内衬 2px（antd Segmented trackPadding） | 待确认 |
-| `icon.size.2xl` | `{size.icon.2xl}` | 结果页 / 提示卡大图标 24px | 待确认 |
-| `icon.stroke.width` | `{stroke-width.3}` | IconPark 描边 3（与 antd 线性图标比例一致） | 待确认 |
-| `space.card` | `{spacing.6}` | antd Card 内边距 24px（design.md）；演示站数据卡为 20px 24px | 待确认 |
-| `text.caption.size` | `{font.size.sm}` | 最小字号 12px（国内中后台下限 / antd fontSizeSM）；演示站 11px 只见于页脚版本号等 8 处 | 待确认 |
-| `text.heading.size` | `{font.size.2xl}` | 页头大标题 24px（antd headline-md） | 待确认 |
-| `text.heading.line-height` | `{font.line-height.heading}` | 32 / 24 | 待确认 |
-| `text.display.line-height` | `{font.line-height.display}` | 38 / 30 | 待确认 |
-| `text.display.tracking` | `{font.letter-spacing.none}` | 数据大字不调字距 | 待确认 |
-| `text.hero.size` | `{font.size.4xl}` | 结果页 / 登录页大字 38px（antd display-lg） | 待确认 |
-| `text.hero.line-height` | `{font.line-height.hero}` | 46 / 38 | 待确认 |
-| `text.paragraph.line-height` | `{font.line-height.normal}` | 成段说明同正文行高（antd） | 待确认 |
-| `text.weight.brand` | `{font.weight.semibold}` | 品牌字重 600（antd 不用 700） | 待确认 |
-| `text.numeric.variant` | `{font.numeric.tabular}` | 金额 / 单号 / 统计数字用 tabular-nums | 待确认 |
-| `layout.modal.width.sm` | `{size.modal.sm}` | 确认弹窗 416px（antd Modal.confirm） | 待确认 |
-| `layout.modal.width.md` | `{size.modal.md}` | 表单弹窗 520px（antd Modal 默认） | 待确认 |
-| `layout.search.width` | `{size.search}` | 筛选栏搜索框 216px | 待确认 |
-| `motion.easing.exit` | `{easing.exit}` | antd motionEaseIn | 待确认 |
-| `opacity.disabled` | `{opacity.40}` | 禁用态 0.4（antd 用禁用色，桥接用透明度近似） | 待确认 |
-| `opacity.on-primary-muted` | `{opacity.100}` | 金底上的次要文字不压透明度（对比余量不足） | 待确认 |
-| `chart.gradient.saturation` | `{opacity.40}` | 柱状图 / 进度条饱和度渐变的浅端：HSB 明度不变，饱和度降到原色 × 0.4（用户决定用饱和度渐变，0.4 是默认值；数值借用 opacity.40） | 待确认 |
-| `layer.dropdown` | `{z.1050}` | 下拉 / 气泡 1050（antd：高于弹窗） | 待确认 |
-| `avatar.size.sm` | `{size.avatar.sm}` | 小头像 24px | 待确认 |
-| `avatar.size.md` | `{size.avatar.md}` | 头像 32px | 待确认 |
-| `illustration.size.md` | `{size.illustration}` | 空状态 / 结果页插图 100px | 待确认 |
+| `color.bg.skeleton` | `{color.neutral.black-a6}` | antd Skeleton 底 rgba(0,0,0,0.06) | 已确认 |
+| `color.bg.skeleton-highlight` | `{color.neutral.black-a15}` | antd Skeleton 流光 rgba(0,0,0,0.15) | 已确认 |
+| `color.bg.readonly` | `{color.neutral.black-a4}` | antd 禁用 / 只读容器底 colorBgContainerDisabled rgba(0,0,0,0.04) | 已确认 |
+| `color.bg.mask` | `{color.neutral.white-a50}` | antd Spin 局部加载遮罩：容器底白 50% | 已确认 |
+| `color.bg.selected-hover` | `{color.neutral.black-a6}` | 表格选中行已与悬停同色（用户决定），再悬停深一档用 6% 黑；暗色 12% 白 | 已确认 |
+| `color.text.muted` | `{color.neutral.black-a58}` | antd 第三档 rgba(0,0,0,0.45) 达不到弱化文字 4.5:1，压到 0.58 | 已确认 |
+| `color.text.placeholder` | `{color.neutral.black-a45}` | 演示站占位符 rgba(0,0,0,0.25) 对白 1.84:1（低于占位符底线 3）；改用 antd 第三档 0.45（3.36:1） | 已确认 |
+| `color.text.sidebar-muted` | `{color.neutral.black-a58}` | 侧栏分组标题 / 页脚：ProLayout 原值 0.45 压侧栏底 #f5f5f5 只有 3.31:1，与 `color.text.muted` 同取 0.58（5.19:1）；暗色 0.45 → 0.50 白（5.32:1） | 已确认 |
+| `color.text.inverse` | `{color.white}` | Tooltip / 反色底上的白字 | 已确认 |
+| `color.text.on-danger` | `{color.white}` | 危险按钮白字（对 #cf1322 5.57:1） | 已确认 |
+| `color.text.on-overlay` | `{color.neutral.black-a88}` | 遮罩 45% 黑叠在 #f5f5f5 上偏浅（合成 #878787），用正文色 | 已确认 |
+| `color.action.secondary-hover` | `{color.neutral.black-a4}` | 次要按钮悬停底 rgba(0,0,0,0.04)（悬停探针）；antd 描边按钮悬停改的是边线与文字色，桥接用底色表达 | 已确认 |
+| `color.status.success` | `{color.emerald.700}` | 成功与「涨」统一成预期预览图的祖母绿（对浅底 4.6:1）；原为 antd green-8 #237804 | 已确认 |
+| `color.status.success-bg` | `{color.emerald.50}` | 成功浅底（与涨同一绿） | 已确认 |
+| `color.status.warning` | `{color.orange.8}` | antd orange-8 #ad4e00（对浅底 5.09:1）；antd 默认警示 gold 与品牌金同色相，改用橙色系 | 已确认 |
+| `color.status.warning-bg` | `{color.orange.1}` | antd orange-1 #fff7e6 | 已确认 |
+| `color.status.neutral` | `{color.neutral.black-a65}` | 中性状态文字借用次要文字 0.65 | 已确认 |
+| `color.control.knob` | `{color.white}` | 开关滑块白色（antd Switch handle） | 已确认 |
+| `color.chart.area` | `{color.brand.500-a16}` | 面积填充：品牌金 16% | 已确认 |
+| `color.chart.sequential.1` | `{color.neutral.200}` | 顺序色：四档灰 + 品牌金封顶（与 Citrine 用法一致），按离散分段使用 | 已确认 |
+| `color.chart.sequential.2` | `{color.neutral.300}` | 顺序色第二档（排行榜非前三名） | 已确认 |
+| `color.chart.sequential.3` | `{color.neutral.500}` | 顺序色第三档 | 已确认 |
+| `color.chart.sequential.4` | `{color.cat.charcoal}` | 顺序色第四档 | 已确认 |
+| `color.chart.sequential.5` | `{color.brand.500}` | 顺序色封顶：品牌金（排行榜前三名） | 已确认 |
+| `color.data.inactive` | `{color.neutral.black-a25}` | 已结束的进度条用禁用色 rgba(0,0,0,0.25) | 已确认 |
+| `border.width.control` | `{border.width.thin}` | 勾选框 / 单选框边线 1px | 已确认 |
+| `border.width.active` | `{border.width.bold}` | 页签墨条 / 选中下划线 2px | 已确认 |
+| `border.width.indicator` | `{border.width.bold}` | 指示条 2px | 已确认 |
+| `control.height.lg` | `{size.control.lg}` | 大控件 40px（antd controlHeightLG） | 已确认 |
+| `control.hit-min` | `{size.hit-min}` | 图标控件最小命中区 24px | 已确认 |
+| `control.hit-touch` | `{size.control.touch}` | 触屏命中区 40px | 已确认 |
+| `control.segmented-inset` | `{spacing.0-5}` | 分段选择器内衬 2px（antd Segmented trackPadding） | 已确认 |
+| `icon.size.2xl` | `{size.icon.2xl}` | 结果页 / 提示卡大图标 24px | 已确认 |
+| `icon.stroke.width` | `{stroke-width.3}` | IconPark 描边 3（与 antd 线性图标比例一致） | 已确认 |
+| `space.card` | `{spacing.6}` | antd Card 内边距 24px（design.md）；演示站数据卡为 20px 24px | 已确认 |
+| `text.caption.size` | `{font.size.sm}` | 最小字号 12px（国内中后台下限 / antd fontSizeSM）；演示站 11px 只见于页脚版本号等 8 处 | 已确认 |
+| `text.heading.size` | `{font.size.2xl}` | 页头大标题 24px（antd headline-md） | 已确认 |
+| `text.heading.line-height` | `{font.line-height.heading}` | 32 / 24 | 已确认 |
+| `text.display.line-height` | `{font.line-height.display}` | 38 / 30 | 已确认 |
+| `text.display.tracking` | `{font.letter-spacing.none}` | 数据大字不调字距 | 已确认 |
+| `text.hero.size` | `{font.size.4xl}` | 结果页 / 登录页大字 38px（antd display-lg） | 已确认 |
+| `text.hero.line-height` | `{font.line-height.hero}` | 46 / 38 | 已确认 |
+| `text.paragraph.line-height` | `{font.line-height.normal}` | 成段说明同正文行高（antd） | 已确认 |
+| `text.weight.brand` | `{font.weight.semibold}` | 品牌字重 600（antd 不用 700） | 已确认 |
+| `text.numeric.variant` | `{font.numeric.tabular}` | 金额 / 单号 / 统计数字用 tabular-nums | 已确认 |
+| `layout.modal.width.sm` | `{size.modal.sm}` | 确认弹窗 416px（antd Modal.confirm） | 已确认 |
+| `layout.modal.width.md` | `{size.modal.md}` | 表单弹窗 520px（antd Modal 默认） | 已确认 |
+| `layout.search.width` | `{size.search}` | 筛选栏搜索框 216px | 已确认 |
+| `motion.easing.exit` | `{easing.exit}` | antd motionEaseIn | 已确认 |
+| `opacity.disabled` | `{opacity.40}` | 禁用态 0.4（antd 用禁用色，桥接用透明度近似） | 已确认 |
+| `opacity.on-primary-muted` | `{opacity.100}` | 金底上的次要文字不压透明度（对比余量不足） | 已确认 |
+| `chart.gradient.saturation` | `{opacity.40}` | 柱状图 / 进度条饱和度渐变的浅端：HSB 明度不变，饱和度降到原色 × 0.4（用户决定用饱和度渐变，0.4 是默认值；数值借用 opacity.40） | 已确认 |
+| `layer.dropdown` | `{z.1050}` | 下拉 / 气泡 1050（antd：高于弹窗） | 已确认 |
+| `avatar.size.sm` | `{size.avatar.sm}` | 小头像 24px | 已确认 |
+| `avatar.size.md` | `{size.avatar.md}` | 头像 32px | 已确认 |
+| `illustration.size.md` | `{size.illustration}` | 空状态 / 结果页插图 100px | 已确认 |
 
 ### 必须处理的缺口
 
@@ -216,17 +219,17 @@ Element Plus 实测（2026-10-09，`morganite/testbed/element-lab`，逐条记�
 
 ## 风险与待确认
 
-- 推断清单 56 条仍是 `[推断]`：值都有 antd 规格或规则依据，但未经用户逐条确认；`publish-check` 在确认前会把它们报为未确认（0.x 可带着 `--allow-inferred` 先发，CHANGELOG 写清）。
-- 警示色改用橙色系（`color.status.warning*`）是为避开品牌金做的偏离，属于用户「沿用 antd 功能色」之外的判断，待确认。
-- 暗色证据来自 Pro 的「暗色风格（实验功能）」，只测了工作台与查询表格；表单、弹窗、抽屉的暗色值按 antd 暗色算法推断。
-- 覆盖盲区：只取了工作台 / 查询表格 / 基础表单 / 新建弹窗 / 详情抽屉；登录页、分步表单、结果页、空状态、通知、上传、步骤条没有取证，相关角色（`text.hero.*`、`illustration.size.md`、`icon.size.2xl` 等）按 antd 规格推断。
+- 推断值已全部确认（2026-10-09）：亮色语义角色与暗色值不再有 `[推断]`；只剩两个原语 `radius.xs`、`spacing.3-5` 仍标 `[推断]`——没有语义角色引用、由桥接直接使用，取值按 antd 勾选框圆角与配方步长。
+- 警示色改用橙色系（`color.status.warning*`）是为避开品牌金做的偏离，用户 2026-10-09 确认保持。
+- 暗色证据来自 Pro 的「暗色风格（实验功能）」，只测了工作台与查询表格；表单、弹窗、抽屉的暗色值按 antd 暗色算法推断（2026-10-09 用户已确认）。
+- 覆盖盲区：只取了工作台 / 查询表格 / 基础表单 / 新建弹窗 / 详情抽屉；登录页、分步表单、结果页、空状态、通知、上传、步骤条没有取证，相关角色（`text.hero.*`、`illustration.size.md`、`icon.size.2xl` 等）按 antd 规格取值（2026-10-09 已确认，但没在这些页面上取证）。
 - 桥接沿用 Citrine 的实现：Element Plus 栈的 extra 带 IconPark 桥接，而本系统图标库登记为 `@ant-design/icons`，接入前决定用哪套图标；桥接里其他 Citrine 式的组件习惯（操作胶囊等配方）还没按 antd 的做法逐个走查（选中块已改，见用户决定表）。
 - 开关关闭态：用户决定保持 `color.border.strong` 轨道（2026-10-09），白滑块对轨道约 1.4:1，关闭态主要靠滑块位置与文字标签区分；若在低对比屏上看不清，改指 `color.data.inactive`（25% 黑，antd 原值）即可。
 - Element 选中块已在实测项目里亮 / 暗核对（日期面板、徽标、标签、评分、树、两种分页）；引导指示点、表头单选筛选、树拖放目标没有在真实组件里看过。分段类（单选 / 多选按钮组、`el-segmented`）当前项是灰轨道上的白块，亮色下对轨道约 1.09:1，主要靠字重与字色区分。
 - 没有验收工具：身份文件没有 `accept`，AGENTS 模板的验收只写 build + guard，`ds.mjs ci` 也只能做 guard。是否沿用 citrine-accept 并写一份 Morganite 的验收清单，待决定。
 - `.stat-strip` 自带 `margin-bottom`，放进带 gap 的内容区会和 gap 叠成双倍间距（效果预览里单独抵消了）。
 - 词表外的 11 个语义名跟随 Citrine 桥接，若词表以后收编或改名，需要同步。
-- 成功色 `color.status.success*` 顺带统一成与「涨」同一种祖母绿（推断，待确认）；若要保留 antd 的橄榄绿，改回 antd green 色板即可。
+- 成功色 `color.status.success*` 与「涨」统一成同一种祖母绿，用户 2026-10-09 确认保持；若要回到 antd 的绿，改回 antd green 色板即可。
 - 视觉已偏离 Ant Design Pro 原样：圆角、描边宽、侧栏当前项、卡片标题、图表配色按预期预览图改过，卡片按用户决定不投影；交互结构、密度与控件尺寸仍是 antd。
 - 0.6px 描边在 1 倍屏上是 1px（见「未纳管项」）；需要在高分屏与普通屏各看一眼。
 - 数字字体 D-DIN-PRO 不是系统字体，种子不带字体文件：没装的机器退到 D-DIN / Bahnschrift / 正文字体，各端数字字形可能不同；要一致需项目自行托管（先确认授权）。它没有等宽数字，所以只用在数据大字上（并排的 KPI 数字宽度会随数值变化）。

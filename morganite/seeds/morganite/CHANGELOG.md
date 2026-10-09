@@ -15,8 +15,8 @@
 - 侧栏底色（2026-10-09，用户指定）：亮色 `color.bg.sidebar` 由透出页面底的 `#f5f5f5` 改为纯白，与顶栏、卡片同色；暗色保持纯黑（取值不变）。肉眼可见：亮色侧栏变白，和浅灰内容区分开。
 - 输入框焦点（2026-10-09，用户指定）：输入类控件聚焦只把边线换成 `color.border.focus`，线宽不变、去掉 `focus.ring` 外环（`base.css`、Element、shadcn 桥接与效果页搜索框一起改）；按钮、链接、菜单项的键盘焦点环不变。肉眼可见：搜索框、输入框聚焦时不再出现一圈粗环。
 - 配方修正（2026-10-09，效果预览扩成 8 页后逐页走查发现）：`.badge.brand` 亮色下看不见 → 奶金浅底 + 深金字；`.batch` 文字改为 `color.text.primary`（与 DESIGN 一致）；纯 CSS 表格补选中行；补 `.two-col` 桌面定义；「窄屏」媒体查询 1366px → 992px（与 `layout.breakpoint.narrow` 一致，992–1366px 之间统计卡保持四列）。DESIGN 配方表补「步骤条」「时间线」。
-- 数据填充渐变（2026-10-09，用户指定）：柱状图、进度条改为同色的饱和度渐变（HSB 明度不变），柱子上浅下深、横柱右浅左深、进度条左浅右深；新增 `chart.gradient.saturation`（浅端饱和度 × 0.4，推断待确认）。Element 进度条（含状态色）改渐变；ECharts 桥接新增 `barGradient(color)`，`rankBars` 改用渐变。中性灰没有饱和度，保持实色。
-- 表格选中行（2026-10-09，用户指定）：选中行底色改为与悬停同色 `color.bg.hover`（纯 CSS 表格、shadcn、Element 的勾选行与当前行一起），选中行再悬停改为中性深一档（亮 6% 黑 / 暗 12% 白，推断待确认）；奶油金 `color.bg.selected-subtle` 只留给强调徽标与 Element 主色浅底。肉眼可见：勾选行从奶金变成浅灰。
+- 数据填充渐变（2026-10-09，用户指定）：柱状图、进度条改为同色的饱和度渐变（HSB 明度不变），柱子上浅下深、横柱右浅左深、进度条左浅右深；新增 `chart.gradient.saturation`（浅端饱和度 × 0.4）。Element 进度条（含状态色）改渐变；ECharts 桥接新增 `barGradient(color)`，`rankBars` 改用渐变。中性灰没有饱和度，保持实色。
+- 表格选中行（2026-10-09，用户指定）：选中行底色改为与悬停同色 `color.bg.hover`（纯 CSS 表格、shadcn、Element 的勾选行与当前行一起），选中行再悬停改为中性深一档（亮 6% 黑 / 暗 12% 白）；奶油金 `color.bg.selected-subtle` 只留给强调徽标与 Element 主色浅底。肉眼可见：勾选行从奶金变成浅灰。
 - 数字字体（2026-10-09，用户指定）：数字数据改用 D-DIN-PRO。新增 `font.family.numeric`（D-DIN-PRO → D-DIN → Bahnschrift → 正文无衬线）与 `text.numeric.family`；`text.display.family` 改指它。配方 `.num`、`.num-col`、`.stat-card__delta`，Element 表格合计行，ECharts 数值轴与排行榜标签一起换；单号仍用等宽字体。种子不分发字体文件；D-DIN-PRO 没有等宽数字，`tabular-nums` 对它不生效。肉眼可见：KPI 与表格数字变成窄体 DIN。
 - 筹码底色（2026-10-09，用户指定）：已选条件筹码的底从 4% 黑改为品牌金深一档 #8A6530 的 10%（新增 `color.bg.chip` 与原语 `color.brand.600-a10`），即筹码字色的同色浅底，叠在卡片上约 #F3F0EA、字对底 4.63:1；暗色按同一规则取亮金 #D1AB62 的 10%（用户确认，原语 `color.brand.300-a10`，约 #27231C、7.23:1）。配方 `.chip` 改用它；批量条、图标按钮选中、进度条轨道等其余小面积选中仍是中性浅灰。
 - 待定项拍板（2026-10-09，用户决定）：
@@ -26,6 +26,7 @@
   - 小号数字退回正文字体：`text.numeric.family` 改指 `font.family.body`（表格金额与日期、百分比、涨跌、图表数值、页码），配等宽数字；只有数据大字 `text.display.family` 用 D-DIN-PRO。
   - 开关关闭态保持 #D8D8D8 轨道；暗色筹码底亮金 10% 由推断改为确认。
 - Element Plus 实测（2026-10-09，`morganite/testbed/element-lab`）：日期范围中间段改为奶金浅底（原为 Element 默认的边线灰）；模板去掉 Citrine 残留——`notes-element-plus.md` 的选中规则与表格数字列用法、`notes-shadcn.md` 与 `shadcn.css` 注释的控件高度 24 / 32 / 40、三个样式入口模板注释里的占位符、`KitchenSink.vue` 挂法的包名、AGENTS 模板不再写不存在的 `npm run accept`；`package.json` 打包清单排除 `design-system/preview/shots` 与 `static`（npm 包 1.5 MB → 143 kB）。
-- 规模：primitives 164 个；语义角色 178 个（观察 70 / 确认 52 / 推断 56），中后台必须处理的缺口 0；Theme `dark` delta 64 条。
+- 推断值确认（2026-10-09，用户按组确认）：亮色 56 个语义角色、暗色 33 个值（连同被引用的 41 个原语）由 `[推断]` 改为 `[确认]`，值不变；警示橙、成功祖母绿、弱化文字 58% 黑、占位符 45% 黑、最小字号 12px、勾选框边线 0.6px 单独确认保持（勾选框边线的说明由「1px」更正）。publish-check 不再需要 `--allow-inferred`。
+- 规模：primitives 164 个；语义角色 178 个（观察 70 / 确认 108 / 推断 0），中后台必须处理的缺口 0；Theme `dark` delta 64 条。
 - 桥接：从 citrine 2.12.0 拷入 Element Plus / shadcn / 页面配方 / ECharts 桥接当起点，引用的缺失变量全部补 token（共 28 个：Citrine 桥接引用的 22 个，加 ECharts 顺序色 5 个与图表提示气泡 1 个；其中 17 个语义名在词表外）；组件走查未做。
 - 对比度：50 组 45 组通过；填充式输入框的静息边线（亮 / 暗）、亮色卡片边线与主按钮白字（亮 / 暗）登记为例外，亮色侧栏当前项白字（不在配对里，人工核对）也登记为例外，见 DESIGN「验收基线」。侧栏分组标题 `color.text.sidebar-muted` 沿用 ProLayout 的 45% 不达 4.5（不在 50 组配对里，效果预览页实测发现），改为与弱化文字同值（推断，待确认）。推断项与风险见 design-system/AUDIT.md。

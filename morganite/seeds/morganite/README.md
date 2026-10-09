@@ -4,7 +4,7 @@
 
 适用类型：**中后台**——侧栏 + 表格 + 图表 + 弹窗尺寸的工作台。
 
-> **0.x 起点，还不是定稿。** `tokens/semantic.tokens.json` 里 `$description` 以 `[观察]` 开头的是实测值，`[确认]` 是用户拍板的品牌决定，`[推断]` 是按 antd 规格或规则补的默认值（55 条，清单在 `design-system/AUDIT.md`），接入项目前逐条确认。组件库桥接从 Citrine 拷来当起点，还没按 antd 的做法逐个走查。发布前跑 `publish-check.mjs --seed <本目录>`。
+> **0.x 起点。** `tokens/semantic.tokens.json` 里 `$description` 以 `[观察]` 开头的是实测值，`[确认]` 是用户拍板的决定——原先按 antd 规格或规则补的 56 个 `[推断]` 默认值已于 2026-10-09 全部确认（来源清单留在 `design-system/AUDIT.md`）。组件库桥接从 Citrine 拷来、按本系统改过：Element Plus 桥接已用真实组件走查（`morganite/testbed/element-lab`），shadcn 桥接还没实测。发布前跑 `publish-check.mjs --seed <本目录>`。
 
 ## 里面有什么
 

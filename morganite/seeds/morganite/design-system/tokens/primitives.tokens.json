@@ -26,7 +26,7 @@
         "alpha": 1,
         "hex": "#000000"
       },
-      "$description": "[推断] 暗色页面底：ProLayout 暗色 bgLayout 渐变终点（antd 暗色 colorBgLayout）"
+      "$description": "[确认] 暗色页面底：ProLayout 暗色 bgLayout 渐变终点（antd 暗色 colorBgLayout）（2026-10-09 用户确认）"
     },
     "neutral": {
       "50": {
@@ -97,7 +97,7 @@
           "alpha": 1,
           "hex": "#A6A6A6"
         },
-        "$description": "[推断] 顺序色第三档（四档灰 + 品牌金封顶，对齐 Citrine 顺序色的用法）"
+        "$description": "[确认] 顺序色第三档（四档灰 + 品牌金封顶，对齐 Citrine 顺序色的用法）（2026-10-09 用户确认）"
       },
       "600": {
         "$type": "color",
@@ -111,7 +111,7 @@
           "alpha": 1,
           "hex": "#6E6E6E"
         },
-        "$description": "[推断] 暗色顺序色第三档"
+        "$description": "[确认] 暗色顺序色第三档（2026-10-09 用户确认）"
       },
       "700": {
         "$type": "color",
@@ -153,7 +153,7 @@
           "alpha": 1,
           "hex": "#262626"
         },
-        "$description": "[推断] 暗色顺序色第一档"
+        "$description": "[确认] 暗色顺序色第一档（2026-10-09 用户确认）"
       },
       "900": {
         "$type": "color",
@@ -195,7 +195,7 @@
           "alpha": 0.5,
           "hex": "#14141480"
         },
-        "$description": "[推断] 暗色局部加载遮罩（antd Spin：容器底 50%）"
+        "$description": "[确认] 暗色局部加载遮罩（antd Spin：容器底 50%）（2026-10-09 用户确认）"
       },
       "transparent": {
         "$type": "color",
@@ -265,7 +265,7 @@
           "alpha": 0.15,
           "hex": "#00000026"
         },
-        "$description": "[推断] 骨架屏流光（antd Skeleton gradientToColor）"
+        "$description": "[确认] 骨架屏流光（antd Skeleton gradientToColor）（2026-10-09 用户确认）"
       },
       "black-a25": {
         "$type": "color",
@@ -307,7 +307,7 @@
           "alpha": 0.58,
           "hex": "#00000094"
         },
-        "$description": "[推断] 弱化文字对比度校正：antd 第三档原值 rgba(0,0,0,0.45) 对白 3.36:1、对 #f5f5f5 3.07:1，压到 0.58（对白 5.3:1、对页面底 5.2:1）"
+        "$description": "[确认] 弱化文字对比度校正：antd 第三档原值 rgba(0,0,0,0.45) 对白 3.36:1、对 #f5f5f5 3.07:1，压到 0.58（对白 5.3:1、对页面底 5.2:1）（2026-10-09 用户确认）"
       },
       "black-a65": {
         "$type": "color",
@@ -391,7 +391,7 @@
           "alpha": 0.03,
           "hex": "#FFFFFF08"
         },
-        "$description": "[推断] 暗色侧栏项悬停：ProLayout 同算法（文字基色 #fff 的 3%）"
+        "$description": "[确认] 暗色侧栏项悬停：ProLayout 同算法（文字基色 #fff 的 3%）（2026-10-09 用户确认）"
       },
       "white-a4": {
         "$type": "color",
@@ -405,7 +405,7 @@
           "alpha": 0.04,
           "hex": "#FFFFFF0A"
         },
-        "$description": "[推断] 暗色浅分区 / 表头底（antd 暗色 colorFillAlter）"
+        "$description": "[确认] 暗色浅分区 / 表头底（antd 暗色 colorFillAlter）（2026-10-09 用户确认）"
       },
       "white-a8": {
         "$type": "color",
@@ -475,7 +475,7 @@
           "alpha": 0.5,
           "hex": "#FFFFFF80"
         },
-        "$description": "[推断] 暗色弱化文字校正（0.45 → 0.5，对 #141414 5.3:1、对浅分区 4.9:1）；亮色局部加载遮罩（antd Spin：白 50%）"
+        "$description": "[确认] 暗色弱化文字校正（0.45 → 0.5，对 #141414 5.3:1、对浅分区 4.9:1）；亮色局部加载遮罩（antd Spin：白 50%）（2026-10-09 用户确认）"
       },
       "white-a65": {
         "$type": "color",
@@ -701,7 +701,7 @@
           "alpha": 0.16,
           "hex": "#B98D4429"
         },
-        "$description": "[推断] 图表面积填充（品牌金 16%，网格线透得出来）"
+        "$description": "[确认] 图表面积填充（品牌金 16%，网格线透得出来）（2026-10-09 用户确认）"
       },
       "500-a24": {
         "$type": "color",
@@ -715,7 +715,7 @@
           "alpha": 0.24,
           "hex": "#B98D443D"
         },
-        "$description": "[推断] 暗色图表面积填充（品牌金 24%）"
+        "$description": "[确认] 暗色图表面积填充（品牌金 24%）（2026-10-09 用户确认）"
       },
       "600-a10": {
         "$type": "color",
@@ -759,7 +759,7 @@
           "alpha": 1,
           "hex": "#EDF7F1"
         },
-        "$description": "[推断] 成功浅底（与涨同一绿）"
+        "$description": "[确认] 成功浅底（与涨同一绿）（2026-10-09 用户确认）"
       },
       "300": {
         "$type": "color",
@@ -815,7 +815,7 @@
           "alpha": 1,
           "hex": "#13261B"
         },
-        "$description": "[推断] 暗色成功浅底"
+        "$description": "[确认] 暗色成功浅底（2026-10-09 用户确认）"
       }
     },
     "orange": {
@@ -831,7 +831,7 @@
           "alpha": 1,
           "hex": "#FFF7E6"
         },
-        "$description": "[推断] antd orange-1：警示浅底"
+        "$description": "[确认] antd orange-1：警示浅底（2026-10-09 用户确认）"
       },
       "4": {
         "$type": "color",
@@ -845,7 +845,7 @@
           "alpha": 1,
           "hex": "#FFC069"
         },
-        "$description": "[推断] antd orange-4：暗色警示文字"
+        "$description": "[确认] antd orange-4：暗色警示文字（2026-10-09 用户确认）"
       },
       "8": {
         "$type": "color",
@@ -859,7 +859,7 @@
           "alpha": 1,
           "hex": "#AD4E00"
         },
-        "$description": "[推断] antd orange-8：警示文字（对浅底 5.09:1）。antd 默认警示为 gold #faad14，与品牌金 #b98d44 同色相（约 40° / 37°），改用橙色系"
+        "$description": "[确认] antd orange-8：警示文字（对浅底 5.09:1）。antd 默认警示为 gold #faad14，与品牌金 #b98d44 同色相（约 40° / 37°），改用橙色系（2026-10-09 用户确认）"
       },
       "dark-1": {
         "$type": "color",
@@ -873,7 +873,7 @@
           "alpha": 1,
           "hex": "#2B1D11"
         },
-        "$description": "[推断] antd 暗色 orange-1：暗色警示浅底"
+        "$description": "[确认] antd 暗色 orange-1：暗色警示浅底（2026-10-09 用户确认）"
       }
     },
     "red": {
@@ -1109,7 +1109,7 @@
           "unit": "px",
           "value": 2
         },
-        "$description": "[推断] 页签墨条 / 选中下划线（antd lineWidthBold 2px）"
+        "$description": "[确认] 页签墨条 / 选中下划线（antd lineWidthBold 2px）（2026-10-09 用户确认）"
       },
       "ring": {
         "$type": "dimension",
@@ -1301,7 +1301,7 @@
           "unit": "px",
           "value": 40
         },
-        "$description": "[推断] 大控件 40px（antd controlHeightLG；演示站未出现）"
+        "$description": "[确认] 大控件 40px（antd controlHeightLG；演示站未出现）（2026-10-09 用户确认）"
       },
       "touch": {
         "$type": "dimension",
@@ -1309,7 +1309,7 @@
           "unit": "px",
           "value": 40
         },
-        "$description": "[推断] 触屏命中区 40px（pointer: coarse；取 antd controlHeightLG）"
+        "$description": "[确认] 触屏命中区 40px（pointer: coarse；取 antd controlHeightLG）（2026-10-09 用户确认）"
       }
     },
     "hit-min": {
@@ -1318,7 +1318,7 @@
         "unit": "px",
         "value": 24
       },
-      "$description": "[推断] 图标控件最小命中区"
+      "$description": "[确认] 图标控件最小命中区（2026-10-09 用户确认）"
     },
     "icon": {
       "xs": {
@@ -1367,7 +1367,7 @@
           "unit": "px",
           "value": 24
         },
-        "$description": "[推断] 大图标 24px（antd 带描述的 Alert 图标）"
+        "$description": "[确认] 大图标 24px（antd 带描述的 Alert 图标）（2026-10-09 用户确认）"
       }
     },
     "sidebar": {
@@ -1419,7 +1419,7 @@
           "unit": "px",
           "value": 416
         },
-        "$description": "[推断] 确认弹窗宽 416px（antd Modal.confirm 默认）"
+        "$description": "[确认] 确认弹窗宽 416px（antd Modal.confirm 默认）（2026-10-09 用户确认）"
       },
       "md": {
         "$type": "dimension",
@@ -1427,7 +1427,7 @@
           "unit": "px",
           "value": 520
         },
-        "$description": "[推断] 表单弹窗宽 520px（antd Modal 默认；演示站「新建规则」两字段弹窗为 400px）"
+        "$description": "[确认] 表单弹窗宽 520px（antd Modal 默认；演示站「新建规则」两字段弹窗为 400px）（2026-10-09 用户确认）"
       }
     },
     "drawer": {
@@ -1463,7 +1463,7 @@
           "unit": "px",
           "value": 24
         },
-        "$description": "[推断] 小头像 24px（antd Avatar small）"
+        "$description": "[确认] 小头像 24px（antd Avatar small）（2026-10-09 用户确认）"
       },
       "md": {
         "$type": "dimension",
@@ -1471,7 +1471,7 @@
           "unit": "px",
           "value": 32
         },
-        "$description": "[推断] 头像 32px（antd Avatar default）"
+        "$description": "[确认] 头像 32px（antd Avatar default）（2026-10-09 用户确认）"
       }
     },
     "illustration": {
@@ -1480,7 +1480,7 @@
         "unit": "px",
         "value": 100
       },
-      "$description": "[推断] 空状态 / 结果页插图 100px（antd Empty 图片高）"
+      "$description": "[确认] 空状态 / 结果页插图 100px（antd Empty 图片高）（2026-10-09 用户确认）"
     },
     "search": {
       "$type": "dimension",
@@ -1488,7 +1488,7 @@
         "unit": "px",
         "value": 216
       },
-      "$description": "[推断] 筛选栏搜索框宽 216px（ProForm 宽度档 sm）"
+      "$description": "[确认] 筛选栏搜索框宽 216px（ProForm 宽度档 sm）（2026-10-09 用户确认）"
     }
   },
   "shadow": {
@@ -1545,7 +1545,7 @@
           "unit": "em",
           "value": 0
         },
-        "$description": "[推断] 数据大字不调字距（antd Statistic 无字距）"
+        "$description": "[确认] 数据大字不调字距（antd Statistic 无字距）（2026-10-09 用户确认）"
       }
     },
     "size": {
@@ -1587,7 +1587,7 @@
           "unit": "px",
           "value": 24
         },
-        "$description": "[推断] 页头大标题 24px（antd headline-md）"
+        "$description": "[确认] 页头大标题 24px（antd headline-md）（2026-10-09 用户确认）"
       },
       "3xl": {
         "$type": "dimension",
@@ -1603,7 +1603,7 @@
           "unit": "px",
           "value": 38
         },
-        "$description": "[推断] 结果页 / 登录页大字 38px（antd display-lg）"
+        "$description": "[确认] 结果页 / 登录页大字 38px（antd display-lg）（2026-10-09 用户确认）"
       }
     },
     "line-height": {
@@ -1615,17 +1615,17 @@
       "heading": {
         "$type": "number",
         "$value": 1.3333,
-        "$description": "[推断] 标题行高 32 / 24（antd headline-md）"
+        "$description": "[确认] 标题行高 32 / 24（antd headline-md）（2026-10-09 用户确认）"
       },
       "display": {
         "$type": "number",
         "$value": 1.2667,
-        "$description": "[推断] 统计数字行高 38 / 30（antd headline-lg）"
+        "$description": "[确认] 统计数字行高 38 / 30（antd headline-lg）（2026-10-09 用户确认）"
       },
       "hero": {
         "$type": "number",
         "$value": 1.2105,
-        "$description": "[推断] 大字行高 46 / 38（antd display-lg）"
+        "$description": "[确认] 大字行高 46 / 38（antd display-lg）（2026-10-09 用户确认）"
       }
     },
     "weight": {
@@ -1698,7 +1698,7 @@
       "tabular": {
         "$type": "string",
         "$value": "tabular-nums",
-        "$description": "[推断] 金额 / 单号 / 统计数字等宽对齐"
+        "$description": "[确认] 金额 / 单号 / 统计数字等宽对齐（2026-10-09 用户确认）"
       }
     },
     "style": {
@@ -1764,7 +1764,7 @@
         0.675,
         0.19
       ],
-      "$description": "[推断] 退场加速（antd motionEaseIn）"
+      "$description": "[确认] 退场加速（antd motionEaseIn）（2026-10-09 用户确认）"
     }
   },
   "z": {
@@ -1786,26 +1786,26 @@
     "1050": {
       "$type": "number",
       "$value": 1050,
-      "$description": "[推断] 下拉 / 气泡 z-index 1050（antd Dropdown：高于弹窗，弹窗里的下拉才能展开）"
+      "$description": "[确认] 下拉 / 气泡 z-index 1050（antd Dropdown：高于弹窗，弹窗里的下拉才能展开）（2026-10-09 用户确认）"
     }
   },
   "opacity": {
     "40": {
       "$type": "number",
       "$value": 0.4,
-      "$description": "[推断] 禁用态透明度：antd 用禁用色表达（文字 25% 黑 + 4% 黑底），桥接用透明度实现时取 0.4 近似"
+      "$description": "[确认] 禁用态透明度：antd 用禁用色表达（文字 25% 黑 + 4% 黑底），桥接用透明度实现时取 0.4 近似（2026-10-09 用户确认）"
     },
     "100": {
       "$type": "number",
       "$value": 1,
-      "$description": "[推断] 不压透明度：金底深字对比 5.14:1，次要文字压到 0.9 就只剩 4.46:1"
+      "$description": "[确认] 不压透明度：金底深字对比 5.14:1，次要文字压到 0.9 就只剩 4.46:1（2026-10-09 用户确认）"
     }
   },
   "stroke-width": {
     "3": {
       "$type": "number",
       "$value": 3,
-      "$description": "[推断] IconPark 描边 3（48 网格，约 1/16，与 antd 线性图标笔画比例一致；Citrine 实测 3 在 Mac 偏细，接入时可按需调 4）"
+      "$description": "[确认] IconPark 描边 3（48 网格，约 1/16，与 antd 线性图标笔画比例一致；Citrine 实测 3 在 Mac 偏细，接入时可按需调 4）（2026-10-09 用户确认）"
     }
   },
   "decoration": {
