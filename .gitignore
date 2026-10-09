@@ -6,6 +6,7 @@ node_modules/
 citrine/testbed/golden-admin/app/dist/
 citrine/testbed/light-procure/app/dist/
 citrine/testbed/shadcn-lab/app/dist/
+morganite/testbed/element-lab/app/dist/
 # 验收工具输出（citrine-accept 写到项目内 .accept/）、npm pack 产物、升级冲突清单（临时件）
 .accept/
 citrine/tools/out/

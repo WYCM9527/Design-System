@@ -11,4 +11,4 @@
 {{STACK_NOTES}}
 - **上游快照只读**：`design-systems/{{SYSTEM_ID}}/` 是设计系统的上游快照，永不手改（改了 `ds.mjs status` 会报警）；项目需要的差异写在自己的 `app.css` / 工作副本 `design-system/`（scope / 豁免），需要共享的向上游提提案。配方不够用时**不在页面上补样式**。
 - **推断值先确认**：这套系统由网站实测提炼，`tokens/semantic.tokens.json` 里 `$description` 以 `[推断]` 开头的角色是按规则补的默认值——第一次用到该角色的页面前，先在 `design-system/AUDIT.md`「推断角色清单」里确认或改值，确认后把前缀改为 `[确认]`。
-- **验收**：改完 UI 运行 `npm run build` 与 `{{ACCEPT_COMMAND}}`；`design-system-steward` 的 `guard.mjs --project $PWD` 应为 `current`。
+- **验收**：改完 UI 运行 `npm run build`，`design-system-steward` 的 `guard.mjs --project $PWD` 应为 `current`；Morganite 暂不带验收工具，项目有自己的验收脚本时一并运行。

@@ -11,6 +11,8 @@
     "bridge",
     "design-system",
     "!design-system/dist",
+    "!design-system/preview/shots",
+    "!design-system/preview/static",
     "design-system.json",
     "templates",
     "README.md",

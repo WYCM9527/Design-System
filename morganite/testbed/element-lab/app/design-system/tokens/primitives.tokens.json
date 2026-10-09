@@ -1,0 +1,1827 @@
+{
+  "color": {
+    "white": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          1,
+          1,
+          1
+        ],
+        "alpha": 1,
+        "hex": "#FFFFFF"
+      },
+      "$description": "[观察] 卡片 / 表格 / 弹窗 / 抽屉底，118 处"
+    },
+    "black": {
+      "$type": "color",
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [
+          0,
+          0,
+          0
+        ],
+        "alpha": 1,
+        "hex": "#000000"
+      },
+      "$description": "[推断] 暗色页面底：ProLayout 暗色 bgLayout 渐变终点（antd 暗色 colorBgLayout）"
+    },
+    "neutral": {
+      "50": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9804,
+            0.9804,
+            0.9804
+          ],
+          "alpha": 1,
+          "hex": "#FAFAFA"
+        },
+        "$description": "[观察] 表头 / 次级容器浅底，25 处（antd design.md surface-container）"
+      },
+      "100": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9608,
+            0.9608,
+            0.9608
+          ],
+          "alpha": 1,
+          "hex": "#F5F5F5"
+        },
+        "$description": "[观察] 页面底：ProLayout bgLayout = linear-gradient(#fff, #f5f5f5 28%) 的终点（antd design.md surface-layout）"
+      },
+      "200": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9412,
+            0.9412,
+            0.9412
+          ],
+          "alpha": 1,
+          "hex": "#F0F0F0"
+        },
+        "$description": "[观察] antd colorBorderSecondary #f0f0f0（表格行分隔线原值）；现用作顺序色第一档"
+      },
+      "300": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8471,
+            0.8471,
+            0.8471
+          ],
+          "alpha": 1,
+          "hex": "#D8D8D8"
+        },
+        "$description": "[确认] 控件描边（color.border.strong）：观察值 #d9d9d9（69 处，antd colorBorder）对页面底 1.29:1，加深一级到 #d8d8d8（1.31:1）；2026-10-09 起卡片 / 分隔线改用 color.neutral.black-a6，不再与控件描边同档"
+      },
+      "500": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.651,
+            0.651,
+            0.651
+          ],
+          "alpha": 1,
+          "hex": "#A6A6A6"
+        },
+        "$description": "[推断] 顺序色第三档（四档灰 + 品牌金封顶，对齐 Citrine 顺序色的用法）"
+      },
+      "600": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.4314,
+            0.4314,
+            0.4314
+          ],
+          "alpha": 1,
+          "hex": "#6E6E6E"
+        },
+        "$description": "[推断] 暗色顺序色第三档"
+      },
+      "700": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.2588,
+            0.2588,
+            0.2588
+          ],
+          "alpha": 1,
+          "hex": "#424242"
+        },
+        "$description": "[观察] 暗色控件边线（antd 暗色 colorBorder），暗黑取证 3 处"
+      },
+      "800": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1882,
+            0.1882,
+            0.1882
+          ],
+          "alpha": 1,
+          "hex": "#303030"
+        },
+        "$description": "[确认] 暗色边线：antd 暗色 colorBorderSecondary #303030（对 #000 1.59:1）；原观察值 rgba(253,253,253,0.12) 对页面底 1.27:1，用户决定过线"
+      },
+      "850": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.149,
+            0.149,
+            0.149
+          ],
+          "alpha": 1,
+          "hex": "#262626"
+        },
+        "$description": "[推断] 暗色顺序色第一档"
+      },
+      "900": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1216,
+            0.1216,
+            0.1216
+          ],
+          "alpha": 1,
+          "hex": "#1F1F1F"
+        },
+        "$description": "[观察] 暗色浮层 / 顶栏底（antd 暗色 colorBgElevated）；亮色 on-surface 合成值，用作金底上的深字"
+      },
+      "950": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.0784,
+            0.0784,
+            0.0784
+          ],
+          "alpha": 1,
+          "hex": "#141414"
+        },
+        "$description": "[观察] 暗色卡片底（antd 暗色 colorBgContainer），暗黑取证 16 处"
+      },
+      "950-a50": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.0784,
+            0.0784,
+            0.0784
+          ],
+          "alpha": 0.5,
+          "hex": "#14141480"
+        },
+        "$description": "[推断] 暗色局部加载遮罩（antd Spin：容器底 50%）"
+      },
+      "transparent": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0,
+            0
+          ],
+          "alpha": 0,
+          "hex": "#00000000"
+        },
+        "$description": "[确认] 填充式输入框静息边线透明（用户选择 Pro v6 原样）"
+      },
+      "black-a3": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0,
+            0
+          ],
+          "alpha": 0.03,
+          "hex": "#00000008"
+        },
+        "$description": "[观察] 侧栏项悬停：ProLayout sider.colorBgMenuItemHover = 文字基色 3%"
+      },
+      "black-a4": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0,
+            0
+          ],
+          "alpha": 0.04,
+          "hex": "#0000000A"
+        },
+        "$description": "[观察] 悬停底 / 侧栏当前项 / 分段轨道，26 处（悬停探针 rgba(0,0,0,0.04)）"
+      },
+      "black-a6": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0,
+            0
+          ],
+          "alpha": 0.06,
+          "hex": "#0000000F"
+        },
+        "$description": "[观察] 骨架屏底（antd Skeleton gradientFromColor），1 处；2026-10-09 起兼作卡片 / 容器 / 表格分隔线（用户指定 6% 黑，与 antd 分隔线同一量级）；2026-10-09 起兼作中性标签 / 中性状态胶囊底"
+      },
+      "black-a15": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0,
+            0
+          ],
+          "alpha": 0.15,
+          "hex": "#00000026"
+        },
+        "$description": "[推断] 骨架屏流光（antd Skeleton gradientToColor）"
+      },
+      "black-a25": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0,
+            0
+          ],
+          "alpha": 0.25,
+          "hex": "#00000040"
+        },
+        "$description": "[观察] 禁用文字 / 演示站占位符原值（antd colorTextQuaternary），16 处"
+      },
+      "black-a45": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0,
+            0
+          ],
+          "alpha": 0.45,
+          "hex": "#00000073"
+        },
+        "$description": "[观察] 第三档文字与弹窗遮罩（antd colorTextTertiary / colorBgMask），41 处"
+      },
+      "black-a58": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0,
+            0
+          ],
+          "alpha": 0.58,
+          "hex": "#00000094"
+        },
+        "$description": "[推断] 弱化文字对比度校正：antd 第三档原值 rgba(0,0,0,0.45) 对白 3.36:1、对 #f5f5f5 3.07:1，压到 0.58（对白 5.3:1、对页面底 5.2:1）"
+      },
+      "black-a65": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0,
+            0
+          ],
+          "alpha": 0.65,
+          "hex": "#000000A6"
+        },
+        "$description": "[观察] 第二档文字，79 处（antd colorTextSecondary）"
+      },
+      "black-a85": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0,
+            0
+          ],
+          "alpha": 0.85,
+          "hex": "#000000D9"
+        },
+        "$description": "[观察] 反色底（Tooltip），3 处（antd design.md tooltip）"
+      },
+      "black-a88": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0,
+            0
+          ],
+          "alpha": 0.88,
+          "hex": "#000000E0"
+        },
+        "$description": "[观察] 正文，413 处 / 约 2715 字（antd colorText）"
+      },
+      "black-a95": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0,
+            0
+          ],
+          "alpha": 0.95,
+          "hex": "#000000F2"
+        },
+        "$description": "[观察] 侧栏当前项文字：ProLayout colorTextMenuSelected = 文字基色 95%，5 处"
+      },
+      "split": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.0196,
+            0.0196,
+            0.0196
+          ],
+          "alpha": 0.06,
+          "hex": "#0505050F"
+        },
+        "$description": "[观察] 侧栏 / 顶栏分隔线（antd colorSplit），7 处"
+      },
+      "white-a3": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.03,
+          "hex": "#FFFFFF08"
+        },
+        "$description": "[推断] 暗色侧栏项悬停：ProLayout 同算法（文字基色 #fff 的 3%）"
+      },
+      "white-a4": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.04,
+          "hex": "#FFFFFF0A"
+        },
+        "$description": "[推断] 暗色浅分区 / 表头底（antd 暗色 colorFillAlter）"
+      },
+      "white-a8": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.08,
+          "hex": "#FFFFFF14"
+        },
+        "$description": "[观察] 暗色悬停 / 选中底，暗黑取证 6 处"
+      },
+      "white-a12": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9922,
+            0.9922,
+            0.9922
+          ],
+          "alpha": 0.12,
+          "hex": "#FDFDFD1F"
+        },
+        "$description": "[观察] 暗色边线 / 分隔线（antd 暗色 colorSplit）"
+      },
+      "white-a25": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.25,
+          "hex": "#FFFFFF40"
+        },
+        "$description": "[观察] 暗色禁用文字，暗黑取证 13 处"
+      },
+      "white-a45": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.45,
+          "hex": "#FFFFFF73"
+        },
+        "$description": "[观察] 暗色第三档文字，暗黑取证 56 处"
+      },
+      "white-a50": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.5,
+          "hex": "#FFFFFF80"
+        },
+        "$description": "[推断] 暗色弱化文字校正（0.45 → 0.5，对 #141414 5.3:1、对浅分区 4.9:1）；亮色局部加载遮罩（antd Spin：白 50%）"
+      },
+      "white-a65": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.65,
+          "hex": "#FFFFFFA6"
+        },
+        "$description": "[观察] 暗色第二档文字，暗黑取证 96 字"
+      },
+      "white-a85": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0.85,
+          "hex": "#FFFFFFD9"
+        },
+        "$description": "[观察] 暗色正文，暗黑取证 499 字"
+      },
+      "shadow-a5": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0,
+            0
+          ],
+          "alpha": 0.05,
+          "hex": "#0000000D"
+        },
+        "$description": "[确认] 原卡片阴影色（按预期预览图的大而柔投影）；2026-10-09 卡片改为不投影后不再被引用，保留备回退"
+      },
+      "shadow-a8": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0,
+            0
+          ],
+          "alpha": 0.08,
+          "hex": "#00000014"
+        },
+        "$description": "[观察] 浮层 / 弹窗阴影色：boxShadowSecondary 第一层 0 6px 16px 0 rgba(0,0,0,0.08)"
+      }
+    },
+    "brand": {
+      "50": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9922,
+            0.9569,
+            0.8706
+          ],
+          "alpha": 1,
+          "hex": "#FDF4DE"
+        },
+        "$description": "[确认] 奶油金浅底：强调徽标 / Element 主色浅底 / two-tone 图标填充（表格选中行 2026-10-09 起改用悬停色）（预期预览图选中块取样 #fcf4dc；侧栏当前项 2026-10-09 起改用主色底块）；主色提亮后明度不变、彩度随主色略增"
+      },
+      "100": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9765,
+            0.9294,
+            0.8275
+          ],
+          "alpha": 1,
+          "hex": "#F9EDD3"
+        },
+        "$description": "[确认] 奶油金深一档：原为表格选中行悬停；2026-10-09 表格选中行改用悬停色后暂不引用，保留备回退"
+      },
+      "200": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8667,
+            0.7137,
+            0.4824
+          ],
+          "alpha": 1,
+          "hex": "#DDB67B"
+        },
+        "$description": "[确认] 浅金：图表第三色（预期预览图环图 / 柱状取样，随主色提亮）"
+      },
+      "300": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8196,
+            0.6706,
+            0.3843
+          ],
+          "alpha": 1,
+          "hex": "#D1AB62"
+        },
+        "$description": "[确认] 亮金：暗色链接悬停 / 选中文字（对 #141414 8.52:1）"
+      },
+      "400": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.7686,
+            0.6471,
+            0.4275
+          ],
+          "alpha": 1,
+          "hex": "#C4A56D"
+        },
+        "$description": "[确认] 原主按钮悬停（比主色浅一档）；2026-10-09 主按钮改白字后悬停改为加深，暂不引用，保留备回退"
+      },
+      "500": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.7255,
+            0.5529,
+            0.2667
+          ],
+          "alpha": 1,
+          "hex": "#B98D44"
+        },
+        "$description": "[确认] 品牌主色：用户初定 #AE8A50，2026-10-09 按用户要求提高饱和度与明度（HSB 54% / 68% → 63% / 73%），明度停在对白底 3:1 以内（3.02:1），对 #141414 6.10:1。金底上放白字（用户 2026-10-09 指定；白字 3.02:1 低于 4.5，已登记例外；深字 #1f1f1f 为 5.46:1）。整条色阶按原色阶在 OKLCH 里的位置推导：色相随主色，彩度随主色放大（深阶按平方根），浅底与深阶明度不变"
+      },
+      "550": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.6941,
+            0.5255,
+            0.2392
+          ],
+          "alpha": 1,
+          "hex": "#B1863D"
+        },
+        "$description": "[确认] 主按钮悬停：比主色深一点（白字 3.31:1）"
+      },
+      "600": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.5412,
+            0.3961,
+            0.1882
+          ],
+          "alpha": 1,
+          "hex": "#8A6530"
+        },
+        "$description": "[确认] 深金：链接 / 选中文字 / 焦点 / 提示气泡底 / 主按钮按下（对白 5.27:1，对奶油金底 4.81:1）"
+      },
+      "700": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.3882,
+            0.2667,
+            0.1176
+          ],
+          "alpha": 1,
+          "hex": "#63441E"
+        },
+        "$description": "[确认] 更深一档：链接悬停（对白 8.84:1）"
+      },
+      "800": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.2627,
+            0.2157,
+            0.1412
+          ],
+          "alpha": 1,
+          "hex": "#433724"
+        },
+        "$description": "[确认] 金色暗阶（明度同 antd 暗色算法第 3 阶）：原为暗色表格选中行悬停；2026-10-09 起暂不引用，保留备回退"
+      },
+      "900": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1961,
+            0.1608,
+            0.1098
+          ],
+          "alpha": 1,
+          "hex": "#32291C"
+        },
+        "$description": "[确认] 金色暗阶：暗色侧栏当前项 / 强调徽标 / Element 主色浅底（明度同 antd 暗色算法第 2 阶；亮金字压上去 6.61:1）"
+      },
+      "500-a16": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.7255,
+            0.5529,
+            0.2667
+          ],
+          "alpha": 0.16,
+          "hex": "#B98D4429"
+        },
+        "$description": "[推断] 图表面积填充（品牌金 16%，网格线透得出来）"
+      },
+      "500-a24": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.7255,
+            0.5529,
+            0.2667
+          ],
+          "alpha": 0.24,
+          "hex": "#B98D443D"
+        },
+        "$description": "[推断] 暗色图表面积填充（品牌金 24%）"
+      },
+      "600-a10": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.5412,
+            0.3961,
+            0.1882
+          ],
+          "alpha": 0.1,
+          "hex": "#8A65301A"
+        },
+        "$description": "[确认] 筹码（已选条件胶囊）底：品牌金深一档 #8A6530 的 10%（用户 2026-10-09 指定），与筹码字色同色"
+      },
+      "300-a10": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8196,
+            0.6706,
+            0.3843
+          ],
+          "alpha": 0.1,
+          "hex": "#D1AB621A"
+        },
+        "$description": "[确认] 暗色筹码底（用户 2026-10-09 确认）：暗色筹码字色亮金 #D1AB62 的 10%，与亮色「字色同色 10%」同一规则"
+      }
+    },
+    "emerald": {
+      "50": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9294,
+            0.9686,
+            0.9451
+          ],
+          "alpha": 1,
+          "hex": "#EDF7F1"
+        },
+        "$description": "[推断] 成功浅底（与涨同一绿）"
+      },
+      "300": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.3725,
+            0.749,
+            0.5255
+          ],
+          "alpha": 1,
+          "hex": "#5FBF86"
+        },
+        "$description": "[确认] 暗色「涨」/ 成功文字（对 #141414 8.1:1）"
+      },
+      "500": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.3059,
+            0.6039,
+            0.4157
+          ],
+          "alpha": 1,
+          "hex": "#4E9A6A"
+        },
+        "$description": "[确认] 图表绿（预期预览图柱状取样 #6cb47c 压深，对白 3.41:1）"
+      },
+      "700": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1804,
+            0.4902,
+            0.3216
+          ],
+          "alpha": 1,
+          "hex": "#2E7D52"
+        },
+        "$description": "[确认] 「涨」/ 成功文字（预期预览图涨幅字取样 #5ca47c 对白仅 2.98:1，压深到 5.03:1）"
+      },
+      "dark-1": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.0745,
+            0.149,
+            0.1059
+          ],
+          "alpha": 1,
+          "hex": "#13261B"
+        },
+        "$description": "[推断] 暗色成功浅底"
+      }
+    },
+    "orange": {
+      "1": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            0.9686,
+            0.902
+          ],
+          "alpha": 1,
+          "hex": "#FFF7E6"
+        },
+        "$description": "[推断] antd orange-1：警示浅底"
+      },
+      "4": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            0.7529,
+            0.4118
+          ],
+          "alpha": 1,
+          "hex": "#FFC069"
+        },
+        "$description": "[推断] antd orange-4：暗色警示文字"
+      },
+      "8": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.6784,
+            0.3059,
+            0
+          ],
+          "alpha": 1,
+          "hex": "#AD4E00"
+        },
+        "$description": "[推断] antd orange-8：警示文字（对浅底 5.09:1）。antd 默认警示为 gold #faad14，与品牌金 #b98d44 同色相（约 40° / 37°），改用橙色系"
+      },
+      "dark-1": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1686,
+            0.1137,
+            0.0667
+          ],
+          "alpha": 1,
+          "hex": "#2B1D11"
+        },
+        "$description": "[推断] antd 暗色 orange-1：暗色警示浅底"
+      }
+    },
+    "red": {
+      "1": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            0.9451,
+            0.9412
+          ],
+          "alpha": 1,
+          "hex": "#FFF1F0"
+        },
+        "$description": "[确认] antd red-1：错误浅底"
+      },
+      "4": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            0.4706,
+            0.4588
+          ],
+          "alpha": 1,
+          "hex": "#FF7875"
+        },
+        "$description": "[确认] antd red-4：暗色危险 / 错误文字（对 #141414 7.2:1）"
+      },
+      "7": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8118,
+            0.0745,
+            0.1333
+          ],
+          "alpha": 1,
+          "hex": "#CF1322"
+        },
+        "$description": "[确认] antd red-7：错误文字 / 危险按钮（白字 5.57:1；antd colorError #ff4d4f 白字仅 3.25:1）"
+      },
+      "8": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.6588,
+            0.0275,
+            0.102
+          ],
+          "alpha": 1,
+          "hex": "#A8071A"
+        },
+        "$description": "[确认] antd red-8：危险按钮悬停（加深，保持白字对比）"
+      },
+      "9": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.5098,
+            0,
+            0.0784
+          ],
+          "alpha": 1,
+          "hex": "#820014"
+        },
+        "$description": "[确认] antd red-9：危险按钮按下"
+      },
+      "dark-1": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1647,
+            0.0706,
+            0.0824
+          ],
+          "alpha": 1,
+          "hex": "#2A1215"
+        },
+        "$description": "[确认] antd 暗色 red-1：暗色错误浅底"
+      }
+    },
+    "blue": {
+      "1": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.902,
+            0.9569,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#E6F4FF"
+        },
+        "$description": "[确认] antd blue-1：信息浅底"
+      },
+      "4": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.4118,
+            0.6941,
+            1
+          ],
+          "alpha": 1,
+          "hex": "#69B1FF"
+        },
+        "$description": "[确认] antd blue-4：暗色信息文字"
+      },
+      "7": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.0353,
+            0.3451,
+            0.851
+          ],
+          "alpha": 1,
+          "hex": "#0958D9"
+        },
+        "$description": "[确认] antd blue-7：信息文字（对浅底 5.6:1）"
+      },
+      "dark-1": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.0667,
+            0.102,
+            0.1725
+          ],
+          "alpha": 1,
+          "hex": "#111A2C"
+        },
+        "$description": "[确认] antd 暗色 blue-1：暗色信息浅底"
+      }
+    },
+    "cat": {
+      "charcoal": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.349,
+            0.349,
+            0.349
+          ],
+          "alpha": 1,
+          "hex": "#595959"
+        },
+        "$description": "[确认] 图表深灰（预期预览图环图深色扇区取样 #646464）"
+      },
+      "gray": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.549,
+            0.549,
+            0.549
+          ],
+          "alpha": 1,
+          "hex": "#8C8C8C"
+        },
+        "$description": "[确认] 图表中灰（进度条深灰填充取样 #7c7c7c）"
+      },
+      "silver": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8118,
+            0.8118,
+            0.8118
+          ],
+          "alpha": 1,
+          "hex": "#CFCFCF"
+        },
+        "$description": "[确认] 图表浅灰（环图浅灰扇区取样 #dcdcd4）"
+      },
+      "charcoal-dark": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.749,
+            0.749,
+            0.749
+          ],
+          "alpha": 1,
+          "hex": "#BFBFBF"
+        },
+        "$description": "[确认] 暗色图表「深灰」位（深底上反过来取浅灰）"
+      },
+      "silver-dark": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.2902,
+            0.2902,
+            0.2902
+          ],
+          "alpha": 1,
+          "hex": "#4A4A4A"
+        },
+        "$description": "[确认] 暗色图表「浅灰」位"
+      }
+    }
+  },
+  "border": {
+    "width": {
+      "thin": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 0.6
+        },
+        "$description": "[确认] 全站描边 0.6px（用户决定，配合加深后的边线色）：高分屏上是一条设备像素细线，普通屏由浏览器按 1px 画；观察值 1px，88 处"
+      },
+      "bold": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 2
+        },
+        "$description": "[推断] 页签墨条 / 选中下划线（antd lineWidthBold 2px）"
+      },
+      "ring": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 3
+        },
+        "$description": "[观察] 焦点 outline 3px（offset 1px），焦点探针全部元素一致"
+      }
+    }
+  },
+  "radius": {
+    "sm": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 4
+      },
+      "$description": "[观察] 标签 / 小控件圆角，72 处（antd borderRadiusSM）"
+    },
+    "md": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 8
+      },
+      "$description": "[确认] 按钮 / 输入框圆角：按预期预览图加大（观察值 6px，226 处，antd borderRadius）"
+    },
+    "lg": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 12
+      },
+      "$description": "[确认] 卡片 / 弹窗 / 抽屉圆角：按预期预览图加大（观察值 8px，44 处，antd borderRadiusLG）"
+    },
+    "xl": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 16
+      },
+      "$description": "[确认] 整块面板 / 大容器圆角（预期预览图）"
+    },
+    "full": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 999
+      },
+      "$description": "[观察] 徽标点 / 头像全圆，81 处"
+    },
+    "xs": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 4
+      },
+      "$description": "[推断] 勾选框等 ≤ 16px 的小元素圆角：antd 勾选框 borderRadiusSM 4px（与 radius.sm 同值）"
+    }
+  },
+  "spacing": {
+    "1": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 4
+      },
+      "$description": "[观察] 间距阶梯 4px（4px 网格）"
+    },
+    "2": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 8
+      },
+      "$description": "[观察] 间距阶梯 8px（4px 网格）"
+    },
+    "3": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 12
+      },
+      "$description": "[观察] 间距阶梯 12px（4px 网格）"
+    },
+    "4": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 16
+      },
+      "$description": "[观察] 间距阶梯 16px（4px 网格）"
+    },
+    "5": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 20
+      },
+      "$description": "[观察] 间距阶梯 20px（4px 网格）"
+    },
+    "6": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 24
+      },
+      "$description": "[观察] 间距阶梯 24px（4px 网格）"
+    },
+    "8": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 32
+      },
+      "$description": "[观察] 间距阶梯 32px（4px 网格）"
+    },
+    "10": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 40
+      },
+      "$description": "[观察] 间距阶梯 40px（4px 网格）"
+    },
+    "0-5": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 2
+      },
+      "$description": "[观察] 间距阶梯 2px（4px 网格）"
+    },
+    "1-5": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 6
+      },
+      "$description": "[观察] 间距阶梯 6px（4px 网格）"
+    },
+    "2-5": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 10
+      },
+      "$description": "[观察] 10px 间距（导航图标与文字间距、筹码 / 批量条内边距）"
+    },
+    "3-5": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 14
+      },
+      "$description": "[推断] 14px 间距：配方步长（导航分组上内边距、表单底栏、分段项），演示站无对应值"
+    }
+  },
+  "size": {
+    "control": {
+      "xs": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 22
+        },
+        "$description": "[观察] 标签 / 状态徽标高 22px，20 处"
+      },
+      "sm": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 24
+        },
+        "$description": "[观察] 小按钮 / 分页项 24px，8 处（antd controlHeightSM）"
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 32
+        },
+        "$description": "[观察] 按钮 / 输入框 32px，11 处（antd controlHeight）"
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 40
+        },
+        "$description": "[推断] 大控件 40px（antd controlHeightLG；演示站未出现）"
+      },
+      "touch": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 40
+        },
+        "$description": "[推断] 触屏命中区 40px（pointer: coarse；取 antd controlHeightLG）"
+      }
+    },
+    "hit-min": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 24
+      },
+      "$description": "[推断] 图标控件最小命中区"
+    },
+    "icon": {
+      "xs": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 11
+        },
+        "$description": "[观察] 图标 11px（排序 / 下拉箭头）"
+      },
+      "sm": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 12
+        },
+        "$description": "[观察] 图标 12px，28 处"
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 14
+        },
+        "$description": "[观察] 图标 14px，98 处（与正文同高）"
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 16
+        },
+        "$description": "[观察] 图标 16px，14 处"
+      },
+      "xl": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 20
+        },
+        "$description": "[观察] 图标 20px，3 处"
+      },
+      "2xl": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 24
+        },
+        "$description": "[推断] 大图标 24px（antd 带描述的 Alert 图标）"
+      }
+    },
+    "sidebar": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 208
+      },
+      "$description": "[确认] 侧栏宽 208px：用户决定收窄（2026-10-09，侧栏内容不多；原为 ProLayout siderWidth 256px）。208 是 Ant Design Pro 早期默认 siderWidth，正好放下现有最宽的侧栏内容（预览页 207px）"
+    },
+    "sidebar-collapsed": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 64
+      },
+      "$description": "[观察] 侧栏折叠宽 64px（ProComponents SiderMenu 源码 collapsedWidth 默认值）"
+    },
+    "topbar": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 56
+      },
+      "$description": "[观察] 顶栏高 56px（ProLayout heightLayoutHeader）"
+    },
+    "form": {
+      "label": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 120
+        },
+        "$description": "[观察] 横向表单标签列宽 120px（Pro 查询表格 search.labelWidth 源码）"
+      },
+      "max": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 600
+        },
+        "$description": "[观察] 单列表单最大宽 600px（Pro 基础表单源码 maxWidth: 600，竖向布局）"
+      }
+    },
+    "modal": {
+      "sm": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 416
+        },
+        "$description": "[推断] 确认弹窗宽 416px（antd Modal.confirm 默认）"
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 520
+        },
+        "$description": "[推断] 表单弹窗宽 520px（antd Modal 默认；演示站「新建规则」两字段弹窗为 400px）"
+      }
+    },
+    "drawer": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 600
+      },
+      "$description": "[观察] 抽屉宽 600px（演示站详情抽屉）"
+    },
+    "viewport": {
+      "mobile": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 768
+        },
+        "$description": "[观察] 断点 768px，42 次（antd md）"
+      },
+      "narrow": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 992
+        },
+        "$description": "[观察] 断点 992px，18 次（antd lg）"
+      }
+    },
+    "avatar": {
+      "sm": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 24
+        },
+        "$description": "[推断] 小头像 24px（antd Avatar small）"
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 32
+        },
+        "$description": "[推断] 头像 32px（antd Avatar default）"
+      }
+    },
+    "illustration": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 100
+      },
+      "$description": "[推断] 空状态 / 结果页插图 100px（antd Empty 图片高）"
+    },
+    "search": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 216
+      },
+      "$description": "[推断] 筛选栏搜索框宽 216px（ProForm 宽度档 sm）"
+    }
+  },
+  "shadow": {
+    "y": {
+      "1": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 4
+        },
+        "$description": "[确认] 卡片阴影 y（按预期预览图加大，原 1px）；卡片已不投影，仍被主按钮按下的内阴影借用"
+      },
+      "2": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 6
+        },
+        "$description": "[观察] 浮层 / 弹窗阴影 y：boxShadowSecondary 第一层（原式三层 0 6px 16px 0 / 0 3px 6px -4px / 0 9px 28px 8px）"
+      }
+    },
+    "blur": {
+      "1": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 16
+        },
+        "$description": "[确认] 卡片阴影模糊（原 2px）；卡片已不投影，仍被主按钮按下的内阴影借用"
+      },
+      "2": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 16
+        },
+        "$description": "[观察] 浮层 / 弹窗阴影模糊（弹窗与浮层同式）"
+      }
+    }
+  },
+  "font": {
+    "letter-spacing": {
+      "caps": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "em",
+          "value": 0.06
+        },
+        "$description": "[确认] 卡片 / 分区标题的大写小字字距（预期预览图 PORTFOLIO PERFORMANCE 一类标题）"
+      },
+      "none": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "em",
+          "value": 0
+        },
+        "$description": "[推断] 数据大字不调字距（antd Statistic 无字距）"
+      }
+    },
+    "size": {
+      "sm": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 12
+        },
+        "$description": "[观察] 小字 / 辅助说明 12px（antd fontSizeSM）"
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 14
+        },
+        "$description": "[观察] 正文 14px，688 处（antd fontSize）"
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 16
+        },
+        "$description": "[观察] 卡片标题 16px，34 处"
+      },
+      "xl": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 20
+        },
+        "$description": "[观察] 页面标题 20px（antd headline-sm）"
+      },
+      "2xl": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 24
+        },
+        "$description": "[推断] 页头大标题 24px（antd headline-md）"
+      },
+      "3xl": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 30
+        },
+        "$description": "[观察] 工作台统计数字 30px，4 处"
+      },
+      "4xl": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 38
+        },
+        "$description": "[推断] 结果页 / 登录页大字 38px（antd display-lg）"
+      }
+    },
+    "line-height": {
+      "normal": {
+        "$type": "number",
+        "$value": 1.5714,
+        "$description": "[观察] 正文行高 22 / 14（观察 1.57，644 处）"
+      },
+      "heading": {
+        "$type": "number",
+        "$value": 1.3333,
+        "$description": "[推断] 标题行高 32 / 24（antd headline-md）"
+      },
+      "display": {
+        "$type": "number",
+        "$value": 1.2667,
+        "$description": "[推断] 统计数字行高 38 / 30（antd headline-lg）"
+      },
+      "hero": {
+        "$type": "number",
+        "$value": 1.2105,
+        "$description": "[推断] 大字行高 46 / 38（antd display-lg）"
+      }
+    },
+    "weight": {
+      "regular": {
+        "$type": "fontWeight",
+        "$value": 400,
+        "$description": "[观察] 正文 / 按钮 / 标签 400，711 处"
+      },
+      "semibold": {
+        "$type": "fontWeight",
+        "$value": 600,
+        "$description": "[观察] 表头 / 标题 600，52 处（antd 只用 400 与 600 两档）"
+      },
+      "medium": {
+        "$type": "fontWeight",
+        "$value": 500,
+        "$description": "[观察] 中等字重 500，1 处（工作台 h4「门店销售额排名」）；antd 界面主要只用 400 / 600"
+      }
+    },
+    "family": {
+      "sans": {
+        "$type": "fontFamily",
+        "$value": [
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "Noto Sans",
+          "sans-serif",
+          "Apple Color Emoji",
+          "Segoe UI Emoji",
+          "Segoe UI Symbol",
+          "Noto Color Emoji"
+        ],
+        "$description": "[观察] 演示站 body 字体栈去掉首位网络字体 AlibabaSans（种子不带字体文件），与 antd design.md 系统字体栈一致"
+      },
+      "mono": {
+        "$type": "fontFamily",
+        "$value": [
+          "SFMono-Regular",
+          "Consolas",
+          "Liberation Mono",
+          "Menlo",
+          "Courier",
+          "monospace"
+        ],
+        "$description": "[观察] 等宽字体栈（antd design.md code）"
+      },
+      "numeric": {
+        "$type": "fontFamily",
+        "$value": [
+          "D-DIN-PRO",
+          "D-DIN",
+          "Bahnschrift",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "Noto Sans",
+          "sans-serif"
+        ],
+        "$description": "[确认] 数据大字字体栈（用户 2026-10-09 指定 D-DIN-PRO；同日改定只给 text.display.family，小号数字回到正文字体）：D-DIN-PRO 有 400–900 六档字重；没装时退到免费的 D-DIN、Windows 自带的 Bahnschrift（DIN 1451 系），再退到正文无衬线。不放 macOS 的 DIN Alternate——只有 Bold 面，会让正文数字全变粗。种子不分发字体文件（授权与体积），项目要统一显示时自行用 @font-face 托管。D-DIN-PRO 没有等宽数字，tabular-nums 对它不生效"
+      }
+    },
+    "numeric": {
+      "tabular": {
+        "$type": "string",
+        "$value": "tabular-nums",
+        "$description": "[推断] 金额 / 单号 / 统计数字等宽对齐"
+      }
+    },
+    "style": {
+      "normal": {
+        "$type": "string",
+        "$value": "normal",
+        "$description": "[观察] 链接不用斜体"
+      }
+    }
+  },
+  "duration": {
+    "fast": {
+      "$type": "duration",
+      "$value": {
+        "unit": "ms",
+        "value": 100
+      },
+      "$description": "[观察] 100ms，43 处（antd motionDurationFast）"
+    },
+    "normal": {
+      "$type": "duration",
+      "$value": {
+        "unit": "ms",
+        "value": 200
+      },
+      "$description": "[观察] 200ms，1123 处（antd motionDurationMid）"
+    },
+    "slow": {
+      "$type": "duration",
+      "$value": {
+        "unit": "ms",
+        "value": 300
+      },
+      "$description": "[观察] 300ms，745 处（antd motionDurationSlow）"
+    }
+  },
+  "easing": {
+    "standard": {
+      "$type": "cubicBezier",
+      "$value": [
+        0.25,
+        0.1,
+        0.25,
+        1
+      ],
+      "$description": "[观察] ease，1594 处"
+    },
+    "enter": {
+      "$type": "cubicBezier",
+      "$value": [
+        0.215,
+        0.61,
+        0.355,
+        1
+      ],
+      "$description": "[观察] cubic-bezier(0.215, 0.61, 0.355, 1)，93 处（antd motionEaseOut）"
+    },
+    "exit": {
+      "$type": "cubicBezier",
+      "$value": [
+        0.55,
+        0.055,
+        0.675,
+        0.19
+      ],
+      "$description": "[推断] 退场加速（antd motionEaseIn）"
+    }
+  },
+  "z": {
+    "100": {
+      "$type": "number",
+      "$value": 100,
+      "$description": "[观察] 顶栏 / 固定层 z-index 100，8 处"
+    },
+    "1000": {
+      "$type": "number",
+      "$value": 1000,
+      "$description": "[观察] 弹窗 / 抽屉 z-index 1000，5 处（antd zIndexPopupBase）"
+    },
+    "1010": {
+      "$type": "number",
+      "$value": 1010,
+      "$description": "[观察] 全局提示 z-index 1010，1 处（antd message）"
+    },
+    "1050": {
+      "$type": "number",
+      "$value": 1050,
+      "$description": "[推断] 下拉 / 气泡 z-index 1050（antd Dropdown：高于弹窗，弹窗里的下拉才能展开）"
+    }
+  },
+  "opacity": {
+    "40": {
+      "$type": "number",
+      "$value": 0.4,
+      "$description": "[推断] 禁用态透明度：antd 用禁用色表达（文字 25% 黑 + 4% 黑底），桥接用透明度实现时取 0.4 近似"
+    },
+    "100": {
+      "$type": "number",
+      "$value": 1,
+      "$description": "[推断] 不压透明度：金底深字对比 5.14:1，次要文字压到 0.9 就只剩 4.46:1"
+    }
+  },
+  "stroke-width": {
+    "3": {
+      "$type": "number",
+      "$value": 3,
+      "$description": "[推断] IconPark 描边 3（48 网格，约 1/16，与 antd 线性图标笔画比例一致；Citrine 实测 3 在 Mac 偏细，接入时可按需调 4）"
+    }
+  },
+  "decoration": {
+    "none": {
+      "$type": "string",
+      "$value": "none",
+      "$description": "[观察] 链接无下划线：演示站文字装饰统计为空，链接 79 处都靠颜色区分"
+    }
+  },
+  "icon": {
+    "set": {
+      "antd": {
+        "$type": "string",
+        "$value": "@ant-design/icons",
+        "$description": "[观察] 线性图标（anticon，148 处 outline）；种子不带图标资源，接入方自行安装"
+      }
+    }
+  }
+}

@@ -179,7 +179,7 @@
 
 ## 桥接缺口
 
-`bridge/` 从 citrine 2.12.0 拷入 21 个文件当起点（`citrine/seeds/brand-yellow-e`）。它把组件库的变量与写死的色表接到语义 token 上，这部分通用；但也带着 Citrine 的品牌决定（hover 不出现品牌色、选中用反转块、状态色只做浅底胶囊、quiet 按钮必须有浅底等）：选中块 2026-10-09 已按 antd 改为主色系，并在 `morganite/testbed/element-lab` 用真实 Element Plus 亮 / 暗走查过（见本节末）。桥接引用的 22 个缺失变量全部**补 token**，另有 ECharts 用模板字符串拼出的顺序色 5 个与新增的提示气泡 1 个（表格最后两行）；`check-bridge-vars.mjs` 复核：缺失 0：
+`bridge/` 从 citrine 2.12.0 拷入 21 个文件当起点（`citrine/seeds/brand-yellow-e`）。它把组件库的变量与写死的色表接到语义 token 上，这部分通用；但也带着 Citrine 的品牌决定（hover 不出现品牌色、选中用反转块、状态色只做浅底胶囊、quiet 按钮必须有浅底等），接入前还要挂走查页亮 / 暗逐组件过一遍。桥接引用的 22 个缺失变量全部**补 token**，另有 ECharts 用模板字符串拼出的顺序色 5 个与新增的提示气泡 1 个（表格最后两行）；`check-bridge-vars.mjs` 复核：缺失 0：
 
 | 桥接引用的变量 | 引用文件 | 决定 |
 | --- | --- | --- |
@@ -190,7 +190,7 @@
 | `--icon-stroke-width` | iconpark.config.ts、iconpark.css | 补 token：`icon.stroke.width`，与 antd 线性图标笔画比例一致（比 Citrine 细一档） |
 | `--spacing-2-5` | element-plus.css、recipes.css | 补 token：`spacing.2-5`（演示站实测） |
 | `--spacing-3-5` | element-plus.css、recipes.css | 补 token：`spacing.3-5`（配方步长，演示站无对应值） |
-| `--text-display-family` | element-plus.css、recipes.css | 补 token：`text.display.family` → 初为正文字体栈；2026-10-09 用户改为 D-DIN-PRO（`font.family.numeric`） |
+| `--text-display-family` | element-plus.css、recipes.css | 补 token：`text.display.family` → 正文字体栈（不用 Citrine 的 DIN 系） |
 | `--text-link-style` | element-plus.css、recipes.css | 补 token：`text.link.style` → normal（不用 Citrine 的斜体） |
 | `--avatar-size-md` | recipes.css | 补 token：`avatar.size.md`（antd Avatar default） |
 | `--avatar-size-sm` | recipes.css | 补 token：`avatar.size.sm`（antd Avatar small） |
@@ -212,18 +212,15 @@
 
 效果预览扩成 8 页后对配方的修正（2026-10-09，`morganite/previews/rose-gold-admin/` 逐页走查发现）：`.badge.brand` 原是 Citrine 的「反转块」（`color.action.selected` 底），本系统的 action.selected 是白块，亮色下白底白卡看不见，改为奶金浅底 + 深金字；`.batch` 文字由 `color.text.selected` 改为 DESIGN 写的 `color.text.primary`；纯 CSS 表格补上选中行 `tr.is-selected`（同日改为与悬停同色 `color.bg.hover`，再悬停 `color.bg.selected-hover`）；`.two-col` 只在手机断点里出现、桌面没有定义，补上；「窄屏」媒体查询从 Citrine 的 1366px 改为与 `layout.breakpoint.narrow` 一致的 992px。DESIGN 配方表补「步骤条」「时间线」两行（照 Element 桥接已有实现）。
 
-Element Plus 实测（2026-10-09，`morganite/testbed/element-lab`，逐条记录在它的 FINDINGS.md）：按 adopter「从 0 开始」接入 Element Plus 2.14，用 `KitchenSink.vue` 与一张业务页亮 / 暗核对同日拍板的选中规则，都按预期渲染。修了日期范围中间段的灰带（Element 默认取边线色，改为 `color.bg.selected-subtle`）；模板里残留的 Citrine 说法一并改掉：`notes-element-plus.md` 的选中规则（另补表格数字列用 `class-name="num"`）、`notes-shadcn.md` 与 `shadcn.css` 注释里的控件高度（改为 24 / 32 / 40）、三个样式入口模板注释里的占位符、`KitchenSink.vue` 挂法里的包名、AGENTS 模板里不存在的 `npm run accept`；`package.json` 的打包清单排除预览截图（npm 包从 1.5 MB 降到 143 kB）。
-
 ## 风险与待确认
 
 - 推断清单 56 条仍是 `[推断]`：值都有 antd 规格或规则依据，但未经用户逐条确认；`publish-check` 在确认前会把它们报为未确认（0.x 可带着 `--allow-inferred` 先发，CHANGELOG 写清）。
 - 警示色改用橙色系（`color.status.warning*`）是为避开品牌金做的偏离，属于用户「沿用 antd 功能色」之外的判断，待确认。
 - 暗色证据来自 Pro 的「暗色风格（实验功能）」，只测了工作台与查询表格；表单、弹窗、抽屉的暗色值按 antd 暗色算法推断。
 - 覆盖盲区：只取了工作台 / 查询表格 / 基础表单 / 新建弹窗 / 详情抽屉；登录页、分步表单、结果页、空状态、通知、上传、步骤条没有取证，相关角色（`text.hero.*`、`illustration.size.md`、`icon.size.2xl` 等）按 antd 规格推断。
-- 桥接沿用 Citrine 的实现：Element Plus 栈的 extra 带 IconPark 桥接，而本系统图标库登记为 `@ant-design/icons`，接入前决定用哪套图标；桥接里其他 Citrine 式的组件习惯（操作胶囊等配方）还没按 antd 的做法逐个走查（选中块已改，见用户决定表）。
+- 桥接沿用 Citrine 的实现：Element Plus 栈的 extra 带 IconPark 桥接，而本系统图标库登记为 `@ant-design/icons`，接入前决定用哪套图标；桥接里其他 Citrine 式的组件习惯（操作胶囊、反转块选中等配方）还没按 antd 的做法逐个走查。
 - 开关关闭态：用户决定保持 `color.border.strong` 轨道（2026-10-09），白滑块对轨道约 1.4:1，关闭态主要靠滑块位置与文字标签区分；若在低对比屏上看不清，改指 `color.data.inactive`（25% 黑，antd 原值）即可。
-- Element 选中块已在实测项目里亮 / 暗核对（日期面板、徽标、标签、评分、树、两种分页）；引导指示点、表头单选筛选、树拖放目标没有在真实组件里看过。分段类（单选 / 多选按钮组、`el-segmented`）当前项是灰轨道上的白块，亮色下对轨道约 1.09:1，主要靠字重与字色区分。
-- 没有验收工具：身份文件没有 `accept`，AGENTS 模板的验收只写 build + guard，`ds.mjs ci` 也只能做 guard。是否沿用 citrine-accept 并写一份 Morganite 的验收清单，待决定。
+- Element 选中块已按 antd 改为主色系（见用户决定表），但还没在真实 Element 组件里渲染核对：测试项目里逐个确认日期面板、徽标、标签、评分、树、表头筛选、引导；单选 / 多选按钮组与分段选择器仍是灰轨道上的白块，也要确认在无投影时看得出。
 - `.stat-strip` 自带 `margin-bottom`，放进带 gap 的内容区会和 gap 叠成双倍间距（效果预览里单独抵消了）。
 - 词表外的 11 个语义名跟随 Citrine 桥接，若词表以后收编或改名，需要同步。
 - 成功色 `color.status.success*` 顺带统一成与「涨」同一种祖母绿（推断，待确认）；若要保留 antd 的橄榄绿，改回 antd green 色板即可。

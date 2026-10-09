@@ -125,7 +125,7 @@
 
 /* ── 组件级接管（2.5.0，来自 React 实验项目的渲染验证）：shadcn 组件里写死或指向 --primary 的地方，按 DESIGN 配方改到 token。
    全部按 data-slot 选择，不依赖 Tailwind 类名；放在无 layer 的位置，天然压过 @layer utilities。 ── */
-/* 控件三档高度：shadcn 用 h-8 / h-9 / h-10（32 / 36 / 40）表达 sm / default / lg，接到 control.height.sm / md / lg（28 / 34 / 40）；size-9 是图标按钮 */
+/* 控件三档高度：shadcn 用 h-8 / h-9 / h-10（32 / 36 / 40）表达 sm / default / lg，接到 control.height.sm / md / lg（24 / 32 / 40）；size-9 是图标按钮 */
 [data-slot="button"].h-8, [data-slot="select-trigger"][data-size="sm"] { height: var(--control-height-sm); }
 [data-slot="button"].h-9, [data-slot="input"].h-9, [data-slot="select-trigger"][data-size="default"] { height: var(--control-height-md); }
 [data-slot="button"].h-10 { height: var(--control-height-lg); }

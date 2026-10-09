@@ -25,6 +25,7 @@
   - Element 选中块按 antd 改主色系：日期选中日（原为白底白字，看不见）、主色徽标、深色 / 勾选标签、引导点改金底白字，评分星改金色，树当前节点与拖放目标改奶金浅底，表头筛选选中项同下拉选中项；`color.action.selected` 白块只留给分段类（`el-segmented`、单选 / 多选按钮组、shadcn Tabs）。
   - 小号数字退回正文字体：`text.numeric.family` 改指 `font.family.body`（表格金额与日期、百分比、涨跌、图表数值、页码），配等宽数字；只有数据大字 `text.display.family` 用 D-DIN-PRO。
   - 开关关闭态保持 #D8D8D8 轨道；暗色筹码底亮金 10% 由推断改为确认。
+- Element Plus 实测（2026-10-09，`morganite/testbed/element-lab`）：日期范围中间段改为奶金浅底（原为 Element 默认的边线灰）；模板去掉 Citrine 残留——`notes-element-plus.md` 的选中规则与表格数字列用法、`notes-shadcn.md` 与 `shadcn.css` 注释的控件高度 24 / 32 / 40、三个样式入口模板注释里的占位符、`KitchenSink.vue` 挂法的包名、AGENTS 模板不再写不存在的 `npm run accept`；`package.json` 打包清单排除 `design-system/preview/shots` 与 `static`（npm 包 1.5 MB → 143 kB）。
 - 规模：primitives 164 个；语义角色 178 个（观察 70 / 确认 52 / 推断 56），中后台必须处理的缺口 0；Theme `dark` delta 64 条。
 - 桥接：从 citrine 2.12.0 拷入 Element Plus / shadcn / 页面配方 / ECharts 桥接当起点，引用的缺失变量全部补 token（共 28 个：Citrine 桥接引用的 22 个，加 ECharts 顺序色 5 个与图表提示气泡 1 个；其中 17 个语义名在词表外）；组件走查未做。
 - 对比度：50 组 45 组通过；填充式输入框的静息边线（亮 / 暗）、亮色卡片边线与主按钮白字（亮 / 暗）登记为例外，亮色侧栏当前项白字（不在配对里，人工核对）也登记为例外，见 DESIGN「验收基线」。侧栏分组标题 `color.text.sidebar-muted` 沿用 ProLayout 的 45% 不达 4.5（不在 50 组配对里，效果预览页实测发现），改为与弱化文字同值（推断，待确认）。推断项与风险见 design-system/AUDIT.md。

@@ -443,6 +443,8 @@ button, input, select, textarea { font-family: inherit; }
 .el-picker-panel, .el-date-picker, .el-date-range-picker {
   --el-datepicker-active-color: var(--color-action-primary);   /* 选中日：金底白字圆块（同主按钮）；action.selected 在本系统是白块，Element 的白字压上去看不见 */
   --el-datepicker-hover-text-color: var(--color-text-primary);
+  --el-datepicker-inrange-bg-color: var(--color-bg-selected-subtle);   /* 范围内：奶金浅底（同 antd 范围选择）；Element 默认取边线色，是一条灰带 */
+  --el-datepicker-inrange-hover-bg-color: var(--color-bg-selected-subtle);
 }
 /* 「今天」与月 / 年面板的 today：Element 写死主色黄字，白底黄字违禁 → 近黑 + medium */
 .el-date-table td.today .el-date-table-cell__text,

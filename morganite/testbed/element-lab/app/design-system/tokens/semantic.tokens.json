@@ -1,0 +1,1024 @@
+{
+  "color": {
+    "bg": {
+      "page": {
+        "$type": "color",
+        "$value": "{color.neutral.100}",
+        "$description": "[观察] ProLayout bgLayout 渐变 #fff → #f5f5f5（28%）的终点；渐变不进 token，页面底取纯色"
+      },
+      "surface": {
+        "$type": "color",
+        "$value": "{color.white}",
+        "$description": "[观察] 卡片 / 表格 / 表单容器底，118 处"
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{color.neutral.100}",
+        "$description": "[确认] 表头 / 次级容器底：预期预览图表头比卡片深一档（取样 #f2f2ee）；演示站为 #fafafa"
+      },
+      "hover": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a4}",
+        "$description": "[观察] 悬停探针：文字按钮 / 分段项 hover 底 rgba(0,0,0,0.04)"
+      },
+      "input": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a4}",
+        "$description": "[确认] 填充式输入框（用户选择 Pro v6 原样）：演示站 ProForm 输入框 / 文本域底 rgba(0,0,0,0.04)、无边线"
+      },
+      "elevated": {
+        "$type": "color",
+        "$value": "{color.white}",
+        "$description": "[观察] 弹窗 .ant-modal-container / 抽屉 .ant-drawer-section 白底；与卡片同色、靠阴影区分（antd 表面三层）"
+      },
+      "overlay": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a45}",
+        "$description": "[观察] 弹窗与抽屉遮罩 rgba(0,0,0,0.45)"
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a85}",
+        "$description": "[观察] Tooltip 反色底 rgba(0,0,0,0.85)，3 处"
+      },
+      "selected": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a4}",
+        "$description": "[观察] 小面积选中（当前导航项 / 批量条）用中性底：ProLayout colorBgMenuItemSelected = 文字基色 4%"
+      },
+      "selected-subtle": {
+        "$type": "color",
+        "$value": "{color.brand.50}",
+        "$description": "[确认] 奶油金浅底：强调徽标、Element 主色浅底（primary-light-9）；2026-10-09 起表格选中行改用 color.bg.hover，不再用它"
+      },
+      "selected-hover": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a6}",
+        "$description": "[推断] 表格选中行再悬停：选中行已与悬停同色（用户 2026-10-09 决定），再悬停深一档用 6% 黑（原为金色 20% 浅底）"
+      },
+      "chip": {
+        "$type": "color",
+        "$value": "{color.brand.600-a10}",
+        "$description": "[确认] 筹码（已选条件胶囊）底：用户 2026-10-09 指定 #8A6530 10%，即筹码字色 color.text.selected 的同色 10% 浅底，叠在卡片白底上约 #F3F0EA；原用 color.bg.selected（4% 黑）。批量条、图标按钮选中、进度条轨道等其余小面积选中仍是中性浅灰"
+      },
+      "brand": {
+        "$type": "color",
+        "$value": "{color.brand.500}",
+        "$description": "[确认] 品牌决定：玫瑰金主色 #b98d44（用户初定 #ae8a50，2026-10-09 提高饱和度与明度）"
+      },
+      "skeleton": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a6}",
+        "$description": "[推断] antd Skeleton 底 rgba(0,0,0,0.06)"
+      },
+      "skeleton-highlight": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a15}",
+        "$description": "[推断] antd Skeleton 流光 rgba(0,0,0,0.15)"
+      },
+      "readonly": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a4}",
+        "$description": "[推断] antd 禁用 / 只读容器底 colorBgContainerDisabled rgba(0,0,0,0.04)"
+      },
+      "mask": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a50}",
+        "$description": "[推断] antd Spin 局部加载遮罩：容器底白 50%"
+      },
+      "sidebar": {
+        "$type": "color",
+        "$value": "{color.white}",
+        "$description": "[确认] 侧栏纯白底：用户指定（2026-10-09；原为 ProLayout 侧栏透明、透出页面底 #f5f5f5），与顶栏、卡片同色，和浅灰页面底分开"
+      },
+      "sidebar-hover": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a3}",
+        "$description": "[观察] ProLayout sider.colorBgMenuItemHover = 文字基色 3%"
+      },
+      "sidebar-selected": {
+        "$type": "color",
+        "$value": "{color.brand.500}",
+        "$description": "[确认] 侧栏当前项（亮色）用主色底块：用户指定（2026-10-09，替代预期预览图的奶油金底）；暗色保持金色暗底"
+      }
+    },
+    "text": {
+      "primary": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a88}",
+        "$description": "[观察] 承载最多文字（约 2715 字）rgba(0,0,0,0.88)，对白 16.5:1"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a65}",
+        "$description": "[观察] 第二档文字 rgba(0,0,0,0.65)，对白 7:1"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a58}",
+        "$description": "[推断] antd 第三档 rgba(0,0,0,0.45) 达不到弱化文字 4.5:1，压到 0.58"
+      },
+      "placeholder": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a45}",
+        "$description": "[推断] 演示站占位符 rgba(0,0,0,0.25) 对白 1.84:1（低于占位符底线 3）；改用 antd 第三档 0.45（3.36:1）"
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{color.white}",
+        "$description": "[推断] Tooltip / 反色底上的白字"
+      },
+      "on-primary": {
+        "$type": "color",
+        "$value": "{color.white}",
+        "$description": "[确认] 金底白字：主按钮 / 分页当前页 / 步骤当前步 / 勾选标记 / logo 底块（用户指定 2026-10-09：深字显脏）；对主色 3.02:1，低于 4.5，已登记例外"
+      },
+      "on-danger": {
+        "$type": "color",
+        "$value": "{color.white}",
+        "$description": "[推断] 危险按钮白字（对 #cf1322 5.57:1）"
+      },
+      "link": {
+        "$type": "color",
+        "$value": "{color.brand.600}",
+        "$description": "[确认] 链接取金色深一档 #8a6530（对白 5.27:1）；演示站链接为主色 #1677ff，79 处"
+      },
+      "link-hover": {
+        "$type": "color",
+        "$value": "{color.brand.700}",
+        "$description": "[确认] 链接悬停再深一档 #63441e：antd 悬停变浅，金色变浅会低于 4.5，改为变深"
+      },
+      "danger": {
+        "$type": "color",
+        "$value": "{color.red.7}",
+        "$description": "[确认] antd 错误色压深到 red-7 #cf1322（对白 5.57:1）"
+      },
+      "brand": {
+        "$type": "color",
+        "$value": "{color.brand.500}",
+        "$description": "[确认] ≥ 20px 的展示字用品牌金（对白 3.02:1，满足大字 3:1）"
+      },
+      "selected": {
+        "$type": "color",
+        "$value": "{color.brand.600}",
+        "$description": "[确认] 排序激活 / 当前页签文字：演示站为主色；换金后取深一档保证 ≥ 4.5"
+      },
+      "on-selected": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a88}",
+        "$description": "[观察] 分段选择器当前项（白底）上的正文色"
+      },
+      "on-brand": {
+        "$type": "color",
+        "$value": "{color.white}",
+        "$description": "[确认] 品牌金面上的白字（与主按钮同一规则，用户 2026-10-09 指定金底放白字）；正文对主色 3.02:1 不达 4.5，品牌面上的正文宜用 ≥ 24px 的大字"
+      },
+      "on-overlay": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a88}",
+        "$description": "[推断] 遮罩 45% 黑叠在 #f5f5f5 上偏浅（合成 #878787），用正文色"
+      },
+      "sidebar": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a65}",
+        "$description": "[观察] ProLayout sider.colorTextMenu = colorTextSecondary（0.65）"
+      },
+      "sidebar-strong": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a88}",
+        "$description": "[观察] ProLayout 菜单悬停 / 标题 = colorText（0.88）；悬停探针 0.65 → 0.88"
+      },
+      "sidebar-muted": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a58}",
+        "$description": "[推断] 侧栏分组标题 / 页脚：ProLayout sider.colorTextMenuSecondary 原为 0.45，压侧栏底 #f5f5f5 只有 3.31:1（12px 不达 4.5），与 color.text.muted 同取 0.58（5.19:1）"
+      },
+      "sidebar-selected": {
+        "$type": "color",
+        "$value": "{color.white}",
+        "$description": "[确认] 侧栏当前项白字 / 白图标（亮色，用户指定 2026-10-09）：对主色底块 3.02:1，低于 14px 文字的 4.5，已登记例外；回补路径：底块改用 color.brand.600（白字 5.27:1），或恢复奶油金底配深金字"
+      }
+    },
+    "action": {
+      "primary": {
+        "$type": "color",
+        "$value": "{color.brand.500}",
+        "$description": "[确认] 品牌决定：主按钮玫瑰金 #b98d44（用户初定 #ae8a50，2026-10-09 提亮），上放白字（用户 2026-10-09 指定）；演示站为主色 #1890ff"
+      },
+      "primary-hover": {
+        "$type": "color",
+        "$value": "{color.brand.550}",
+        "$description": "[确认] 悬停加深一点 #b1863d：金底白字变浅会更难读（变浅到 #c4a56d 时白字只有 2.35:1），改为变深；白字 3.31:1"
+      },
+      "primary-active": {
+        "$type": "color",
+        "$value": "{color.brand.600}",
+        "$description": "[确认] 按下再深一档 #8a6530（与 antd 算法第 7 阶同深），白字 5.27:1"
+      },
+      "secondary-hover": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a4}",
+        "$description": "[推断] 次要按钮悬停底 rgba(0,0,0,0.04)（悬停探针）；antd 描边按钮悬停改的是边线与文字色，桥接用底色表达"
+      },
+      "danger": {
+        "$type": "color",
+        "$value": "{color.red.7}",
+        "$description": "[确认] antd 危险色 #ff4d4f 白字 3.25:1，压深到 red-7 #cf1322（5.57:1）"
+      },
+      "danger-hover": {
+        "$type": "color",
+        "$value": "{color.red.8}",
+        "$description": "[确认] 悬停加深到 red-8 #a8071a（antd 悬停变浅会低于 4.5）"
+      },
+      "danger-active": {
+        "$type": "color",
+        "$value": "{color.red.9}",
+        "$description": "[确认] 按下 red-9 #820014"
+      },
+      "selected": {
+        "$type": "color",
+        "$value": "{color.white}",
+        "$description": "[观察] 分段选择器当前项白底（轨道 rgba(0,0,0,0.04)），工作台「全部渠道 / 线上 / 门店」"
+      },
+      "quiet": {
+        "$type": "color",
+        "$value": "{color.neutral.transparent}",
+        "$description": "[观察] 文字按钮静息透明：工作台「今日 / 本周 / 本月 / 本年」（antd text 按钮；与 Citrine「quiet 必须有浅底」不同）"
+      },
+      "quiet-hover": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a4}",
+        "$description": "[观察] 文字按钮悬停 rgba(0,0,0,0.04)（悬停探针）"
+      }
+    },
+    "border": {
+      "default": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a6}",
+        "$description": "[确认] 卡片 / 容器 / 表格分隔线：用户指定 6% 黑（2026-10-09，替代此前「过 1.3 底线、与控件描边同档」的决定）；对页面底低于 1.3 的可辨底线，已登记例外，回补路径：指回 color.neutral.300"
+      },
+      "strong": {
+        "$type": "color",
+        "$value": "{color.neutral.300}",
+        "$description": "[确认] 控件 / 按钮 / 勾选框描边（观察 #d9d9d9，加深一级）；2026-10-09 卡片边线改为 6% 黑后，两档重新分开（同 antd colorBorder / colorBorderSecondary）"
+      },
+      "input": {
+        "$type": "color",
+        "$value": "{color.neutral.transparent}",
+        "$description": "[确认] 填充式输入框静息无边线（演示站 border-color transparent）；悬停 / 焦点边线由 border.strong / border.focus 表达"
+      },
+      "focus": {
+        "$type": "color",
+        "$value": "{color.brand.600}",
+        "$description": "[确认] 焦点边线金色深一档 #8a6530（对白 5.27:1）；演示站为主色浅环 #91d5ff"
+      },
+      "current": {
+        "$type": "color",
+        "$value": "{color.brand.500}",
+        "$description": "[确认] 页签墨条等当前指示线：演示站为主色；换金 #b98d44（对白 3.02:1 ≥ 3）"
+      },
+      "sidebar": {
+        "$type": "color",
+        "$value": "{color.neutral.split}",
+        "$description": "[观察] 侧栏 / 顶栏分隔线 rgba(5,5,5,0.06)"
+      }
+    },
+    "focus": {
+      "ring": {
+        "$type": "color",
+        "$value": "{color.brand.600}",
+        "$description": "[确认] 焦点环金色深一档 #8a6530；演示站 outline 3px #91d5ff（对白 1.7:1，达不到 3:1）。只给按钮、链接、菜单项这类，输入类控件聚焦不加环（2026-10-09）"
+      }
+    },
+    "status": {
+      "success": {
+        "$type": "color",
+        "$value": "{color.emerald.700}",
+        "$description": "[推断] 成功与「涨」统一成预期预览图的祖母绿（对浅底 4.6:1）；原为 antd green-8 #237804"
+      },
+      "success-bg": {
+        "$type": "color",
+        "$value": "{color.emerald.50}",
+        "$description": "[推断] 成功浅底（与涨同一绿）"
+      },
+      "warning": {
+        "$type": "color",
+        "$value": "{color.orange.8}",
+        "$description": "[推断] antd orange-8 #ad4e00（对浅底 5.09:1）；antd 默认警示 gold 与品牌金同色相，改用橙色系"
+      },
+      "warning-bg": {
+        "$type": "color",
+        "$value": "{color.orange.1}",
+        "$description": "[推断] antd orange-1 #fff7e6"
+      },
+      "error": {
+        "$type": "color",
+        "$value": "{color.red.7}",
+        "$description": "[确认] antd red-7 #cf1322（对浅底 5.07:1）；演示站状态点 #ff4d4f"
+      },
+      "error-bg": {
+        "$type": "color",
+        "$value": "{color.red.1}",
+        "$description": "[确认] antd red-1 #fff1f0"
+      },
+      "info": {
+        "$type": "color",
+        "$value": "{color.blue.7}",
+        "$description": "[确认] antd blue-7 #0958d9（design.md tag-blue 文字）"
+      },
+      "info-bg": {
+        "$type": "color",
+        "$value": "{color.blue.1}",
+        "$description": "[确认] antd blue-1 #e6f4ff（design.md alert-info）"
+      },
+      "neutral": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a65}",
+        "$description": "[推断] 中性状态文字借用次要文字 0.65"
+      },
+      "neutral-bg": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a6}",
+        "$description": "[确认] 中性标签 / 中性状态胶囊浅底：用户 2026-10-09 选 6% 黑（原借用浅分区 #fafafa，白卡上看不出底）；半透明，压在表格悬停行、表头上仍比底深一档；Element 里与它同值的标签边线改为透明，免得叠出深一圈"
+      }
+    },
+    "brand": {
+      "indicator": {
+        "$type": "color",
+        "$value": "{color.brand.500}",
+        "$description": "[确认] 品牌指示条 / 数据卡描边用品牌金（对白 3.02:1）"
+      }
+    },
+    "icon": {
+      "default": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a65}",
+        "$description": "[观察] 菜单 / 表格操作图标随次要文字 rgba(0,0,0,0.65)"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a45}",
+        "$description": "[观察] 顶栏操作图标 colorTextTertiary（ProLayout colorTextRightActionsItem），对白 3.36:1"
+      },
+      "brand": {
+        "$type": "color",
+        "$value": "{color.brand.500}",
+        "$description": "[确认] two-tone 图标描边用品牌金（antd two-tone 默认取主色）"
+      },
+      "two-tone": {
+        "$type": "color",
+        "$value": "{color.brand.50}",
+        "$description": "[确认] two-tone 图标填充用品牌金浅底（antd 取主色 1 阶）"
+      }
+    },
+    "control": {
+      "knob": {
+        "$type": "color",
+        "$value": "{color.white}",
+        "$description": "[推断] 开关滑块白色（antd Switch handle）"
+      }
+    },
+    "chart": {
+      "1": {
+        "$type": "color",
+        "$value": "{color.brand.500}",
+        "$description": "[确认] 品牌金领衔（预期预览图折线 / 环图主色）"
+      },
+      "2": {
+        "$type": "color",
+        "$value": "{color.cat.charcoal}",
+        "$description": "[确认] 深灰（预期预览图环图第二色）"
+      },
+      "3": {
+        "$type": "color",
+        "$value": "{color.brand.200}",
+        "$description": "[确认] 浅金（预期预览图环图 / 柱状）"
+      },
+      "4": {
+        "$type": "color",
+        "$value": "{color.cat.gray}",
+        "$description": "[确认] 中灰"
+      },
+      "5": {
+        "$type": "color",
+        "$value": "{color.cat.silver}",
+        "$description": "[确认] 浅灰（预期预览图环图浅灰扇区）"
+      },
+      "6": {
+        "$type": "color",
+        "$value": "{color.emerald.500}",
+        "$description": "[确认] 绿（预期预览图市场情绪柱）；不与「涨」混用时才作分类色"
+      },
+      "area": {
+        "$type": "color",
+        "$value": "{color.brand.500-a16}",
+        "$description": "[推断] 面积填充：品牌金 16%"
+      },
+      "tooltip": {
+        "$type": "color",
+        "$value": "{color.brand.600}",
+        "$description": "[确认] 图表提示气泡深金底（预期预览图为金底白字 3.1:1，压深一档到 5.27:1），文字用 color.text.inverse"
+      },
+      "sequential": {
+        "1": {
+          "$type": "color",
+          "$value": "{color.neutral.200}",
+          "$description": "[推断] 顺序色：四档灰 + 品牌金封顶（与 Citrine 用法一致），按离散分段使用"
+        },
+        "2": {
+          "$type": "color",
+          "$value": "{color.neutral.300}",
+          "$description": "[推断] 顺序色第二档（排行榜非前三名）"
+        },
+        "3": {
+          "$type": "color",
+          "$value": "{color.neutral.500}",
+          "$description": "[推断] 顺序色第三档"
+        },
+        "4": {
+          "$type": "color",
+          "$value": "{color.cat.charcoal}",
+          "$description": "[推断] 顺序色第四档"
+        },
+        "5": {
+          "$type": "color",
+          "$value": "{color.brand.500}",
+          "$description": "[推断] 顺序色封顶：品牌金（排行榜前三名）"
+        }
+      }
+    },
+    "data": {
+      "increase": {
+        "$type": "color",
+        "$value": "{color.emerald.700}",
+        "$description": "[确认] 用户决定绿涨红跌（预期预览图）；涨幅文字可读 5.03:1"
+      },
+      "decrease": {
+        "$type": "color",
+        "$value": "{color.red.7}",
+        "$description": "[确认] 跌用红（对白 5.57:1）"
+      },
+      "inactive": {
+        "$type": "color",
+        "$value": "{color.neutral.black-a25}",
+        "$description": "[推断] 已结束的进度条用禁用色 rgba(0,0,0,0.25)"
+      }
+    }
+  },
+  "border": {
+    "width": {
+      "default": {
+        "$type": "dimension",
+        "$value": "{border.width.thin}",
+        "$description": "[观察] 最常见的边线宽 1px，88 处"
+      },
+      "control": {
+        "$type": "dimension",
+        "$value": "{border.width.thin}",
+        "$description": "[推断] 勾选框 / 单选框边线 1px"
+      },
+      "active": {
+        "$type": "dimension",
+        "$value": "{border.width.bold}",
+        "$description": "[推断] 页签墨条 / 选中下划线 2px"
+      },
+      "indicator": {
+        "$type": "dimension",
+        "$value": "{border.width.bold}",
+        "$description": "[推断] 指示条 2px"
+      }
+    }
+  },
+  "focus": {
+    "ring": {
+      "width": {
+        "$type": "dimension",
+        "$value": "{border.width.ring}",
+        "$description": "[观察] 焦点 outline 3px（offset 1px）；输入类控件聚焦不用（2026-10-09）"
+      }
+    }
+  },
+  "control": {
+    "height": {
+      "xs": {
+        "$type": "dimension",
+        "$value": "{size.control.xs}",
+        "$description": "[观察] 标签 / 状态徽标 22px，20 处"
+      },
+      "sm": {
+        "$type": "dimension",
+        "$value": "{size.control.sm}",
+        "$description": "[观察] 小按钮 / 分页项 24px，8 处"
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": "{size.control.md}",
+        "$description": "[观察] 按钮 / 输入框 32px，11 处"
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": "{size.control.lg}",
+        "$description": "[推断] 大控件 40px（antd controlHeightLG）"
+      }
+    },
+    "hit-min": {
+      "$type": "dimension",
+      "$value": "{size.hit-min}",
+      "$description": "[推断] 图标控件最小命中区 24px"
+    },
+    "hit-touch": {
+      "$type": "dimension",
+      "$value": "{size.control.touch}",
+      "$description": "[推断] 触屏命中区 40px"
+    },
+    "segmented-inset": {
+      "$type": "dimension",
+      "$value": "{spacing.0-5}",
+      "$description": "[推断] 分段选择器内衬 2px（antd Segmented trackPadding）"
+    }
+  },
+  "icon": {
+    "size": {
+      "xs": {
+        "$type": "dimension",
+        "$value": "{size.icon.xs}",
+        "$description": "[观察] 11px"
+      },
+      "sm": {
+        "$type": "dimension",
+        "$value": "{size.icon.sm}",
+        "$description": "[观察] 12px，28 处"
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": "{size.icon.md}",
+        "$description": "[观察] 14px，98 处"
+      },
+      "lg": {
+        "$type": "dimension",
+        "$value": "{size.icon.lg}",
+        "$description": "[观察] 16px，14 处"
+      },
+      "xl": {
+        "$type": "dimension",
+        "$value": "{size.icon.xl}",
+        "$description": "[观察] 20px，3 处"
+      },
+      "2xl": {
+        "$type": "dimension",
+        "$value": "{size.icon.2xl}",
+        "$description": "[推断] 结果页 / 提示卡大图标 24px"
+      }
+    },
+    "library": {
+      "$type": "string",
+      "$value": "{icon.set.antd}",
+      "$description": "[观察] anticon 线性图标 148 处"
+    },
+    "stroke": {
+      "width": {
+        "$type": "number",
+        "$value": "{stroke-width.3}",
+        "$description": "[推断] IconPark 描边 3（与 antd 线性图标比例一致）"
+      }
+    }
+  },
+  "space": {
+    "inline": {
+      "$type": "dimension",
+      "$value": "{spacing.2}",
+      "$description": "[观察] 最常见的小 gap 8px，378 处"
+    },
+    "stack": {
+      "$type": "dimension",
+      "$value": "{spacing.6}",
+      "$description": "[观察] 工作台卡片栅格 gutter 24px，103 处"
+    },
+    "gutter": {
+      "$type": "dimension",
+      "$value": "{spacing.10}",
+      "$description": "[观察] ProLayout 页面容器左右内边距 40px（上下 32px）"
+    },
+    "card": {
+      "$type": "dimension",
+      "$value": "{spacing.6}",
+      "$description": "[推断] antd Card 内边距 24px（design.md）；演示站数据卡为 20px 24px"
+    }
+  },
+  "font": {
+    "family": {
+      "body": {
+        "$type": "fontFamily",
+        "$value": "{font.family.sans}",
+        "$description": "[观察] body 字体栈（去掉网络字体 AlibabaSans）"
+      },
+      "code": {
+        "$type": "fontFamily",
+        "$value": "{font.family.mono}",
+        "$description": "[观察] 等宽字体栈"
+      }
+    }
+  },
+  "text": {
+    "caption": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.sm}",
+        "$description": "[推断] 最小字号 12px（国内中后台下限 / antd fontSizeSM）；演示站 11px 只见于页脚版本号等 8 处"
+      }
+    },
+    "small": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.sm}",
+        "$description": "[观察] 12px"
+      }
+    },
+    "body-sm": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.sm}",
+        "$description": "[观察] 12px"
+      }
+    },
+    "body": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.md}",
+        "$description": "[观察] 承载最多文字的字号 14px"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": "{font.line-height.normal}",
+        "$description": "[观察] 22 / 14"
+      }
+    },
+    "title-sm": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.lg}",
+        "$description": "[观察] 卡片标题 16px"
+      }
+    },
+    "title": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.xl}",
+        "$description": "[观察] 页面标题 20px"
+      }
+    },
+    "heading": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.2xl}",
+        "$description": "[推断] 页头大标题 24px（antd headline-md）"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": "{font.line-height.heading}",
+        "$description": "[推断] 32 / 24"
+      }
+    },
+    "display": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.3xl}",
+        "$description": "[观察] 工作台统计数字 30px"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}",
+        "$description": "[确认] KPI 大数字加粗（预期预览图）；antd 只用 400 / 600，取 600"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": "{font.line-height.display}",
+        "$description": "[推断] 38 / 30"
+      },
+      "tracking": {
+        "$type": "dimension",
+        "$value": "{font.letter-spacing.none}",
+        "$description": "[推断] 数据大字不调字距"
+      },
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.numeric}",
+        "$description": "[确认] 数据大字（统计卡、KPI、el-statistic、状态条数字）用 D-DIN-PRO（用户 2026-10-09 指定，原为正文字体栈）"
+      }
+    },
+    "hero": {
+      "size": {
+        "$type": "dimension",
+        "$value": "{font.size.4xl}",
+        "$description": "[推断] 结果页 / 登录页大字 38px（antd display-lg）"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": "{font.line-height.hero}",
+        "$description": "[推断] 46 / 38"
+      }
+    },
+    "paragraph": {
+      "line-height": {
+        "$type": "number",
+        "$value": "{font.line-height.normal}",
+        "$description": "[推断] 成段说明同正文行高（antd）"
+      }
+    },
+    "weight": {
+      "label": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.regular}",
+        "$description": "[观察] 按钮 / 表单标签 400（antd 只用 400 与 600）"
+      },
+      "strong": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}",
+        "$description": "[观察] 表头 / 标题 600"
+      },
+      "brand": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}",
+        "$description": "[推断] 品牌字重 600（antd 不用 700）"
+      },
+      "logo": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}",
+        "$description": "[观察] 顶栏 Logo 文字 18px / 600"
+      }
+    },
+    "tracking": {
+      "caps": {
+        "$type": "dimension",
+        "$value": "{font.letter-spacing.caps}",
+        "$description": "[确认] 卡片 / 分区标题的大写小字字距（预期预览图）；中文标题只取小号、半粗、次要色"
+      }
+    },
+    "link": {
+      "decoration": {
+        "$type": "string",
+        "$value": "{decoration.none}",
+        "$description": "[观察] 链接不加下划线，靠金色深一档区分（对白 5.27:1）"
+      },
+      "style": {
+        "$type": "string",
+        "$value": "{font.style.normal}",
+        "$description": "[观察] 链接不用斜体（Citrine 内容型链接为斜体）"
+      }
+    },
+    "numeric": {
+      "variant": {
+        "$type": "string",
+        "$value": "{font.numeric.tabular}",
+        "$description": "[推断] 金额 / 单号 / 表格数字用 tabular-nums：正文字体有等宽数字，金额列小数点上下对齐；数据大字的 D-DIN-PRO 没有等宽数字，这条对它不生效"
+      },
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.body}",
+        "$description": "[确认] 小号数字数据（表格金额与日期、百分比、涨跌、图表数值、页码）用正文字体，配 text.numeric.variant 等宽数字：用户 2026-10-09 先定 D-DIN-PRO，同日看过 12px 表格后改回正文字体（D-DIN-PRO 窄体细笔画在中文旁显得小而轻）；数据大字仍用 D-DIN-PRO（text.display.family）；单号、代码用等宽字体"
+      }
+    }
+  },
+  "layout": {
+    "topbar": {
+      "height": {
+        "$type": "dimension",
+        "$value": "{size.topbar}",
+        "$description": "[观察] 顶栏 56px"
+      }
+    },
+    "sidebar": {
+      "width": {
+        "$type": "dimension",
+        "$value": "{size.sidebar}",
+        "$description": "[确认] 侧栏 208px：用户决定收窄（2026-10-09，原观察值 256px）"
+      },
+      "collapsed-width": {
+        "$type": "dimension",
+        "$value": "{size.sidebar-collapsed}",
+        "$description": "[观察] 折叠 64px（源码默认值）"
+      }
+    },
+    "breakpoint": {
+      "mobile": {
+        "$type": "dimension",
+        "$value": "{size.viewport.mobile}",
+        "$description": "[观察] 768px"
+      },
+      "narrow": {
+        "$type": "dimension",
+        "$value": "{size.viewport.narrow}",
+        "$description": "[观察] 992px"
+      }
+    },
+    "form": {
+      "label-width": {
+        "$type": "dimension",
+        "$value": "{size.form.label}",
+        "$description": "[观察] 查询表格筛选栏 labelWidth 120px（源码）"
+      },
+      "max-width": {
+        "$type": "dimension",
+        "$value": "{size.form.max}",
+        "$description": "[观察] 基础表单 maxWidth 600px（源码）"
+      }
+    },
+    "modal": {
+      "width": {
+        "sm": {
+          "$type": "dimension",
+          "$value": "{size.modal.sm}",
+          "$description": "[推断] 确认弹窗 416px（antd Modal.confirm）"
+        },
+        "md": {
+          "$type": "dimension",
+          "$value": "{size.modal.md}",
+          "$description": "[推断] 表单弹窗 520px（antd Modal 默认）"
+        }
+      }
+    },
+    "drawer": {
+      "width": {
+        "$type": "dimension",
+        "$value": "{size.drawer}",
+        "$description": "[观察] 详情抽屉 600px"
+      }
+    },
+    "search": {
+      "width": {
+        "$type": "dimension",
+        "$value": "{size.search}",
+        "$description": "[推断] 筛选栏搜索框 216px"
+      }
+    }
+  },
+  "elevation": {
+    "card": {
+      "y": {
+        "$type": "dimension",
+        "$value": "{shadow.y.1}",
+        "$description": "[确认] 卡片不投影（2026-10-09，颜色取透明）；尺寸保留，主按钮按下的内阴影借用"
+      },
+      "blur": {
+        "$type": "dimension",
+        "$value": "{shadow.blur.1}",
+        "$description": "[确认] 同上"
+      },
+      "color": {
+        "$type": "color",
+        "$value": "{color.neutral.transparent}",
+        "$description": "[确认] 卡片不投影（用户决定 2026-10-09，替代按预期预览图加的大而柔投影）：取透明，卡片靠底色差与 color.border.default 定形"
+      }
+    },
+    "popover": {
+      "y": {
+        "$type": "dimension",
+        "$value": "{shadow.y.2}",
+        "$description": "[观察] boxShadowSecondary 第一层"
+      },
+      "blur": {
+        "$type": "dimension",
+        "$value": "{shadow.blur.2}",
+        "$description": "[观察] 下拉 / 气泡"
+      },
+      "color": {
+        "$type": "color",
+        "$value": "{color.neutral.shadow-a8}",
+        "$description": "[观察] rgba(0,0,0,0.08)"
+      }
+    },
+    "modal": {
+      "y": {
+        "$type": "dimension",
+        "$value": "{shadow.y.2}",
+        "$description": "[观察] 弹窗与浮层同用 boxShadowSecondary（.ant-modal-container 实测）"
+      },
+      "blur": {
+        "$type": "dimension",
+        "$value": "{shadow.blur.2}",
+        "$description": "[观察] 同上"
+      },
+      "color": {
+        "$type": "color",
+        "$value": "{color.neutral.shadow-a8}",
+        "$description": "[观察] 同上"
+      }
+    }
+  },
+  "motion": {
+    "duration": {
+      "fast": {
+        "$type": "duration",
+        "$value": "{duration.fast}",
+        "$description": "[观察] 100ms"
+      },
+      "normal": {
+        "$type": "duration",
+        "$value": "{duration.normal}",
+        "$description": "[观察] 200ms"
+      },
+      "slow": {
+        "$type": "duration",
+        "$value": "{duration.slow}",
+        "$description": "[观察] 300ms"
+      }
+    },
+    "easing": {
+      "standard": {
+        "$type": "cubicBezier",
+        "$value": "{easing.standard}",
+        "$description": "[观察] ease"
+      },
+      "enter": {
+        "$type": "cubicBezier",
+        "$value": "{easing.enter}",
+        "$description": "[观察] antd motionEaseOut"
+      },
+      "exit": {
+        "$type": "cubicBezier",
+        "$value": "{easing.exit}",
+        "$description": "[推断] antd motionEaseIn"
+      }
+    }
+  },
+  "opacity": {
+    "disabled": {
+      "$type": "number",
+      "$value": "{opacity.40}",
+      "$description": "[推断] 禁用态 0.4（antd 用禁用色，桥接用透明度近似）"
+    },
+    "on-primary-muted": {
+      "$type": "number",
+      "$value": "{opacity.100}",
+      "$description": "[推断] 金底上的次要文字不压透明度（对比余量不足）"
+    }
+  },
+  "layer": {
+    "sticky": {
+      "$type": "number",
+      "$value": "{z.100}",
+      "$description": "[观察] 顶栏 / 固定层 100"
+    },
+    "dropdown": {
+      "$type": "number",
+      "$value": "{z.1050}",
+      "$description": "[推断] 下拉 / 气泡 1050（antd：高于弹窗）"
+    },
+    "modal": {
+      "$type": "number",
+      "$value": "{z.1000}",
+      "$description": "[观察] 弹窗 / 抽屉 1000"
+    },
+    "toast": {
+      "$type": "number",
+      "$value": "{z.1010}",
+      "$description": "[观察] 全局提示 1010（antd message）"
+    }
+  },
+  "table": {
+    "cell": {
+      "padding-y": {
+        "$type": "dimension",
+        "$value": "{spacing.3}",
+        "$description": "[观察] th / td 纵向 12px（ProTable middle）"
+      },
+      "padding-x": {
+        "$type": "dimension",
+        "$value": "{spacing.2}",
+        "$description": "[观察] th / td 横向 8px"
+      }
+    }
+  },
+  "avatar": {
+    "size": {
+      "sm": {
+        "$type": "dimension",
+        "$value": "{size.avatar.sm}",
+        "$description": "[推断] 小头像 24px"
+      },
+      "md": {
+        "$type": "dimension",
+        "$value": "{size.avatar.md}",
+        "$description": "[推断] 头像 32px"
+      }
+    }
+  },
+  "illustration": {
+    "size": {
+      "md": {
+        "$type": "dimension",
+        "$value": "{size.illustration}",
+        "$description": "[推断] 空状态 / 结果页插图 100px"
+      }
+    }
+  },
+  "chart": {
+    "gradient": {
+      "saturation": {
+        "$type": "number",
+        "$value": "{opacity.40}",
+        "$description": "[推断] 柱状图 / 进度条的饱和度渐变：浅端把饱和度降到原色的 0.4 倍，HSB 明度不变（数值借用 opacity.40）；柱状图顶端浅、底端深，进度条左浅右深（用户 2026-10-09 决定；倍数为默认值，待确认）"
+      }
+    }
+  }
+}
