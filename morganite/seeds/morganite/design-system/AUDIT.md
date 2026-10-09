@@ -55,6 +55,7 @@
 | 验收工具（2026-10-09） | 沿用 citrine-accept，写一份 Morganite 的验收清单 | 身份文件加 `accept`（`@wycm9527/citrine-tools` · `citrine-accept all` · `templates/accept.config.mjs`）；citrine-accept 新增项目可配的 `APPROVED_CONTRAST`（Citrine 的内置例外不变），组件走查的背景改为逐层合成（修掉半透明叠底被算成纯黑 / 纯白的误报）；`morganite/testbed/element-lab` 跑 pages / components / narrow / focus |
 | 暗色链接与表格文字按钮悬停（2026-10-09） | 暗色链接色保持；表格里的文字按钮悬停改为不叠底 | 验收报出暗色链接 / 文字按钮在悬停行与气泡上约 4.3:1——保持暗色链接色，登记为例外（DESIGN「已批准的例外」，验收清单 `minRatio: 4.2`）；表格文字按钮悬停时行悬停与按钮悬停底叠加（亮色约 4.2–4.4:1，暗色选中行再悬停只有 3.41:1）——用户先选保持，看到 3.41 后改为表格里只变色不叠底（antd 表格操作链接），两种模式都过线 |
 | 发版「最新」标记（2026-10-09） | 发版脚本只让 Citrine 标为最新 | Morganite 0.1.0 发版时成了 GitHub「最新」，README / GUIDE 里 `releases/latest/download` 的 citrine-tools 直链随之 404，已手动把 Citrine 2.12.0 改回最新；`scripts/release.mjs` 对 Citrine 以外的系统加 `--latest=false` |
+| 表格操作胶囊（2026-10-09） | 保持描边胶囊 | 表格操作列的「详情 / 改派」沿用配方 `.act`（金色描边胶囊，Citrine 的写法），不改成 antd 的纯文字链接 |
 | 按预期预览图默认调整（2026-09-29，列出后用户未反对） | 圆角加大、卡片标题字距小标题、KPI 数字半粗、图表配色只用金 + 灰 + 绿、图表提示气泡深金底、表头底深一档、卡片阴影更大更柔（2026-10-09 去掉）、顶栏搜索胶囊 | `radius.md / lg / xl`、`text.tracking.caps`、`text.display.weight`、`color.chart.*`、`color.chart.tooltip`、`color.bg.subtle`、`elevation.card.*`；配方 `.card-head h2`、`.topbar .search`；ECharts 桥接 |
 | 组件库桥接 | 带 Citrine 的 Element Plus / shadcn / 配方 / ECharts 桥接当起点 | `bridge/`，缺口见「桥接缺口」 |
 | 预览 | 虚拟页面（工作台 / 表单 / 抽屉 × 亮暗）确认像「Pro + 金色」 | `preview/` |
@@ -230,7 +231,7 @@ shadcn/ui 实测（2026-10-09，`morganite/testbed/shadcn-lab`，记录在它的
 - 警示色改用橙色系（`color.status.warning*`）是为避开品牌金做的偏离，用户 2026-10-09 确认保持。
 - 暗色证据来自 Pro 的「暗色风格（实验功能）」，只测了工作台与查询表格；表单、弹窗、抽屉的暗色值按 antd 暗色算法推断（2026-10-09 用户已确认）。
 - 覆盖盲区：只取了工作台 / 查询表格 / 基础表单 / 新建弹窗 / 详情抽屉；登录页、分步表单、结果页、空状态、通知、上传、步骤条没有取证，相关角色（`text.hero.*`、`illustration.size.md`、`icon.size.2xl` 等）按 antd 规格取值（2026-10-09 已确认，但没在这些页面上取证）。
-- 桥接沿用 Citrine 的实现：Element Plus 栈的 extra 带 IconPark 桥接，而本系统图标库登记为 `@ant-design/icons`，接入前决定用哪套图标；桥接里其他 Citrine 式的组件习惯（操作胶囊等配方）还没按 antd 的做法逐个走查（选中块已改，见用户决定表）。
+- 桥接沿用 Citrine 的实现：Element Plus 栈的 extra 带 IconPark 桥接，而本系统图标库登记为 `@ant-design/icons`，接入前决定用哪套图标；桥接里其他 Citrine 式的组件习惯还没按 antd 的做法逐个走查（选中块已改；表格操作列的描边胶囊 `.act` 用户 2026-10-09 决定保持，见用户决定表）。
 - 开关关闭态：用户决定保持 `color.border.strong` 轨道（2026-10-09），白滑块对轨道约 1.4:1，关闭态主要靠滑块位置与文字标签区分；若在低对比屏上看不清，改指 `color.data.inactive`（25% 黑，antd 原值）即可。
 - Element 选中块已在实测项目里亮 / 暗核对（日期面板、徽标、标签、评分、树、两种分页）；引导指示点、表头单选筛选、树拖放目标没有在真实组件里看过。分段类（单选 / 多选按钮组、`el-segmented`）当前项是灰轨道上的白块，亮色下对轨道约 1.09:1，主要靠字重与字色区分。
 - 验收工具沿用 Citrine 的 citrine-accept（身份文件 `accept`、清单模板 `templates/accept.config.mjs`）：Morganite 的例外靠 `APPROVED_CONTRAST`，要 citrine-tools ≥ 1.2.0——仓库内已生效，npm 上的 1.2.0 随 Citrine 下次发版。品牌黄审计对 Morganite 的金不生效（工具判黄范围是色相 40–64°、饱和度 ≥ 0.55），金色用错位置不会被自动发现。

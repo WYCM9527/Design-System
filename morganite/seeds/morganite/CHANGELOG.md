@@ -8,6 +8,7 @@
 - shadcn 桥接修正（`morganite/testbed/shadcn-lab` 实测发现）：弹窗 / 抽屉面板改为 `color.bg.elevated`（原为页面底，发灰）；描边 / 幽灵按钮按 DESIGN 白底 + `color.border.strong` 描边、悬停只换底、文字保持正文色（原为悬停变深金字），暗色描边不再透明；错误提示条标题用 `color.text.danger`（暗色原为 3.3:1）；Tailwind 的 border / border-* 线宽接到 `border.width.default`（全站 0.6px，原为 1px）。肉眼可见：shadcn 项目的弹窗变白、描边按钮变白底、边线变细。
 - 配方：顶栏用户区悬停时头像底换成表面色（两层半透明底叠加时深金字只有 4.4:1）。
 - 实测项目 `morganite/testbed/shadcn-lab`：citrine-accept 页面、组件走查、三端、焦点全部通过。
+- 表格操作列的描边胶囊 `.act` 用户决定保持（不改成 antd 的纯文字链接）。
 
 ## 0.1.1 — 2026-10-09
 
