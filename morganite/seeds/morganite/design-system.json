@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/WYCM9527/Design-System/main/design-system-adopter/schema/design-system.schema.json",
   "id": "morganite",
   "name": "Morganite 玫瑰金",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "中后台 · Ant Design Pro v6 底座 · 玫瑰金 #B98D44 金底白字 + antd 纯灰骨架 · 亮 / 暗 · Element Plus / shadcn/ui / ECharts 桥接",
   "upstream": {
     "repo": "WYCM9527/Design-System",
@@ -54,6 +54,7 @@
       "snippet": "templates/entry-shadcn.css",
       "notes": "templates/notes-shadcn.md",
       "scaffold": "npm create vite@latest <name> -- --template react-ts && cd <name> && npm i lucide-react echarts && npm i -D tailwindcss @tailwindcss/vite",
+      "kitchen": "templates/KitchenSink.tsx",
       "detect": {
         "deps": [
           "class-variance-authority",

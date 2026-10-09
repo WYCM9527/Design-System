@@ -7,7 +7,7 @@ export const PAGES = [
   // ['orders', '#/orders'], ['orders-empty', '?state=empty#/orders'], …
 ];
 export const DEFAULT_QUERY = {};              // 每个页面缺省带的参数（如 { role: 'admin' }）
-export const KITCHEN = '#/kitchen';            // 全组件走查页：Element 项目挂种子的 @wycm9527/morganite/vue/KitchenSink.vue；null 会跳过 components 走查
+export const KITCHEN = '#/kitchen';            // 全组件走查页：Element 项目挂种子的 @wycm9527/morganite/vue/KitchenSink.vue，shadcn 项目拷 templates/KitchenSink.tsx；null 会跳过 components 走查
 // 三端：窄屏档按 layout.breakpoint.narrow（992）侧栏折叠，手机档侧栏离屏 + 汉堡可开合；各档都不允许文档级横向溢出。
 // 走查页含固定宽度的组件面板，不属于「手机可用」目标，可用档位自己的 pages 把它剔出手机档
 export const NARROW = {

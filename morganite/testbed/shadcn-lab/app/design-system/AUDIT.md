@@ -187,7 +187,7 @@
 
 ## 桥接缺口
 
-`bridge/` 从 citrine 2.12.0 拷入 21 个文件当起点（`citrine/seeds/brand-yellow-e`）。它把组件库的变量与写死的色表接到语义 token 上，这部分通用；但也带着 Citrine 的品牌决定（hover 不出现品牌色、选中用反转块、状态色只做浅底胶囊、quiet 按钮必须有浅底等）：选中块 2026-10-09 已按 antd 改为主色系，并在 `morganite/testbed/element-lab`、`morganite/testbed/shadcn-lab` 用真实组件亮 / 暗走查过（见本节末）。桥接引用的 22 个缺失变量全部**补 token**，另有 ECharts 用模板字符串拼出的顺序色 5 个与新增的提示气泡 1 个（表格最后两行）；`check-bridge-vars.mjs` 复核：缺失 0：
+`bridge/` 从 citrine 2.12.0 拷入 21 个文件当起点（`citrine/seeds/brand-yellow-e`）。它把组件库的变量与写死的色表接到语义 token 上，这部分通用；但也带着 Citrine 的品牌决定（hover 不出现品牌色、选中用反转块、状态色只做浅底胶囊、quiet 按钮必须有浅底等）：选中块 2026-10-09 已按 antd 改为主色系，并在 `morganite/testbed/element-lab` 用真实 Element Plus 亮 / 暗走查过（见本节末）。桥接引用的 22 个缺失变量全部**补 token**，另有 ECharts 用模板字符串拼出的顺序色 5 个与新增的提示气泡 1 个（表格最后两行）；`check-bridge-vars.mjs` 复核：缺失 0：
 
 | 桥接引用的变量 | 引用文件 | 决定 |
 | --- | --- | --- |
@@ -221,8 +221,6 @@
 效果预览扩成 8 页后对配方的修正（2026-10-09，`morganite/previews/rose-gold-admin/` 逐页走查发现）：`.badge.brand` 原是 Citrine 的「反转块」（`color.action.selected` 底），本系统的 action.selected 是白块，亮色下白底白卡看不见，改为奶金浅底 + 深金字；`.batch` 文字由 `color.text.selected` 改为 DESIGN 写的 `color.text.primary`；纯 CSS 表格补上选中行 `tr.is-selected`（同日改为与悬停同色 `color.bg.hover`，再悬停 `color.bg.selected-hover`）；`.two-col` 只在手机断点里出现、桌面没有定义，补上；「窄屏」媒体查询从 Citrine 的 1366px 改为与 `layout.breakpoint.narrow` 一致的 992px。DESIGN 配方表补「步骤条」「时间线」两行（照 Element 桥接已有实现）。
 
 Element Plus 实测（2026-10-09，`morganite/testbed/element-lab`，逐条记录在它的 FINDINGS.md）：按 adopter「从 0 开始」接入 Element Plus 2.14，用 `KitchenSink.vue` 与一张业务页亮 / 暗核对同日拍板的选中规则，都按预期渲染。修了日期范围中间段的灰带（Element 默认取边线色，改为 `color.bg.selected-subtle`）；模板里残留的 Citrine 说法一并改掉：`notes-element-plus.md` 的选中规则（另补表格数字列用 `class-name="num"`）、`notes-shadcn.md` 与 `shadcn.css` 注释里的控件高度（改为 24 / 32 / 40）、三个样式入口模板注释里的占位符、`KitchenSink.vue` 挂法里的包名、AGENTS 模板里不存在的 `npm run accept`；`package.json` 的打包清单排除预览截图（npm 包从 1.5 MB 降到 143 kB）。
-
-shadcn/ui 实测（2026-10-09，`morganite/testbed/shadcn-lab`，记录在它的 FINDINGS.md）：骨架照 Citrine 的 shadcn 实验室（Vite + React 19 + Tailwind v4 + Radix，21 个 new-york 组件），按 adopter 接入；走查页用种子新增的 `templates/KitchenSink.tsx`（从 Citrine 移植），citrine-accept 四项全绿。修了五处：弹窗 / 抽屉面板改为 `color.bg.elevated`（shadcn 写 bg-background，本系统映射页面底，面板发灰）；描边 / 幽灵按钮按 DESIGN 白底 + 控件描边、悬停只换底不变金字，暗色描边不再透明；错误提示条的标题也用 `color.text.danger`（暗色原为 3.3:1）；Tailwind 的 border / border-* 线宽接到 `border.width.default`（全站 0.6px，原为 1px）；顶栏用户区悬停时头像底换成表面色（两层半透明底叠加，深金字原为 4.4:1，配方层，Element 也受益）。
 
 ## 风险与待确认
 

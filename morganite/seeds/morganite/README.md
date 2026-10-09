@@ -1,10 +1,10 @@
 # Morganite 玫瑰金 种子
 
-版本 0.1.1 · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 Pro 演示站的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 纯数据包：本目录即分发单元（文件夹直接下载，或发布为 npm 包 `@wycm9527/morganite`），身份文件 `design-system.json`，接入 / 更新由 [design-system-adopter](https://github.com/WYCM9527/Design-System/tree/main/design-system-adopter) skill 驱动 · 变更见 [CHANGELOG.md](CHANGELOG.md)
+版本 0.1.2 · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 Pro 演示站的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 纯数据包：本目录即分发单元（文件夹直接下载，或发布为 npm 包 `@wycm9527/morganite`），身份文件 `design-system.json`，接入 / 更新由 [design-system-adopter](https://github.com/WYCM9527/Design-System/tree/main/design-system-adopter) skill 驱动 · 变更见 [CHANGELOG.md](CHANGELOG.md)
 
 适用类型：**中后台**——侧栏 + 表格 + 图表 + 弹窗尺寸的工作台。
 
-> **0.x 起点。** `tokens/semantic.tokens.json` 里 `$description` 以 `[观察]` 开头的是实测值，`[确认]` 是用户拍板的决定——原先按 antd 规格或规则补的 56 个 `[推断]` 默认值已于 2026-10-09 全部确认（来源清单留在 `design-system/AUDIT.md`）。组件库桥接从 Citrine 拷来、按本系统改过：Element Plus 桥接已用真实组件走查（`morganite/testbed/element-lab`），shadcn 桥接还没实测。发布前跑 `publish-check.mjs --seed <本目录>`。
+> **0.x 起点。** `tokens/semantic.tokens.json` 里 `$description` 以 `[观察]` 开头的是实测值，`[确认]` 是用户拍板的决定——原先按 antd 规格或规则补的 56 个 `[推断]` 默认值已于 2026-10-09 全部确认（来源清单留在 `design-system/AUDIT.md`）。组件库桥接从 Citrine 拷来、按本系统改过：Element Plus 与 shadcn/ui 桥接都已用真实组件走查（`morganite/testbed/element-lab`、`morganite/testbed/shadcn-lab`）。发布前跑 `publish-check.mjs --seed <本目录>`。
 
 ## 里面有什么
 

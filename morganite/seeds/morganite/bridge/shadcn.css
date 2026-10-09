@@ -125,6 +125,12 @@
 
 /* ── 组件级接管（2.5.0，来自 React 实验项目的渲染验证）：shadcn 组件里写死或指向 --primary 的地方，按 DESIGN 配方改到 token。
    全部按 data-slot 选择，不依赖 Tailwind 类名；放在无 layer 的位置，天然压过 @layer utilities。 ── */
+/* 全站描边 0.6px（border.width.default，用户决定）：Tailwind 的 border / border-* 写死 1px，按类名接到 token——只改本来就带这些类的元素，不会给别的元素加线 */
+[class~="border"] { border-width: var(--border-width-default); }
+[class~="border-t"] { border-top-width: var(--border-width-default); }
+[class~="border-b"] { border-bottom-width: var(--border-width-default); }
+[class~="border-l"] { border-left-width: var(--border-width-default); }
+[class~="border-r"] { border-right-width: var(--border-width-default); }
 /* 控件三档高度：shadcn 用 h-8 / h-9 / h-10（32 / 36 / 40）表达 sm / default / lg，接到 control.height.sm / md / lg（24 / 32 / 40）；size-9 是图标按钮 */
 [data-slot="button"].h-8, [data-slot="select-trigger"][data-size="sm"] { height: var(--control-height-sm); }
 [data-slot="button"].h-9, [data-slot="input"].h-9, [data-slot="select-trigger"][data-size="default"] { height: var(--control-height-md); }
@@ -163,6 +169,14 @@
 [data-slot="tabs-trigger"]:focus-visible { outline-width: var(--border-width-active); }
 /* 提示条 destructive 的描述文字是 destructive 的 90% 洗色（白底 3.3:1），改为 text.danger 实色 */
 [data-slot="alert"].text-destructive [data-slot="alert-description"] { color: var(--color-text-danger); }
+[data-slot="alert"].text-destructive { color: var(--color-text-danger); }   /* 标题与图标同理：destructive 是危险填充色，暗色深底上只有 3.3:1 */
+/* 弹窗面板是浮层表面（DESIGN「弹窗」= bg.elevated）：shadcn 写的 bg-background 在本系统映射页面底，面板会发灰 */
+[data-slot="dialog-content"], [data-slot="alert-dialog-content"], [data-slot="sheet-content"], [data-slot="drawer-content"] { background-color: var(--color-bg-elevated); }
+/* 描边 / 幽灵按钮（outline / ghost）：DESIGN「次要按钮 / 文字按钮」——白底 + 控件描边，悬停只换底、文字保持正文色。
+   shadcn 悬停用 accent（本系统是「选中」语义：浅底 + 深金字），暗色描边取 --input（填充式下透明）；按钮没有变体属性，用稳定的类名片段区分 */
+[data-slot="button"][class*="bg-background"][class*="hover:bg-accent"] { background-color: var(--color-bg-surface); border-color: var(--color-border-strong); }
+[data-slot="button"][class*="bg-background"][class*="hover:bg-accent"]:hover { background-color: var(--color-action-secondary-hover); color: var(--color-text-primary); }
+[data-slot="button"][class*="hover:bg-accent"]:not([class*="bg-background"]):hover { background-color: var(--color-action-quiet-hover); color: var(--color-text-primary); }
 /* 菜单 / 下拉项：hover / focus 用 bg.hover（accent 是「选中」语义，留给 aria-selected / data-state=checked） */
 [data-slot="dropdown-menu-item"]:focus, [data-slot="select-item"]:focus, [data-slot="dropdown-menu-checkbox-item"]:focus, [data-slot="dropdown-menu-radio-item"]:focus, [data-slot="dropdown-menu-sub-trigger"]:focus { background-color: var(--color-bg-hover); color: var(--color-text-primary); }
 [data-slot="select-item"][data-state="checked"] { color: var(--color-text-selected); font-weight: var(--text-weight-label); }

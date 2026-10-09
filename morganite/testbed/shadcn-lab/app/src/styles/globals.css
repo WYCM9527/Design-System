@@ -1,0 +1,7 @@
+/* 样式入口。顺序：Tailwind → 设计系统构建产物 → shadcn 桥接本体（契约变量 + @theme inline + 按 data-slot 的组件接管）→ 配方层（页面骨架公共类）→ 项目补充。
+   桥接与配方直接从 npm 包 @wycm9527/morganite 引入（仓库内是 file: 链接到 seeds/morganite），项目里不再放副本。 */
+@import "tailwindcss";
+@import "../../design-system/dist/index.css";
+@import "@wycm9527/morganite/bridge/shadcn.css";
+@import "@wycm9527/morganite/bridge/recipes.css";
+@import "./app.css";

@@ -2,6 +2,13 @@
 
 版本策略：patch 只改描述与文档；minor 新增或修改 token（视觉会变、名字不变，条目里写清肉眼可见的影响）；major 才改名或删除 token。
 
+## 0.1.2 — 2026-10-09
+
+- shadcn/ui 走查页模板：新增 `templates/KitchenSink.tsx`（从 Citrine 移植，引用 `@wycm9527/morganite/react/*`），身份文件 shadcn 栈登记 `kitchen`；说明与验收清单模板不再写「KITCHEN 先写 null」。
+- shadcn 桥接修正（`morganite/testbed/shadcn-lab` 实测发现）：弹窗 / 抽屉面板改为 `color.bg.elevated`（原为页面底，发灰）；描边 / 幽灵按钮按 DESIGN 白底 + `color.border.strong` 描边、悬停只换底、文字保持正文色（原为悬停变深金字），暗色描边不再透明；错误提示条标题用 `color.text.danger`（暗色原为 3.3:1）；Tailwind 的 border / border-* 线宽接到 `border.width.default`（全站 0.6px，原为 1px）。肉眼可见：shadcn 项目的弹窗变白、描边按钮变白底、边线变细。
+- 配方：顶栏用户区悬停时头像底换成表面色（两层半透明底叠加时深金字只有 4.4:1）。
+- 实测项目 `morganite/testbed/shadcn-lab`：citrine-accept 页面、组件走查、三端、焦点全部通过。
+
 ## 0.1.1 — 2026-10-09
 
 - 接入验收工具（用户决定沿用 Citrine 的 citrine-accept）：身份文件加 `accept`，新增 `templates/accept.config.mjs`（三端按 992 / 390，已批准的对比度例外写在 `APPROVED_CONTRAST`）；AGENTS 模板与 Element / shadcn 说明写明验收命令。需要 citrine-tools ≥ 1.2.0（仓库内已生效，npm 随 Citrine 下次发版）。

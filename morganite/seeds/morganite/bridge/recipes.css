@@ -89,6 +89,7 @@ td .link, .card-head .link, .batch .link, .empty .link, .more-link { display: in
 .avatar { width: var(--avatar-size-md); height: var(--avatar-size-md); border-radius: var(--radius-full); background: var(--color-bg-selected); color: var(--color-text-selected); display: grid; place-items: center; font-weight: var(--text-weight-brand); font-size: var(--text-body-sm-size); cursor: pointer; flex: none; }
 .topbar .user { display: inline-flex; align-items: center; gap: var(--spacing-2); cursor: pointer; padding: var(--spacing-1); border-radius: var(--radius-md); }
 .topbar .user:hover { background: var(--color-bg-hover); }
+.topbar .user:hover .avatar { background: var(--color-bg-surface); }   /* 头像底是半透明的选中底，叠在悬停底上深金字会掉到 4.4:1；悬停时换成表面色，头像圈反而更清楚 */
 .topbar .user-name { font-size: var(--text-body-sm-size); color: var(--color-text-primary); white-space: nowrap; }
 .content { padding: var(--space-gutter); display: flex; flex-direction: column; gap: var(--space-stack); }
 
