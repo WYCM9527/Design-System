@@ -18,7 +18,13 @@
 - 数据填充渐变（2026-10-09，用户指定）：柱状图、进度条改为同色的饱和度渐变（HSB 明度不变），柱子上浅下深、横柱右浅左深、进度条左浅右深；新增 `chart.gradient.saturation`（浅端饱和度 × 0.4，推断待确认）。Element 进度条（含状态色）改渐变；ECharts 桥接新增 `barGradient(color)`，`rankBars` 改用渐变。中性灰没有饱和度，保持实色。
 - 表格选中行（2026-10-09，用户指定）：选中行底色改为与悬停同色 `color.bg.hover`（纯 CSS 表格、shadcn、Element 的勾选行与当前行一起），选中行再悬停改为中性深一档（亮 6% 黑 / 暗 12% 白，推断待确认）；奶油金 `color.bg.selected-subtle` 只留给强调徽标与 Element 主色浅底。肉眼可见：勾选行从奶金变成浅灰。
 - 数字字体（2026-10-09，用户指定）：数字数据改用 D-DIN-PRO。新增 `font.family.numeric`（D-DIN-PRO → D-DIN → Bahnschrift → 正文无衬线）与 `text.numeric.family`；`text.display.family` 改指它。配方 `.num`、`.num-col`、`.stat-card__delta`，Element 表格合计行，ECharts 数值轴与排行榜标签一起换；单号仍用等宽字体。种子不分发字体文件；D-DIN-PRO 没有等宽数字，`tabular-nums` 对它不生效。肉眼可见：KPI 与表格数字变成窄体 DIN。
-- 筹码底色（2026-10-09，用户指定）：已选条件筹码的底从 4% 黑改为品牌金深一档 #8A6530 的 10%（新增 `color.bg.chip` 与原语 `color.brand.600-a10`），即筹码字色的同色浅底，叠在卡片上约 #F3F0EA、字对底 4.63:1；暗色按同一规则取亮金 #D1AB62 的 10%（推断，原语 `color.brand.300-a10`，约 #27231C、7.23:1）。配方 `.chip` 改用它；批量条、图标按钮选中、进度条轨道等其余小面积选中仍是中性浅灰。
-- 规模：primitives 164 个；语义角色 178 个（观察 70 / 确认 51 / 推断 57），中后台必须处理的缺口 0；Theme `dark` delta 64 条。
+- 筹码底色（2026-10-09，用户指定）：已选条件筹码的底从 4% 黑改为品牌金深一档 #8A6530 的 10%（新增 `color.bg.chip` 与原语 `color.brand.600-a10`），即筹码字色的同色浅底，叠在卡片上约 #F3F0EA、字对底 4.63:1；暗色按同一规则取亮金 #D1AB62 的 10%（用户确认，原语 `color.brand.300-a10`，约 #27231C、7.23:1）。配方 `.chip` 改用它；批量条、图标按钮选中、进度条轨道等其余小面积选中仍是中性浅灰。
+- 待定项拍板（2026-10-09，用户决定）：
+  - 分页当前页统一成金底白字：效果预览、shadcn 分页、Element 不带底色的分页改为 `color.action.primary` 实底白字（Element 带底色分页原本如此），DESIGN 不再写白底金边。
+  - 中性标签 / 中性状态胶囊的底 `color.status.neutral-bg` 由 #fafafa 改为 6% 黑（半透明，悬停行上仍可见）；Element 默认标签与深色信息标签的边线改透明。
+  - Element 选中块按 antd 改主色系：日期选中日（原为白底白字，看不见）、主色徽标、深色 / 勾选标签、引导点改金底白字，评分星改金色，树当前节点与拖放目标改奶金浅底，表头筛选选中项同下拉选中项；`color.action.selected` 白块只留给分段类（`el-segmented`、单选 / 多选按钮组、shadcn Tabs）。
+  - 小号数字退回正文字体：`text.numeric.family` 改指 `font.family.body`（表格金额与日期、百分比、涨跌、图表数值、页码），配等宽数字；只有数据大字 `text.display.family` 用 D-DIN-PRO。
+  - 开关关闭态保持 #D8D8D8 轨道；暗色筹码底亮金 10% 由推断改为确认。
+- 规模：primitives 164 个；语义角色 178 个（观察 70 / 确认 52 / 推断 56），中后台必须处理的缺口 0；Theme `dark` delta 64 条。
 - 桥接：从 citrine 2.12.0 拷入 Element Plus / shadcn / 页面配方 / ECharts 桥接当起点，引用的缺失变量全部补 token（共 28 个：Citrine 桥接引用的 22 个，加 ECharts 顺序色 5 个与图表提示气泡 1 个；其中 17 个语义名在词表外）；组件走查未做。
 - 对比度：50 组 45 组通过；填充式输入框的静息边线（亮 / 暗）、亮色卡片边线与主按钮白字（亮 / 暗）登记为例外，亮色侧栏当前项白字（不在配对里，人工核对）也登记为例外，见 DESIGN「验收基线」。侧栏分组标题 `color.text.sidebar-muted` 沿用 ProLayout 的 45% 不达 4.5（不在 50 组配对里，效果预览页实测发现），改为与弱化文字同值（推断，待确认）。推断项与风险见 design-system/AUDIT.md。

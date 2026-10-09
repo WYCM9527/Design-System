@@ -51,7 +51,7 @@
 .kpi-sm { font-family: var(--text-display-family); font-size: var(--text-title-size); font-weight: var(--text-weight-strong); font-variant-numeric: var(--text-numeric-variant); color: var(--color-text-primary); }
 .kpi-note { font-size: var(--text-small-size); color: var(--color-text-secondary); }
 .delta { font-size: var(--text-body-sm-size); font-weight: var(--text-weight-strong); font-variant-numeric: var(--text-numeric-variant); }
-/* 数字数据用 text.numeric.family（D-DIN-PRO）：金额、百分比、涨跌、图表刻度与气泡、页码、步骤序号 */
+/* 小号数字数据用 text.numeric.family（正文字体）：金额、百分比、涨跌、图表刻度与气泡、页码、步骤序号 */
 .delta, .lc__y, .lc__x, .lc__tip, .bars-x, .alloc-list .pct, .alloc-list .amt, .index-list .val, .kv-list b, .goals .top b, .table td.amt, .page, .step .ix { font-family: var(--text-numeric-family); }
 
 /* ---- 折线 / 面积图 ---- */

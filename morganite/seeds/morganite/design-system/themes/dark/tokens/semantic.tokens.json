@@ -54,7 +54,7 @@
       "chip": {
         "$type": "color",
         "$value": "{color.brand.300-a10}",
-        "$description": "[推断] 暗色筹码底：沿用亮色「筹码字色同色 10%」——暗色筹码字是亮金 color.text.selected（#D1AB62），底取它的 10%，叠在暗色卡片上约 #27231C；原为白 8%"
+        "$description": "[确认] 暗色筹码底（用户 2026-10-09 确认）：沿用亮色「筹码字色同色 10%」——暗色筹码字是亮金 color.text.selected（#D1AB62），底取它的 10%，叠在暗色卡片上约 #27231C；原为白 8%"
       },
       "skeleton": {
         "$type": "color",

@@ -206,7 +206,7 @@
 .el-radio { --el-radio-input-border-color-hover: var(--color-action-primary-active); }
 .el-radio__input.is-checked .el-radio__inner { border-color: var(--color-action-primary-active); background: var(--color-action-primary-active); }
 .el-radio__input.is-checked + .el-radio__label { color: var(--color-text-primary); }
-/* 分段选择 / 切换按钮：选中态是深黑反转块，不是品牌黄（实测反馈）。Element 通过这三个变量取色 */
+/* 分段选择 / 切换按钮：选中态是灰轨道上的白色内胶囊（color.action.selected，同 antd Segmented），不是品牌金实底。Element 通过这三个变量取色 */
 /* 分段选择器（radio-button 组）：外胶囊 + 选中内胶囊。Element 原样式是拼接的方块按钮，这里改成「外层 bg.subtle 胶囊 + 发丝线，内缩 control.segmented-inset，选中项是 action.selected 的内胶囊，未选项透明」。
    不依赖 :has()：外胶囊由每个 label 的底色、上下边线与首尾圆角拼成，label 之间无间隙；选择器与 Element 首尾项规则同形，靠后置覆盖。 */
 .el-radio-button { --el-radio-button-checked-bg-color: var(--color-action-selected); --el-radio-button-checked-text-color: var(--color-text-on-selected); --el-radio-button-checked-border-color: var(--color-action-selected);
@@ -320,6 +320,7 @@
 .el-pagination.is-background .el-pager li, .el-pagination.is-background .btn-prev, .el-pagination.is-background .btn-next { border-radius: var(--radius-sm); }
 .el-pagination.is-background .el-pager li.is-active { background: var(--color-action-primary); color: var(--color-text-on-primary); font-weight: var(--text-weight-strong); }
 .el-pagination.is-background .el-pager li:not(.is-active):hover { background: var(--color-bg-hover); color: var(--color-text-primary); }
+.el-pagination .el-pager li.is-active { background: var(--color-action-primary); color: var(--color-text-on-primary); font-weight: var(--text-weight-strong); border-radius: var(--radius-sm); }   /* 当前页金底白字（用户 2026-10-09 统一），不带底色的分页也一样 */
 .el-steps { --el-text-color-placeholder: var(--color-text-muted); }
 .el-step__head.is-finish { color: var(--color-status-success); border-color: var(--color-status-success); }
 .el-step__title.is-finish, .el-step__description.is-finish, .el-step__title.is-success, .el-step__description.is-success { color: var(--color-text-secondary); }   /* 传了 finish-status="success" 时 Element 用 is-success 类，标题会变绿字；完成步骤的文字一律次要色，只有图标带状态色 */
@@ -337,7 +338,7 @@
 .el-message .el-message__icon { display: none; }
 .el-badge { --el-badge-bg-color: var(--color-action-danger); --el-badge-font-size: var(--text-caption-size); }   /* 计数徽标 = 危险填充 + 白字（同顶栏通知计数配方）；Element 默认类型就是 danger */
 .el-badge__content, .el-badge__content--danger { background-color: var(--color-action-danger); color: var(--color-text-on-danger); font-weight: var(--text-weight-strong); }
-.el-badge__content--primary { background-color: var(--color-action-selected); color: var(--color-text-on-selected); }   /* "主色"徽标 = 反转块，不上黄 */
+.el-badge__content--primary { background-color: var(--color-action-primary); color: var(--color-text-on-primary); }   /* 主色徽标 = 金底白字（同主按钮）；action.selected 在本系统是白块，不能当底 */
 .el-badge__content--info { background-color: var(--color-status-neutral); color: var(--color-text-inverse); }
 .el-skeleton { --el-skeleton-color: var(--color-bg-skeleton); --el-skeleton-to-color: var(--color-bg-skeleton-highlight); }
 .el-descriptions { --el-descriptions-item-bordered-label-background: var(--color-bg-subtle); }
@@ -440,17 +441,17 @@ button, input, select, textarea { font-family: inherit; }
    教训：--el-datepicker-* 变量定义在 .el-date-picker / .el-date-range-picker 组件级，
    在 :root 覆盖会被组件级声明压掉（rc.22 就是这么失效的）——组件级变量必须在同级或更近处覆盖。 */
 .el-picker-panel, .el-date-picker, .el-date-range-picker {
-  --el-datepicker-active-color: var(--color-action-selected);   /* 选中日：深黑反转圆底 + 白字（同分段选择器） */
+  --el-datepicker-active-color: var(--color-action-primary);   /* 选中日：金底白字圆块（同主按钮）；action.selected 在本系统是白块，Element 的白字压上去看不见 */
   --el-datepicker-hover-text-color: var(--color-text-primary);
 }
 /* 「今天」与月 / 年面板的 today：Element 写死主色黄字，白底黄字违禁 → 近黑 + medium */
 .el-date-table td.today .el-date-table-cell__text,
 .el-month-table td.today .el-date-table-cell__text,
 .el-year-table td.today .el-date-table-cell__text { color: var(--color-text-primary); font-weight: var(--font-weight-medium); }
-/* today 同时是选中端点时，深黑底上转白字 */
+/* today 同时是选中端点时，金底上转白字 */
 .el-date-table td.today.start-date .el-date-table-cell__text, .el-date-table td.today.end-date .el-date-table-cell__text,
 .el-month-table td.today.start-date .el-date-table-cell__text, .el-month-table td.today.end-date .el-date-table-cell__text,
-.el-year-table td.today.start-date .el-date-table-cell__text, .el-year-table td.today.end-date .el-date-table-cell__text { color: var(--color-text-on-selected); }
+.el-year-table td.today.start-date .el-date-table-cell__text, .el-year-table td.today.end-date .el-date-table-cell__text { color: var(--color-text-on-primary); }
 
 /* ---- 阴影不被裁切（rc.33，用户反馈）----
    Element 给 .el-tabs__content 设 overflow: hidden，卡片贴住 pane 边缘时阴影被裁掉一半。
@@ -459,7 +460,7 @@ button, input, select, textarea { font-family: inherit; }
 
 
 /* ---- 全组件走查（1.0.1）：Element 2.14 全部组件铺开扫描后补的接管 ----
-   两类：① 用主色表达"选中 / 当前 / 强调"的地方 → 反转块或近黑（级联、分段、日历、勾选按钮组、锚点、树拖拽、时间选择、表格筛选）；
+   两类：① 用主色表达"选中 / 当前 / 强调"的地方 → 分段类（单选 / 多选按钮组、el-segmented）是灰轨道上的白色内胶囊；其余按 antd 走主色系（2026-10-09）：实心选中金底白字（选中日、主色徽标、深色标签、勾选标签、引导点）、列表当前项奶金浅底（树、拖放目标）或同下拉选中项（表格筛选）、文字类深金字（级联、时间选择、锚点）；
    ② 用主色做文字或 hover 的地方 → 无色系（Link / Text 的 primary、上传区文案、加载文字、开关文案、评分、朴素按钮）。
    Element 的 success / warning / info 型按钮在这套系统里不存在（状态色是文字色，不是填充色；实底按钮只有主与危险）——退化为次要按钮，语义靠文案。 */
 .el-link { --el-link-hover-text-color: var(--color-text-link-hover); }
@@ -473,15 +474,15 @@ button, input, select, textarea { font-family: inherit; }
   --el-button-disabled-text-color: var(--color-text-primary); --el-button-disabled-bg-color: var(--color-bg-surface); --el-button-disabled-border-color: var(--color-border-strong);
 }
 .el-button--success.is-link, .el-button--success.is-text, .el-button--warning.is-link, .el-button--warning.is-text, .el-button--info.is-link, .el-button--info.is-text { --el-button-text-color: var(--color-text-link); --el-button-hover-text-color: var(--color-text-link-hover); --el-button-hover-link-text-color: var(--color-text-link-hover); --el-button-active-text-color: var(--color-text-link-hover); }
-/* 标签：Element 默认类型是 primary（黄字浅底）→ 按中性状态胶囊；dark 效果 = 反转块；plain = 描边 */
-.el-tag.el-tag--primary { --el-tag-text-color: var(--color-status-neutral); --el-tag-bg-color: var(--color-status-neutral-bg); --el-tag-border-color: var(--color-status-neutral-bg); --el-tag-hover-color: var(--color-text-muted); }
-.el-tag--dark.el-tag--primary { --el-tag-text-color: var(--color-text-on-selected); --el-tag-bg-color: var(--color-action-selected); --el-tag-border-color: var(--color-action-selected); --el-tag-hover-color: var(--color-text-secondary); }
+/* 标签：Element 默认类型是 primary（黄字浅底）→ 按中性状态胶囊（中性底是半透明，边线透明，免得叠出深一圈）；dark 效果 = 金底白字；plain = 描边 */
+.el-tag.el-tag--primary { --el-tag-text-color: var(--color-status-neutral); --el-tag-bg-color: var(--color-status-neutral-bg); --el-tag-border-color: transparent; --el-tag-hover-color: var(--color-text-muted); }
+.el-tag--dark.el-tag--primary { --el-tag-text-color: var(--color-text-on-primary); --el-tag-bg-color: var(--color-action-primary); --el-tag-border-color: var(--color-action-primary); --el-tag-hover-color: var(--color-action-primary-active); }
 .el-tag--plain.el-tag--primary { --el-tag-text-color: var(--color-text-secondary); --el-tag-bg-color: var(--color-bg-surface); --el-tag-border-color: var(--color-border-strong); }
 .el-tag.is-hit, .el-tag.el-tag--primary.is-hit { border-color: var(--color-border-focus); }
 .el-check-tag { border-radius: var(--radius-full); }
-.el-check-tag.el-check-tag--primary.is-checked { background-color: var(--color-action-selected); color: var(--color-text-on-selected); }
-.el-check-tag.el-check-tag--primary.is-checked:hover { background-color: var(--color-action-selected); }
-/* 勾选按钮组（多选分段）：与单选分段同一配方——外胶囊 + 选中反转内胶囊 */
+.el-check-tag.el-check-tag--primary.is-checked { background-color: var(--color-action-primary); color: var(--color-text-on-primary); }
+.el-check-tag.el-check-tag--primary.is-checked:hover { background-color: var(--color-action-primary-hover); }
+/* 勾选按钮组（多选分段）：与单选分段同一配方——外胶囊 + 选中白色内胶囊 */
 .el-checkbox-button { --el-checkbox-button-checked-bg-color: var(--color-action-selected); --el-checkbox-button-checked-text-color: var(--color-text-on-selected); --el-checkbox-button-checked-border-color: var(--color-action-selected);
   background: var(--color-bg-subtle); padding: var(--control-segmented-inset) 0; border-top: var(--border-width-default) solid var(--color-border-default); border-bottom: var(--border-width-default) solid var(--color-border-default); }
 .el-checkbox-button:first-child { border-left: var(--border-width-default) solid var(--color-border-default); border-radius: var(--radius-full) 0 0 var(--radius-full); padding-left: var(--control-segmented-inset); }
@@ -504,20 +505,20 @@ button, input, select, textarea { font-family: inherit; }
 /* 开关：选中态的文案与滑块里的加载图标不上黄 */
 .el-switch__label.is-active { color: var(--color-text-primary); }
 .el-switch.is-checked .el-switch__core .el-switch__action { color: var(--color-text-on-primary); }
-/* 评分：填充是"选中"语义 → 近黑星，空星冷灰；焦点外框近黑 */
-.el-rate { --el-rate-fill-color: var(--color-action-selected); --el-rate-void-color: var(--color-border-strong); --el-rate-disabled-void-color: var(--color-border-default); --el-rate-text-color: var(--color-text-secondary); --el-rate-outline-color: var(--color-border-focus); }
-/* 级联 / 树选择 / 时间选择：选中项近黑 + 加重，不用黄 */
+/* 评分：填充星用品牌金（antd 是黄星），空星冷灰；焦点外框用焦点色 */
+.el-rate { --el-rate-fill-color: var(--color-action-primary); --el-rate-void-color: var(--color-border-strong); --el-rate-disabled-void-color: var(--color-border-default); --el-rate-text-color: var(--color-text-secondary); --el-rate-outline-color: var(--color-border-focus); }
+/* 级联 / 树选择 / 时间选择：选中项深金字（text.selected） */
 .el-cascader-panel, .el-cascader, .el-cascader__dropdown { --el-cascader-menu-selected-text-color: var(--color-text-selected); }
 .time-select .time-select-item.selected:not(.disabled) { color: var(--color-text-selected); }
 .el-time-panel__btn.confirm { color: var(--color-text-primary); font-weight: var(--text-weight-label); }
 .el-select-dropdown.is-multiple .el-select-dropdown__item.is-selected::after { background-color: var(--color-text-selected); }
 .el-tree__drop-indicator, .el-input-tag__drop-indicator { background-color: var(--color-border-focus); }
-.el-tree-node.is-drop-inner > .el-tree-node__content .el-tree-node__label { background-color: var(--color-action-selected); color: var(--color-text-on-selected); }
+.el-tree-node.is-drop-inner > .el-tree-node__content .el-tree-node__label { background-color: var(--color-bg-selected-subtle); color: var(--color-text-primary); }
 /* 日历：今天与选中日同日期面板的规则 */
 .el-calendar-table td.is-today { color: var(--color-text-primary); font-weight: var(--font-weight-medium); }
 .el-calendar-table td.is-selected { background-color: var(--color-bg-selected); }
 /* 表格：筛选面板选中项、表头高亮 */
-.el-table-filter__list-item.is-active { background-color: var(--color-action-selected); color: var(--color-text-on-selected); }
+.el-table-filter__list-item.is-active { background-color: var(--color-bg-selected); color: var(--color-text-selected); }   /* 同下拉选中项 */
 .el-table th.el-table__cell > .cell.highlight { color: var(--color-text-selected); }
 /* 标签页：边框卡片变体的选中文字（Element 的选择器特异性更高，需单独接管）；无 active-bar 时的伪元素下划线 */
 .el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active { color: var(--color-text-primary); }
@@ -545,7 +546,7 @@ button, input, select, textarea { font-family: inherit; }
 .el-input-otp--underlined .el-input-otp__input-field:hover::after { background-color: var(--color-border-strong); }
 .el-input-otp--underlined .el-input-otp__input-field:focus-within::after { background-color: var(--color-border-focus); }
 .el-backtop { --el-backtop-text-color: var(--color-text-primary); --el-backtop-hover-bg-color: var(--color-bg-hover); }
-.el-tour__content .el-tour-indicator.is-active { background: var(--color-action-selected); }
+.el-tour__content .el-tour-indicator.is-active { background: var(--color-action-primary); }
 /* 圆形 / 仪表盘进度：Element 在 JS 里写死一张颜色表（默认 #20a0ff 蓝、success #13ce66…）当 SVG 的 stroke 属性，不走任何变量；CSS 属性能压过它。
    代价：progress 的 color 属性（自定义色）也会被压掉——进度色不属于可自定义项，与直线进度条同一规则 */
 .el-progress-circle__path { stroke: var(--color-action-primary-active); }
@@ -562,20 +563,20 @@ button, input, select, textarea { font-family: inherit; }
 .el-progress-bar__innerText { color: var(--color-text-on-primary); }
 /* 头像：Element 默认灰底白字（暗色下 2.5:1）；改为中性块 + 正文色，亮暗都过 AA */
 .el-avatar { --el-avatar-bg-color: var(--color-bg-selected); --el-avatar-text-color: var(--color-text-selected); }
-/* 标签 / 提示条的 dark 效果（状态色实底 + 白字）违反"状态色是文字色"：退化为浅色成对；主色的 dark 标签已是反转块，不在此列 */
+/* 标签 / 提示条的 dark 效果（状态色实底 + 白字）违反"状态色是文字色"：退化为浅色成对；主色的 dark 标签是金底白字，不在此列 */
 .el-tag--dark.el-tag--success { --el-tag-bg-color: var(--color-status-success-bg); --el-tag-border-color: var(--color-status-success-bg); --el-tag-text-color: var(--color-status-success); --el-tag-hover-color: var(--color-status-success); }
 .el-tag--dark.el-tag--warning { --el-tag-bg-color: var(--color-status-warning-bg); --el-tag-border-color: var(--color-status-warning-bg); --el-tag-text-color: var(--color-status-warning); --el-tag-hover-color: var(--color-status-warning); }
 .el-tag--dark.el-tag--danger, .el-tag--dark.el-tag--error { --el-tag-bg-color: var(--color-status-error-bg); --el-tag-border-color: var(--color-status-error-bg); --el-tag-text-color: var(--color-status-error); --el-tag-hover-color: var(--color-status-error); }
-.el-tag--dark.el-tag--info { --el-tag-bg-color: var(--color-status-neutral-bg); --el-tag-border-color: var(--color-status-neutral-bg); --el-tag-text-color: var(--color-status-neutral); --el-tag-hover-color: var(--color-status-neutral); }
+.el-tag--dark.el-tag--info { --el-tag-bg-color: var(--color-status-neutral-bg); --el-tag-border-color: transparent; --el-tag-text-color: var(--color-status-neutral); --el-tag-hover-color: var(--color-status-neutral); }
 .el-alert--success.is-dark { background-color: var(--color-status-success-bg); color: var(--color-status-success); }
 .el-alert--warning.is-dark { background-color: var(--color-status-warning-bg); color: var(--color-status-warning); }
 .el-alert--error.is-dark { background-color: var(--color-status-error-bg); color: var(--color-status-error); }
 .el-alert--info.is-dark { background-color: var(--color-status-info-bg); color: var(--color-status-info); }
 .el-alert.is-dark .el-alert__description { color: inherit; }
-/* 横向菜单：选中仍是反转块，但左侧竖条是侧栏语义，横排时去掉 */
+/* 横向菜单：选中同侧栏当前项（主色底块白字），但左侧竖条是侧栏语义，横排时去掉 */
 .el-menu--horizontal .el-menu-item.is-active::before { display: none; }
 .el-menu.el-menu--horizontal .el-menu-item:not(.is-disabled):not(.is-active):hover, .el-menu.el-menu--horizontal .el-menu-item:not(.is-disabled):not(.is-active):focus { color: var(--el-menu-hover-text-color); }
-.el-menu.el-menu--horizontal .el-menu-item.is-active:hover, .el-menu.el-menu--horizontal .el-menu-item.is-active:focus { background: var(--color-bg-sidebar-selected); color: var(--color-text-sidebar-selected); }   /* 选中项 hover 保持反转块：Element 横向 hover（0,4,0）会把底换成浅灰而字仍是白 */   /* Element 横向菜单 hover 文字取 active-color（反转块的白字）配 hover-bg（浅灰）→ 1.1:1；与侧栏一致用 hover-text-color */
+.el-menu.el-menu--horizontal .el-menu-item.is-active:hover, .el-menu.el-menu--horizontal .el-menu-item.is-active:focus { background: var(--color-bg-sidebar-selected); color: var(--color-text-sidebar-selected); }   /* 选中项 hover 保持主色底块：Element 横向 hover（0,4,0）会把底换成浅灰而字仍是白 */   /* Element 横向菜单 hover 文字取 active-color（底块上的白字）配 hover-bg（浅灰）→ 1.1:1；与侧栏一致用 hover-text-color */
 /* ---- 禁用态 = opacity.disabled，不另造一套灰 ----
    Element 的按钮禁用靠一组 disabled 变量换色（主按钮退成 primary-light-5，被我们映射成边线灰，看起来像次要按钮）。
    把禁用色接回常态色，只留透明度；加载中也不再盖一层淡色——转圈本身就是状态。 */
@@ -619,12 +620,12 @@ button, input, select, textarea { font-family: inherit; }
 .el-pagination { --el-pagination-button-width: var(--control-height-sm); --el-pagination-button-height: var(--control-height-sm); }
 
 /* ── 2.4.0 试点项目三（轻采）回填：第二个项目按文档从零接入时暴露的组件缺口 ── */
-/* 树：当前节点是「当前 / 选中」语义 → 深黑反转块（同侧栏、分段选择器），Element 默认的 primary-light-9 底与 hover 几乎同色；行高进控件档；展开箭头用 icon.muted（占位符灰只有 2.5:1） */
+/* 树：当前节点用奶金浅底（color.bg.selected-subtle，同 antd 树的选中底）+ 500 字重；行高进控件档；展开箭头用 icon.muted（占位符灰只有 2.5:1） */
 .el-tree { --el-tree-node-content-height: var(--control-height-md); --el-tree-expand-icon-color: var(--color-icon-muted); --el-tree-node-hover-bg-color: var(--color-bg-hover); }
 .el-tree-node__content { border-radius: var(--radius-md); }
-.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content { background-color: var(--color-action-selected); color: var(--color-text-on-selected); font-weight: var(--font-weight-medium); }
-.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content .el-tree-node__expand-icon, .el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content .el-tree-node__label, .el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content .el-text { color: inherit; }   /* 标签用 el-text 渲染时自带正文色，反转块上要跟随 */
-.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content:hover { background-color: var(--color-action-selected); }
+.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content { background-color: var(--color-bg-selected-subtle); color: var(--color-text-primary); font-weight: var(--font-weight-medium); }
+.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content .el-tree-node__expand-icon, .el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content .el-tree-node__label, .el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content .el-text { color: inherit; }   /* 标签用 el-text 渲染时自带正文色，当前项上跟随 */
+.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content:hover { background-color: var(--color-bg-selected-subtle); }
 /* 标签页头与内容的间距：Element 写死 15px，接到间距阶梯 */
 .el-tabs__header { margin: 0 0 var(--spacing-4); }
 .el-tabs--border-card > .el-tabs__header { margin: 0; }

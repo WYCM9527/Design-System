@@ -44,7 +44,13 @@
 | 数据填充渐变（2026-10-09） | 柱状图、进度条等改为渐变色，起始点到终止点由浅到深；随后改为饱和度渐变（不用明度渐变），柱状图上面亮、下面深 | 同日修正为饱和度渐变、柱子上浅下深：新增 `chart.gradient.saturation`（数值借 `{opacity.40}`，推断）：HSB 明度不变，浅端饱和度降到原色 × 0.4；竖柱上浅下深、横柱右浅左深，进度条左浅右深；中性灰没有饱和度，保持实色。落在 `element-plus.css` 进度条（含成功 / 异常 / 警示 / is-muted）、`echarts.js`（新增 `barGradient`，`rankBars` 改用渐变）与效果预览的柱状图、进度条；环形图、图例色块、滑块保持实色 |
 | 表格选中行（2026-10-09） | 表格的选中状态底色改为悬停状态色 | 纯 CSS 表格、shadcn 表格、Element 表格的选中行与当前行都改用 `color.bg.hover`；选中行再悬停 `color.bg.selected-hover` 改为中性深一档（亮 6% 黑 / 暗 12% 白，推断），shadcn 补上这条悬停；奶油金 `color.bg.selected-subtle` 保留给强调徽标与 Element 主色浅底 |
 | 数字字体（2026-10-09） | 数字数据字体用 D-DIN-PRO | 新增原语 `font.family.numeric`（D-DIN-PRO → D-DIN → Bahnschrift → 正文无衬线；不放只有 Bold 面的 DIN Alternate，免得正文数字全变粗）；`text.display.family` 改指它（统计卡、KPI、`el-statistic`、状态条数字），新增 `text.numeric.family`（表格金额与日期、百分比、涨跌、图表数值：配方 `.num` / `.num-col` / `.stat-card__delta`、Element 表格合计行、ECharts 数值轴与排行榜标签）；单号仍用等宽字体。种子不分发字体文件；D-DIN-PRO 没有等宽数字 |
-| 筹码底色（2026-10-09） | 已选条件的 tag 胶囊色为 #8A6530 10% | 新增 `color.bg.chip`（亮色 `color.brand.600-a10`，即筹码字色的同色 10% 浅底，叠在卡片上约 #F3F0EA；暗色按同一规则取亮金 `color.brand.300-a10`，约 #27231C，推断），配方 `.chip` 改用它；原用 `color.bg.selected`（4% 黑 / 8% 白）。批量条、图标按钮选中、进度条轨道等其余小面积选中仍是中性浅灰；Element / shadcn 没有筹码组件，`el-tag` 仍是状态标签 |
+| 筹码底色（2026-10-09） | 已选条件的 tag 胶囊色为 #8A6530 10% | 新增 `color.bg.chip`（亮色 `color.brand.600-a10`，即筹码字色的同色 10% 浅底，叠在卡片上约 #F3F0EA；暗色按同一规则取亮金 `color.brand.300-a10`，约 #27231C，用户确认），配方 `.chip` 改用它；原用 `color.bg.selected`（4% 黑 / 8% 白）。批量条、图标按钮选中、进度条轨道等其余小面积选中仍是中性浅灰；Element / shadcn 没有筹码组件，`el-tag` 仍是状态标签 |
+| 分页当前页（2026-10-09） | 分页当前页统一成金底白字 | 效果预览与 shadcn 分页改为 `color.action.primary` 实底 + `color.text.on-primary` × `text.weight.strong`；Element 带底色分页原本如此，不带底色的分页也改成同样的当前页；DESIGN 配方表同步，不再用 `color.border.current` 边线。白字对主色 3.02:1，与主按钮同一对，沿用已登记的例外 |
+| 开关关闭态（2026-10-09） | 保持现状 | 轨道仍用 `color.border.strong`（#D8D8D8），白滑块对轨道约 1.4:1，关闭态靠滑块位置与文字标签区分 |
+| 中性标签底（2026-10-09） | 中性标签 / 中性状态胶囊的底改为 6% 黑 | `color.status.neutral-bg` 由 #fafafa 改指 `color.neutral.black-a6`：半透明，压在表格悬停行、表头上仍深一档；Element 默认标签与深色信息标签的边线改为透明，免得与半透明底叠出深一圈；暗色白 8% 不变 |
+| Element 选中块（2026-10-09） | 「反转块」按 antd 改主色系 | 本系统 `color.action.selected` 是白块，只留给分段类（`el-segmented`，以及桥接里画成灰轨道内胶囊的单选 / 多选按钮组）；日期选中日（原为白底白字，看不见）、主色徽标、深色标签、勾选标签、引导指示点改为 `color.action.primary` + `color.text.on-primary`；评分填充星改为 `color.action.primary`；树当前节点与拖放目标改为奶金浅底 `color.bg.selected-subtle` + 正文字；表头筛选选中项与下拉选中项同款（`color.bg.selected` + `color.text.selected`）。待测试项目实际渲染核对 |
+| 小号数字字体（2026-10-09） | 表格数字退回正文字体，只有数据大字用 D-DIN-PRO | `text.numeric.family` 改指 `font.family.body`（表格金额与日期、百分比、涨跌、图表数值、页码），配 `text.numeric.variant` 等宽数字，金额列小数点重新上下对齐；`text.display.family` 仍是 D-DIN-PRO（统计卡、KPI、`el-statistic`）。原因：D-DIN-PRO 窄体细笔画在 12px 下显得小而轻 |
+| 暗色筹码底（2026-10-09） | 保持亮金 10% | `color.bg.chip` 的暗色值 `color.brand.300-a10` 由推断改为确认 |
 | 按预期预览图默认调整（2026-09-29，列出后用户未反对） | 圆角加大、卡片标题字距小标题、KPI 数字半粗、图表配色只用金 + 灰 + 绿、图表提示气泡深金底、表头底深一档、卡片阴影更大更柔（2026-10-09 去掉）、顶栏搜索胶囊 | `radius.md / lg / xl`、`text.tracking.caps`、`text.display.weight`、`color.chart.*`、`color.chart.tooltip`、`color.bg.subtle`、`elevation.card.*`；配方 `.card-head h2`、`.topbar .search`；ECharts 桥接 |
 | 组件库桥接 | 带 Citrine 的 Element Plus / shadcn / 配方 / ECharts 桥接当起点 | `bridge/`，缺口见「桥接缺口」 |
 | 预览 | 虚拟页面（工作台 / 表单 / 抽屉 × 亮暗）确认像「Pro + 金色」 | `preview/` |
@@ -52,8 +58,8 @@
 ## 角色覆盖
 
 - 观察（有实测证据）：70 个
-- 确认（用户拍板的品牌决定，含按预期预览图的调整）：51 个
-- 推断（按 antd 规格或规则补的默认值）：57 个——`$description` 以 `[推断]` 开头，接入前逐条确认，确认后改为 `[确认]`
+- 确认（用户拍板的品牌决定，含按预期预览图的调整）：52 个
+- 推断（按 antd 规格或规则补的默认值）：56 个——`$description` 以 `[推断]` 开头，接入前逐条确认，确认后改为 `[确认]`
 - 必须处理的缺口（按系统类型）：0 个
 - 可选角色未填：3 个——这个系统类型不要求、本次也没证据；有证据再填，不发明值
 - 词表外的语义名：20 个，全部来自 Citrine 桥接的扩展（`text.display.family`、`text.link.style`、`text.weight.logo`、`avatar.size.sm / md`、`control.hit-touch`、`control.segmented-inset`、`icon.size.2xl`、`illustration.size.md`、`layout.search.width`、`opacity.on-primary-muted`、`color.chart.sequential.1…5`，以及本系统新增的 `color.chart.tooltip`、`chart.gradient.saturation`、`text.numeric.family`、`color.bg.chip`），名字与 Citrine 一致、值按 antd / Pro / 预期预览图
@@ -79,7 +85,6 @@
 | `color.status.warning` | `{color.orange.8}` | antd orange-8 #ad4e00（对浅底 5.09:1）；antd 默认警示 gold 与品牌金同色相，改用橙色系 | 待确认 |
 | `color.status.warning-bg` | `{color.orange.1}` | antd orange-1 #fff7e6 | 待确认 |
 | `color.status.neutral` | `{color.neutral.black-a65}` | 中性状态文字借用次要文字 0.65 | 待确认 |
-| `color.status.neutral-bg` | `{color.neutral.50}` | 中性状态浅底借用浅分区 #fafafa | 待确认 |
 | `color.control.knob` | `{color.white}` | 开关滑块白色（antd Switch handle） | 待确认 |
 | `color.chart.area` | `{color.brand.500-a16}` | 面积填充：品牌金 16% | 待确认 |
 | `color.chart.sequential.1` | `{color.neutral.200}` | 顺序色：四档灰 + 品牌金封顶（与 Citrine 用法一致），按离散分段使用 | 待确认 |
@@ -141,7 +146,7 @@
 | dark | 输入框边线 `color.border.input` / 卡片 | 1:1 | 1.3 | 同上 |
 | light | 卡片边线 `color.border.default` / 页面底 | 1.13:1 | 1.3 | 例外：用户指定 6% 黑（2026-10-09），卡片不投影、靠白底与页面底的底色差定形；回补路径见 DESIGN「已批准的例外」 |
 | light | 侧栏当前项文字 / 图标 `color.text.sidebar-selected` / `color.bg.sidebar-selected` | 3.02:1 | 4.5 | 例外：用户指定主色底块白字（2026-10-09）；这一对不在 `check-contrast` 的 50 组配对里，人工核对；回补路径见 DESIGN「已批准的例外」 |
-| light | 主按钮文字 `color.text.on-primary` / `color.action.primary` | 3.02:1 | 4.5 | 例外：用户指定金底放白字（2026-10-09，深字显脏）；回补路径见 DESIGN「已批准的例外」 |
+| light | 主按钮文字 `color.text.on-primary` / `color.action.primary` | 3.02:1 | 4.5 | 例外：用户指定金底放白字（2026-10-09，深字显脏）；分页当前页、日期选中日、主色徽标、深色 / 勾选标签也是这一对；回补路径见 DESIGN「已批准的例外」 |
 | dark | 主按钮文字 `color.text.on-primary` / `color.action.primary` | 3.02:1 | 4.5 | 同上（主按钮亮暗同值） |
 
 卡片边线对页面底原本不过线（antd 分隔线 `#f0f0f0` 亮色 1.05:1、暗色实测 1.27:1），用户决定加深而不是登记例外：亮色 1.31:1、暗色 1.59:1。2026-10-09 用户改为 6% 黑：亮色降到 1.13:1，登记为例外；暗色不变（1.59:1）。
@@ -209,21 +214,19 @@
 
 ## 风险与待确认
 
-- 推断清单 57 条仍是 `[推断]`：值都有 antd 规格或规则依据，但未经用户逐条确认；`publish-check` 在确认前会把它们报为未确认（0.x 可带着 `--allow-inferred` 先发，CHANGELOG 写清）。
+- 推断清单 56 条仍是 `[推断]`：值都有 antd 规格或规则依据，但未经用户逐条确认；`publish-check` 在确认前会把它们报为未确认（0.x 可带着 `--allow-inferred` 先发，CHANGELOG 写清）。
 - 警示色改用橙色系（`color.status.warning*`）是为避开品牌金做的偏离，属于用户「沿用 antd 功能色」之外的判断，待确认。
 - 暗色证据来自 Pro 的「暗色风格（实验功能）」，只测了工作台与查询表格；表单、弹窗、抽屉的暗色值按 antd 暗色算法推断。
 - 覆盖盲区：只取了工作台 / 查询表格 / 基础表单 / 新建弹窗 / 详情抽屉；登录页、分步表单、结果页、空状态、通知、上传、步骤条没有取证，相关角色（`text.hero.*`、`illustration.size.md`、`icon.size.2xl` 等）按 antd 规格推断。
 - 桥接沿用 Citrine 的实现：Element Plus 栈的 extra 带 IconPark 桥接，而本系统图标库登记为 `@ant-design/icons`，接入前决定用哪套图标；桥接里其他 Citrine 式的组件习惯（操作胶囊、反转块选中等配方）还没按 antd 的做法逐个走查。
-- 分页当前页两套说法：DESIGN 与效果预览是白底 + `color.border.current` 边线 + `color.text.selected` 字；Element 桥接的有底色分页（`.el-pagination.is-background`）是主色实底白字。需要定一种，再改另一边。
-- 开关关闭态：轨道 `color.border.strong` 上的白滑块只有约 1.4:1，亮色下滑块几乎看不出（禁用时更淡）；antd 原为 25% 黑轨道。可改指 `color.data.inactive` 或新增开关轨道角色，待决定。
-- 中性标签 / 中性状态胶囊的底 `color.status.neutral-bg` 在白卡上看不出底色（只剩灰字）；要明显的灰底需把它调深一档。
-- Element 桥接里其余「反转块」写法（日期选中日、树的当前节点、`el-badge` 主色徽标、标签 dark 效果等）同样以 `color.action.selected` 为底，亮色下是白块，可能看不见；效果预览是纯 CSS，没覆盖到，需要用 Element 走查页确认。
+- 开关关闭态：用户决定保持 `color.border.strong` 轨道（2026-10-09），白滑块对轨道约 1.4:1，关闭态主要靠滑块位置与文字标签区分；若在低对比屏上看不清，改指 `color.data.inactive`（25% 黑，antd 原值）即可。
+- Element 选中块已按 antd 改为主色系（见用户决定表），但还没在真实 Element 组件里渲染核对：测试项目里逐个确认日期面板、徽标、标签、评分、树、表头筛选、引导；单选 / 多选按钮组与分段选择器仍是灰轨道上的白块，也要确认在无投影时看得出。
 - `.stat-strip` 自带 `margin-bottom`，放进带 gap 的内容区会和 gap 叠成双倍间距（效果预览里单独抵消了）。
 - 词表外的 11 个语义名跟随 Citrine 桥接，若词表以后收编或改名，需要同步。
 - 成功色 `color.status.success*` 顺带统一成与「涨」同一种祖母绿（推断，待确认）；若要保留 antd 的橄榄绿，改回 antd green 色板即可。
 - 视觉已偏离 Ant Design Pro 原样：圆角、描边宽、侧栏当前项、卡片标题、图表配色按预期预览图改过，卡片按用户决定不投影；交互结构、密度与控件尺寸仍是 antd。
 - 0.6px 描边在 1 倍屏上是 1px（见「未纳管项」）；需要在高分屏与普通屏各看一眼。
-- 数字字体 D-DIN-PRO 不是系统字体，种子不带字体文件：没装的机器退到 D-DIN / Bahnschrift / 正文字体，各端数字字形可能不同；要一致需项目自行托管（先确认授权）。它也没有等宽数字，金额列小数点不保证上下对齐；窄体细笔画在 12px 表格里显得比正文数字小一点。
+- 数字字体 D-DIN-PRO 不是系统字体，种子不带字体文件：没装的机器退到 D-DIN / Bahnschrift / 正文字体，各端数字字形可能不同；要一致需项目自行托管（先确认授权）。它没有等宽数字，所以只用在数据大字上（并排的 KPI 数字宽度会随数值变化）。
 - 输入框聚焦只靠边线变深和光标：满足 WCAG 2.4.7（AA）「焦点可见」，达不到 2.4.13（AAA）对焦点外观的面积要求；若要过 AAA，给输入类控件恢复外环即可。
 - 卡片边线很浅（亮色对页面底 1.13:1，已登记例外）且不投影：卡片主要靠白底与页面底的底色差分辨，低对比度显示器或强光下卡片边界可能看不清；在普通屏上看一眼，不行就按 DESIGN 的回补路径退回。
 - 取证警告：品牌族按用户决定替换，派生色阶最初由 @ant-design/colors 生成后按对比度校正（antd 算法对低饱和种子生成的浅档偏灰，浅底改为与白按比例混合）；2026-10-09 主色提亮后，按原色阶在 OKLCH 里的位置重推。

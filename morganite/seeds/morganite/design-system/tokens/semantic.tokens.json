@@ -338,8 +338,8 @@
       },
       "neutral-bg": {
         "$type": "color",
-        "$value": "{color.neutral.50}",
-        "$description": "[推断] 中性状态浅底借用浅分区 #fafafa"
+        "$value": "{color.neutral.black-a6}",
+        "$description": "[确认] 中性标签 / 中性状态胶囊浅底：用户 2026-10-09 选 6% 黑（原借用浅分区 #fafafa，白卡上看不出底）；半透明，压在表格悬停行、表头上仍比底深一档；Element 里与它同值的标签边线改为透明，免得叠出深一圈"
       }
     },
     "brand": {
@@ -770,12 +770,12 @@
       "variant": {
         "$type": "string",
         "$value": "{font.numeric.tabular}",
-        "$description": "[推断] 金额 / 单号 / 统计数字用 tabular-nums；D-DIN-PRO 没有等宽数字，这条只在退到正文字体时起作用（金额列靠右对齐，小数点不保证上下对齐）"
+        "$description": "[推断] 金额 / 单号 / 表格数字用 tabular-nums：正文字体有等宽数字，金额列小数点上下对齐；数据大字的 D-DIN-PRO 没有等宽数字，这条对它不生效"
       },
       "family": {
         "$type": "fontFamily",
-        "$value": "{font.family.numeric}",
-        "$description": "[确认] 正文里的数字数据（表格金额、百分比、涨跌、图表数值、日期）用 D-DIN-PRO（用户 2026-10-09 指定）；单号、代码仍用 font.family.mono"
+        "$value": "{font.family.body}",
+        "$description": "[确认] 小号数字数据（表格金额与日期、百分比、涨跌、图表数值、页码）用正文字体，配 text.numeric.variant 等宽数字：用户 2026-10-09 先定 D-DIN-PRO，同日看过 12px 表格后改回正文字体（D-DIN-PRO 窄体细笔画在中文旁显得小而轻）；数据大字仍用 D-DIN-PRO（text.display.family）；单号、代码用等宽字体"
       }
     }
   },

@@ -251,7 +251,7 @@
           "alpha": 0.06,
           "hex": "#0000000F"
         },
-        "$description": "[观察] 骨架屏底（antd Skeleton gradientFromColor），1 处；2026-10-09 起兼作卡片 / 容器 / 表格分隔线（用户指定 6% 黑，与 antd 分隔线同一量级）"
+        "$description": "[观察] 骨架屏底（antd Skeleton gradientFromColor），1 处；2026-10-09 起兼作卡片 / 容器 / 表格分隔线（用户指定 6% 黑，与 antd 分隔线同一量级）；2026-10-09 起兼作中性标签 / 中性状态胶囊底"
       },
       "black-a15": {
         "$type": "color",
@@ -743,7 +743,7 @@
           "alpha": 0.1,
           "hex": "#D1AB621A"
         },
-        "$description": "[推断] 暗色筹码底：暗色筹码字色亮金 #D1AB62 的 10%，与亮色「字色同色 10%」同一规则"
+        "$description": "[确认] 暗色筹码底（用户 2026-10-09 确认）：暗色筹码字色亮金 #D1AB62 的 10%，与亮色「字色同色 10%」同一规则"
       }
     },
     "emerald": {
@@ -1691,7 +1691,7 @@
           "Noto Sans",
           "sans-serif"
         ],
-        "$description": "[确认] 数字数据字体栈（用户 2026-10-09 指定 D-DIN-PRO）：D-DIN-PRO 有 400–900 六档字重；没装时退到免费的 D-DIN、Windows 自带的 Bahnschrift（DIN 1451 系），再退到正文无衬线。不放 macOS 的 DIN Alternate——只有 Bold 面，会让正文数字全变粗。种子不分发字体文件（授权与体积），项目要统一显示时自行用 @font-face 托管。D-DIN-PRO 没有等宽数字，tabular-nums 对它不生效"
+        "$description": "[确认] 数据大字字体栈（用户 2026-10-09 指定 D-DIN-PRO；同日改定只给 text.display.family，小号数字回到正文字体）：D-DIN-PRO 有 400–900 六档字重；没装时退到免费的 D-DIN、Windows 自带的 Bahnschrift（DIN 1451 系），再退到正文无衬线。不放 macOS 的 DIN Alternate——只有 Bold 面，会让正文数字全变粗。种子不分发字体文件（授权与体积），项目要统一显示时自行用 @font-face 托管。D-DIN-PRO 没有等宽数字，tabular-nums 对它不生效"
       }
     },
     "numeric": {

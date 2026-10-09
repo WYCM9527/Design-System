@@ -21,11 +21,11 @@ morganite/
 
 ## 状态
 
-- 来源与证据：`seeds/morganite/design-system/AUDIT.md`——实测 70 个角色、用户确认 51 个、推断 57 个，另有用户决定表与对比度例外。
+- 来源与证据：`seeds/morganite/design-system/AUDIT.md`——实测 70 个角色、用户确认 52 个、推断 56 个，另有用户决定表与对比度例外。
 - 规则：`seeds/morganite/design-system/DESIGN.md`（速查、视觉语言、组件配方、验收基线已写完）。
 - 预览：`seeds/morganite/design-system/preview/index.html`（工作台 / 表单 / 抽屉 × 亮暗，与来源站首屏对照）、`token-board.html`、对比度报告 `contrast.md`；效果预览 `previews/rose-gold-admin/index.html`：8 个页面合在一个文件里，按路由跳转——工作台 `#/dashboard`、交易记录 `#/transactions`、新建交易 `#/transactions/new`、交易详情 `#/transactions/detail`、系统设置 `#/settings`、组件走查 `#/kitchen`、登录 `#/login`、空状态 `#/empty/<模块>`；侧栏、顶栏、路由由 `shell.js` 提供，浏览器前进 / 后退可用，亮 / 暗选择跨页保留；原来的分页文件保留为跳转页。
 - 桥接：从 Citrine 2.12.0 拷入 Element Plus / shadcn / 页面配方 / ECharts 桥接当起点，引用的缺失变量已全部补 token（22 个，外加 ECharts 顺序色 5 个与提示气泡 1 个，见 AUDIT「桥接缺口」）；组件走查页还没按 antd 的做法逐个走一遍。
-- 待办：AUDIT 推断 57 条逐条确认（或以 0.x 带 `--allow-inferred` 先发）→ `publish-check.mjs` 通过 → 打 tag。
+- 待办：AUDIT 推断 56 条逐条确认（或以 0.x 带 `--allow-inferred` 先发）→ `publish-check.mjs` 通过 → 打 tag。
 
 ## 接入
 

@@ -144,7 +144,7 @@
 /* 骨架屏：不是 accent（选中底），是 bg.skeleton；进度条轨道不是 primary 20% 洗色（品牌黄没有延伸色），是 border.default */
 [data-slot="skeleton"] { background-color: var(--color-bg-skeleton); }
 [data-slot="progress"] { background-color: var(--color-border-default); }
-/* 表格：表头 bg.subtle + text.secondary，行 hover bg.hover，选中行 bg.selected-subtle（shadcn 默认表头正文色、hover 用 muted 50%） */
+/* 表格：表头 bg.subtle + text.secondary，行 hover bg.hover，选中行与悬停同色 bg.hover、再悬停 bg.selected-hover（shadcn 默认表头正文色、hover 用 muted 50%） */
 [data-slot="table-header"] { background-color: var(--color-bg-subtle); }
 [data-slot="table-head"] { color: var(--color-text-secondary); font-weight: var(--text-weight-label); }
 /* 单元格内边距接 table.cell.padding-x / -y（20 / 14）：shadcn 默认 p-2 = 8px、表头 h-10，内容贴边没有呼吸感；表头高度改由内边距决定 */
@@ -154,7 +154,7 @@
 [data-slot="table-row"][data-state="selected"] { background-color: var(--color-bg-hover); }   /* 选中行与悬停同色，再悬停深一档 */
 [data-slot="table-row"][data-state="selected"]:hover { background-color: var(--color-bg-selected-hover); }
 [data-slot="table-row"], [data-slot="table-header"] tr { border-color: var(--color-border-default); }
-/* 标签页（shadcn 的 Tabs 形态是分段选择器）：外壳 bg.subtle + 发丝线，选中项深黑反转块，不用白色浮块 */
+/* 标签页（shadcn 的 Tabs 形态是分段选择器）：外壳 bg.subtle + 发丝线，选中项是白色内胶囊（action.selected），不加投影 */
 [data-slot="tabs-list"] { background-color: var(--color-bg-subtle); border: var(--border-width-default) solid var(--color-border-default); }
 [data-slot="tabs-trigger"][data-state="active"] { background-color: var(--color-action-selected); color: var(--color-text-on-selected); box-shadow: none; border-color: transparent; }
 [data-slot="tabs-trigger"]:not([data-state="active"]) { color: var(--color-text-secondary); }
@@ -166,6 +166,9 @@
 /* 菜单 / 下拉项：hover / focus 用 bg.hover（accent 是「选中」语义，留给 aria-selected / data-state=checked） */
 [data-slot="dropdown-menu-item"]:focus, [data-slot="select-item"]:focus, [data-slot="dropdown-menu-checkbox-item"]:focus, [data-slot="dropdown-menu-radio-item"]:focus, [data-slot="dropdown-menu-sub-trigger"]:focus { background-color: var(--color-bg-hover); color: var(--color-text-primary); }
 [data-slot="select-item"][data-state="checked"] { color: var(--color-text-selected); font-weight: var(--text-weight-label); }
+/* 分页：当前页金底白字（用户 2026-10-09 统一，同 Element 与纯 CSS 配方）；shadcn 默认是 outline 描边块 */
+[data-slot="pagination-link"][data-active="true"], [data-slot="pagination-link"][aria-current="page"] { background-color: var(--color-action-primary); border-color: var(--color-action-primary); color: var(--color-text-on-primary); font-weight: var(--text-weight-strong); }
+[data-slot="pagination-link"][data-active="true"]:hover, [data-slot="pagination-link"][aria-current="page"]:hover { background-color: var(--color-action-primary-hover); color: var(--color-text-on-primary); }
 
 /* ── 手机（≤ 768，layout.breakpoint.mobile 的字面镜像）：浮层全宽贴底，与 Element 桥接同一形态 ── */
 @media (max-width: 768px) {

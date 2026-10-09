@@ -12,7 +12,7 @@
 
 1. 玫瑰金是唯一的彩色焦点，只出现在该被注意的地方：主按钮（`color.action.primary`）、勾选 / 开关选中、进度填充、页签墨条（`color.border.current`）、品牌指示条（`color.brand.indicator`）、图表首色（`color.chart.1`）。每屏只放一个主按钮，其余降为次要按钮。
 2. 金底上的文字用白字（`color.text.on-primary` / `color.text.on-brand`，亮色侧栏当前项 `color.text.sidebar-selected`）——用户指定，深字在金底上显脏；白字对主色达不到正文底线，已登记为例外（见「已批准的例外」）。链接、选中文字、焦点用同色系更深的一档（`color.text.link` / `color.text.selected` / `color.focus.ring`），不直接拿主色当文字色。
-3. 选中与当前：侧栏当前项是主色底块配白字，图标随文字一起变白（`color.bg.sidebar-selected` + `color.text.sidebar-selected`），不加粗、不加指示条；表格选中行与悬停同色（`color.bg.hover`），再悬停深一档（`color.bg.selected-hover`）；批量条这类小面积选中用中性浅灰（`color.bg.selected`）；筹码（已选条件胶囊）用字色同色 10% 的金色浅底（`color.bg.chip` + `color.text.selected`）；分段选择器当前项是白块（`color.action.selected`）。暗色下侧栏当前项是金色暗底配亮金字。
+3. 选中与当前：侧栏当前项是主色底块配白字，图标随文字一起变白（`color.bg.sidebar-selected` + `color.text.sidebar-selected`），不加粗、不加指示条；表格选中行与悬停同色（`color.bg.hover`），再悬停深一档（`color.bg.selected-hover`）；批量条这类小面积选中用中性浅灰（`color.bg.selected`）；筹码（已选条件胶囊）用字色同色 10% 的金色浅底（`color.bg.chip` + `color.text.selected`）；分段选择器（含单选 / 多选按钮组）当前项是灰轨道上的白块（`color.action.selected`）；其余选中按 antd 走主色系：分页当前页、日期选中日、主色徽标、深色 / 勾选标签用主色实底白字（`color.action.primary` + `color.text.on-primary`），评分星用 `color.action.primary`，树当前节点用奶金浅底（`color.bg.selected-subtle`）——`color.action.selected` 是白色，只能压在灰轨道上用。暗色下侧栏当前项是金色暗底配亮金字。
 4. 状态色只做「文字 + 同色浅底」胶囊（`color.status.*` / `*-bg`），并且一定配文字标签；实底按钮只有主（`color.action.primary`）与危险（`color.action.danger` + `color.text.on-danger`）。
 5. 链接靠色相识别：`color.text.link`，不加下划线（`text.link.decoration`）、不用斜体（`text.link.style`），悬停变深（`color.text.link-hover`）。正文里的链接和表格操作列的「配置 / 详情」是同一种样式。
 6. 尺寸只从 token 拿：控件高 `control.height.*`，间距 `space.* / spacing.*`，圆角 `radius.*` 按容器层级递减，字号走 `text.*.size` 阶梯；不在阶梯之外取值。
@@ -28,7 +28,7 @@
 - 品牌色：玫瑰金是中等明度的暖金色，面积小、位置固定——主按钮、侧栏当前项、墨条、指示条、勾选选中、图表首色；大面积品牌面 `color.bg.brand` 只给登录页品牌区与欢迎横幅，上面放 `color.text.on-brand`。落在金底上的文字按用户要求用白字（对比度例外见「验收基线」）；需要金色文字时用 `color.text.brand`，且只给不小于标题档的展示字。图表也一样克制：金领衔，其余是深灰、浅金、中灰、浅灰和一个绿。
 - 中性色：纯灰，沿用 antd——文字、分隔、悬停都用半透明黑叠加，落在任何底色上都不发脏。层次以底色差为主：页面底 `color.bg.page` → 卡片 `color.bg.surface` → 表头 / 次级容器 `color.bg.subtle`，卡片不投影，只加一条很浅的细边线 `color.border.default`。边线分两档：卡片边、容器分隔、表格行线用很浅的 `color.border.default`；按钮、勾选框这类控件描边用深一档的 `color.border.strong`，两档不混用。宽度统一是 `border.width.default` 这一档发丝细线（焦点环、出错态与指示条除外）。整体是 flat-first：浮起感只留给弹窗、下拉这类真正悬浮的表面。
 - 文字三档：`color.text.primary` 给正文、标题、表头、表单标签；`color.text.secondary` 给说明、菜单、次要信息；`color.text.muted` 给时间戳、帮助文字、表格副行。`color.text.placeholder` 只用于输入框占位与空值提示，不承载需要读的信息。
-- 字体：正文用系统字体栈 `font.family.body`，不加载网络字体；等宽 `font.family.code` 给代码与单号；数字数据用 D-DIN-PRO（`text.numeric.family` 与数据大字 `text.display.family`，字体栈见 `font.family.numeric`）——统计数字、KPI、表格金额与日期、百分比、涨跌、图表数值都用它。种子不带字体文件：没装 D-DIN-PRO 的机器退到 D-DIN、Bahnschrift、正文无衬线，项目要各端一致需自行托管。正文 `text.body.size`，阶梯从小到大是 `text.caption.size`（与 `text.small.size`、`text.body-sm.size` 同档，也是最小字号）→ `text.body.size` → `text.title-sm.size` → `text.title.size` → `text.heading.size` → `text.display.size` → `text.hero.size`。统计数字用 `text.display.*`。D-DIN-PRO 没有等宽数字，`text.numeric.variant` 只在退到正文字体时起作用，金额列靠右对齐、小数点不保证上下对齐。
+- 字体：正文用系统字体栈 `font.family.body`，不加载网络字体；等宽 `font.family.code` 给代码与单号；数据大字（统计数字、KPI、`el-statistic`）用 D-DIN-PRO（`text.display.family`，字体栈见 `font.family.numeric`）；表格金额与日期、百分比、涨跌、图表数值、页码这些小号数字用正文字体配等宽数字（`text.numeric.family` + `text.numeric.variant`）——D-DIN-PRO 窄体细笔画在 12px 下压不住旁边的中文。种子不带字体文件：没装 D-DIN-PRO 的机器退到 D-DIN、Bahnschrift、正文无衬线，项目要各端一致需自行托管。正文 `text.body.size`，阶梯从小到大是 `text.caption.size`（与 `text.small.size`、`text.body-sm.size` 同档，也是最小字号）→ `text.body.size` → `text.title-sm.size` → `text.title.size` → `text.heading.size` → `text.display.size` → `text.hero.size`。统计数字用 `text.display.*`。D-DIN-PRO 没有等宽数字，只用在不需要上下对齐的大数字上。
 - 状态色：成功绿（与「涨」同一种祖母绿）、警示橙、错误红、信息蓝，沿用 antd 功能色的色相并压深到文字可读。警示不用 antd 默认的金黄，因为它和品牌金同色相；错误红与品牌金在色相上离得远，但依然不单靠颜色区分，胶囊里一定有文字。
 - 壳层：保留能放二级菜单的宽侧栏；亮色下侧栏是纯白底（`color.bg.sidebar`，与顶栏、卡片同色，和浅灰页面底分开），当前项是主色底块配白字白图标，侧栏与内容区之间一条 `color.border.sidebar` 细线；顶栏也是白底。暗色下侧栏是纯黑底（与页面底同色，靠 `color.border.sidebar` 分开），当前项换成金色暗底配亮金字。
 
@@ -79,7 +79,7 @@
 - 状态色是文字色不是填充色：徽标 / 提示条 = `color.status.<x>` + `color.status.<x>-bg`；表格里的状态可以是「状态点 + 文字」，点只是辅助。
 - 图标：`icon.library` 的线性图标为主，默认尺寸 `icon.size.md`（与正文同高），另有 `icon.size.xs / sm / lg / xl / 2xl`；接 IconPark 时描边用 `icon.stroke.width`。颜色：操作图标 `color.icon.default`，装饰与顶栏操作 `color.icon.muted`，双色插图 `color.icon.brand` + `color.icon.two-tone`。
 - 侧栏：底 `color.bg.sidebar`，项 hover `color.bg.sidebar-hover`，当前项 `color.bg.sidebar-selected` + `color.text.sidebar-selected`（不加粗、不加指示条）；文字三档 `color.text.sidebar` / `-strong` / `-muted`（分组标题用 muted）；边线 `color.border.sidebar`；宽 `layout.sidebar.width`，折叠 `layout.sidebar.collapsed-width`。
-- 表格：表头 `color.bg.subtle`（比卡片深一档）+ `color.text.secondary` × `text.weight.label`、小号字，行分隔 `color.border.default`，行 hover `color.bg.hover`，选中行与悬停同色 `color.bg.hover`（再悬停深一档 `color.bg.selected-hover`）；单元格内边距 `table.cell.padding-y / -x`；金额、日期列用 `text.numeric.family`（D-DIN-PRO），单号用 `font.family.code`。
+- 表格：表头 `color.bg.subtle`（比卡片深一档）+ `color.text.secondary` × `text.weight.label`、小号字，行分隔 `color.border.default`，行 hover `color.bg.hover`，选中行与悬停同色 `color.bg.hover`（再悬停深一档 `color.bg.selected-hover`）；单元格内边距 `table.cell.padding-y / -x`；金额、日期列用 `text.numeric.family` + `text.numeric.variant`（正文字体、等宽数字，金额列小数点上下对齐），单号用 `font.family.code`。
 - 弹窗 / 抽屉：宽度只用 `layout.modal.width.sm`（确认）/ `.md`（表单）/ `layout.drawer.width`；横向表单标签列 `layout.form.label-width`，单列表单最大宽 `layout.form.max-width`（单列表单用竖向标签）。
 - 图表：分类色 `color.chart.1…6` 品牌金领衔，顺序色 `color.chart.sequential.1…5`（四档灰 + 金封顶，离散分段用）；单序列折线金色描线 + 空心点 + 自上而下渐隐的面积 `color.chart.area`，多序列不填面积；提示气泡 `color.chart.tooltip` 底 + `color.text.inverse` 字；涨跌 `color.data.increase / decrease`，已结束 `color.data.inactive`；轴与图例文字 `color.text.secondary`。柱状图、进度条这类数据填充用同色的饱和度渐变：HSB 明度不变，浅端把饱和度降到 × `chart.gradient.saturation`。竖柱上浅下深、横柱右浅左深；进度条左浅右深。中性灰没有饱和度，保持实色；环形图、图例色块也保持实色。环形图用平面，不做 3D。
 - 顶栏：左侧问候语（`color.text.muted`）+ 姓名（`color.text.primary` × `text.weight.strong`），右侧胶囊搜索、带未读红点（`color.action.danger`）的图标按钮与头像下拉。
@@ -99,7 +99,7 @@
 | 输入框 / 选择器 | `color.bg.input` | `color.text.primary`，占位符 `color.text.placeholder` | 静息 `color.border.input`，hover `color.border.strong`，聚焦 `color.border.focus`（线宽不变、不加外环），圆角 `radius.md` |
 | 勾选框 / 单选 / 开关 | 选中 `color.action.primary`；开关滑块 `color.control.knob` | 勾 `color.text.on-primary` | 未选 `color.border.strong` × `border.width.control`，勾选框圆角 `radius.xs` |
 | 卡片 | `color.bg.surface` | 标题 `text.small.size` × `text.weight.strong` × `color.text.secondary` + `text.tracking.caps` | `color.border.default`，圆角 `radius.lg`，不投影（`elevation.card.*` 为透明），内边距 `space.card` |
-| 数据卡 / 统计 | `color.bg.surface` | 数字 `text.display.*`（D-DIN-PRO），涨跌等小数字 `text.numeric.family`，标签 `color.text.secondary` | 涨跌 `color.data.increase / decrease` |
+| 数据卡 / 统计 | `color.bg.surface` | 数字 `text.display.*`（D-DIN-PRO），涨跌等小数字 `text.numeric.family`（正文字体），标签 `color.text.secondary` | 涨跌 `color.data.increase / decrease` |
 | 表格 | 表头 `color.bg.subtle`；行 hover `color.bg.hover`；选中行与悬停同色 `color.bg.hover`，再悬停 `color.bg.selected-hover` | 表头 `color.text.secondary` × `text.weight.label`（小号），副行 `color.text.muted` | 行分隔 `color.border.default`；单元格内边距 `table.cell.padding-*` |
 | 批量操作条 | `color.bg.selected` | `color.text.primary` | 上下 `color.border.default` |
 | 筹码（已选条件） | `color.bg.chip`（字色同色 10%） | `color.text.selected`，小号字 | 胶囊 `radius.full`，高 `control.height.sm`；移除按钮命中区不小于 `control.hit-min` |
@@ -109,8 +109,10 @@
 | 弹窗 | 遮罩 `color.bg.overlay`；面板 `color.bg.elevated` | `color.text.primary` / `secondary` | `elevation.modal.*`，`layer.modal`，圆角 `radius.lg`，进出 `motion.duration.slow` |
 | Tooltip / 深色 Toast | `color.bg.inverse` | `color.text.inverse` | 圆角 `radius.sm`，`layer.toast` |
 | 标签页 | — | 默认 `color.text.secondary`，选中 `color.text.selected` | 选中下划线 `color.border.current` × `border.width.active` |
-| 分段选择器 | 轨道 `color.bg.hover`；当前项 `color.action.selected` | 当前 `color.text.on-selected`，其余 `color.text.secondary` | 内衬 `control.segmented-inset` |
-| 分页 | 当前页 `color.bg.surface`；其余 hover `color.bg.hover` | 当前 `color.text.selected`，其余 `color.text.primary` | 当前页边线 `color.border.current`；`control.height.md`（小号 `control.height.sm`） |
+| 分段选择器 / 按钮组 | 轨道 `color.bg.hover`；当前项 `color.action.selected` | 当前 `color.text.on-selected`，其余 `color.text.secondary` | 内衬 `control.segmented-inset` |
+| 分页 | 当前页 `color.action.primary`；其余 hover `color.bg.hover` | 当前 `color.text.on-primary` × `text.weight.strong`，其余 `color.text.primary` | `control.height.md`（小号 `control.height.sm`） |
+| 日期面板 | 选中日 `color.action.primary`；范围内 `color.bg.selected-subtle` | 选中日 `color.text.on-primary`；今天 `color.text.primary` × 500 | 选中块 `radius.full` |
+| 树 | 当前节点 `color.bg.selected-subtle`；hover `color.bg.hover` | `color.text.primary`，当前节点 500 | 行高 `control.height.md`，圆角 `radius.md` |
 | 步骤条 | 当前步圆点 `color.action.primary`；其余圆点 `color.bg.surface` | 当前步序号 `color.text.on-primary`；已完成的勾 `color.text.selected`；未开始 `color.text.muted` | 已完成圆点描边与连线 `color.border.current`；未开始描边 `color.border.strong`、连线 `color.border.default`；圆点 `control.height.sm` |
 | 时间线 | 节点 `color.bg.surface` | 事件 `color.text.primary`，时间 `color.text.muted` | 当前节点描边 `color.action.primary`，异常 `color.status.error`，其余 `color.border.strong`；竖线 `color.border.default` |
 | 侧栏 | `color.bg.sidebar`；项 hover `color.bg.sidebar-hover`；当前 `color.bg.sidebar-selected` | `color.text.sidebar` / `-strong` / `-muted`；当前 `color.text.sidebar-selected`（常规字重） | `color.border.sidebar`；当前项无指示条；宽 `layout.sidebar.width`，折叠 `layout.sidebar.collapsed-width` |
@@ -134,7 +136,7 @@
 - **已批准的例外**：
   - 填充式输入框的静息边线 `color.border.input` 对卡片（亮 / 暗）——用户选择 Ant Design Pro v6 原样的填充式，输入框靠 `color.bg.input` 与卡片区分；回补路径：改回描边式时把 `color.border.input` 指向 `color.border.strong` 同档。
   - 卡片 / 分隔线 `color.border.default` 对页面底（亮色）——用户指定很浅的半透明黑边线（2026-10-09），卡片靠白底与页面底的底色差定形，边线只做轻提示；回补路径：把 `color.border.default` 指回 `color.neutral.300`（与控件描边同档，过 1.3 底线）。暗色边线不受影响。
-  - 金底白字：`color.text.on-primary` / `color.text.on-brand` 对 `color.action.primary`（亮 / 暗），以及亮色侧栏当前项 `color.text.sidebar-selected` 对 `color.bg.sidebar-selected`——都低于正文 4.5 底线；用户指定金底放白字（2026-10-09，深字显脏）。勾选标记这类图形对金底刚好过 3:1。回补路径：文字改回 `color.neutral.900`（深字），或把金底压深到 `color.brand.600` 一档（白字可过 4.5）；侧栏当前项也可恢复奶油金底配深金字。暗色侧栏当前项不受影响。
+  - 金底白字：`color.text.on-primary` / `color.text.on-brand` 对 `color.action.primary`（亮 / 暗），以及亮色侧栏当前项 `color.text.sidebar-selected` 对 `color.bg.sidebar-selected`——都低于正文 4.5 底线（主按钮之外，分页当前页、日期选中日、主色徽标、深色 / 勾选标签也是这一对）；用户指定金底放白字（2026-10-09，深字显脏）。勾选标记这类图形对金底刚好过 3:1。回补路径：文字改回 `color.neutral.900`（深字），或把金底压深到 `color.brand.600` 一档（白字可过 4.5）；侧栏当前项也可恢复奶油金底配深金字。暗色侧栏当前项不受影响。
 - **可访问名称**：所有按钮、链接、菜单项有名称；图片有 alt。
 - **溢出与截断**：任何模式、任何页面无横向溢出；nowrap 文字无截断。
 - **键盘焦点**：Tab 遍历每个可聚焦元素都能看出焦点：按钮、链接、菜单项有焦点环，输入类控件边线变成 `color.border.focus`。

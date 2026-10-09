@@ -10,7 +10,7 @@
 html { font-family: var(--font-family-body); line-height: var(--text-body-line-height); }
 body { margin: 0; font-size: var(--text-body-size); background: var(--color-bg-page); color: var(--color-text-primary); }
 a { color: inherit; text-decoration: none; }
-.num { font-family: var(--text-numeric-family); font-variant-numeric: var(--text-numeric-variant); }   /* 数字数据：D-DIN-PRO（text.numeric.family）；单号、代码用下面的 .mono */
+.num { font-family: var(--text-numeric-family); font-variant-numeric: var(--text-numeric-variant); }   /* 数字数据：正文字体 + 等宽数字（text.numeric.*；数据大字才用 D-DIN-PRO）；单号、代码用下面的 .mono */
 .mono { font-family: var(--font-family-code); font-variant-numeric: var(--text-numeric-variant); }
 
 /* ── 图标尺寸六档：IconPark 走 font-size（见 iconpark.css）；lucide 这类 SVG 图标库走 width / height，同一组类名 ── */

@@ -23,7 +23,7 @@
 | 警示胶囊 | `color.status.warning` #AD4E00 | `color.status.warning-bg` #FFF7E6 | 5.09:1 | ≥ 4.5 | ✔ |
 | 错误胶囊 | `color.status.error` #CF1322 | `color.status.error-bg` #FFF1F0 | 5.07:1 | ≥ 4.5 | ✔ |
 | 信息胶囊 | `color.status.info` #0958D9 | `color.status.info-bg` #E6F4FF | 5.5:1 | ≥ 4.5 | ✔ |
-| 中性胶囊 | `color.status.neutral` #000000A6 | `color.status.neutral-bg` #FAFAFA | 6.92:1 | ≥ 4.5 | ✔ |
+| 中性胶囊 | `color.status.neutral` #000000A6 | `color.status.neutral-bg` #0000000F | 6.42:1 | ≥ 4.5 | ✔ |
 | 危险文字 / 卡片 | `color.text.danger` #CF1322 | `color.bg.surface` #FFFFFF | 5.57:1 | ≥ 4.5 | ✔ |
 | 独立图标 / 卡片 | `color.icon.default` #000000A6 | `color.bg.surface` #FFFFFF | 7:1 | ≥ 3 | ✔ |
 | 装饰图标 / 卡片 | `color.icon.muted` #00000073 | `color.bg.surface` #FFFFFF | 3.36:1 | ≥ 3 | ✔ |

@@ -86,7 +86,7 @@ textarea.input { height: auto; min-height: calc(var(--control-height-md) * 3); p
 .pagination .total { margin-right: var(--spacing-3); color: var(--color-text-secondary); font-size: var(--text-body-sm-size); }
 .page { display: inline-grid; place-items: center; min-width: var(--control-height-md); height: var(--control-height-md); padding: 0 var(--spacing-2); border: var(--border-width-default) solid var(--color-action-quiet); border-radius: var(--radius-md); background: var(--color-action-quiet); color: var(--color-text-primary); font-size: var(--text-body-sm-size); font-variant-numeric: var(--text-numeric-variant); cursor: pointer; }
 .page:hover:not(:disabled):not([aria-current="page"]):not(.ellipsis) { background: var(--color-bg-hover); }
-.page[aria-current="page"] { background: var(--color-bg-surface); border-color: var(--color-border-current); color: var(--color-text-selected); font-weight: var(--text-weight-label); }
+.page[aria-current="page"] { background: var(--color-action-primary); border-color: var(--color-action-primary); color: var(--color-text-on-primary); font-weight: var(--text-weight-strong); }
 .page.ellipsis { color: var(--color-text-muted); cursor: default; }
 .page .icon { width: var(--size-icon-md); height: var(--size-icon-md); }
 .pagination .select { margin-left: var(--spacing-2); }
