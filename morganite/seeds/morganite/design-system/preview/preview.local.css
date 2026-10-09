@@ -2,7 +2,8 @@
 
 /* Morganite 配方在虚拟项目里的对应（重新渲染时用 render-preview --local-css 传入本段）：
    卡片 / 统计卡标题 = 字距小标题；顶栏搜索 = 胶囊；勾选框未选中描 border.strong（填充式下 border.input 透明）；
-   侧栏当前项只用底块、不加指示条；标签页选中文字用 color.text.selected；输入框聚焦只换边线、不加外环 */
+   侧栏当前项只用底块、不加指示条；标签页选中文字用 color.text.selected；输入框聚焦只换边线、不加外环；
+   表格选中行与悬停同色；分页当前页金底白字（生成器默认的白块在本系统是白底白卡） */
 .pv-card .pv-h3, .pv-stat > .pv-secondary.pv-small { font-size: var(--text-small-size); font-weight: var(--text-weight-strong); color: var(--color-text-secondary); letter-spacing: var(--text-tracking-caps); text-transform: uppercase; }
 .pv-search { border-radius: var(--radius-full); }
 .pv-check i { border-color: var(--color-border-strong); }
@@ -10,4 +11,6 @@
 .pv-sidebar a.is-current { box-shadow: none; }
 .pv-tabs a.is-current { color: var(--color-text-selected); }
 .pv-input:focus, .pv-input:focus-visible { outline: none; }
+.pv-table tr.is-selected td { background: var(--color-bg-hover); }
+.pv-pagination a.is-current { background: var(--color-action-primary); color: var(--color-text-on-primary); font-weight: var(--text-weight-strong); }
 
