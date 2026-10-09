@@ -377,7 +377,7 @@
 /* ---- 键盘焦点：全局兜底 ----
    Element 自带的焦点环用主色画（复选框、开关、分页、单选按钮组），品牌黄在白底上 1.5:1 等于没有；菜单项、标签页、下拉项又被写死 outline:none。
    统一为近黑实线（暗色近白）+ 1px 偏移；行内型控件（菜单项、标签页、下拉项）改为内缩，避免被容器裁掉。 */
-:where(a, button, [role="button"], [role="menuitem"], [role="tab"], summary, [tabindex]:not([tabindex="-1"])):focus-visible {
+:where(a, button, [role="button"], [role="menuitem"], [role="tab"], summary, [tabindex]:not([tabindex="-1"]):not(input, textarea, select)):focus-visible {
   outline: var(--border-width-active) solid var(--color-border-focus); outline-offset: 1px;
 }
 /* Chrome 把可滚动容器也纳入 Tab 序列（keyboard-focusable scrollers），默认画浏览器蓝色焦点环；Element 的滚动容器统一改为近黑、内缩 */

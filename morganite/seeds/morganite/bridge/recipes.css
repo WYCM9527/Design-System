@@ -80,6 +80,11 @@ td .link, .card-head .link, .batch .link, .empty .link, .more-link { display: in
 .topbar { height: var(--layout-topbar-height); display: flex; align-items: center; gap: var(--spacing-3); padding: 0 var(--space-gutter); background: var(--color-bg-surface); border-bottom: var(--border-width-default) solid var(--color-border-default); position: sticky; top: 0; z-index: var(--layer-sticky); }
 .topbar .search { width: var(--layout-search-width); margin-left: auto; --el-input-border-radius: var(--radius-full); }
 .topbar .search input { border-radius: var(--radius-full); }   /* 顶栏搜索是胶囊；表单里的输入框保持控件圆角 */
+/* 纯 CSS / shadcn 项目的顶栏搜索：<label class="search"> + 图标 + <input>，填充式胶囊（Element 用 el-input.search，走上面两条） */
+.topbar label.search { display: flex; align-items: center; gap: var(--spacing-2); height: var(--control-height-md); padding: 0 var(--spacing-3); background: var(--color-bg-input); border: var(--border-width-default) solid var(--color-border-input); border-radius: var(--radius-full); color: var(--color-icon-muted); }
+.topbar label.search:hover { border-color: var(--color-border-strong); }
+.topbar label.search:focus-within { border-color: var(--color-border-focus); }
+.topbar label.search input { flex: 1; min-width: 0; height: 100%; border: 0; border-radius: 0; background: transparent; outline: none; color: var(--color-text-primary); font-size: var(--text-body-sm-size); }
 .topbar .spacer { margin-left: auto; }
 .iconbtn { position: relative; width: var(--control-height-md); height: var(--control-height-md); border-radius: var(--radius-md); display: grid; place-items: center; color: var(--color-icon-default); cursor: pointer; background: transparent; border: 0; padding: 0; }
 .iconbtn:hover { background: var(--color-bg-hover); color: var(--color-text-primary); }
@@ -117,6 +122,8 @@ td .link, .card-head .link, .batch .link, .empty .link, .more-link { display: in
 .status.info, .badge.info { color: var(--color-status-info); background: var(--color-status-info-bg); }
 .status.neutral, .badge.neutral { color: var(--color-status-neutral); background: var(--color-status-neutral-bg); }
 .badge.brand { color: var(--color-text-selected); background: var(--color-bg-selected-subtle); }   /* 强调徽标（置顶、本机、管理员）：奶金浅底 + 深金字，与表格选中行同一套；action.selected 在本系统是白块，不能当底色 */
+/* 标签（类别 / 属性，中性）：radius.sm 的小方标签，不做胶囊（DESIGN「圆角」「徽标 / 提示条」）；表达状态用上面的 .status */
+.tag { display: inline-flex; align-items: center; height: var(--control-height-xs); padding: 0 var(--spacing-2); border-radius: var(--radius-sm); background: var(--color-status-neutral-bg); color: var(--color-status-neutral); font-size: var(--text-small-size); white-space: nowrap; }
 .sub { display: block; font-size: var(--text-small-size); color: var(--color-text-muted); }
 .up { color: var(--color-data-increase); } .down { color: var(--color-data-decrease); }
 
@@ -136,6 +143,15 @@ td .link, .card-head .link, .batch .link, .empty .link, .more-link { display: in
 .batch { display: flex; align-items: center; gap: var(--spacing-3); padding: var(--spacing-2-5) var(--space-card); margin-top: var(--spacing-3); background: var(--color-bg-selected); border-top: var(--border-width-default) solid var(--color-border-default); border-bottom: var(--border-width-default) solid var(--color-border-default); color: var(--color-text-primary); font-size: var(--text-body-sm-size); }
 .batch .right { margin-left: auto; display: flex; gap: var(--space-inline); }
 .pager { display: flex; justify-content: flex-end; padding: var(--spacing-3) var(--space-card); }
+/* 分页（纯 CSS / shadcn 项目；Element 用 el-pagination，桥接已对齐同一套）：页码透明、悬停浅底，当前页金底白字 */
+.pagination { display: flex; align-items: center; gap: var(--spacing-1); flex-wrap: wrap; }
+.pagination .total { margin-right: var(--spacing-3); color: var(--color-text-secondary); font-size: var(--text-body-sm-size); }
+.page { display: inline-grid; place-items: center; min-width: var(--control-height-md); height: var(--control-height-md); padding: 0 var(--spacing-2); border: var(--border-width-default) solid var(--color-action-quiet); border-radius: var(--radius-md); background: var(--color-action-quiet); color: var(--color-text-primary); font-size: var(--text-body-sm-size); font-variant-numeric: var(--text-numeric-variant); cursor: pointer; }
+.page:hover:not(:disabled):not([aria-current="page"]):not(.ellipsis) { background: var(--color-bg-hover); }
+.page[aria-current="page"] { background: var(--color-action-primary); border-color: var(--color-action-primary); color: var(--color-text-on-primary); font-weight: var(--text-weight-strong); }
+.page:disabled { opacity: var(--opacity-disabled); cursor: not-allowed; }
+.page.ellipsis { color: var(--color-text-muted); cursor: default; }
+.page svg { width: var(--size-icon-md); height: var(--size-icon-md); }
 
 /* ── 表单页 ── */
 .form-page { max-width: var(--layout-form-max-width); }
@@ -238,7 +254,7 @@ td .link, .card-head .link, .batch .link, .empty .link, .more-link { display: in
 /* ── 打印：隐藏导航与按钮，色底转边线 ── */
 /* ── 键盘焦点兜底与减少动态效果：与 element-plus.css / shadcn.css 同一份约定。有桥接时规则重复无害；纯 CSS 渠道（Flask 等无组件库）靠这里拿到近黑 2px 焦点环而不是浏览器默认蓝环。
       shadcn 组件（data-slot）走桥接的 ring 模型，这里不叠。 ── */
-:where(a, button, [role="button"], [role="menuitem"], [role="tab"], summary, [tabindex]:not([tabindex="-1"])):not([data-slot]):focus-visible { outline: var(--border-width-active) solid var(--color-border-focus); outline-offset: 1px; }
+:where(a, button, [role="button"], [role="menuitem"], [role="tab"], summary, [tabindex]:not([tabindex="-1"]):not(input, textarea, select)):not([data-slot]):focus-visible { outline: var(--border-width-active) solid var(--color-border-focus); outline-offset: 1px; }
 @media (prefers-reduced-motion: reduce) {
   :root { --motion-duration-fast: 0ms; --motion-duration-normal: 0ms; --motion-duration-slow: 0ms; }
   *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
@@ -265,7 +281,7 @@ td .link, .card-head .link, .batch .link, .empty .link, .more-link { display: in
   .collapse-btn { display: none; }   /* 折叠切换在手机上无意义（侧栏是抽屉） */
   .content { padding: var(--spacing-4); gap: var(--spacing-3); }
   .topbar { padding: 0 var(--spacing-4); }
-  .topbar .search { display: none; }   /* 顶栏全局搜索在手机上收起（页面内搜索仍在筛选栏） */
+  .topbar .search, .topbar label.search { display: none; }   /* 顶栏全局搜索在手机上收起（页面内搜索仍在筛选栏）；label 写法的特异性更高，要单独列出 */
   .page-head { flex-wrap: wrap; }
   .page-head .actions { flex: 1 1 100%; flex-wrap: wrap; margin-left: 0; justify-content: flex-start; }   /* 覆盖桌面的 flex:none：动作区整行换下、内部可换行 */
   .card-head { flex-wrap: wrap; }

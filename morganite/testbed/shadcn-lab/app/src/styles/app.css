@@ -17,10 +17,6 @@
 .with-icon > input { padding-left: calc(var(--spacing-3) * 2 + var(--size-icon-sm)); }
 .w-search { width: var(--layout-search-width); }
 .muted { color: var(--color-text-secondary); }
-.pages { display: inline-flex; align-items: center; gap: var(--spacing-1); }
-.pages .page { min-width: var(--control-height-sm); height: var(--control-height-sm); padding: 0 var(--spacing-2); border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--color-text-primary); font: inherit; cursor: pointer; display: inline-grid; place-items: center; }
-.pages .page:hover { background: var(--color-bg-hover); }
-.pages .page.is-current { background: var(--color-action-primary); color: var(--color-text-on-primary); font-weight: var(--text-weight-label); }   /* 分页当前页保留黄（DESIGN 分页规则） */
 .dlg-body { padding: var(--space-card); }
 .dlg-foot { padding: 0 var(--space-card) var(--space-card); }
 .form-page .card-head + .form-grid { padding-top: var(--space-card); }

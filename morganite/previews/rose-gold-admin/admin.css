@@ -10,10 +10,6 @@
 .greet__hi, .greet__name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .greet__hi { font-size: var(--text-small-size); color: var(--color-text-muted); }
 .greet__name { font-size: var(--text-title-sm-size); font-weight: var(--text-weight-strong); color: var(--color-text-primary); }
-.search { display: flex; align-items: center; gap: var(--spacing-2); height: var(--control-height-md); padding: 0 var(--spacing-3); background: var(--color-bg-input); border: var(--border-width-default) solid var(--color-border-input); border-radius: var(--radius-full); color: var(--color-icon-muted); }
-.search:hover { border-color: var(--color-border-strong); }
-.search:focus-within { border-color: var(--color-border-focus); }
-.search input { flex: 1; min-width: 0; height: 100%; border: 0; background: transparent; outline: none; color: var(--color-text-primary); font-size: var(--text-body-sm-size); }
 .user-caret { color: var(--color-icon-muted); }
 .crumbs a:hover { color: var(--color-text-link-hover); }
 

@@ -225,6 +225,8 @@ Element Plus 实测（2026-10-09，`morganite/testbed/element-lab`，逐条记�
 
 shadcn/ui 实测（2026-10-09，`morganite/testbed/shadcn-lab`，记录在它的 FINDINGS.md）：骨架照 Citrine 的 shadcn 实验室（Vite + React 19 + Tailwind v4 + Radix，21 个 new-york 组件），按 adopter 接入；走查页用种子新增的 `templates/KitchenSink.tsx`（从 Citrine 移植），citrine-accept 四项全绿。修了五处：弹窗 / 抽屉面板改为 `color.bg.elevated`（shadcn 写 bg-background，本系统映射页面底，面板发灰）；描边 / 幽灵按钮按 DESIGN 白底 + 控件描边、悬停只换底不变金字，暗色描边不再透明；错误提示条的标题也用 `color.text.danger`（暗色原为 3.3:1）；Tailwind 的 border / border-* 线宽接到 `border.width.default`（全站 0.6px，原为 1px）；顶栏用户区悬停时头像底换成表面色（两层半透明底叠加，深金字原为 4.4:1，配方层，Element 也受益）。
 
+对照效果预览（2026-10-10，用户发现 shadcn 单据页与预览交易记录页差很多）：写了逐角色比对脚本，在两页上读同类元素的尺寸、内边距、字号、颜色、边线、圆角。根因分两层：shadcn 桥接没把字号、输入框、勾选 / 开关接到预览的样子（`text-sm` 映射成 12px、输入类控件与勾选框继承透明的 `--input`）；分页、类别标签、顶栏搜索只在预览的 `components.css` / `admin.css` 里，种子没有，项目各写各的。前者修在桥接，后者移进配方、预览改用配方。比对后剩下的差异只是写法不同（灰底画在 thead 上、行线画在 tr 上）或数据内容不同。顺带查出三处全局外环规则误伤带 tabindex 的输入框（Element 输入框键盘聚焦出现 2px 粗环），已排除输入类控件；焦点检查加 `FOCUS.inputBorder` 按边线认输入框焦点。
+
 ## 风险与待确认
 
 - 推断值已全部确认（2026-10-09）：亮色语义角色与暗色值不再有 `[推断]`；只剩两个原语 `radius.xs`、`spacing.3-5` 仍标 `[推断]`——没有语义角色引用、由桥接直接使用，取值按 antd 勾选框圆角与配方步长。

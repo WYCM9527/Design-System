@@ -10,7 +10,7 @@ export const NARROW = {
   widths: [{ name: 'narrow', width: 992, expect: 'collapsed' }, { name: 'mobile', width: 390, expect: 'offcanvas', pages: [['dashboard', '#/'], ['orders', '#/orders'], ['form', '#/form']] }],
   pages: [['dashboard', '#/'], ['orders', '#/orders'], ['form', '#/form'], ['kitchen', '#/kitchen']]
 };
-export const FOCUS = { pages: { orders: '#/orders', form: '#/form', kitchen: '#/kitchen' }, steps: 80 };
+export const FOCUS = { pages: { orders: '#/orders', form: '#/form', kitchen: '#/kitchen' }, steps: 80, inputBorder: true };   // 输入类控件只换边线（DESIGN），按边线认焦点
 export const YELLOW_ALLOW = [];
 // 已批准的对比度例外：与种子 templates/accept.config.mjs 一致（AUDIT「对比度基线」已登记例外的镜像）
 export const APPROVED_CONTRAST = [

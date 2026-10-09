@@ -14,7 +14,7 @@ export const NARROW = {
   widths: [{ name: 'narrow', width: 992, expect: 'collapsed' }, { name: 'mobile', width: 390, expect: 'offcanvas' }],
   pages: [['dashboard', '#/']]
 };
-export const FOCUS = { pages: { dashboard: '#/' }, steps: 80 };        // Tab 焦点遍历
+export const FOCUS = { pages: { dashboard: '#/' }, steps: 80, inputBorder: true };        // Tab 焦点遍历；输入类控件按 DESIGN 只把边线换成 border.focus、不加外环，焦点检查按边线认
 // 品牌黄审计：Morganite 的金（#B98D44，色相约 37°、饱和度 0.46）不落在工具判黄的范围（色相 40–64°、饱和度 ≥ 0.55），这里一般不用追加
 export const YELLOW_ALLOW = [];
 // 已批准的对比度例外：Morganite AUDIT「对比度基线」已登记例外的镜像（系统改了例外，这里跟着改；不要为了过验收在这里加新例外）

@@ -104,13 +104,13 @@
 | 批量操作条 | `color.bg.selected` | `color.text.primary` | 上下 `color.border.default` |
 | 筹码（已选条件） | `color.bg.chip`（字色同色 10%） | `color.text.selected`，小号字 | 胶囊 `radius.full`，高 `control.height.sm`；移除按钮命中区不小于 `control.hit-min` |
 | 进度条 | 轨道 `color.bg.selected` | 百分比 `color.text.secondary` | 填充 `color.action.primary-active`（中性序列 `color.chart.4`），左浅右深的饱和度渐变（浅端饱和度 × `chart.gradient.saturation`），胶囊 `radius.full` |
-| 徽标 / 提示条 | `color.status.<x>-bg` | `color.status.<x>` | 标签 `radius.sm`、状态点 `radius.full`，提示条 `radius.lg` |
+| 徽标 / 提示条 | `color.status.<x>-bg` | `color.status.<x>` | 标签 `radius.sm`（中性类别标签用配方 `.tag`）、状态点 `radius.full`，提示条 `radius.lg` |
 | 下拉菜单 | `color.bg.elevated`；项 hover `color.bg.hover` | `color.text.primary`；危险项 `color.text.danger` | `elevation.popover.*`，`layer.dropdown`，圆角 `radius.lg` |
 | 弹窗 | 遮罩 `color.bg.overlay`；面板 `color.bg.elevated` | `color.text.primary` / `secondary` | `elevation.modal.*`，`layer.modal`，圆角 `radius.lg`，进出 `motion.duration.slow` |
 | Tooltip / 深色 Toast | `color.bg.inverse` | `color.text.inverse` | 圆角 `radius.sm`，`layer.toast` |
 | 标签页 | — | 默认 `color.text.secondary`，选中 `color.text.selected` | 选中下划线 `color.border.current` × `border.width.active` |
 | 分段选择器 / 按钮组 | 轨道 `color.bg.hover`；当前项 `color.action.selected` | 当前 `color.text.on-selected`，其余 `color.text.secondary` | 内衬 `control.segmented-inset` |
-| 分页 | 当前页 `color.action.primary`；其余 hover `color.bg.hover` | 当前 `color.text.on-primary` × `text.weight.strong`，其余 `color.text.primary` | `control.height.md`（小号 `control.height.sm`） |
+| 分页（纯 CSS / shadcn 用配方 `.pagination` + `.page`） | 当前页 `color.action.primary`；其余 hover `color.bg.hover` | 当前 `color.text.on-primary` × `text.weight.strong`，其余 `color.text.primary` | `control.height.md`（小号 `control.height.sm`） |
 | 日期面板 | 选中日 `color.action.primary`；范围内 `color.bg.selected-subtle` | 选中日 `color.text.on-primary`；今天 `color.text.primary` × 500 | 选中块 `radius.full` |
 | 树 | 当前节点 `color.bg.selected-subtle`；hover `color.bg.hover` | `color.text.primary`，当前节点 500 | 行高 `control.height.md`，圆角 `radius.md` |
 | 步骤条 | 当前步圆点 `color.action.primary`；其余圆点 `color.bg.surface` | 当前步序号 `color.text.on-primary`；已完成的勾 `color.text.selected`；未开始 `color.text.muted` | 已完成圆点描边与连线 `color.border.current`；未开始描边 `color.border.strong`、连线 `color.border.default`；圆点 `control.height.sm` |

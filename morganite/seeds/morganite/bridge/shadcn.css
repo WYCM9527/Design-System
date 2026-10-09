@@ -91,12 +91,15 @@
   --radius-lg: calc(var(--radius) + 4px);
   --radius-xl: calc(var(--radius) + 8px);
 
-  /* 结构层：字体与字号阶梯。注意这是中后台密度——text-sm 是 13px、text-base 是 14px，比 Tailwind 默认各小 1～2px */
+  /* 结构层：字体与字号阶梯。text-sm 与 text-base 都是正文 14px（按钮、输入框、菜单），text-xs 是 12px；表格另接小号正文（见下方「表格」） */
   --font-sans: var(--font-family-body);
   --font-mono: var(--font-family-code);
   --text-xs: var(--text-small-size);
-  --text-sm: var(--text-body-sm-size);
+  --text-sm: var(--text-body-size);
   --text-base: var(--text-body-size);
+  --text-xs--line-height: var(--text-body-line-height);
+  --text-sm--line-height: var(--text-body-line-height);
+  --text-base--line-height: var(--text-body-line-height);
   --text-lg: var(--text-title-size);
   --text-xl: var(--text-heading-size);
   --text-2xl: var(--text-display-size);
@@ -177,6 +180,29 @@
 [data-slot="button"][class*="bg-background"][class*="hover:bg-accent"] { background-color: var(--color-bg-surface); border-color: var(--color-border-strong); }
 [data-slot="button"][class*="bg-background"][class*="hover:bg-accent"]:hover { background-color: var(--color-action-secondary-hover); color: var(--color-text-primary); }
 [data-slot="button"][class*="hover:bg-accent"]:not([class*="bg-background"]):hover { background-color: var(--color-action-quiet-hover); color: var(--color-text-primary); }
+/* 按钮：常规字重、图标间距 spacing.1-5（与效果预览一致）；shadcn 是 font-medium + gap-2 */
+[data-slot="button"] { font-weight: var(--text-weight-label); gap: var(--spacing-1-5); }
+[data-slot="button"].h-9:has(> svg):not(.size-9) { padding-inline: var(--spacing-4); }   /* 带图标的按钮不收窄（shadcn has-[>svg]:px-3），与无图标按钮同宽留白 */
+[data-slot="button"].h-8:has(> svg) { padding-inline: var(--spacing-3); }
+/* 表格正文是小号字（DESIGN「表格」）；按钮、输入框、菜单是正文字号 */
+[data-slot="table"] { font-size: var(--text-body-sm-size); }
+/* 输入类控件：填充式（bg.input，静息边线透明，悬停 border.strong，聚焦 border.focus，正文字号）。shadcn 是透明底 + --input 描边，本系统 --input 透明，框会完全看不出 */
+[data-slot="input"], [data-slot="textarea"], [data-slot="select-trigger"] { background-color: var(--color-bg-input); border-width: var(--border-width-default); border-color: var(--color-border-input); color: var(--color-text-primary); font-size: var(--text-body-size); box-shadow: none; }
+[data-slot="input"]:hover:not(:disabled):not(:focus-visible), [data-slot="textarea"]:hover:not(:disabled):not(:focus-visible), [data-slot="select-trigger"]:hover:not(:disabled):not(:focus-visible) { border-color: var(--color-border-strong); }
+[data-slot="input"]:focus-visible, [data-slot="textarea"]:focus-visible, [data-slot="select-trigger"]:focus-visible { border-color: var(--color-border-focus); }
+[data-slot="input"][aria-invalid="true"], [data-slot="textarea"][aria-invalid="true"], [data-slot="select-trigger"][aria-invalid="true"] { border-color: var(--color-status-error); }
+[data-slot="input"]::placeholder, [data-slot="textarea"]::placeholder, [data-slot="select-trigger"][data-placeholder] { color: var(--color-text-placeholder); }
+[data-slot="select-trigger"] > svg { color: var(--color-icon-muted); opacity: 1; }
+[data-slot="input"]:disabled, [data-slot="textarea"]:disabled, [data-slot="select-trigger"]:disabled { opacity: var(--opacity-disabled); }
+/* 勾选 / 单选 / 开关：未选描 border.strong × border.width.control、表面色底（填充式下 --input 透明，框与轨道会看不见）；选中走主色，滑块用 control.knob */
+[data-slot="checkbox"], [data-slot="radio-group-item"] { border-width: var(--border-width-control); border-color: var(--color-border-strong); background-color: var(--color-bg-surface); box-shadow: none; }
+[data-slot="checkbox"] { border-radius: var(--radius-xs); }
+[data-slot="checkbox"]:focus-visible, [data-slot="radio-group-item"]:focus-visible, [data-slot="switch"]:focus-visible { outline: var(--border-width-active) solid var(--color-border-focus); outline-offset: 1px; }   /* 上面去掉了 shadcn 的阴影，它的焦点环也画在阴影上，改用外环（同 Element 桥接） */
+[data-slot="checkbox"][data-state="checked"], [data-slot="checkbox"][data-state="indeterminate"] { background-color: var(--color-action-primary); border-color: var(--color-action-primary); color: var(--color-text-on-primary); }
+[data-slot="radio-group-item"][data-state="checked"] { border-color: var(--color-action-primary); }
+[data-slot="switch"][data-state="unchecked"] { background-color: var(--color-border-strong); }
+[data-slot="switch"][data-state="checked"] { background-color: var(--color-action-primary); }
+[data-slot="switch-thumb"] { background-color: var(--color-control-knob); }
 /* 菜单 / 下拉项：hover / focus 用 bg.hover（accent 是「选中」语义，留给 aria-selected / data-state=checked） */
 [data-slot="dropdown-menu-item"]:focus, [data-slot="select-item"]:focus, [data-slot="dropdown-menu-checkbox-item"]:focus, [data-slot="dropdown-menu-radio-item"]:focus, [data-slot="dropdown-menu-sub-trigger"]:focus { background-color: var(--color-bg-hover); color: var(--color-text-primary); }
 [data-slot="select-item"][data-state="checked"] { color: var(--color-text-selected); font-weight: var(--text-weight-label); }
@@ -191,7 +217,7 @@
 }
 
 /* 键盘焦点兜底与减少动态效果，与 element-plus.css 同一份约定（shadcn 组件自带 data-slot，走上面的 ring 模型，不再叠 outline） */
-:where(a, button, [role="button"], [role="menuitem"], [role="tab"], summary, [tabindex]:not([tabindex="-1"])):not([data-slot]):focus-visible { outline: var(--border-width-active) solid var(--color-border-focus); outline-offset: 1px; }
+:where(a, button, [role="button"], [role="menuitem"], [role="tab"], summary, [tabindex]:not([tabindex="-1"]):not(input, textarea, select)):not([data-slot]):focus-visible { outline: var(--border-width-active) solid var(--color-border-focus); outline-offset: 1px; }
 @media (prefers-reduced-motion: reduce) {
   :root { --motion-duration-fast: 0ms; --motion-duration-normal: 0ms; --motion-duration-slow: 0ms; }
   *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }

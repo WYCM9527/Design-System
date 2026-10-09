@@ -2,7 +2,7 @@
 // 同时验证与组件库无关的配方层（recipes.css）和 React 版配方组件（bridge/react）能否直接复用。
 // 壳层用 recipes.css 的 .app / .sidebar / .nav / .topbar / .content；没有路由库，hash 路由手写。
 import * as React from 'react'
-import { LayoutDashboard, ListOrdered, FilePenLine, Boxes, Menu, Moon, Sun, PanelLeftClose, PanelLeftOpen, Bell } from 'lucide-react'
+import { LayoutDashboard, ListOrdered, FilePenLine, Boxes, Menu, Moon, Sun, Bell, Search } from 'lucide-react'
 import { Kitchen } from './pages/Kitchen'
 import { Orders } from './pages/Orders'
 import { Dashboard } from './pages/Dashboard'
@@ -24,7 +24,7 @@ function useHash() {
 export default function App() {
   const path = useHash()
   const route = ROUTES[path] ?? ROUTES['/']
-  const [collapsed, setCollapsed] = React.useState(() => matchMedia('(max-width: 992px)').matches)   // layout.breakpoint.narrow 字面镜像
+  const [collapsed] = React.useState(() => matchMedia('(max-width: 992px)').matches)   // layout.breakpoint.narrow 字面镜像
   const [navOpen, setNavOpen] = React.useState(false)   // 手机抽屉（≤ 768，layout.breakpoint.mobile 字面镜像）
   React.useEffect(() => { setNavOpen(false) }, [path])
   React.useEffect(() => { const mq = matchMedia('(max-width: 768px)'); const on = () => setNavOpen(false); mq.addEventListener('change', on); return () => mq.removeEventListener('change', on) }, [])
@@ -55,9 +55,8 @@ export default function App() {
       <div className="main">
         <header className="topbar">
           <button className="iconbtn menu-btn" title="打开菜单" onClick={() => setNavOpen(true)}><Menu className="i-icon--lg" /></button>
-          <button className="iconbtn collapse-btn" title={collapsed ? '展开菜单' : '折叠菜单'} onClick={() => setCollapsed(!collapsed)}>{collapsed ? <PanelLeftOpen className="i-icon--lg" /> : <PanelLeftClose className="i-icon--lg" />}</button>
           <nav aria-label="面包屑" className="crumbs"><span>{route.group}</span><span className="sep" aria-hidden="true">/</span><span>{route.title}</span></nav>
-          <span className="spacer" />
+          <label className="search"><Search className="i-icon--sm" aria-hidden="true" /><input type="search" placeholder="搜索订单、商户、报表…" aria-label="搜索" /></label>
           <button className="iconbtn" title="通知（3 条未读）" aria-label="通知，3 条未读"><Bell className="i-icon--lg" /><span className="unread num">3</span></button>
           <button className={`iconbtn${dark ? ' is-on' : ''}`} title={dark ? '切换亮色' : '切换暗色'} onClick={toggleTheme}>{dark ? <Sun className="i-icon--lg" /> : <Moon className="i-icon--lg" />}</button>
           <span className="user" role="button" tabIndex={0} aria-haspopup="menu"><span className="avatar" aria-hidden="true">王</span><span className="user-name">王小明 · 管理员</span></span>

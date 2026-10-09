@@ -13,7 +13,7 @@ export const NARROW = {
   widths: [{ name: 'narrow', width: 992, expect: 'collapsed' }, { name: 'mobile', width: 390, expect: 'offcanvas', pages: [['dashboard', '#/']] }],
   pages: [['dashboard', '#/'], ['kitchen', '#/kitchen']]
 };
-export const FOCUS = { pages: { dashboard: '#/' }, steps: 80 };
+export const FOCUS = { pages: { dashboard: '#/' }, steps: 80, inputBorder: true };   // 输入类控件只换边线（DESIGN），按边线认焦点
 // 品牌黄审计：Morganite 的金（#B98D44，色相约 37°、饱和度 0.46）不落在工具判黄的范围里，这里不需要追加
 export const YELLOW_ALLOW = [];
 // 已批准的对比度例外：设计系统 AUDIT「对比度基线」已登记的例外的镜像，先在系统里登记，再写到这里

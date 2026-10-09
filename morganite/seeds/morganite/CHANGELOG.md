@@ -2,6 +2,15 @@
 
 版本策略：patch 只改描述与文档；minor 新增或修改 token（视觉会变、名字不变，条目里写清肉眼可见的影响）；major 才改名或删除 token。
 
+## 0.1.3 — 2026-10-10
+
+- 对照效果预览全面检查 shadcn 实测项目（用户发现单据页与预览的交易记录页差很多：表格边距、表单输入框、面包屑、标签等），逐角色比对计算样式后修正：
+  - shadcn 桥接：字号映射 `text-sm` 由小号正文改回正文 14px（按钮、输入框、菜单原来都小一号），表格单独保持小号正文，补行高；按钮改为常规字重、图标间距 `spacing.1-5`，带图标时不收窄；输入框 / 文本域 / 下拉改为填充式（原为透明底 + 透明边线，看不出框）；勾选框 / 单选未选时描 `color.border.strong`、开关关闭轨道 `color.border.strong`（原来都是透明，看不见），它们的焦点改为外环。
+  - 配方新增分页 `.pagination` / `.page`、中性类别标签 `.tag`、顶栏搜索 `<label class="search">`（原来只在效果预览里，项目只能各写各的；预览改为直接用配方）。
+  - 键盘焦点：三处全局外环规则误伤带 tabindex 的输入框（Element 输入框键盘聚焦时出现 2px 粗环，违背「只加深边线」的决定），改为排除 input / textarea / select。
+  - 验收清单模板 `FOCUS.inputBorder: true`：输入类控件按边线变成 `color.border.focus`（出错时保持 `color.status.error`）认焦点。
+- 肉眼可见：shadcn 项目的按钮与输入框字号变大一号、输入框成为灰色填充块、勾选框与开关看得见；Element 输入框键盘聚焦时不再出现粗环。
+
 ## 0.1.2 — 2026-10-09
 
 - shadcn/ui 走查页模板：新增 `templates/KitchenSink.tsx`（从 Citrine 移植，引用 `@wycm9527/morganite/react/*`），身份文件 shadcn 栈登记 `kitchen`；说明与验收清单模板不再写「KITCHEN 先写 null」。

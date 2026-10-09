@@ -1,6 +1,6 @@
 # Morganite 玫瑰金 种子
 
-版本 0.1.2 · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 Pro 演示站的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 纯数据包：本目录即分发单元（文件夹直接下载，或发布为 npm 包 `@wycm9527/morganite`），身份文件 `design-system.json`，接入 / 更新由 [design-system-adopter](https://github.com/WYCM9527/Design-System/tree/main/design-system-adopter) skill 驱动 · 变更见 [CHANGELOG.md](CHANGELOG.md)
+版本 0.1.3 · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 Pro 演示站的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 纯数据包：本目录即分发单元（文件夹直接下载，或发布为 npm 包 `@wycm9527/morganite`），身份文件 `design-system.json`，接入 / 更新由 [design-system-adopter](https://github.com/WYCM9527/Design-System/tree/main/design-system-adopter) skill 驱动 · 变更见 [CHANGELOG.md](CHANGELOG.md)
 
 适用类型：**中后台**——侧栏 + 表格 + 图表 + 弹窗尺寸的工作台。
 
