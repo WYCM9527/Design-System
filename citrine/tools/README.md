@@ -11,7 +11,7 @@ DESIGN.md「验收基线」的执行者，对任意项目运行。发布为 npm 
    export const DEFAULT_QUERY = { role: 'admin' }        // 每个页面缺省带的参数（直达某个身份）
    export const KITCHEN = '#/kitchen'                     // 全组件走查页；没有就 null，scan:components 会跳过
    export const NARROW = { width: 1366, pages: [['orders', '#/orders'], …] }
-   export const FOCUS = { pages: { orders: '#/orders' }, steps: 80 }
+   export const FOCUS = { pages: { orders: '#/orders' }, steps: 80 }   // inputBorder: true：输入类控件按边线变成 --color-border-focus 认焦点（设计系统规定输入框不加外环时打开）
    // 可选：本项目所用设计系统的已批准对比度例外（不是 Citrine 的系统需要；Citrine 的例外已内置）
    export const APPROVED_CONTRAST = [{ fg: '#FFFFFF', bg: '#B98D44', why: '金底白字' }, { fg: 'rgba(0, 0, 0, 0.45)', why: '占位符' }, { fg: '#8A6530', minRatio: 4.2, why: '叠加悬停底' }]
    ```
