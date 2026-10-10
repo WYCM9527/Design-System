@@ -2,6 +2,8 @@
 
 > 本文件记录设计意图与使用规则。对已确认纳管的设计决定，具体视觉数值的唯一来源是 `tokens/*.tokens.json`；不要在这里重复色值、尺寸或阴影参数。未迁移的旧规范仅作为审计证据，不与 Token 双重维护。
 >
+> 评判标准：本文件与 token 是规范本身，任何预览或项目与它冲突都以它为准；视觉基准是效果预览（种子仓库 `morganite/previews/rose-gold-admin/`），接入项目的页面应与它一致，它与本文件冲突时改预览；`preview/` 下的壳层 / 表单 / 抽屉只和来源站比像不像，`token-board.html` 只列值，都不作评判。
+>
 > 来源：以 Ant Design Pro v6 为视觉底座，从 https://preview.pro.ant.design/dashboard/analysis、https://preview.pro.ant.design/list/table-list、https://preview.pro.ant.design/form/basic-form 以及查询表格里的新建弹窗与详情抽屉实测提炼（2026-09-28），再按用户决定把品牌色换成玫瑰金。证据、推断、缺口与用户决定见 `AUDIT.md`。
 >
 > 适用类型：**中后台**（`admin`）——侧栏 + 表格 + 图表 + 弹窗尺寸的工作台。词表里其他类型才有的角色（见 `AUDIT.md`「可选角色」）本系统不发明值；需要时先走提案。
@@ -141,6 +143,7 @@
 - **可访问名称**：所有按钮、链接、菜单项有名称；图片有 alt。
 - **溢出与截断**：任何模式、任何页面无横向溢出；nowrap 文字无截断。
 - **键盘焦点**：Tab 遍历每个可聚焦元素都能看出焦点：按钮、链接、菜单项有焦点环，输入类控件边线变成 `color.border.focus`。
+- **与视觉基准一致**：同类页面与组件的尺寸、内边距、字号、颜色、边线、圆角与效果预览一致；效果预览里有、种子里没有的组件样式（预览自带的参考实现），项目用到时先提案移进配方，不在项目里照着预览另写一套。
 - **构建一致性**：steward `validate-system` / `build-tokens` / `guard` 三绿。
 
 ## Do / Don't

@@ -8,12 +8,23 @@
 
 ---
 
+## 以什么为准
+
+预览有好几种，评判时按这个顺序：
+
+1. **规范本身**：种子 `seeds/morganite/design-system/` 里的 token（`tokens/*.tokens.json`、`themes/*/tokens/`）与 `DESIGN.md`，用户的每项决定记在 `AUDIT.md`。任何预览、项目和它冲突，都以它为准。
+2. **视觉基准**：效果预览 `previews/rose-gold-admin/`——页面与组件「应该长什么样」看它，用户的视觉决定都是对着它定的。它和规范冲突时改预览。
+3. **落地验证**：实测项目 `testbed/element-lab`、`testbed/shadcn-lab`——检查真实组件库接入后是否与效果预览一致、验收（citrine-accept）是否全绿；它们不是标准，不一致就修桥接或配方。
+4. **只做对照，不作评判**：种子自带的 `design-system/preview/`（壳层 / 表单 / 抽屉）用来和来源站 Ant Design Pro 比像不像；`token-board.html` 是 token 清单，看值不看页面。
+
+注意：效果预览除了种子的 dist、基础桥接和配方，还带着自己的组件样式（`components.css`，按 DESIGN 配方表写的参考实现）和页面布局（`admin.css`），这些项目拿不到。项目用到预览里有、种子里没有的组件时，先提案把它移进配方，不在项目里照着预览另写一套——2026-10-10 shadcn 单据页走样就是这个原因，分页、类别标签、顶栏搜索已移进配方。
+
 ## 目录
 
 ```text
 morganite/
 ├── README.md                    # 本文件：系统概览、状态、接入入口
-├── previews/rose-gold-admin/    # 效果预览：8 个页面合在 index.html 里按 #/路由 跳转，只引用种子的 dist 与配方（?theme=dark 看暗色）
+├── previews/rose-gold-admin/    # 效果预览（视觉基准）：8 个页面合在 index.html 里按 #/路由 跳转；引用种子的 dist、基础桥接与配方，另有预览自己的组件样式与页面布局（?theme=dark 看暗色）
 ├── testbed/element-lab/         # 实测项目：Vue 3 + Element Plus 按 adopter 接入种子，走查页 + 业务页；问题记录在 FINDINGS.md
 ├── testbed/shadcn-lab/          # 实测项目：React 19 + Tailwind v4 + shadcn/ui，骨架照 Citrine 的 shadcn 实验室；问题记录在 FINDINGS.md
 └── seeds/morganite/             # 分发单元：design-system/（token · DESIGN · AUDIT · themes）· bridge/ · templates/ · design-system.json
