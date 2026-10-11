@@ -1,0 +1,8 @@
+/* 样式入口：顺序固定（组件库 → 设计系统 token → 桥接 → 配方 → 项目自己的 app.css），由 ds.mjs init 给出。
+   不引 Element 的 dark css-vars：暗色由 design-system/dist/themes/dark.css 通过 var() 间接生效。 */
+@import "element-plus/dist/index.css";
+@import "../../design-system/dist/index.css";
+@import "@wycm9527/morganite/bridge/element-plus.css";
+@import "@wycm9527/morganite/bridge/iconpark.css";
+@import "@wycm9527/morganite/bridge/recipes.css";
+@import "./app.css";

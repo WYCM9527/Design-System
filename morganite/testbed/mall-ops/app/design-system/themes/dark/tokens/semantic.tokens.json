@@ -1,0 +1,344 @@
+{
+  "color": {
+    "bg": {
+      "page": {
+        "$type": "color",
+        "$value": "{color.black}",
+        "$description": "[确认] 暗色页面底 #000（antd 暗色 colorBgLayout / ProLayout 暗色渐变终点）（2026-10-09 用户确认）"
+      },
+      "surface": {
+        "$type": "color",
+        "$value": "{color.neutral.950}",
+        "$description": "[观察] 暗色卡片 #141414，16 处"
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a4}",
+        "$description": "[确认] 暗色表头 / 浅分区 rgba(255,255,255,0.04)（antd colorFillAlter）（2026-10-09 用户确认）"
+      },
+      "hover": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a8}",
+        "$description": "[观察] 暗色悬停底 rgba(255,255,255,0.08)"
+      },
+      "input": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a8}",
+        "$description": "[确认] 暗色填充式输入框底 rgba(255,255,255,0.08)（antd 填充式暗色 colorFillTertiary）"
+      },
+      "elevated": {
+        "$type": "color",
+        "$value": "{color.neutral.900}",
+        "$description": "[观察] 暗色浮层 #1f1f1f（比卡片亮一档）"
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{color.neutral.700}",
+        "$description": "[确认] 暗色 Tooltip 底 #424242（antd 暗色 colorBgSpotlight）（2026-10-09 用户确认）"
+      },
+      "selected": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a8}",
+        "$description": "[观察] 暗色小面积选中底"
+      },
+      "selected-subtle": {
+        "$type": "color",
+        "$value": "{color.brand.900}",
+        "$description": "[确认] 暗色奶油金浅底的对应：金色暗阶 #32291c（明度同 antd 暗色算法第 2 阶），给强调徽标与 Element 主色浅底；表格选中行改用 color.bg.hover"
+      },
+      "selected-hover": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a12}",
+        "$description": "[确认] 暗色表格选中行再悬停：选中行与悬停同色（white-a8），再悬停深一档用 12% 白（原为金色暗阶 #433724）（2026-10-09 用户确认）"
+      },
+      "chip": {
+        "$type": "color",
+        "$value": "{color.brand.300-a10}",
+        "$description": "[确认] 暗色筹码底（用户 2026-10-09 确认）：沿用亮色「筹码字色同色 10%」——暗色筹码字是亮金 color.text.selected（#D1AB62），底取它的 10%，叠在暗色卡片上约 #27231C；原为白 8%"
+      },
+      "skeleton": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a8}",
+        "$description": "[确认] 暗色骨架屏底（2026-10-09 用户确认）"
+      },
+      "skeleton-highlight": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a12}",
+        "$description": "[确认] 暗色骨架屏流光（2026-10-09 用户确认）"
+      },
+      "readonly": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a8}",
+        "$description": "[确认] 暗色只读底（antd 暗色 colorBgContainerDisabled）（2026-10-09 用户确认）"
+      },
+      "mask": {
+        "$type": "color",
+        "$value": "{color.neutral.950-a50}",
+        "$description": "[确认] 暗色局部加载遮罩（2026-10-09 用户确认）"
+      },
+      "sidebar": {
+        "$type": "color",
+        "$value": "{color.black}",
+        "$description": "[确认] 侧栏纯黑底：用户指定（2026-10-09），与暗色页面底同为 #000，靠 color.border.sidebar 与内容区分开"
+      },
+      "sidebar-hover": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a3}",
+        "$description": "[确认] ProLayout 同算法：文字基色 #fff 的 3%（2026-10-09 用户确认）"
+      },
+      "sidebar-selected": {
+        "$type": "color",
+        "$value": "{color.brand.900}",
+        "$description": "[确认] 侧栏当前项与亮色同一逻辑：金色暗底（原为 Pro 暗黑的主色实底）"
+      }
+    },
+    "text": {
+      "primary": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a85}",
+        "$description": "[观察] 暗色正文 rgba(255,255,255,0.85)，499 字"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a65}",
+        "$description": "[观察] 暗色第二档 0.65"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a50}",
+        "$description": "[确认] 暗色第三档原值 0.45 对浅分区不足 4.5，校正到 0.5（2026-10-09 用户确认）"
+      },
+      "placeholder": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a45}",
+        "$description": "[确认] antd 暗色占位符 0.25 对 #141414 仅 2.2:1，改用 0.45（4.5:1）（2026-10-09 用户确认）"
+      },
+      "link": {
+        "$type": "color",
+        "$value": "{color.brand.500}",
+        "$description": "[确认] 暗色链接用品牌金 #b98d44（对 #141414 6.10:1）"
+      },
+      "link-hover": {
+        "$type": "color",
+        "$value": "{color.brand.300}",
+        "$description": "[确认] 暗色链接悬停变亮 #d1ab62（8.52:1）"
+      },
+      "danger": {
+        "$type": "color",
+        "$value": "{color.red.4}",
+        "$description": "[确认] 暗色危险文字要比填充亮：red-4 #ff7875（7.2:1）"
+      },
+      "selected": {
+        "$type": "color",
+        "$value": "{color.brand.300}",
+        "$description": "[确认] 暗色选中文字 #d1ab62"
+      },
+      "on-selected": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a85}",
+        "$description": "[观察] 暗色分段选中项文字"
+      },
+      "on-overlay": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a85}",
+        "$description": "[确认] 暗色遮罩很深，用白字（2026-10-09 用户确认）"
+      },
+      "sidebar": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a65}",
+        "$description": "[确认] ProLayout 同算法 colorTextSecondary（2026-10-09 用户确认）"
+      },
+      "sidebar-strong": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a85}",
+        "$description": "[确认] ProLayout 同算法 colorText（2026-10-09 用户确认）"
+      },
+      "sidebar-muted": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a50}",
+        "$description": "[确认] ProLayout 同算法 0.45 压暗色侧栏底 #000 只有 4.41:1，与 color.text.muted 同取 0.50（5.32:1）（2026-10-09 用户确认）"
+      },
+      "sidebar-selected": {
+        "$type": "color",
+        "$value": "{color.brand.300}",
+        "$description": "[确认] 侧栏当前项亮金字（对金色暗底 6.61:1）"
+      }
+    },
+    "action": {
+      "secondary-hover": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a8}",
+        "$description": "[确认] 暗色次要按钮悬停底（2026-10-09 用户确认）"
+      },
+      "quiet-hover": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a8}",
+        "$description": "[确认] 暗色文字按钮悬停底（2026-10-09 用户确认）"
+      },
+      "selected": {
+        "$type": "color",
+        "$value": "{color.neutral.700}",
+        "$description": "[确认] 暗色分段选择器当前项 #424242（2026-10-09 用户确认）"
+      }
+    },
+    "border": {
+      "default": {
+        "$type": "color",
+        "$value": "{color.neutral.800}",
+        "$description": "[确认] 暗色卡片 / 分隔线 #303030（antd 暗色 colorBorderSecondary）；实测 rgba(253,253,253,0.12) 对页面底不到 1.3，用户决定过线"
+      },
+      "strong": {
+        "$type": "color",
+        "$value": "{color.neutral.700}",
+        "$description": "[观察] 暗色控件边线 #424242"
+      },
+      "focus": {
+        "$type": "color",
+        "$value": "{color.brand.500}",
+        "$description": "[确认] 暗色焦点边线用品牌金（对 #141414 6.10:1）"
+      },
+      "sidebar": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a12}",
+        "$description": "[确认] 暗色侧栏分隔线（antd 暗色 colorSplit）（2026-10-09 用户确认）"
+      }
+    },
+    "focus": {
+      "ring": {
+        "$type": "color",
+        "$value": "{color.brand.500}",
+        "$description": "[确认] 暗色焦点环品牌金"
+      }
+    },
+    "status": {
+      "success": {
+        "$type": "color",
+        "$value": "{color.emerald.300}",
+        "$description": "[确认] 暗色成功文字（与涨同一绿）（2026-10-09 用户确认）"
+      },
+      "success-bg": {
+        "$type": "color",
+        "$value": "{color.emerald.dark-1}",
+        "$description": "[确认] 暗色成功浅底（2026-10-09 用户确认）"
+      },
+      "warning": {
+        "$type": "color",
+        "$value": "{color.orange.4}",
+        "$description": "[确认] antd orange-4 #ffc069（2026-10-09 用户确认）"
+      },
+      "warning-bg": {
+        "$type": "color",
+        "$value": "{color.orange.dark-1}",
+        "$description": "[确认] antd 暗色 orange-1 #2b1d11（2026-10-09 用户确认）"
+      },
+      "error": {
+        "$type": "color",
+        "$value": "{color.red.4}",
+        "$description": "[确认] antd red-4 #ff7875"
+      },
+      "error-bg": {
+        "$type": "color",
+        "$value": "{color.red.dark-1}",
+        "$description": "[确认] antd 暗色 red-1 #2a1215"
+      },
+      "info": {
+        "$type": "color",
+        "$value": "{color.blue.4}",
+        "$description": "[确认] antd blue-4 #69b1ff"
+      },
+      "info-bg": {
+        "$type": "color",
+        "$value": "{color.blue.dark-1}",
+        "$description": "[确认] antd 暗色 blue-1 #111a2c"
+      },
+      "neutral": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a65}",
+        "$description": "[确认] 暗色中性状态文字（2026-10-09 用户确认）"
+      },
+      "neutral-bg": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a8}",
+        "$description": "[确认] 暗色中性状态浅底（2026-10-09 用户确认）"
+      }
+    },
+    "icon": {
+      "default": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a65}",
+        "$description": "[确认] 暗色图标随次要文字（2026-10-09 用户确认）"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a45}",
+        "$description": "[确认] 暗色装饰图标（2026-10-09 用户确认）"
+      },
+      "two-tone": {
+        "$type": "color",
+        "$value": "{color.brand.900}",
+        "$description": "[确认] 暗色 two-tone 填充用金色暗阶"
+      }
+    },
+    "chart": {
+      "2": {
+        "$type": "color",
+        "$value": "{color.cat.charcoal-dark}",
+        "$description": "[确认] 暗色「深灰」位取浅灰"
+      },
+      "5": {
+        "$type": "color",
+        "$value": "{color.cat.silver-dark}",
+        "$description": "[确认] 暗色「浅灰」位取深灰"
+      },
+      "6": {
+        "$type": "color",
+        "$value": "{color.emerald.300}",
+        "$description": "[确认] 暗色图表绿"
+      },
+      "area": {
+        "$type": "color",
+        "$value": "{color.brand.500-a24}",
+        "$description": "[确认] 暗色面积填充：品牌金 24%（2026-10-09 用户确认）"
+      },
+      "sequential": {
+        "1": {
+          "$type": "color",
+          "$value": "{color.neutral.850}",
+          "$description": "[确认] 暗色顺序色第一档（2026-10-09 用户确认）"
+        },
+        "2": {
+          "$type": "color",
+          "$value": "{color.neutral.700}",
+          "$description": "[确认] 暗色顺序色第二档（2026-10-09 用户确认）"
+        },
+        "3": {
+          "$type": "color",
+          "$value": "{color.neutral.600}",
+          "$description": "[确认] 暗色顺序色第三档（2026-10-09 用户确认）"
+        },
+        "4": {
+          "$type": "color",
+          "$value": "{color.neutral.500}",
+          "$description": "[确认] 暗色顺序色第四档（2026-10-09 用户确认）"
+        }
+      }
+    },
+    "data": {
+      "increase": {
+        "$type": "color",
+        "$value": "{color.emerald.300}",
+        "$description": "[确认] 暗色「涨」（对 #141414 8.1:1）"
+      },
+      "decrease": {
+        "$type": "color",
+        "$value": "{color.red.4}",
+        "$description": "[确认] 暗色「跌」（对 #141414 7.2:1）"
+      },
+      "inactive": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a25}",
+        "$description": "[确认] 暗色已结束进度条（2026-10-09 用户确认）"
+      }
+    }
+  }
+}
