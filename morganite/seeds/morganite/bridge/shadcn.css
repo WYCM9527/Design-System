@@ -126,7 +126,7 @@
   body { background-color: var(--background); color: var(--foreground); }
 }
 
-/* ── 组件级接管（2.5.0，来自 React 实验项目的渲染验证）：shadcn 组件里写死或指向 --primary 的地方，按 DESIGN 配方改到 token。
+/* ── 组件级接管：shadcn 组件里写死或指向 --primary 的地方，按 DESIGN 配方改到 token。
    全部按 data-slot 选择，不依赖 Tailwind 类名；放在无 layer 的位置，天然压过 @layer utilities。 ── */
 /* 全站描边 0.6px（border.width.default，用户决定）：Tailwind 的 border / border-* 写死 1px，按类名接到 token——只改本来就带这些类的元素，不会给别的元素加线 */
 [class~="border"] { border-width: var(--border-width-default); }
@@ -150,9 +150,9 @@
 [data-slot="tooltip-content"] svg { background-color: var(--color-bg-inverse); fill: var(--color-bg-inverse); }
 /* 遮罩：shadcn 写死 bg-black/50，接到 bg.overlay */
 [data-slot="dialog-overlay"], [data-slot="alert-dialog-overlay"], [data-slot="sheet-overlay"], [data-slot="drawer-overlay"] { background-color: var(--color-bg-overlay); }
-/* 骨架屏：不是 accent（选中底），是 bg.skeleton；进度条轨道不是 primary 20% 洗色（品牌黄没有延伸色），是 border.default */
+/* 骨架屏：不是 accent（选中底），是 bg.skeleton；进度条轨道不是 primary 20% 洗色，是 bg.selected（DESIGN 进度条配方，同 Element 桥接） */
 [data-slot="skeleton"] { background-color: var(--color-bg-skeleton); }
-[data-slot="progress"] { background-color: var(--color-border-default); }
+[data-slot="progress"] { background-color: var(--color-bg-selected); }
 /* 表格：表头 bg.subtle + text.secondary，行 hover bg.hover，选中行与悬停同色 bg.hover、再悬停 bg.selected-hover（shadcn 默认表头正文色、hover 用 muted 50%） */
 [data-slot="table-header"] { background-color: var(--color-bg-subtle); }
 [data-slot="table-head"] { color: var(--color-text-secondary); font-weight: var(--text-weight-label); }

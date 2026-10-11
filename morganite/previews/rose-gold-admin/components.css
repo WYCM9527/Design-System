@@ -18,7 +18,6 @@
 .btn--block { width: 100%; }
 .btn:disabled, .btn.is-disabled { opacity: var(--opacity-disabled); cursor: not-allowed; }
 .btn.is-disabled { pointer-events: none; }
-button.user { background: var(--color-action-quiet); border: 0; font: inherit; color: inherit; }
 
 /* ── 分段选择器 / 期间选择 ── */
 .seg { display: inline-flex; padding: var(--control-segmented-inset); background: var(--color-bg-hover); border-radius: var(--radius-full); }
@@ -30,7 +29,7 @@ button.user { background: var(--color-action-quiet); border: 0; font: inherit; c
 
 /* ── 输入类控件（填充式：静息无边线，悬停 border.strong，聚焦只换 border.focus） ── */
 .field { display: flex; flex-direction: column; gap: var(--spacing-1-5); margin-bottom: var(--spacing-5); min-width: 0; }
-.field > label, .field > .label { font-size: var(--text-body-sm-size); color: var(--color-text-primary); }
+.field > label:not(.upload-zone), .field > .label { font-size: var(--text-body-sm-size); color: var(--color-text-primary); }   /* 上传区也是 label，字号与颜色归配方 */
 .req::before { content: "*"; color: var(--color-status-error); margin-right: var(--spacing-1); }
 .input { width: 100%; height: var(--control-height-md); padding: 0 var(--spacing-3); border: var(--border-width-control) solid var(--color-border-input); border-radius: var(--radius-md); background: var(--color-bg-input); color: var(--color-text-primary); font-size: var(--text-body-size); outline: none; transition: border-color var(--motion-duration-fast) var(--motion-easing-standard); }
 .input:hover:not(:disabled):not(:focus), .input.is-hover { border-color: var(--color-border-strong); }
@@ -160,60 +159,18 @@ textarea.input { height: auto; min-height: calc(var(--control-height-md) * 3); p
 .timeline li.is-current::before { border-color: var(--color-action-primary); }
 .timeline li.is-error::before { border-color: var(--color-status-error); }
 .timeline b { font-weight: var(--text-weight-label); }
-.setting { display: flex; align-items: center; gap: var(--spacing-4); padding: var(--spacing-4) var(--space-card); border-top: var(--border-width-default) solid var(--color-border-default); }
-.setting:first-child { border-top: 0; }
-.setting .text { flex: 1; min-width: 0; }
-.setting .text b { display: block; font-weight: var(--text-weight-label); }
-.secondary { color: var(--color-text-secondary); }
 
 /* ── 表格补充（选中行已在 recipes 的 .table 里） ── */
 .table .check-col { width: calc(var(--size-icon-lg) + var(--table-cell-padding-x) * 2); }
 .table td .act + .act, .table td .act + .link { margin-left: var(--space-inline); }
 
-/* ── 横向表单（标签列 layout.form.label-width，标签 text.primary 右对齐） ── */
-.hform { max-width: calc(var(--layout-form-label-width) + var(--layout-form-max-width)); padding: var(--space-card); }
-.hform .field { display: grid; grid-template-columns: var(--layout-form-label-width) minmax(0, 1fr); column-gap: var(--spacing-4); row-gap: var(--spacing-1-5); align-items: start; }
-.hform .field > label, .hform .field > .label { display: flex; align-items: center; justify-content: flex-end; min-height: var(--control-height-md); text-align: right; }
-.hform .field > :not(label):not(.label) { grid-column: 2; }
-.hform .foot { display: flex; gap: var(--space-inline); padding-left: calc(var(--layout-form-label-width) + var(--spacing-4)); }
-.avatar-row { display: flex; align-items: center; gap: var(--spacing-3); min-height: var(--control-height-md); }
-
 /* ── 插图与上传里的大图标（icon.size.2xl，双色插图描边 color.icon.brand） ── */
 .empty .illu .icon, .result .illu .icon { width: var(--size-icon-2xl); height: var(--size-icon-2xl); color: var(--color-icon-brand); }
 .upload-zone .icon { width: var(--size-icon-2xl); height: var(--size-icon-2xl); color: var(--color-icon-muted); }
-.upload-zone b { color: var(--color-text-primary); font-weight: var(--text-weight-label); }
 .input-affix .iconbtn { width: var(--control-height-sm); height: var(--control-height-sm); margin-right: calc(var(--spacing-2) * -1); }
-.file-row { display: flex; align-items: center; gap: var(--spacing-3); padding: var(--spacing-3) 0; border-top: var(--border-width-default) solid var(--color-border-default); }
-.file-row:first-child { border-top: 0; padding-top: 0; }
-.file-row .text { flex: 1; min-width: 0; }
-
-/* ── 登录页：左侧品牌面（bg.brand + text.on-brand，正文用 ≥ 24px 的大字），右侧表单 ── */
-.login { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 100vh; background: var(--color-bg-page); }
-.login-brand { display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-stack); padding: var(--space-gutter); background: var(--color-bg-brand); color: var(--color-text-on-brand); }
-.login-brand .app-brand { padding: 0; color: inherit; }
-.login-brand .app-brand .logo { background: var(--color-text-on-brand); color: var(--color-action-primary); }
-.login-brand .slogan { font-size: var(--text-hero-size); line-height: var(--text-hero-line-height); font-weight: var(--text-weight-strong); }
-.login-brand .lead { margin-top: var(--spacing-3); font-size: var(--text-heading-size); line-height: var(--text-heading-line-height); }
-.login-panel { display: grid; place-items: center; padding: var(--space-gutter); }
-.login-card { width: min(100%, var(--layout-modal-width-sm)); }
-.login-card h1 { font-size: var(--text-heading-size); line-height: var(--text-heading-line-height); }
-.login-card .tabs { margin: var(--spacing-5) 0 var(--spacing-6); }
-.login-row { display: flex; align-items: center; justify-content: space-between; margin: calc(var(--spacing-2) * -1) 0 var(--spacing-5); }
-.divider-text { display: flex; align-items: center; gap: var(--spacing-3); margin: var(--spacing-6) 0 var(--spacing-4); color: var(--color-text-muted); font-size: var(--text-small-size); }
-.divider-text::before, .divider-text::after { content: ""; flex: 1; height: var(--border-width-default); background: var(--color-border-default); }
-.login-foot { margin-top: var(--spacing-6); color: var(--color-text-muted); font-size: var(--text-small-size); text-align: center; }
-.login-alt { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-inline); }
-.code-row { display: flex; gap: var(--space-inline); }
-.code-row .input { flex: 1; }
 
 @media (max-width: 768px) {
   .desc { grid-template-columns: minmax(0, 1fr); }
   .steps { flex-direction: column; }
   .step .title::after { display: none; }
-  .login { grid-template-columns: minmax(0, 1fr); }
-  .login-brand { padding: var(--spacing-6) var(--spacing-4); }
-  .login-brand .slogan { font-size: var(--text-heading-size); line-height: var(--text-heading-line-height); }
-  .login-brand .lead { font-size: var(--text-title-size); }
-  .login-panel { padding: var(--spacing-6) var(--spacing-4); }
-  .setting { flex-wrap: wrap; }
 }

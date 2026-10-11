@@ -144,7 +144,7 @@ onMounted(() => {
         <el-text type="info">弱化</el-text>
         <el-text size="small">小字</el-text>
         <el-text tag="b">加粗</el-text>
-        <el-text truncated style="max-width: 120px">这是一段很长很长的会被截断的文字</el-text>
+        <el-text line-clamp="2" class="clamp">多行省略：说明文字超过两行时在第二行末尾出现省略号，单行的标签与按钮文字不做截断，验收的截断检查只看单行文字</el-text>
       </el-space>
     </section>
 
@@ -253,7 +253,7 @@ onMounted(() => {
       <el-space wrap size="large" class="mt">
         <el-rate v-model="rate" />
         <el-rate v-model="rate" disabled show-score />
-        <el-rate model-value="4" allow-half show-text :texts="['极差', '失望', '一般', '满意', '惊喜']" />
+        <el-rate :model-value="4" allow-half show-text :texts="['极差', '失望', '一般', '满意', '惊喜']" />
       </el-space>
       <div class="mt slider-row">
         <el-slider v-model="slider" />
@@ -482,6 +482,7 @@ onMounted(() => {
 .row { display: flex; flex-wrap: wrap; gap: var(--spacing-4); }
 .slider-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-6) var(--spacing-8); }
 .form { max-width: var(--layout-form-max-width); }
+.clamp { max-width: var(--layout-search-width); }
 .slide { height: 100%; display: grid; place-items: center; background: var(--color-bg-subtle); color: var(--color-text-secondary); }
 .img-err { display: grid; place-items: center; height: 100%; background: var(--color-bg-subtle); color: var(--color-text-muted); font-size: var(--text-caption-size); }
 .num { font-family: var(--text-numeric-family); font-variant-numeric: var(--text-numeric-variant); }

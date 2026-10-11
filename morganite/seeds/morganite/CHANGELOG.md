@@ -2,6 +2,19 @@
 
 版本策略：patch 只改描述与文档；minor 新增或修改 token（视觉会变、名字不变，条目里写清肉眼可见的影响）；major 才改名或删除 token。
 
+## 0.1.4 — 2026-10-11
+
+- 用完整测试项目 `morganite/testbed/mall-ops`（拾光商城 · 运营后台：Vue 3 + Element Plus，14 页 × 4 角色 × 50 个页面状态）对照效果预览逐角色比对，修正：
+  - Element 桥接按 DESIGN 明文与效果预览校正：标签页默认 `color.text.secondary`、选中 `color.text.selected` 且不加粗，尺寸同预览，贴在卡片顶部时缩进 `space.card`；步骤条已完成步改为 `color.border.current` + 深金勾（原为绿色），并纯 CSS 重排成预览的横排（圆点在左、标题后面接细线，手机竖排）；时间线节点空心；提示条、弹窗、抽屉、消息框圆角 `radius.lg`；文字按钮正文色；分页按钮 `control.height.md` + `radius.md`、总数次要色；选择器 `color.bg.input` 填充；单选改外圈 + 圆点；分段 / 单选 / 多选按钮组与 `el-segmented` 改灰轨道 `color.bg.hover`、不描边、选中不加粗；表格正文小号字，贴边表格首尾列让出 `space.card`；面包屑、表单标签、顶栏搜索小号字；侧栏菜单项高 `control.height.md`、图标 `icon.size.lg`；勾选框 / 单选 16、开关 44 × 22 无边线；描述列表标签在上、两列均分；文本域最小 3 倍控件高；表单里的级联 / 日期 / 数字输入撑满；并排按钮不再与容器 gap 叠加；补齐 `base.css` 的标题字号 / 行高 / 字重与按钮继承字体（Element 入口不引 `base.css`，卡片标题原比预览高 3px）；勾选列不再把表头撑高约 6px；侧栏分组标题行高同预览；勾选框与单选按钮组的焦点环立即出现，同预览（Element 把 outline 放进了过渡，环会从 0 长出来）；新增通栏按钮 `.el-button.is-block`。
+  - 配方收进效果预览独有的页面形态（用户决定「全部照预览原样」）：`.greet`、`button.user` / `.user-caret`、`.section-label` + `.page-bar`、`.board` + `.panel`、`.two-col`（1 : 1 改为 1.6 : 1）、`.stack`、`.page-head .title-row`、`.legend` + `.c1–.c6`、`.alloc-list`、`.goals`、`.setting`、`.hform` + `.avatar-row`、`.file-row`、`.secondary`、登录页 `.login*`；看板 / 两栏按内容区 880px 的容器查询收成单栏。另收项目里长出来的 `.w-search` / `.w-select` / `.w-date`、`.card-grid`、`.act-group`。效果预览删掉自己的副本、改用配方（前后截图逐像素比对，只有下面三处有意变化）。
+  - 头像（配方 `.avatar` 与 `el-avatar`）改为不透明的奶金浅底 `color.bg.selected-subtle` + `color.text.selected`（用户决定），删掉悬停时换底的补丁。
+  - 主色不当文字色：登录品牌面上的 logo 块改为 `color.bg.surface` 底 + `color.text.selected`（原为白底主色字 3.0:1）；结果页错误码改为 `color.text.selected`。
+  - 骨架屏贴边放在卡片里时首尾列让出 `space.card`；错误条 `.error-box` 圆角 `radius.lg`；上传区的字号与文字色固定为正文、`color.text.secondary`（原随所在容器变化；效果预览里它是表单字段下的 label，被预览自己的标签规则压成 12px，现已排除）；`.content > .stat-strip` 不再与内容区 gap 叠加。
+- DESIGN：新增「页面状态与权限」（加载 / 空 / 出错 / 无权限 / 只读，用户决定写进规范）；「布局与响应式」补页面形态配方；配方表补头像、登录页，步骤条写明横排，标签页与分段选择器写明字重。
+- 其他修正：开关选中时滑块里的加载图标改为 `color.action.primary-active`（原 `color.text.on-primary` 是白字，压在白滑块上看不见）；shadcn 进度条轨道改为 DESIGN 写的 `color.bg.selected`（原为 `color.border.default`）；IconPark 描边 4 改为 3，与 `icon.stroke.width` 一致；桥接、配方、模板里 Citrine 时期的注释清理。
+- 模板：AGENTS 去掉重复的验收条目与已失效的「推断值先确认」；Element 说明补页面形态、Element 用法约定与页面状态；走查页 `KitchenSink.vue` 的 `el-rate` 改传数字、截断演示改为多行省略。adopter 的 `ds.mjs agents` 加 `--name`（标题默认读 package.json 的 name，不再用目录名）；`ds.mjs upgrade` 只合并工作副本 `design-system/`，快照里的桥接 / 模板随快照整体替换（原先本种子 `owned` 含 `bridge/**` 等，升级时会误报几十条「本地删除」冲突）。
+- 肉眼可见：Element 项目的表格、面包屑、表单标签小一号，侧栏项变矮、图标变大，标签页 / 步骤条 / 时间线 / 分段选择器换成效果预览的样子，弹窗与提示条圆角变小，头像变成奶金底，两栏详情页左宽右窄；效果预览本身只有头像、登录 logo 与新建交易页的上传区（标题回到正文字号）变化。
+
 ## 0.1.3 — 2026-10-10
 
 - 对照效果预览全面检查 shadcn 实测项目（用户发现单据页与预览的交易记录页差很多：表格边距、表单输入框、面包屑、标签等），逐角色比对计算样式后修正：
