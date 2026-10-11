@@ -12,13 +12,20 @@ export function resolvePlaceholders(text, identity, { distFromEntry = '../../des
     .replaceAll('{{DIST}}', distFromEntry);
 }
 
-export function renderAgents(project, identity, snapshotDir, stackId) {
+/** 标题里的项目名：--name 优先，其次 package.json 的 name，最后才是目录名（目录常叫 app / web，读不出是哪个项目）。 */
+function projectName(project, name) {
+  if (name) return name;
+  try { const pkg = JSON.parse(readFileSync(join(project, 'package.json'), 'utf8')); if (pkg.name) return pkg.name; } catch { /* 没有或读不了 package.json */ }
+  return basename(project);
+}
+
+export function renderAgents(project, identity, snapshotDir, stackId, { name } = {}) {
   const stack = identity.stacks[stackId];
   if (!stack) throw new Error(`design-system.json 里没有栈 ${stackId}；可用：${Object.keys(identity.stacks).join(' / ')}`);
   const template = readFileSync(join(snapshotDir, identity.agents), 'utf8');
   const notes = resolvePlaceholders(readFileSync(join(snapshotDir, stack.notes), 'utf8'), identity).trim();
   return template
-    .replaceAll('{{PROJECT}}', basename(project))
+    .replaceAll('{{PROJECT}}', projectName(project, name))
     .replaceAll('{{SYSTEM_NAME}}', identity.name)
     .replaceAll('{{SYSTEM_ID}}', identity.id)
     .replaceAll('{{STACK_LABEL}}', stack.label || stackId)

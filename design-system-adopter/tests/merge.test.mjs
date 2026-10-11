@@ -124,3 +124,36 @@ test('端到端：init（folder）→ 本地改 token + DESIGN → upgrade --fro
   // 快照推进到 2.7.1
   assert.equal(JSON.parse(readFileSync(join(proj, 'design-systems/citrine/design-system.json'), 'utf8')).version, next);
 });
+
+test('upgrade：owned 含 bridge/** 时，桥接随快照替换，不当成「本地删除」的冲突', () => {
+  const proj = tmp();
+  execFileSync('git', ['init', '-q'], { cwd: proj });
+  const noModules = (src) => !src.includes('node_modules');
+  const withBridgeOwned = (dir, version) => {
+    const id = JSON.parse(readFileSync(join(dir, 'design-system.json'), 'utf8'));
+    id.owned = [...id.owned, 'bridge/**', 'templates/**'];
+    if (version) id.version = version;
+    writeFileSync(join(dir, 'design-system.json'), JSON.stringify(id, null, 2) + '\n');
+    return id.version;
+  };
+  cpSync(SEED, join(proj, 'downloaded-seed'), { recursive: true, filter: noModules });
+  const cur = withBridgeOwned(join(proj, 'downloaded-seed'));
+  const run = (cmdArgs) => execFileSync('node', [DS, ...cmdArgs, '--project', proj], { encoding: 'utf8' });
+  run(['init', '--system', 'downloaded-seed', '--stack', 'element-plus']);
+  // 上游：改桥接与 DESIGN.md，版本 patch+1；项目没动工作副本
+  const next = cur.replace(/(\d+)$/, (m) => String(Number(m) + 1));
+  const up = join(tmp(), 'seed-next');
+  cpSync(SEED, up, { recursive: true, filter: noModules });
+  withBridgeOwned(up, next);
+  writeFileSync(join(up, 'bridge/recipes.css'), readFileSync(join(up, 'bridge/recipes.css'), 'utf8') + `\n/* ${next} */\n`);
+  writeFileSync(join(up, 'design-system/DESIGN.md'), readFileSync(join(up, 'design-system/DESIGN.md'), 'utf8') + `\n<!-- ${next} -->\n`);
+  const dry = run(['upgrade', '--dry-run', '--from', up]);
+  assert.doesNotMatch(dry, /冲突（\d+）|本地删除/);
+  assert.match(dry, /直接更新（本地未改）（1）：\n\s+design-system\/DESIGN\.md/);
+  assert.match(dry, /快照内文件 \d+ 个/);
+  const done = run(['upgrade', '--from', up]);
+  assert.match(done, /完成/);
+  assert.ok(!existsSync(join(proj, 'bridge')), '桥接不该被写进项目根');
+  assert.match(readFileSync(join(proj, 'design-systems/citrine/bridge/recipes.css'), 'utf8'), new RegExp(`/\\* ${next.replaceAll('.', '\\.')} \\*/`));
+  assert.match(readFileSync(join(proj, 'design-system/DESIGN.md'), 'utf8'), new RegExp(`<!-- ${next.replaceAll('.', '\\.')} -->`));
+});

@@ -12,7 +12,7 @@
 //   node ds.mjs export   --to <dir> [--system <id|路径|npm包名>] [--with element-plus,shadcn] [--dry-run] [--force]   # 纯 CSS 交付（非 Node 项目）
 //   node ds.mjs scope    --root <class> --to <dir> [--with element-plus] [--system …]                             # 范围根：只覆盖部分路由板块（@scope 包裹）
 //   node ds.mjs propose  --title "…" [--layer token|bridge|recipes|component|docs|tools] [--scene …] [--expect …] [--tokens a,b] [--write]   # 提案草稿 + 预填 issue 链接
-//   node ds.mjs agents   [--project <dir>] [--stack <栈>] [--write]              # 默认只打印；--write 新建或追加
+//   node ds.mjs agents   [--project <dir>] [--stack <栈>] [--name <项目名>] [--write]   # 默认只打印；--write 新建或追加；标题默认取 package.json 的 name
 //   node ds.mjs ci       [--project <dir>] [--to <path>] [--no-accept] [--dry-run] [--force]   # 写 GitHub Actions 门禁：快照完整 → guard current → 构建 → 验收全绿
 //   node ds.mjs steward  locate|install [--project <dir>]
 //   node ds.mjs self-update
@@ -275,7 +275,9 @@ const commands = {
     const base = identity.version !== m.version ? null : snapDir;   // 快照被就地更新（如仓库内符号链接）时没有旧基线内容，用清单里的旧 hash 退化分类
     if (!base) console.log('注意：快照已被就地更新，旧基线只剩 hash——「谁没动」仍可判定，两边都改的文件无法键级合并（记为文件级冲突）。');
 
-    const files = ownedFiles(remoteIdentity, [snapDir, remoteDir]).concat(localOwned(remoteIdentity)).filter((v, i, a) => a.indexOf(v) === i).sort();
+    const owned = ownedFiles(remoteIdentity, [snapDir, remoteDir]).concat(localOwned(remoteIdentity)).filter((v, i, a) => a.indexOf(v) === i).sort();
+    // 只有 design-system/ 有工作副本；owned 里的 bridge / templates / migration 只活在快照里，随下面的快照替换整体更新，不进三方合并
+    const files = owned.filter((f) => f.startsWith('design-system/'));
     const report = base ? classify(base, project, remoteDir, files) : classifyByHash(m.snapshotHashes, project, remoteDir, files, shaText);
     const dry = !!args['dry-run'];
     const label = `${m.version} → ${remoteIdentity.version}`;
@@ -287,6 +289,7 @@ const commands = {
     show('JSON 键级自动合并（两边都改、键不冲突）', report.jsonMerges, (x) => x.file);
     show('上游已删除（保守保留，确认后可手工删）', report.removedUpstream);
     console.log(`  未变 ${report.unchanged.length} 个`);
+    if (owned.length > files.length) console.log(`  快照内文件 ${owned.length - files.length} 个（桥接 / 模板 / 迁移对照）：随快照整体替换，不进工作副本合并`);
     // 冲突决议
     const decisions = args.resolve ? readJson(resolve(args.resolve)) : args['take-upstream-all'] ? '__upstream__' : args['keep-local-all'] ? '__local__' : null;
     if (report.conflicts.length) {
@@ -506,7 +509,7 @@ const commands = {
   agents() {
     const m = readManifest() || fail(`没有 ${MANIFEST}；先 init / adopt`);
     const identity = readIdentity(snapshotDirOf(m)) || fail('快照缺 design-system.json');
-    const content = renderAgents(project, identity, snapshotDirOf(m), args.stack || m.stack);
+    const content = renderAgents(project, identity, snapshotDirOf(m), args.stack || m.stack, { name: typeof args.name === 'string' ? args.name : undefined });
     if (!args.write) { console.log(content); console.log('\n（未写入。给用户看过、确认后加 --write：新建或追加，不覆盖。）'); return; }
     const how = writeAgents(project, content);
     console.log(how === 'created' ? '已新建 AGENTS.md' : '已把设计系统区块追加到既有 AGENTS.md 末尾');
@@ -530,7 +533,7 @@ const commands = {
     const lock = existsSync(join(project, 'pnpm-lock.yaml')) ? 'pnpm' : existsSync(join(project, 'yarn.lock')) ? 'yarn' : existsSync(join(project, 'package-lock.json')) ? 'npm-ci' : 'npm';
     const install = { pnpm: 'corepack enable && pnpm install --frozen-lockfile', yarn: 'corepack enable && yarn install --immutable', 'npm-ci': 'npm ci', npm: 'npm install' }[lock];
     const runBuild = { pnpm: 'pnpm run build', yarn: 'yarn build', 'npm-ci': 'npm run build', npm: 'npm run build' }[lock];
-    const runAccept = { pnpm: `pnpm exec ${accept} all`, yarn: `yarn ${accept} all`, 'npm-ci': `npx ${accept} all`, npm: `npx ${accept} all` }[lock];
+    const runAccept = { pnpm: `pnpm exec ${accept}`, yarn: `yarn ${accept}`, 'npm-ci': `npx ${accept}`, npm: `npx ${accept}` }[lock];   // accept.command 已含子命令（如 citrine-accept all）
     const cache = lock === 'npm' ? '' : `\n          cache: ${lock === 'npm-ci' ? 'npm' : lock}`;
     const sw = stewardInfo(project);
     const stewardRel = sw.dir ? relative(real(project), real(sw.dir)).split('\\').join('/') : null;

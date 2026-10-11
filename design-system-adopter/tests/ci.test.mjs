@@ -32,7 +32,7 @@ test('ci：缺 accept.config 报错并指模板；--no-accept 只做 guard；有
   const out = run(['ci']);
   assert.match(out, /已写 \.github\/workflows\/design-system\.yml/);
   const yml = readFileSync(join(p, '.github/workflows/design-system.yml'), 'utf8');
-  assert.match(yml, /npx citrine-accept all/); assert.match(yml, /upload-artifact/); assert.match(yml, /fonts-noto-cjk/); assert.match(yml, /"status": "current"/);
+  assert.match(yml, /npx citrine-accept all\s*$/m); assert.doesNotMatch(yml, /citrine-accept all all/); assert.match(yml, /upload-artifact/); assert.match(yml, /fonts-noto-cjk/); assert.match(yml, /"status": "current"/);
   assert.throws(() => run(['ci']), /已存在/);
   assert.match(run(['ci', '--force']), /已写/);
 });
