@@ -52,6 +52,12 @@ function hashDir(dir) {
   for (const f of walk(dir).sort()) out[f] = sha(join(dir, f));
   return out;
 }
+/** 快照里相对清单记账时 hash 变了的文件：普通快照 = 被手改；符号链接快照（仓库内开发模式）= 种子就地更新，版本号可以没变。旧清单没记 hash 时当没变。 */
+function snapshotDrift(m) {
+  if (!m.snapshotHashes) return [];
+  const now = hashDir(snapshotDirOf(m));
+  return Object.keys({ ...m.snapshotHashes, ...now }).filter((f) => m.snapshotHashes[f] !== now[f]).sort();
+}
 /** owned 文件全集（seed 相对路径）：三棵树（base / local / remote）的并集。localRoot 下的 owned 路径以 design-system/ 开头，与 seed 布局一致。 */
 function ownedFiles(identity, roots) {
   const set = new Set();
@@ -225,14 +231,17 @@ const commands = {
     // 快照完整性
     if (identity.version !== m.version) console.log(`  快照已是 ${identity.version}（清单记录 ${m.version}）：上游内容就位，跑 upgrade 把工作副本合并上来。`);
     else {
-      const now = hashDir(snapDir);
-      const changed = Object.keys({ ...m.snapshotHashes, ...now }).filter((f) => m.snapshotHashes[f] !== now[f]);
-      if (changed.length) strictFail.push(`快照被手改 ${changed.length} 个文件`);
-      if (changed.length) console.log(`  ⚠ 快照被本地改动（快照应只读，改动会让三方合并失去基线）：\n    ${changed.slice(0, 20).join('\n    ')}${changed.length > 20 ? `\n    …共 ${changed.length} 个` : ''}\n    用 restore 恢复，需要的差异改在工作副本 / app.css，公共诉求向上游提。`);
-      else console.log('  快照完整（hash 与清单一致）。');
+      const changed = snapshotDrift(m);
+      const list = `\n    ${changed.slice(0, 20).join('\n    ')}${changed.length > 20 ? `\n    …共 ${changed.length} 个` : ''}`;
+      if (changed.length && isSymlink(join(project, m.snapshot))) console.log(`  快照是符号链接（仓库内开发模式），种子已就地更新 ${changed.length} 个文件（版本号没变）：${list}\n    跑 upgrade [--dry-run] 把工作副本合并上来。`);
+      else if (changed.length) {
+        strictFail.push(`快照被手改 ${changed.length} 个文件`);
+        console.log(`  ⚠ 快照被本地改动（快照应只读，改动会让三方合并失去基线）：${list}\n    用 restore 恢复，需要的差异改在工作副本 / app.css，公共诉求向上游提。`);
+      } else console.log('  快照完整（hash 与清单一致）。');
     }
-    // 工作副本 vs 快照
-    const modified = ownedFiles(identity, [snapDir]).filter((f) => existsSync(join(project, f)) && existsSync(join(snapDir, f)) && sha(join(project, f)) !== sha(join(snapDir, f)));
+    // 工作副本 vs 基线：比清单记的快照 hash——快照被就地更新过时，当前快照已是新上游，拿它比会把上游改动算成本地修改
+    const baseSha = (f) => m.snapshotHashes?.[f] ?? (existsSync(join(snapDir, f)) ? sha(join(snapDir, f)) : null);
+    const modified = ownedFiles(identity, [snapDir]).filter((f) => existsSync(join(project, f)) && baseSha(f) && sha(join(project, f)) !== baseSha(f));
     console.log(modified.length ? `  工作副本相对快照的本地修改（升级时三方合并保留）：\n    ${modified.join('\n    ')}` : '  工作副本与快照一致（无本地修改）。');
     { const sw = stewardInfo(project); console.log(sw.dir ? `  steward：${sw.version || '版本未知'}${sw.ok ? '' : `（过旧，需 ≥ ${MIN_STEWARD}）`} · ${sw.dir}` : `  steward：未找到（${sw.hint.split('：')[0]}）`); if (sw.dir && !sw.ok) strictFail.push(`steward 过旧（需 ≥ ${MIN_STEWARD}）`); }
     if (m.source === 'npm') {
@@ -253,10 +262,11 @@ const commands = {
     const m = readManifest() || fail(`没有 ${MANIFEST}；先 init 或 adopt`);
     const snapDir = snapshotDirOf(m);
     const identity = readIdentity(snapDir) || fail(`快照缺 design-system.json`);
+    const drift = snapshotDrift(m);
     // 新上游
     let remoteDir;
     if (args.from) remoteDir = extractFrom(args.from);
-    else if (identity.version !== m.version) remoteDir = snapDir;   // 快照已被外部更新（如仓库内符号链接指向新种子）：快照即新上游
+    else if (identity.version !== m.version || (drift.length && isSymlink(join(project, m.snapshot)))) remoteDir = snapDir;   // 快照已被外部更新（如仓库内符号链接指向的种子改了，版本号可以没变）：快照即新上游
     else if (m.source === 'npm' && !args.ref) {
       const nm = join(project, 'node_modules', m.npm);
       const nmId = readIdentity(nm);
@@ -272,7 +282,7 @@ const commands = {
     }
     const remoteIdentity = readIdentity(remoteDir) || fail(`新上游缺 design-system.json：${remoteDir}`);
     if (remoteIdentity.id !== m.system) fail(`身份不符：项目接的是 ${m.system}，来源是 ${remoteIdentity.id}`);
-    const base = identity.version !== m.version ? null : snapDir;   // 快照被就地更新（如仓库内符号链接）时没有旧基线内容，用清单里的旧 hash 退化分类
+    const base = identity.version !== m.version || drift.length ? null : snapDir;   // 快照被就地更新（如仓库内符号链接，版本号可以没变）或被手改时没有旧基线内容，用清单里的旧 hash 退化分类
     if (!base) console.log('注意：快照已被就地更新，旧基线只剩 hash——「谁没动」仍可判定，两边都改的文件无法键级合并（记为文件级冲突）。');
 
     const owned = ownedFiles(remoteIdentity, [snapDir, remoteDir]).concat(localOwned(remoteIdentity)).filter((v, i, a) => a.indexOf(v) === i).sort();

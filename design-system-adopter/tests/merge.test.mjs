@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -156,4 +156,28 @@ test('upgrade：owned 含 bridge/** 时，桥接随快照替换，不当成「�
   assert.ok(!existsSync(join(proj, 'bridge')), '桥接不该被写进项目根');
   assert.match(readFileSync(join(proj, 'design-systems/citrine/bridge/recipes.css'), 'utf8'), new RegExp(`/\\* ${next.replaceAll('.', '\\.')} \\*/`));
   assert.match(readFileSync(join(proj, 'design-system/DESIGN.md'), 'utf8'), new RegExp(`<!-- ${next.replaceAll('.', '\\.')} -->`));
+});
+
+test('upgrade：快照是指向种子的符号链接，种子就地改了但版本号没变 → 按「直接更新」合并，status 不当手改', () => {
+  const proj = tmp();
+  execFileSync('git', ['init', '-q'], { cwd: proj });
+  const seed = join(proj, 'seed');
+  cpSync(SEED, seed, { recursive: true, filter: (src) => !src.includes('node_modules') });
+  const run = (cmdArgs) => execFileSync('node', [DS, ...cmdArgs, '--project', proj], { encoding: 'utf8' });
+  run(['init', '--system', 'seed', '--stack', 'element-plus']);
+  const snap = join(proj, 'design-systems/citrine');
+  rmSync(snap, { recursive: true });
+  symlinkSync(seed, snap, 'junction');
+  writeFileSync(join(seed, 'design-system/DESIGN.md'), readFileSync(join(seed, 'design-system/DESIGN.md'), 'utf8') + '\n<!-- 就地更新 -->\n');
+  const status = run(['status', '--offline']);
+  assert.match(status, /种子已就地更新 1 个文件/);
+  assert.doesNotMatch(status, /快照被本地改动/);
+  assert.match(status, /工作副本与快照一致/);
+  const dry = run(['upgrade', '--dry-run']);
+  assert.match(dry, /直接更新（本地未改）（1）：\n\s+design-system\/DESIGN\.md/);
+  assert.doesNotMatch(dry, /保留本地/);
+  const done = run(['upgrade']);
+  assert.match(done, /快照是符号链接/);
+  assert.match(readFileSync(join(proj, 'design-system/DESIGN.md'), 'utf8'), /<!-- 就地更新 -->/);
+  assert.match(run(['status', '--offline']), /快照完整/);
 });
