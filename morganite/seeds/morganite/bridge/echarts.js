@@ -83,7 +83,7 @@ export function theme(el = document.documentElement) {
     legend: { icon: 'roundRect', itemWidth: 10, itemHeight: 10, itemGap: 16, textStyle: { color: t.text, fontSize: t.font } },
     // 大投影走 elevation.tooltip：ECharts 把 shadow* 拼成 box-shadow，没有扩散半径，token 也只给 y / blur / color。
     // 挂到 body（同 Element 浮层）：el-card 是 overflow: hidden，靠边的气泡和投影会被卡片裁掉
-    tooltip: { appendTo: 'body', backgroundColor: t.tooltipBg, borderColor: t.line, borderWidth: 1, borderRadius: t.tooltipRadius, padding: t.tooltipPadding, shadowOffsetX: 0, shadowOffsetY: t.tooltipShadowY, shadowBlur: t.tooltipShadowBlur, shadowColor: t.tooltipShadowColor, textStyle: { color: t.primary, fontSize: t.font }, axisPointer: { lineStyle: { color: t.strong }, shadowStyle: { color: t.area } } },
+    tooltip: { appendTo: 'body', backgroundColor: t.tooltipBg, borderColor: t.line, borderWidth: t.lineWidth, borderRadius: t.tooltipRadius, padding: t.tooltipPadding, shadowOffsetX: 0, shadowOffsetY: t.tooltipShadowY, shadowBlur: t.tooltipShadowBlur, shadowColor: t.tooltipShadowColor, textStyle: { color: t.primary, fontSize: t.font }, axisPointer: { lineStyle: { color: t.strong }, shadowStyle: { color: t.area } } },
     categoryAxis: { axisLine: { lineStyle: { color: t.line, width: t.lineWidth } }, axisTick: { show: false }, axisLabel: { color: t.muted, fontSize: t.font }, splitLine: { show: false } },
     valueAxis: { axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: t.muted, fontSize: t.font, fontFamily: t.numericFamily }, splitLine: { lineStyle: { color: t.line, width: t.lineWidth } } },   // 数值刻度用数字字体，类目轴多是中文，保持正文字体
     // 平滑 0.5 + smoothMonotone 'x'：曲线丝滑但不越过数据点（只用 0.3 会在数据点处显硬；不加 monotone 则会在点之间鼓包）；线端与拐角圆头

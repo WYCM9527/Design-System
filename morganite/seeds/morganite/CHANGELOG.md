@@ -18,7 +18,7 @@
 - 曲线图的底线改为 0.6px 虚线（用户：曲线图的底线用 0.6px 虚线）：
   - 新增 `chart.baseline.dash`（4px，借 `spacing.1`）：线段与间隔各 4px，线宽 `border.width.default`、颜色 `color.border.default`，同网格线。
   - 肉眼可见：曲线图（`trendLine`、`TrendChart`）最底下那条线从两条叠画的 1px 实线（比其他网格线深）变成一条发丝细的虚线；效果预览工作台折线图同改，底线画在基准面积之后。柱状图的基线仍是实线。
-  - ECharts 主题的轴线与网格线从默认 1px 改为 `border.width.default`（0.6px），按 DESIGN「宽度统一是发丝细线」，与效果预览一致：所有 ECharts 图表的网格线和柱状图基线都会变细、变浅一点。
+  - ECharts 主题的轴线、网格线和提示气泡的细边从 1px 改为 `border.width.default`（0.6px），按 DESIGN「宽度统一是发丝细线」，与效果预览一致：所有 ECharts 图表的网格线、柱状图基线和气泡边都会变细、变浅一点。
   - `chartTokens()` 多返回 `lineWidth` / `baselineDash`；`trendLine` 可传 `el`（读 token 的元素）。
 
 ## 0.1.4 — 2026-10-11
