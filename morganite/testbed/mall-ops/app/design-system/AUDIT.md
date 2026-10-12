@@ -56,6 +56,13 @@
 | 暗色链接与表格文字按钮悬停（2026-10-09） | 暗色链接色保持；表格里的文字按钮悬停改为不叠底 | 验收报出暗色链接 / 文字按钮在悬停行与气泡上约 4.3:1——保持暗色链接色，登记为例外（DESIGN「已批准的例外」，验收清单 `minRatio: 4.2`）；表格文字按钮悬停时行悬停与按钮悬停底叠加（亮色约 4.2–4.4:1，暗色选中行再悬停只有 3.41:1）——用户先选保持，看到 3.41 后改为表格里只变色不叠底（antd 表格操作链接），两种模式都过线 |
 | 发版「最新」标记（2026-10-09） | 发版脚本只让 Citrine 标为最新 | Morganite 0.1.0 发版时成了 GitHub「最新」，README / GUIDE 里 `releases/latest/download` 的 citrine-tools 直链随之 404，已手动把 Citrine 2.12.0 改回最新；`scripts/release.mjs` 对 Citrine 以外的系统加 `--latest=false` |
 | 表格操作胶囊（2026-10-09） | 保持描边胶囊 | 表格操作列的「详情 / 改派」沿用配方 `.act`（金色描边胶囊，Citrine 的写法），不改成 antd 的纯文字链接 |
+| 预览独有样式（2026-10-11） | 全部照预览原样收进配方 | 完整测试项目 `morganite/testbed/mall-ops` 发现 11 处页面形态只在效果预览的 `admin.css` / `components.css` 里，项目只能照抄。收进 `recipes.css`：问候语 `.greet`、`button.user` / `.user-caret`、分区标签 `.section-label` + `.page-bar`、看板 `.board` + 看板卡 `.panel`、两栏 `.two-col`（由 1 : 1 改为预览的 1.6 : 1）、`.stack`、详情标题行 `.page-head .title-row`、图例 `.legend` + 分类色 `.c1–.c6`、占比列表 `.alloc-list`、目标进度 `.goals`、设置行 `.setting`、横向表单 `.hform` + `.avatar-row`、附件行 `.file-row`、`.secondary`、登录页 `.login*`；看板 / 两栏按内容区 880px 的容器查询收成单栏。预览删掉自己的副本、改用配方，前后截图（8 页 × 亮暗 × 1440 / 860 / 390）逐像素比对，只有头像、登录 logo 两处有意变化 |
+| 项目通用样式（2026-10-11） | 收进配方 | 筛选宽度三档 `.w-search` / `.w-select` / `.w-date`、卡片栅格 `.card-grid`、行内操作组 `.act-group`（外包 span 的禁用操作也有间距）；Element 桥接加通栏按钮 `.el-button.is-block` |
+| 头像（2026-10-11） | 改用不透明的奶金浅底 | 配方 `.avatar` 与 `el-avatar`：`color.bg.selected-subtle` + `color.text.selected`（亮 4.82:1、暗约 6.6:1）；原来 4% 黑的半透明底叠在悬停底上只有 4.4:1，靠悬停时换表面色补救，补丁一并删掉 |
+| 步骤条（2026-10-11） | 改成预览的横排 | Element 步骤条纯 CSS 重排成效果预览的样子：圆点在左、标题与说明在右，标题行后面一条细线接到下一步（已完成段 `color.border.current`），手机竖排去线；居中（align-center）与竖排步骤条不受影响。DESIGN 配方表补写 |
+| 页面状态与权限（2026-10-11） | 写进 DESIGN | DESIGN 新增「页面状态与权限」：加载 = 骨架屏占住最终形状；空 = 插图 + 一句说明 + 至多一个主操作；出错 = 区域内错误条 + 重试；无权限的菜单隐藏、直接访问进 403；按角色区分的操作禁用 + Tooltip 写明缺的权限；只读角色用只读态。错误条 `.error-box` 圆角随提示条改为 `radius.lg` |
+| AGENTS.md（2026-10-11） | 同意写入 | 模板去掉重复的验收条目与已失效的「推断值先确认」（推断值 2026-10-09 已全部确认）；`ds.mjs agents --write` 为测试项目生成 AGENTS.md，标题用项目名而不是目录名 |
+| 主色不当文字色（2026-10-11，验收发现） | 按 DESIGN 修 | 登录品牌面上的 logo 块原是白底主色字（3.0:1），改为 `color.bg.surface` 底 + `color.text.selected`（暗色下是深底亮金字，亮暗都过 4.5）；结果页错误码由 `color.text.brand` 改为 `color.text.selected` |
 | 按预期预览图默认调整（2026-09-29，列出后用户未反对） | 圆角加大、卡片标题字距小标题、KPI 数字半粗、图表配色只用金 + 灰 + 绿、图表提示气泡深金底、表头底深一档、卡片阴影更大更柔（2026-10-09 去掉）、顶栏搜索胶囊 | `radius.md / lg / xl`、`text.tracking.caps`、`text.display.weight`、`color.chart.*`、`color.chart.tooltip`、`color.bg.subtle`、`elevation.card.*`；配方 `.card-head h2`、`.topbar .search`；ECharts 桥接 |
 | 组件库桥接 | 带 Citrine 的 Element Plus / shadcn / 配方 / ECharts 桥接当起点 | `bridge/`，缺口见「桥接缺口」 |
 | 预览 | 虚拟页面（工作台 / 表单 / 抽屉 × 亮暗）确认像「Pro + 金色」 | `preview/` |
@@ -227,6 +234,8 @@ shadcn/ui 实测（2026-10-09，`morganite/testbed/shadcn-lab`，记录在它的
 
 对照效果预览（2026-10-10，用户发现 shadcn 单据页与预览交易记录页差很多）：写了逐角色比对脚本，在两页上读同类元素的尺寸、内边距、字号、颜色、边线、圆角。根因分两层：shadcn 桥接没把字号、输入框、勾选 / 开关接到预览的样子（`text-sm` 映射成 12px、输入类控件与勾选框继承透明的 `--input`）；分页、类别标签、顶栏搜索只在预览的 `components.css` / `admin.css` 里，种子没有，项目各写各的。前者修在桥接，后者移进配方、预览改用配方。比对后剩下的差异只是写法不同（灰底画在 thead 上、行线画在 tr 上）或数据内容不同。顺带查出三处全局外环规则误伤带 tabindex 的输入框（Element 输入框键盘聚焦出现 2px 粗环），已排除输入类控件；焦点检查加 `FOCUS.inputBorder` 按边线认输入框焦点。
 
+完整测试项目（2026-10-11，`morganite/testbed/mall-ops`「拾光商城 · 运营后台」，Vue 3 + Element Plus，14 页 × 4 角色 × 50 个页面状态，逐条记录在它的 FINDINGS.md）：页面都能只靠配方和桥接搭出来，但 Element 桥接与效果预览差得明显，按「DESIGN 明文 → 效果预览」的顺序修在桥接：标签页默认 `color.text.secondary`、选中 `color.text.selected` 不加粗，项间距与内边距同预览，贴在卡片顶部时标签栏缩进 `space.card`；步骤条已完成步改为 `color.border.current` + 深金勾（原为绿色）并重排成横排；时间线节点空心；提示条、弹窗、抽屉、消息框圆角 `radius.lg`；文字按钮正文色；分页按钮 `control.height.md`、圆角 `radius.md`；选择器与输入框同为 `color.bg.input` 填充；单选改外圈 + 圆点；分段 / 单选 / 多选按钮组改灰轨道 `color.bg.hover` + 内衬、选中不加粗；表格正文小号字、卡片里贴边表格首尾列让出 `space.card`；面包屑、表单标签、顶栏搜索小号字；侧栏菜单项高 `control.height.md`、图标 `icon.size.lg`；勾选框 / 单选 16、开关 44 × 22 无边线；描述列表标签在上、两列均分；文本域最小 3 倍控件高；表单里的级联 / 日期 / 数字输入撑满；并排按钮不再与容器 gap 叠加 12px；Element 入口不引 `base.css`，桥接补齐了它的标题字号 / 行高 / 字重与按钮继承字体。改完的第二轮比对又查出四处：卡片标题因缺 `base.css` 的标题行高比预览高 3px；Element 把勾选列写死成 23px 高的行内 flex，表头被撑高约 6px；标签项与侧栏分组标题的行高与预览不同（各差 2px）；效果预览的上传区是表单字段下的 label，被预览自己的标签规则压成 12px（改预览，与配方一致）。剩下的差异只是写法不同（Element 用 box-shadow 画输入框边线、内边距在 `.cell` 上、按钮靠内边距撑高）或数据内容不同。顺带修了开关选中时滑块里的加载图标（`color.text.on-primary` 是白色，压在白滑块上看不见）、shadcn 进度条轨道（DESIGN 写 `color.bg.selected`，桥接是 `color.border.default`）、IconPark 描边（配置写死 4，token 是 3），以及桥接里十几处 Citrine 时期的注释。
+
 ## 风险与待确认
 
 - 推断值已全部确认（2026-10-09）：亮色语义角色与暗色值不再有 `[推断]`；只剩两个原语 `radius.xs`、`spacing.3-5` 仍标 `[推断]`——没有语义角色引用、由桥接直接使用，取值按 antd 勾选框圆角与配方步长。
@@ -235,9 +244,8 @@ shadcn/ui 实测（2026-10-09，`morganite/testbed/shadcn-lab`，记录在它的
 - 覆盖盲区：只取了工作台 / 查询表格 / 基础表单 / 新建弹窗 / 详情抽屉；登录页、分步表单、结果页、空状态、通知、上传、步骤条没有取证，相关角色（`text.hero.*`、`illustration.size.md`、`icon.size.2xl` 等）按 antd 规格取值（2026-10-09 已确认，但没在这些页面上取证）。
 - 桥接沿用 Citrine 的实现：Element Plus 栈的 extra 带 IconPark 桥接，而本系统图标库登记为 `@ant-design/icons`，接入前决定用哪套图标；桥接里其他 Citrine 式的组件习惯还没按 antd 的做法逐个走查（选中块已改；表格操作列的描边胶囊 `.act` 用户 2026-10-09 决定保持，见用户决定表）。
 - 开关关闭态：用户决定保持 `color.border.strong` 轨道（2026-10-09），白滑块对轨道约 1.4:1，关闭态主要靠滑块位置与文字标签区分；若在低对比屏上看不清，改指 `color.data.inactive`（25% 黑，antd 原值）即可。
-- Element 选中块已在实测项目里亮 / 暗核对（日期面板、徽标、标签、评分、树、两种分页）；引导指示点、表头单选筛选、树拖放目标没有在真实组件里看过。分段类（单选 / 多选按钮组、`el-segmented`）当前项是灰轨道上的白块，亮色下对轨道约 1.09:1，主要靠字重与字色区分。
+- Element 选中块已在实测项目里亮 / 暗核对（日期面板、徽标、标签、评分、树、两种分页）；引导指示点、表头单选筛选、树拖放目标没有在真实组件里看过。分段类（单选 / 多选按钮组、`el-segmented`）当前项是灰轨道上的白块，亮色下对轨道约 1.09:1，选中不加粗（同效果预览），主要靠白块与字色（`color.text.on-selected` 对其余项的 `color.text.secondary`）区分。
 - 验收工具沿用 Citrine 的 citrine-accept（身份文件 `accept`、清单模板 `templates/accept.config.mjs`）：Morganite 的例外靠 `APPROVED_CONTRAST`，要 citrine-tools ≥ 1.2.0——仓库内已生效，npm 上的 1.2.0 随 Citrine 下次发版。品牌黄审计对 Morganite 的金不生效（工具判黄范围是色相 40–64°、饱和度 ≥ 0.55），金色用错位置不会被自动发现。
-- `.stat-strip` 自带 `margin-bottom`，放进带 gap 的内容区会和 gap 叠成双倍间距（效果预览里单独抵消了）。
 - 词表外的 11 个语义名跟随 Citrine 桥接，若词表以后收编或改名，需要同步。
 - 成功色 `color.status.success*` 与「涨」统一成同一种祖母绿，用户 2026-10-09 确认保持；若要回到 antd 的绿，改回 antd green 色板即可。
 - 视觉已偏离 Ant Design Pro 原样：圆角、描边宽、侧栏当前项、卡片标题、图表配色按预期预览图改过，卡片按用户决定不投影；交互结构、密度与控件尺寸仍是 antd。

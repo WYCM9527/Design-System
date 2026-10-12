@@ -19,7 +19,7 @@
 5. 链接靠色相识别：`color.text.link`，不加下划线（`text.link.decoration`）、不用斜体（`text.link.style`），悬停变深（`color.text.link-hover`）。正文里的链接和表格操作列的「配置 / 详情」是同一种样式。
 6. 尺寸只从 token 拿：控件高 `control.height.*`，间距 `space.* / spacing.*`，圆角 `radius.*` 按容器层级递减，字号走 `text.*.size` 阶梯；不在阶梯之外取值。
 7. 字重只有两档：正文、按钮、表单标签、菜单用 `text.weight.label`；表头、标题、卡片标题用 `text.weight.strong`；统计大字用 `text.display.weight`（半粗）。选中态不靠加粗，靠颜色和底色。
-8. 禁用 = `opacity.disabled`；只读 = `color.bg.readonly`；加载 = 骨架屏 `color.bg.skeleton*`，不用禁用态假装。
+8. 禁用 = `opacity.disabled`；只读 = `color.bg.readonly`；加载 = 骨架屏 `color.bg.skeleton*`，不用禁用态假装。加载 / 空 / 出错三态与按角色隐藏、禁用的规则见「页面状态与权限」。
 9. 图标类控件必须有 `aria-label`、命中区 ≥ `control.hit-min`；所有颜色和尺寸都必须能在 `dist/tokens.css` 里找到名字。
 10. 壳层尺寸只从 token 拿：侧栏 `layout.sidebar.width` / `-collapsed-width`，顶栏 `layout.topbar.height`，弹窗 `layout.modal.width.*`，抽屉 `layout.drawer.width`，表单标签列 `layout.form.label-width`；表格单元格内边距 `table.cell.padding-*`。
 11. 图表只用 `color.chart.1…6`（金、深灰、浅金、中灰、浅灰、绿）、顺序色 `color.chart.sequential.*` 与面积 `color.chart.area`，提示气泡用 `color.chart.tooltip`；涨跌用 `color.data.increase / decrease`（绿涨红跌，公司约定变了只改这两个别名），不在图表里直接写状态色。
@@ -69,6 +69,7 @@
 - 圆角按容器层级递减：整块面板 / 大容器 `radius.xl` → 卡片 / 弹窗 / 抽屉 `radius.lg` → 按钮 / 输入框 `radius.md` → 标签 / Tooltip `radius.sm` → 勾选框 `radius.xs`；表格单元格直角。胶囊（`radius.full`）只给顶栏搜索、期间选择、分段选择器、筹码、进度条、状态点与头像；普通按钮和标签不做胶囊。
 - 层级最多四档：`layer.sticky`、`layer.dropdown`、`layer.modal`、`layer.toast`，用到哪档写哪档；不手写 z-index 数字。沿用 antd 的顺序：下拉高于弹窗（弹窗里的下拉才能展开），全局提示在两者之间。
 - 断点：`layout.breakpoint.narrow` 以下侧栏默认折叠、卡片栅格减列；`layout.breakpoint.mobile` 以下侧栏收成抽屉、筛选栏纵排、表格横向滚动、留白收到 `space.stack`。CSS 媒体查询无法引用 var()，配方里的断点数值是 token 的字面镜像，改 token 必须同步。
+- 页面形态走配方，不在页面上另写栅格：看板 `.board`（主图 + 侧栏 KPI）、两栏 `.two-col`（主内容 + 侧信息）、纵向堆叠 `.stack`、卡片栅格 `.card-grid`、设置行 `.setting`、横向表单 `.hform`、登录页 `.login`。看板与两栏在内容区放不下右栏的 KPI 大字时收成单栏——按内容区宽度（容器查询）而不是视口判断，侧栏展开或折叠都成立。筛选项宽度只用三档：`.w-search`（`layout.search.width`）、`.w-select`、`.w-date`。
 
 ## 组件原则
 
@@ -110,19 +111,31 @@
 | 下拉菜单 | `color.bg.elevated`；项 hover `color.bg.hover` | `color.text.primary`；危险项 `color.text.danger` | `elevation.popover.*`，`layer.dropdown`，圆角 `radius.lg` |
 | 弹窗 | 遮罩 `color.bg.overlay`；面板 `color.bg.elevated` | `color.text.primary` / `secondary` | `elevation.modal.*`，`layer.modal`，圆角 `radius.lg`，进出 `motion.duration.slow` |
 | Tooltip / 深色 Toast | `color.bg.inverse` | `color.text.inverse` | 圆角 `radius.sm`，`layer.toast` |
-| 标签页 | — | 默认 `color.text.secondary`，选中 `color.text.selected` | 选中下划线 `color.border.current` × `border.width.active` |
-| 分段选择器 / 按钮组 | 轨道 `color.bg.hover`；当前项 `color.action.selected` | 当前 `color.text.on-selected`，其余 `color.text.secondary` | 内衬 `control.segmented-inset` |
+| 标签页 | — | 默认 `color.text.secondary`，选中 `color.text.selected`；`text.weight.label`，选中不加粗 | 选中下划线 `color.border.current` × `border.width.active`；贴在卡片顶部时标签栏左右缩进 `space.card` |
+| 分段选择器 / 按钮组 | 轨道 `color.bg.hover`；当前项 `color.action.selected` | 当前 `color.text.on-selected`，其余 `color.text.secondary`；`text.body-sm.size`，常规字重，选中不加粗 | 内衬 `control.segmented-inset`；不描边 |
+| 头像 | `color.bg.selected-subtle`（不透明的奶金浅底，叠在悬停底上也不变色） | `color.text.selected` | 胶囊 `radius.full`，尺寸 `avatar.size.*` |
 | 分页（纯 CSS / shadcn 用配方 `.pagination` + `.page`） | 当前页 `color.action.primary`；其余 hover `color.bg.hover` | 当前 `color.text.on-primary` × `text.weight.strong`，其余 `color.text.primary` | `control.height.md`（小号 `control.height.sm`） |
 | 日期面板 | 选中日 `color.action.primary`；范围内 `color.bg.selected-subtle` | 选中日 `color.text.on-primary`；今天 `color.text.primary` × 500 | 选中块 `radius.full` |
 | 树 | 当前节点 `color.bg.selected-subtle`；hover `color.bg.hover` | `color.text.primary`，当前节点 500 | 行高 `control.height.md`，圆角 `radius.md` |
-| 步骤条 | 当前步圆点 `color.action.primary`；其余圆点 `color.bg.surface` | 当前步序号 `color.text.on-primary`；已完成的勾 `color.text.selected`；未开始 `color.text.muted` | 已完成圆点描边与连线 `color.border.current`；未开始描边 `color.border.strong`、连线 `color.border.default`；圆点 `control.height.sm` |
+| 步骤条 | 当前步圆点 `color.action.primary`；其余圆点 `color.bg.surface` | 当前步序号 `color.text.on-primary`；已完成的勾 `color.text.selected`；未开始 `color.text.muted`；标题 `text.weight.label`，说明 `color.text.muted` 小号 | 已完成圆点描边与连线 `color.border.current`；未开始描边 `color.border.strong`、连线 `color.border.default`；圆点 `control.height.sm`。横排：圆点在左、标题与说明在右，连线是标题行后面接到下一步的细线；手机竖排、去掉连线 |
 | 时间线 | 节点 `color.bg.surface` | 事件 `color.text.primary`，时间 `color.text.muted` | 当前节点描边 `color.action.primary`，异常 `color.status.error`，其余 `color.border.strong`；竖线 `color.border.default` |
 | 侧栏 | `color.bg.sidebar`；项 hover `color.bg.sidebar-hover`；当前 `color.bg.sidebar-selected` | `color.text.sidebar` / `-strong` / `-muted`；当前 `color.text.sidebar-selected`（常规字重） | `color.border.sidebar`；当前项无指示条；宽 `layout.sidebar.width`，折叠 `layout.sidebar.collapsed-width` |
 | 顶栏 | `color.bg.surface` | 问候语 `color.text.muted`、姓名 `color.text.primary`；操作图标 `color.icon.muted` | 高 `layout.topbar.height`，`layer.sticky`，底边线 `color.border.sidebar`；搜索 `layout.search.width` × `radius.full`；未读红点 `color.action.danger` |
 | 抽屉 | 遮罩 `color.bg.overlay`；面板 `color.bg.elevated` | `color.text.primary` | 宽 `layout.drawer.width`，`elevation.modal.*`，`layer.modal` |
 | 横向表单 | — | 标签 `color.text.primary` | 标签列 `layout.form.label-width`，单列最大宽 `layout.form.max-width` |
-| 空状态 / 结果页 | — | 标题 `color.text.primary`，说明 `color.text.secondary` | 插图 `illustration.size.md`，大图标 `icon.size.2xl` |
+| 空状态 / 结果页 | — | 标题 `color.text.primary`，说明 `color.text.secondary`；结果页错误码 `color.text.selected` | 插图 `illustration.size.md`，大图标 `icon.size.2xl`；用法见「页面状态与权限」 |
+| 登录页 | 品牌面 `color.bg.brand`；表单面 `color.bg.page` | 品牌面 `color.text.on-brand`（只放不小于 `text.heading.size` 的大字）；logo 块 `color.bg.surface` 底 + `color.text.selected` | 表单卡宽 `layout.modal.width.sm`；手机收成单栏 |
 | 图表 | 面积 `color.chart.area`（渐隐）；提示气泡 `color.chart.tooltip` | 轴与图例 `color.text.secondary`；气泡 `color.text.inverse` | 分类 `color.chart.1…6`，顺序 `color.chart.sequential.*`，涨跌 `color.data.*`；柱子饱和度渐变，上浅下深（浅端饱和度 × `chart.gradient.saturation`） |
+
+## 页面状态与权限
+
+每块取数的区域都有加载、空、出错、正常四态，样式全部来自配方，页面只决定文案。
+
+- 加载：骨架屏占住最终形状（表格用 `TableSkeleton` / `.tskel`，列宽与真实表格一致），加载完成不跳版；不用转圈盖住整块，也不用禁用态假装加载。按钮自己的提交中用按钮的 loading，不压淡。
+- 空：插图 + 一句说明 + 至多一个主操作（`.empty`）。说明讲原因和下一步；筛选后没有结果时，操作是「清空筛选」而不是新建。
+- 出错：区域内的错误条（`.error-box`，`color.status.error` 成对，写清原因，右侧「重试」），页头与筛选栏保留，不整页跳走；只有整页级失败（500、网络断开）才用结果页 `.result`。
+- 权限分三层：没有权限的菜单与入口直接隐藏，不放禁用的菜单项；直接访问无权限的地址进 403 结果页（`.result`），给「返回工作台」；同一页面里按角色区分的操作，按钮保持可见但禁用（`opacity.disabled`），悬停出 Tooltip 写明缺哪项权限——禁用按钮不触发悬停，Tooltip 挂在外层包裹元素上。
+- 只读角色看表单用只读态（`color.bg.readonly`）并在表单顶部说明原因，不用禁用态。
 
 ## 交互与无障碍
 
