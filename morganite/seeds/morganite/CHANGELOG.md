@@ -20,6 +20,10 @@
   - 肉眼可见：曲线图（`trendLine`、`TrendChart`）最底下那条线从两条叠画的 1px 实线（比其他网格线深）变成一条发丝细的虚线；效果预览工作台折线图同改，底线画在基准面积之后。柱状图的基线仍是实线。
   - ECharts 主题的轴线、网格线和提示气泡的细边从 1px 改为 `border.width.default`（0.6px），按 DESIGN「宽度统一是发丝细线」，与效果预览一致：所有 ECharts 图表的网格线、柱状图基线和气泡边都会变细、变浅一点。
   - `chartTokens()` 多返回 `lineWidth` / `baselineDash`；`trendLine` 可传 `el`（读 token 的元素）。
+- 图表悬停改为浅金竖条（用户：悬停的竖向指示线用浅色柱状图，浅金与浅灰实测对比后选浅金）：
+  - 肉眼可见：曲线图悬停时不再画竖虚线（商城原为 ECharts 默认的 1px 灰色虚线，效果预览是 0.6px 金色虚线），改为 `color.chart.area`（品牌金 16%，暗色 24%）的竖条盖住悬停的那一格，和柱状图一致。效果预览折线图同改。
+  - ECharts 主题的 `tooltip.axisPointer.type` 默认改为 `'shadow'`：所有 `trigger: 'axis'` 的类目轴图表悬停都是这根竖条；时间轴 / 数值轴上竖条会缩成 1px，这类图自己设 `type: 'line'`。
+  - `color.chart.area` 的说明补上「也是图表悬停竖条」，值不变。
 
 ## 0.1.4 — 2026-10-11
 

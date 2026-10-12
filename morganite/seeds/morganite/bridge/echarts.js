@@ -6,7 +6,7 @@
 //   const chart = echarts.init(el, name)
 //   chart.setOption(trendLine({ days, series: [{ name: '本周', data }, { name: '上周', data }] }))
 //   series: [{ type: 'bar', data, itemStyle: { color: barGradient(chartTokens().palette[0]) } }]   // 自己写的柱状图也用柱子渐变
-// 规则见 DESIGN.md「组件原则」图表条：轴线与网格线是 border.width.default 发丝线；趋势折线 y 轴贴数据（不强制从 0）、底线虚线、平滑 0.5 + smoothMonotone、单序列显示空心点并填渐隐面积、多序列不显示点也不填面积；柱状图必须从 0 开始，柱子渐变起点深、末端浅（竖柱下深上浅），品牌金用 chart.gradient.start → end，其他颜色同色饱和度渐变；提示气泡是白底浮层（color.chart.tooltip 底、正文色字、细边、elevation.tooltip 大投影）。
+// 规则见 DESIGN.md「组件原则」图表条：轴线与网格线是 border.width.default 发丝线；趋势折线 y 轴贴数据（不强制从 0）、底线虚线、平滑 0.5 + smoothMonotone、单序列显示空心点并填渐隐面积、多序列不显示点也不填面积；柱状图必须从 0 开始，柱子渐变起点深、末端浅（竖柱下深上浅），品牌金用 chart.gradient.start → end，其他颜色同色饱和度渐变；提示气泡是白底浮层（color.chart.tooltip 底、正文色字、细边、elevation.tooltip 大投影）；悬停时浅金竖条（color.chart.area）盖住悬停的那一格，不画竖线。
 
 const read = (name, el = document.documentElement) => getComputedStyle(el).getPropertyValue(name).trim();
 
@@ -83,7 +83,8 @@ export function theme(el = document.documentElement) {
     legend: { icon: 'roundRect', itemWidth: 10, itemHeight: 10, itemGap: 16, textStyle: { color: t.text, fontSize: t.font } },
     // 大投影走 elevation.tooltip：ECharts 把 shadow* 拼成 box-shadow，没有扩散半径，token 也只给 y / blur / color。
     // 挂到 body（同 Element 浮层）：el-card 是 overflow: hidden，靠边的气泡和投影会被卡片裁掉
-    tooltip: { appendTo: 'body', backgroundColor: t.tooltipBg, borderColor: t.line, borderWidth: t.lineWidth, borderRadius: t.tooltipRadius, padding: t.tooltipPadding, shadowOffsetX: 0, shadowOffsetY: t.tooltipShadowY, shadowBlur: t.tooltipShadowBlur, shadowColor: t.tooltipShadowColor, textStyle: { color: t.primary, fontSize: t.font }, axisPointer: { lineStyle: { color: t.strong }, shadowStyle: { color: t.area } } },
+    // 悬停指示默认是浅金竖条（shadow）：竖条宽度取类目间距，时间轴 / 数值轴上会缩成 1px，这类图自己设 axisPointer.type: 'line'
+    tooltip: { appendTo: 'body', backgroundColor: t.tooltipBg, borderColor: t.line, borderWidth: t.lineWidth, borderRadius: t.tooltipRadius, padding: t.tooltipPadding, shadowOffsetX: 0, shadowOffsetY: t.tooltipShadowY, shadowBlur: t.tooltipShadowBlur, shadowColor: t.tooltipShadowColor, textStyle: { color: t.primary, fontSize: t.font }, axisPointer: { type: 'shadow', lineStyle: { color: t.strong }, shadowStyle: { color: t.area } } },
     categoryAxis: { axisLine: { lineStyle: { color: t.line, width: t.lineWidth } }, axisTick: { show: false }, axisLabel: { color: t.muted, fontSize: t.font }, splitLine: { show: false } },
     valueAxis: { axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: t.muted, fontSize: t.font, fontFamily: t.numericFamily }, splitLine: { lineStyle: { color: t.line, width: t.lineWidth } } },   // 数值刻度用数字字体，类目轴多是中文，保持正文字体
     // 平滑 0.5 + smoothMonotone 'x'：曲线丝滑但不越过数据点（只用 0.3 会在数据点处显硬；不加 monotone 则会在点之间鼓包）；线端与拐角圆头

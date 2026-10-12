@@ -757,7 +757,8 @@
       const pos = (i) => `left:${(x(i) / W) * 100}%;top:${(y(values[i]) / H) * 100}%`;
       const dotIdx = dots === "last" ? [values.length - 1] : values.map((_, i) => i);
       const dotHtml = dotIdx.map((i) => `<span class="lc__dot${tip && tip.i === i ? " is-on" : ""}" style="${pos(i)}"></span>`).join("");
-      const tipHtml = tip ? `<span class="lc__guide" style="left:${(x(tip.i) / W) * 100}%"></span><span class="lc__tip" style="${pos(tip.i)}">${tip.text}</span>` : "";
+      const half = 50 / (values.length - 1), at = tip ? (x(tip.i) / W) * 100 : 0;
+      const tipHtml = tip ? `<span class="lc__band" style="left:${Math.max(0, at - half)}%;right:${Math.max(0, 100 - at - half)}%"></span><span class="lc__tip" style="${pos(tip.i)}">${tip.text}</span>` : "";
       const yAxis = ticks ? `<div class="lc__y">${ticks.slice().reverse().map((t) => `<span>${tickLabel(t)}</span>`).join("")}</div>` : "";
       el.innerHTML = `${yAxis}<div class="lc__plot${short ? " is-short" : ""}">${svg}${tipHtml}${dotHtml}</div><div class="lc__x">${labels.map((l, i) => `<span style="left:${(x(i) / W) * 100}%">${l}</span>`).join("")}</div>`;
     }
