@@ -22,7 +22,7 @@
 8. 禁用 = `opacity.disabled`；只读 = `color.bg.readonly`；加载 = 骨架屏 `color.bg.skeleton*`，不用禁用态假装。加载 / 空 / 出错三态与按角色隐藏、禁用的规则见「页面状态与权限」。
 9. 图标类控件必须有 `aria-label`、命中区 ≥ `control.hit-min`；所有颜色和尺寸都必须能在 `dist/tokens.css` 里找到名字。
 10. 壳层尺寸只从 token 拿：侧栏 `layout.sidebar.width` / `-collapsed-width`，顶栏 `layout.topbar.height`，弹窗 `layout.modal.width.*`，抽屉 `layout.drawer.width`，表单标签列 `layout.form.label-width`；表格单元格内边距 `table.cell.padding-*`。
-11. 图表只用 `color.chart.1…6`（金、深灰、浅金、中灰、浅灰、绿）、顺序色 `color.chart.sequential.*` 与面积 `color.chart.area`，提示气泡用 `color.chart.tooltip`；涨跌用 `color.data.increase / decrease`（绿涨红跌，公司约定变了只改这两个别名），不在图表里直接写状态色。
+11. 图表只用 `color.chart.1…6`（金、深灰、浅金、中灰、浅灰、绿）、顺序色 `color.chart.sequential.*` 与面积 `color.chart.area`，提示气泡用白底浮层 `color.chart.tooltip`（大投影 `elevation.tooltip.*`）；涨跌用 `color.data.increase / decrease`（绿涨红跌，公司约定变了只改这两个别名），不在图表里直接写状态色。
 12. 改完跑 steward `guard`（构建与登记一致）和 `status`（页面字面量清零）。
 
 ## 视觉语言
@@ -77,14 +77,14 @@
 - 按钮四层：主按钮金底白字，悬停加深一点（`color.action.primary-hover`）、按下再深一档（`color.action.primary-active`）——白字在变浅的金上更难读，所以不像 antd 那样悬停变浅；次要按钮白底 + `color.border.strong` 描边，悬停换底（`color.action.secondary-hover`）；文字按钮静息透明（`color.action.quiet`）、悬停出浅底（`color.action.quiet-hover`）；危险按钮 `color.action.danger` 实底白字，悬停 / 按下加深。悬停不引入新的颜色（主按钮只是同色系加深）。
 - 卡片：不投影，靠白底与页面底的底色差（`color.bg.surface` 对 `color.bg.page`）加一条很浅的细边线 `color.border.default` 定形；卡片内的分区、表格行线用同一条边线色，不另设分隔线色。卡片标题是分区标签，不与卡片里的数字抢层级：`text.small.size` × `text.weight.strong` × `color.text.secondary`，加字距 `text.tracking.caps`（西文全大写），右侧放更多操作。
 - 输入框是填充式：静息只有底色 `color.bg.input`、没有边线（`color.border.input` 透明），悬停出现 `color.border.strong`，聚焦只把边线换成更深的 `color.border.focus`，线宽不变、不加外环（光标本身提示焦点）；选择器、日期选择、文本域与输入框同一套。
-- 阴影写法固定：`box-shadow: 0 var(--elevation-<层>-y) var(--elevation-<层>-blur) var(--elevation-<层>-color)`，三层 `card` / `popover` / `modal`；`card` 层颜色是透明（卡片不投影），写法照旧保留，回退时只改 token；弹窗与下拉同一档阴影，靠遮罩区分层级。
-- 浮层三件：`color.bg.elevated`（浮层表面）、`color.bg.overlay`（遮罩）、`color.bg.inverse` + `color.text.inverse`（Tooltip / 深色 Toast）。
+- 阴影写法固定：`box-shadow: 0 var(--elevation-<层>-y) var(--elevation-<层>-blur) var(--elevation-<层>-color)`，四层 `card` / `popover` / `modal` / `tooltip`；`card` 层颜色是透明（卡片不投影），写法照旧保留，回退时只改 token；弹窗与下拉同一档阴影，靠遮罩区分层级；`tooltip` 是图表提示气泡的大投影，比下拉大一档（白底气泡压在白卡片上，靠投影浮起来）。
+- 浮层三件：`color.bg.elevated`（浮层表面）、`color.bg.overlay`（遮罩）、`color.bg.inverse` + `color.text.inverse`（文字 Tooltip / 深色 Toast；图表提示气泡不用反色，见图表条）。
 - 状态色是文字色不是填充色：徽标 / 提示条 = `color.status.<x>` + `color.status.<x>-bg`；表格里的状态可以是「状态点 + 文字」，点只是辅助。
 - 图标：`icon.library` 的线性图标为主，默认尺寸 `icon.size.md`（与正文同高），另有 `icon.size.xs / sm / lg / xl / 2xl`；接 IconPark 时描边用 `icon.stroke.width`。颜色：操作图标 `color.icon.default`，装饰与顶栏操作 `color.icon.muted`，双色插图 `color.icon.brand` + `color.icon.two-tone`。
 - 侧栏：底 `color.bg.sidebar`，项 hover `color.bg.sidebar-hover`，当前项 `color.bg.sidebar-selected` + `color.text.sidebar-selected`（不加粗、不加指示条）；文字三档 `color.text.sidebar` / `-strong` / `-muted`（分组标题用 muted）；边线 `color.border.sidebar`；宽 `layout.sidebar.width`，折叠 `layout.sidebar.collapsed-width`。
 - 表格：表头 `color.bg.subtle`（比卡片深一档）+ `color.text.secondary` × `text.weight.label`、小号字，行分隔 `color.border.default`，行 hover `color.bg.hover`，选中行与悬停同色 `color.bg.hover`（再悬停深一档 `color.bg.selected-hover`）；单元格内边距 `table.cell.padding-y / -x`；金额、日期列用 `text.numeric.family` + `text.numeric.variant`（正文字体、等宽数字，金额列小数点上下对齐），单号用 `font.family.code`。
 - 弹窗 / 抽屉：宽度只用 `layout.modal.width.sm`（确认）/ `.md`（表单）/ `layout.drawer.width`；横向表单标签列 `layout.form.label-width`，单列表单最大宽 `layout.form.max-width`（单列表单用竖向标签）。
-- 图表：分类色 `color.chart.1…6` 品牌金领衔，顺序色 `color.chart.sequential.1…5`（四档灰 + 金封顶，离散分段用）；单序列折线金色描线 + 空心点 + 自上而下渐隐的面积 `color.chart.area`，多序列不填面积；提示气泡 `color.chart.tooltip` 底 + `color.text.inverse` 字；涨跌 `color.data.increase / decrease`，已结束 `color.data.inactive`；轴与图例文字 `color.text.secondary`。柱状图、进度条这类数据填充用渐变，方向统一为起点深、末端浅：竖柱下深上浅，横柱和进度条左深右浅。品牌金填充用指定的两色 `color.chart.gradient.start` → `color.chart.gradient.end`；状态色、分类色等其他填充用同色的饱和度渐变：HSB 明度不变，浅端把饱和度降到 × `chart.gradient.saturation`。中性灰没有饱和度，保持实色；环形图、图例色块也保持实色。进度条在条内显示百分比时，填充改为实色（白字落在浅端看不清）。环形图用平面，不做 3D。
+- 图表：分类色 `color.chart.1…6` 品牌金领衔，顺序色 `color.chart.sequential.1…5`（四档灰 + 金封顶，离散分段用）；单序列折线金色描线 + 空心点 + 自上而下渐隐的面积 `color.chart.area`，多序列不填面积；提示气泡是白底浮层：`color.chart.tooltip` 底 + `color.text.primary` 字 + `color.border.default` 细边 + `elevation.tooltip.*` 大投影，圆角 `radius.md`，浮在卡片之上，靠边也不被卡片裁掉；涨跌 `color.data.increase / decrease`，已结束 `color.data.inactive`；轴与图例文字 `color.text.secondary`。柱状图、进度条这类数据填充用渐变，方向统一为起点深、末端浅：竖柱下深上浅，横柱和进度条左深右浅。品牌金填充用指定的两色 `color.chart.gradient.start` → `color.chart.gradient.end`；状态色、分类色等其他填充用同色的饱和度渐变：HSB 明度不变，浅端把饱和度降到 × `chart.gradient.saturation`。中性灰没有饱和度，保持实色；环形图、图例色块也保持实色。进度条在条内显示百分比时，填充改为实色（白字落在浅端看不清）。环形图用平面，不做 3D。
 - 顶栏：左侧问候语（`color.text.muted`）+ 姓名（`color.text.primary` × `text.weight.strong`），右侧胶囊搜索、带未读红点（`color.action.danger`）的图标按钮与头像下拉。
 
 ## 组件配方
@@ -125,7 +125,7 @@
 | 横向表单 | — | 标签 `color.text.primary` | 标签列 `layout.form.label-width`，单列最大宽 `layout.form.max-width` |
 | 空状态 / 结果页 | — | 标题 `color.text.primary`，说明 `color.text.secondary`；结果页错误码 `color.text.selected` | 插图 `illustration.size.md`，大图标 `icon.size.2xl`；用法见「页面状态与权限」 |
 | 登录页 | 品牌面 `color.bg.brand`；表单面 `color.bg.page` | 品牌面 `color.text.on-brand`（只放不小于 `text.heading.size` 的大字）；logo 块 `color.bg.surface` 底 + `color.text.selected` | 表单卡宽 `layout.modal.width.sm`；手机收成单栏 |
-| 图表 | 面积 `color.chart.area`（渐隐）；提示气泡 `color.chart.tooltip` | 轴与图例 `color.text.secondary`；气泡 `color.text.inverse` | 分类 `color.chart.1…6`，顺序 `color.chart.sequential.*`，涨跌 `color.data.*`；柱子渐变下深上浅（横柱左深右浅）：品牌金 `color.chart.gradient.start` → `color.chart.gradient.end`，其他颜色同色饱和度渐变（浅端饱和度 × `chart.gradient.saturation`） |
+| 图表 | 面积 `color.chart.area`（渐隐）；提示气泡 `color.chart.tooltip`（白底浮层） | 轴与图例 `color.text.secondary`；气泡 `color.text.primary` | 气泡 `color.border.default` 细边 + `elevation.tooltip.*` 大投影、圆角 `radius.md`；分类 `color.chart.1…6`，顺序 `color.chart.sequential.*`，涨跌 `color.data.*`；柱子渐变下深上浅（横柱左深右浅）：品牌金 `color.chart.gradient.start` → `color.chart.gradient.end`，其他颜色同色饱和度渐变（浅端饱和度 × `chart.gradient.saturation`） |
 
 ## 页面状态与权限
 

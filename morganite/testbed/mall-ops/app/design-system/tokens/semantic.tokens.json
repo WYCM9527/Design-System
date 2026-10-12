@@ -416,8 +416,8 @@
       },
       "tooltip": {
         "$type": "color",
-        "$value": "{color.brand.600}",
-        "$description": "[确认] 图表提示气泡深金底（预期预览图为金底白字 3.1:1，压深一档到 5.27:1），文字用 color.text.inverse"
+        "$value": "{color.white}",
+        "$description": "[确认] 图表提示气泡底：白底浮层（同 color.bg.elevated，暗色覆写为浮层色），配 color.text.primary 字、color.border.default 细边与 elevation.tooltip 大投影（用户 2026-10-12：hover 浮窗用白色底 + 大投影）；原为深金底 color.brand.600 + 白字"
       },
       "sequential": {
         "1": {
@@ -914,6 +914,23 @@
         "$type": "color",
         "$value": "{color.neutral.shadow-a8}",
         "$description": "[观察] 同上"
+      }
+    },
+    "tooltip": {
+      "y": {
+        "$type": "dimension",
+        "$value": "{shadow.y.3}",
+        "$description": "[确认] 图表提示气泡阴影 y：大投影，比 elevation.popover 大一档（用户 2026-10-12：hover 浮窗用白色底 + 大投影）"
+      },
+      "blur": {
+        "$type": "dimension",
+        "$value": "{shadow.blur.3}",
+        "$description": "[确认] 图表提示气泡阴影模糊（用户 2026-10-12：hover 浮窗用白色底 + 大投影）"
+      },
+      "color": {
+        "$type": "color",
+        "$value": "{color.neutral.shadow-a12}",
+        "$description": "[确认] 图表提示气泡阴影色（用户 2026-10-12：hover 浮窗用白色底 + 大投影）"
       }
     }
   },
