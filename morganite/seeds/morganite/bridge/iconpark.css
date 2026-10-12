@@ -4,7 +4,12 @@
 .i-icon { display: inline-flex; align-items: center; justify-content: center; line-height: 1; font-size: var(--icon-size-md); color: inherit; vertical-align: -0.125em; flex: none; }
 .i-icon svg { width: 1em; height: 1em; display: block; }
 
-/* 尺寸六档：与 icon.size.* 一一对应（描边统一由 --icon-stroke-width 控制） */
+/* 描边：屏幕上恒为 icon.stroke.width（1.4px），不随图标尺寸缩放（iconpark.config.ts 里的 strokeWidth 只是没加载这份样式时的退路）。
+   icon-merge.js 把多段描边合并成一个形状再一次上色，半透明的图标色在交叠处不叠深；合并后原来的各段设为透明，仍留在原处 */
+.i-icon > svg :is(path, circle, ellipse, line, polyline, polygon, rect) { stroke-width: var(--icon-stroke-width); vector-effect: non-scaling-stroke; }
+.i-icon > svg[data-icon-merged] > :not([data-icon-merge], defs, mask, clipPath, pattern, symbol) { opacity: 0; }
+
+/* 尺寸六档：与 icon.size.* 一一对应 */
 .i-icon--xs { font-size: var(--icon-size-xs); }
 .i-icon--sm { font-size: var(--icon-size-sm); }
 .i-icon--md { font-size: var(--icon-size-md); }
@@ -21,5 +26,4 @@
 .i-icon--error { color: var(--color-status-error); }
 .i-icon--info { color: var(--color-status-info); }
 
-/* 用 @icon-park/svg 内联时，把 strokeWidth 传成 "var(--icon-stroke-width)"（Chrome / Edge / Safari 都支持在 SVG 表现属性里用 var()），
-   描边粗细就也由 token 决定；--icon-stroke-width 由 dist/tokens.css 定义。 */
+/* 用 @icon-park/svg 内联时它返回的是裸 <svg>，套一层 <span class="i-icon">，上面的尺寸、描边、合并规则才对它生效。 */

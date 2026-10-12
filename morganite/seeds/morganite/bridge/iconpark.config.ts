@@ -1,6 +1,7 @@
 /**
  * IconPark 桥接（配置部分）。全局配置只做一次，让每个图标默认就符合设计系统：
- *   描边 icon.stroke.width = 3（48 视框里的 3 ≈ 效果预览 24 视框里的 1.6）、圆头圆角、线性、跟随 font-size。
+ *   圆头圆角、线性、跟随 font-size。描边由 iconpark.css 按屏幕上的 icon.stroke.width（1.4px）画，各档尺寸一样粗；
+ *   入口里调一次 icon-merge.js 的 mergeIcons()，多段描边合并后一次上色，半透明的图标色在交叠处不叠深。
  * 尺寸与颜色交给 iconpark.css 里的 .i-icon--* 类，不在每个图标上写 size / fill。
  *
  * 版本：@icon-park/react、@icon-park/vue-next、@icon-park/svg 1.4.x（Apache-2.0）。
@@ -10,7 +11,7 @@
 /** 与 token 一致的默认配置片段（IIconConfig 的可覆写部分）。 */
 export const iconParkDefaults = {
   size: "1em",          // 跟随 font-size；尺寸用 .i-icon--xs…2xl（对应 icon.size.*）
-  strokeWidth: 3,       // icon.stroke.width 的字面镜像（IIconConfig 只收数字，不能写 var()）；改 token 必须同步
+  strokeWidth: 4.8,     // 没加载 iconpark.css 时的退路：48 网格里的 4.8 ≈ 14px 图标上的 1.4px（icon.stroke.width）；加载后由样式按屏幕粗细覆盖
   strokeLinecap: "round" as const,   // icon.stroke.linecap
   strokeLinejoin: "round" as const,  // icon.stroke.linejoin
   theme: "outline" as const,         // icon.theme.default
@@ -44,6 +45,7 @@ import "../design-system/bridge/iconpark.css";
 <IconProvider value={{ ...DEFAULT_ICON_CONFIGS, ...iconParkDefaults }}>
   <App />
 </IconProvider>
+// main.tsx 里 render() 之后：import { mergeIcons } from "@wycm9527/morganite/icon-merge"; mergeIcons();
 
 // 用法
 <Home className="i-icon--lg" />                     // 尺寸靠类，颜色继承文字
@@ -58,6 +60,7 @@ import "../design-system/bridge/iconpark.css";
 
 // App.vue <script setup>
 IconProvider({ ...DEFAULT_ICON_CONFIGS, ...iconParkDefaults });
+// main.js 里 app.mount() 之后：import { mergeIcons } from "@wycm9527/morganite/icon-merge"; mergeIcons();
 
 // 任意组件
 import { Home } from "@icon-park/vue-next";
@@ -67,6 +70,6 @@ import { Home } from "@icon-park/vue-next";
 
    ---------- 静态页 / 模板引擎（@icon-park/svg） ----------
 import { setConfig, DEFAULT_ICON_CONFIGS, Home } from "@icon-park/svg";
-setConfig({ ...DEFAULT_ICON_CONFIGS, ...iconParkDefaults, strokeWidth: "var(--icon-stroke-width)" as unknown as number });
-Home();   // 返回 <svg …> 字符串；描边、颜色都由 token 决定，直接内联进 HTML
+setConfig({ ...DEFAULT_ICON_CONFIGS, ...iconParkDefaults });
+`<span class="i-icon i-icon--lg">${Home()}</span>`;   // Home() 返回裸 <svg> 字符串；套一层 .i-icon，尺寸、描边、合并才和组件版一致
 */

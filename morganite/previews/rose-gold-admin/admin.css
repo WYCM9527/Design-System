@@ -2,7 +2,7 @@
    壳层、页面形态（看板、两栏、设置行、登录页…）、表格、状态胶囊、筛选栏、表单栅格都来自 bridge/recipes.css；按钮、表单控件、浮层等静态组件在 components.css。
    颜色、间距、圆角、字号、阴影、描边宽一律引用 token 变量，不写色值；栅格比例与图标笔画属于结构几何。 */
 
-.icon { width: var(--size-icon-lg); height: var(--size-icon-lg); flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.icon { width: var(--size-icon-lg); height: var(--size-icon-lg); flex: none; fill: none; stroke: currentColor; stroke-width: var(--icon-stroke-width); stroke-linecap: round; stroke-linejoin: round; }   /* 雪碧图里的路径是 non-scaling-stroke（shell.js），描边就是屏幕上的 1.4px */
 .icon--sm { width: var(--size-icon-md); height: var(--size-icon-md); }
 
 /* ---- 组件走查：每组一张卡，组内按「状态」排一行 ---- */

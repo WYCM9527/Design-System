@@ -24,6 +24,11 @@
   - 肉眼可见：曲线图悬停时不再画竖虚线（商城原为 ECharts 默认的 1px 灰色虚线，效果预览是 0.6px 金色虚线），改为 `color.chart.area`（品牌金 16%，暗色 24%）的竖条盖住悬停的那一格，和柱状图一致。效果预览折线图同改。
   - ECharts 主题的 `tooltip.axisPointer.type` 默认改为 `'shadow'`：所有 `trigger: 'axis'` 的类目轴图表悬停都是这根竖条；时间轴 / 数值轴上竖条会缩成 1px，这类图自己设 `type: 'line'`。
   - `color.chart.area` 的说明补上「也是图表悬停竖条」，值不变。
+- 图标描边改为屏幕上的 1.4px，每只图标合并后一次上色（用户：icon 描边粗细改为 1.4px 并合并栅格化，否则有透明度时会有显示 bug）：
+  - `icon.stroke.width` 由数值 3（IconPark 48 网格）改为尺寸 1.4px，新增原语 `stroke-width.1-4`；`stroke-width.3` 不再被引用，按版本策略留到下个大版本再删。
+  - 新增运行时 `bridge/icon-merge.js`（包导出 `@wycm9527/morganite/icon-merge`）：入口里调一次 `mergeIcons()`，把每只单色 IconPark / lucide 图标的各段描边复制进一个蒙版、用 currentColor 一次画出，之后新渲染或更新的图标自动处理；双色 / 多色图标不处理。不调时描边粗细照样改，但交叠处仍会叠深。Element / shadcn 说明补上这一步。
+  - `iconpark.css` 与 `shadcn.css`（lucide）让描边按屏幕粗细画（`vector-effect: non-scaling-stroke`），shadcn 单选的实心圆点保持原样；`iconpark.config.ts` 的 `strokeWidth` 改为 4.8，只在没加载样式时兜底；`@icon-park/svg` 的静态用法改为套一层 `.i-icon`（原先把 `strokeWidth` 传成 `var(--icon-stroke-width)`，token 改成 1.4px 后会被视框缩小）；React 版 `StatCard` 的提示图标补上 lucide 类名。
+  - 肉眼可见：IconPark / lucide 图标的线条变粗——14px 图标约 0.9px → 1.4px、16px 约 1px → 1.4px（lucide 16px 约 1.3px → 1.4px），各档尺寸一样粗；灰色图标在线条交叠处（如「首页」图标的底边、搜索图标把手与圆的接缝）不再出现更深的一块。效果预览的图标由 24 网格里的 1.6（16px 上约 1.07px）改为 1.4px，并在源码里合并成一条路径。
 
 ## 0.1.4 — 2026-10-11
 

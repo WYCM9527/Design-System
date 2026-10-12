@@ -134,6 +134,11 @@
 [class~="border-b"] { border-bottom-width: var(--border-width-default); }
 [class~="border-l"] { border-left-width: var(--border-width-default); }
 [class~="border-r"] { border-right-width: var(--border-width-default); }
+/* lucide 图标描边：屏幕上恒为 icon.stroke.width（1.4px），不随图标尺寸缩放（lucide 默认 24 网格里的 2，16px 图标上约 1.3px）。
+   icon-merge.js 把多段描边合并成一个形状再一次上色，半透明的图标色在交叠处不叠深；合并后原来的各段设为透明，仍留在原处（IconPark 的同类规则在 iconpark.css） */
+svg.lucide :is(path, circle, ellipse, line, polyline, polygon, rect) { stroke-width: var(--icon-stroke-width); vector-effect: non-scaling-stroke; }
+svg.lucide[data-icon-merged] > :not([data-icon-merge], defs, mask, clipPath, pattern, symbol) { opacity: 0; }
+[data-slot="radio-group-indicator"] svg.lucide * { stroke-width: inherit; vector-effect: none; }   /* 单选圆点是实心点、不是线性图标，按屏幕粗细描边会把点撑大，保持 lucide 原样 */
 /* 控件三档高度：shadcn 用 h-8 / h-9 / h-10（32 / 36 / 40）表达 sm / default / lg，接到 control.height.sm / md / lg（24 / 32 / 40）；size-9 是图标按钮 */
 [data-slot="button"].h-8, [data-slot="select-trigger"][data-size="sm"] { height: var(--control-height-sm); }
 [data-slot="button"].h-9, [data-slot="input"].h-9, [data-slot="select-trigger"][data-size="default"] { height: var(--control-height-md); }

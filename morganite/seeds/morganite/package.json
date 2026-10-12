@@ -27,6 +27,10 @@
       "types": "./bridge/echarts.d.ts"
     },
     "./iconpark.config": "./bridge/iconpark.config.ts",
+    "./icon-merge": {
+      "default": "./bridge/icon-merge.js",
+      "types": "./bridge/icon-merge.d.ts"
+    },
     "./vue/*": "./bridge/vue/*",
     "./react/*": "./bridge/react/*.tsx"
   },

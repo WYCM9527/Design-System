@@ -260,8 +260,8 @@
   --icon-size-xl: var(--size-icon-xl);
   --size-icon-xs: 11px;
   --icon-size-xs: var(--size-icon-xs);
-  --stroke-width-3: 3;
-  --icon-stroke-width: var(--stroke-width-3);
+  --stroke-width-1-4: 1.4px;
+  --icon-stroke-width: var(--stroke-width-1-4);
   --size-illustration: 100px;
   --illustration-size-md: var(--size-illustration);
   --z-1050: 1050;
@@ -323,6 +323,7 @@
   --spacing-4: 16px;
   --spacing-5: 20px;
   --spacing-8: 32px;
+  --stroke-width-3: 3;
   --table-cell-padding-x: var(--spacing-2);
   --table-cell-padding-y: var(--spacing-3);
   --text-body-line-height: var(--font-line-height-normal);

@@ -87,7 +87,23 @@
 
   const icon = (id, cls) => `<svg class="icon${cls ? " " + cls : ""}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
   window.MorganiteIcon = icon;
-  body.insertAdjacentHTML("afterbegin", `<svg width="0" height="0" style="position: absolute" aria-hidden="true">${Object.entries(ICONS).map(([id, d]) => `<symbol id="i-${id}" viewBox="0 0 24 24">${d}</symbol>`).join("")}</svg>`);
+  // 每只图标在雪碧图里合并成一条描边路径 + 一条实心点路径：图标色是半透明的，分开画的几段在交叠处会叠深。
+  // 描边按屏幕上的 icon.stroke.width 画；vector-effect 不继承，只能写在路径上
+  const toPath = (tag, a) => {
+    const n = (k) => parseFloat(a[k] || 0);
+    if (tag === "circle") { const cx = n("cx"), cy = n("cy"), r = n("r"); return `M${cx - r} ${cy}a${r} ${r} 0 1 0 ${2 * r} 0a${r} ${r} 0 1 0 ${-2 * r} 0z`; }
+    if (tag === "rect") { const x = n("x"), y = n("y"), w = n("width"), h = n("height"), r = n("rx"); return `M${x + r} ${y}h${w - 2 * r}a${r} ${r} 0 0 1 ${r} ${r}v${h - 2 * r}a${r} ${r} 0 0 1 ${-r} ${r}h${2 * r - w}a${r} ${r} 0 0 1 ${-r} ${-r}v${2 * r - h}a${r} ${r} 0 0 1 ${r} ${-r}z`; }
+    return a.d.replace(/^\s*m/, "M");
+  };
+  const merge = (markup) => {
+    const lines = [], dots = [];
+    for (const [, tag, attrs] of markup.matchAll(/<(path|rect|circle)\s([^>]*?)\/>/g)) {
+      const a = Object.fromEntries([...attrs.matchAll(/([\w-]+)="([^"]*)"/g)].map((m) => [m[1], m[2]]));
+      (a.fill === "currentColor" ? dots : lines).push(toPath(tag, a));
+    }
+    return (lines.length ? `<path d="${lines.join("")}" vector-effect="non-scaling-stroke"/>` : "") + (dots.length ? `<path d="${dots.join("")}" fill="currentColor" stroke="none"/>` : "");
+  };
+  body.insertAdjacentHTML("afterbegin", `<svg width="0" height="0" style="position: absolute" aria-hidden="true">${Object.entries(ICONS).map(([id, d]) => `<symbol id="i-${id}" viewBox="0 0 24 24">${merge(d)}</symbol>`).join("")}</svg>`);
 
   const params = new URLSearchParams(location.search);
   const app = document.querySelector(".app");
