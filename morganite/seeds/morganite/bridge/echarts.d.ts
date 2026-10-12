@@ -28,6 +28,7 @@ export interface ChartTokens {
   gradientEnd: string
 }
 export interface BarGradientOptions { horizontal?: boolean; el?: Element }
+export interface BarEndsOptions { horizontal?: boolean; selected?: Record<string, boolean>; el?: Element }
 export interface TrendSeries { name: string; data: (number | null)[] }
 export interface TrendLineOptions { days: string[]; series: TrendSeries[]; area?: Record<string, unknown>; count?: boolean; el?: Element }
 export interface RankBarsOptions { categories: string[]; values: number[]; top?: number; formatter?: (value: number) => string; el?: Element }
@@ -39,3 +40,5 @@ export function areaGradient(echarts: unknown, el?: Element): Record<string, unk
 export function trendLine(options: TrendLineOptions): Record<string, unknown>
 export function rankBars(options: RankBarsOptions): Record<string, unknown>
 export function barGradient(color: string, options?: BarGradientOptions): Record<string, unknown>
+export function barEnds<T extends Record<string, unknown>>(series: T[], options?: BarEndsOptions): T[]
+export function withBarEnds<T extends Record<string, unknown>>(option: T, options?: Omit<BarEndsOptions, 'horizontal'>): T

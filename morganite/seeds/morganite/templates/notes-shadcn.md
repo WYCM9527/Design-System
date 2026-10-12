@@ -1,6 +1,6 @@
 - **样式来源**：`globals.css` 按顺序引入 Tailwind → `design-system/dist/index.css` → 桥接 `{{BRIDGE}}/shadcn.css`（契约变量 `--primary` 等指向语义 token、`@theme inline`、按 `data-slot` 的组件级接管）→ 配方层 `{{BRIDGE}}/recipes.css` → 项目补充 `app.css`。页面里的 Tailwind 类只用主题里已经映射到 token 的颜色 / 字号 / 间距，不写任意值（`bg-[#…]`、`p-[13px]`）。
 - **shadcn 没有的组件用配方**：分页 `.pagination` + `.page`、中性类别标签 `.tag`、状态胶囊 `.status.*`、顶栏搜索 `<label class="search">` + 图标 + input，样式与效果预览一致，页面不要自己写一套。
-- **桥接是从 Citrine 拷来的起点**：契约变量的映射对任何系统都成立，但组件级接管里带着 Citrine 的品牌决定（`Button variant="link"` 不用、`Badge` 默认色不用、Tabs 选中用灰轨道上的白块、控件三档高度接 antd 的 24 / 32 / 40）。第一次接入前照 `design-system/AUDIT.md`「桥接缺口」补齐缺的 token 或删掉对应规则；配方组件在 `{{IMPORT}}/react/*`（StatCard / EChart / TrendChart / TableSkeleton / ConfirmBar）。
+- **桥接是从 Citrine 拷来的起点**：契约变量的映射对任何系统都成立，但组件级接管里带着 Citrine 的品牌决定（`Button variant="link"` 不用、`Badge` 默认色不用、Tabs 选中用灰轨道上的白块、控件三档高度接 antd 的 24 / 32 / 40）。第一次接入前照 `design-system/AUDIT.md`「桥接缺口」补齐缺的 token 或删掉对应规则；配方组件在 `{{IMPORT}}/react/*`（StatCard / EChart / TrendChart / TableSkeleton / ConfirmBar）；不经 EChart 容器直接 `echarts.init` 的图表，option 先过 `{{IMPORT}}/echarts` 的 `withBarEnds`（柱子端头）。
 - **图标**：lucide-react，尺寸 / 弱化色用配方的 `i-icon--*` 类（`recipes.css`），不传 `size` / `strokeWidth`；`main.tsx` 里 `render()` 之后调一次 `mergeIcons()`（`{{IMPORT}}/icon-merge`）。描边由桥接按屏幕上的 `icon.stroke.width`（1.4px）画，`mergeIcons()` 把每只图标的多段描边合并后一次上色——不调的话，半透明的图标色在描边交叠处会叠深一块。
 - **根字号保持 16px**：Tailwind 的 rem 刻度依赖它；recipes 只在 `body` 设正文字号，不动 `html`。
 - **另一模式**：按 `design-system/theme-map.json` 的激活方式切换（class 激活 = `<html class="dark">`，可用 next-themes）。

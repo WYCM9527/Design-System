@@ -29,6 +29,9 @@
   - 新增运行时 `bridge/icon-merge.js`（包导出 `@wycm9527/morganite/icon-merge`）：入口里调一次 `mergeIcons()`，把每只单色 IconPark / lucide 图标的各段描边复制进一个蒙版、用 currentColor 一次画出，之后新渲染或更新的图标自动处理；双色 / 多色图标不处理。不调时描边粗细照样改，但交叠处仍会叠深。Element / shadcn 说明补上这一步。
   - `iconpark.css` 与 `shadcn.css`（lucide）让描边按屏幕粗细画（`vector-effect: non-scaling-stroke`），shadcn 单选的实心圆点保持原样；`iconpark.config.ts` 的 `strokeWidth` 改为 4.8，只在没加载样式时兜底；`@icon-park/svg` 的静态用法改为套一层 `.i-icon`（原先把 `strokeWidth` 传成 `var(--icon-stroke-width)`，token 改成 1.4px 后会被视框缩小）；React 版 `StatCard` 的提示图标补上 lucide 类名。
   - 肉眼可见：IconPark / lucide 图标的线条变粗——14px 图标约 0.9px → 1.4px、16px 约 1px → 1.4px（lucide 16px 约 1.3px → 1.4px），各档尺寸一样粗；灰色图标在线条交叠处（如「首页」图标的底边、搜索图标把手与圆的接缝）不再出现更深的一块。效果预览的图标由 24 网格里的 1.6（16px 上约 1.07px）改为 1.4px，并在源码里合并成一条路径。
+- 柱子改为起点直角、末端圆角（用户：柱状图和类似样式应该直角起底、顶部圆角，以及多柱状图叠加问题；多序列三种画法实测对比后选堆叠贴合）：
+  - 肉眼可见：所有 ECharts 柱子的底端（横柱的左端）从圆角变成直角，末端仍是 `radius.xs`（4px）圆角；堆叠柱的接缝处不再两边各缺一个圆角，段与段直接相接，只有最外一段是圆的；负值柱圆朝外的一端。效果预览的柱子本来如此，不变；进度条保持胶囊形。
+  - `echarts.js` 新增 `withBarEnds(option)` 与 `barEnds(series)`：按每根柱子算端头，跟随 ECharts 的堆叠规则（声明顺序与 `stackOrder`、正负值分开堆、0 值段不算、图例关掉的序列不算）。种子的 EChart 容器（`vue/EChart.vue`、`react/EChart.tsx`）每次 setOption 都套用，图例开关后重算；`rankBars` 改用它。直接 `echarts.init` 的项目自己调 `withBarEnds`，否则只有主题默认的竖柱正值端头。
 
 ## 0.1.4 — 2026-10-11
 

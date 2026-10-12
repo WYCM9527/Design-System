@@ -1,12 +1,13 @@
 // ECharts 桥接：ECharts 画在 canvas 上，不读 CSS 变量。这里在运行时从 :root 读取 token 的计算值，生成 ECharts 主题与几条图表配方。
 // 用法：
 //   import * as echarts from 'echarts/core'
-//   import { registerTheme, trendLine, areaGradient, rankBars, barGradient } from '<seed>/bridge/echarts.js'
+//   import { registerTheme, trendLine, areaGradient, rankBars, barGradient, withBarEnds } from '<seed>/bridge/echarts.js'
 //   const name = registerTheme(echarts)              // 每次亮 / 暗切换后重新调用，再 dispose + init(el, name)
 //   const chart = echarts.init(el, name)
 //   chart.setOption(trendLine({ days, series: [{ name: '本周', data }, { name: '上周', data }] }))
 //   series: [{ type: 'bar', data, itemStyle: { color: barGradient(chartTokens().palette[0]) } }]   // 自己写的柱状图也用柱子渐变
-// 规则见 DESIGN.md「组件原则」图表条：轴线与网格线是 border.width.default 发丝线；趋势折线 y 轴贴数据（不强制从 0）、底线虚线、平滑 0.5 + smoothMonotone、单序列显示空心点并填渐隐面积、多序列不显示点也不填面积；柱状图必须从 0 开始，柱子渐变起点深、末端浅（竖柱下深上浅），品牌金用 chart.gradient.start → end，其他颜色同色饱和度渐变；提示气泡是白底浮层（color.chart.tooltip 底、正文色字、细边、elevation.tooltip 大投影）；悬停时浅金竖条（color.chart.area）盖住悬停的那一格，不画竖线。
+//   chart.setOption(withBarEnds(option))             // 柱子端头；种子的 EChart 容器（vue / react）已自动套用，并在图例开关后重算
+// 规则见 DESIGN.md「组件原则」图表条：轴线与网格线是 border.width.default 发丝线；趋势折线 y 轴贴数据（不强制从 0）、底线虚线、平滑 0.5 + smoothMonotone、单序列显示空心点并填渐隐面积、多序列不显示点也不填面积；柱状图必须从 0 开始，柱子起点（基线一端）直角、末端圆角，堆叠时段与段直接相接、只圆最外一段，柱子渐变起点深、末端浅（竖柱下深上浅），品牌金用 chart.gradient.start → end，其他颜色同色饱和度渐变；提示气泡是白底浮层（color.chart.tooltip 底、正文色字、细边、elevation.tooltip 大投影）；悬停时浅金竖条（color.chart.area）盖住悬停的那一格，不画竖线。
 
 const read = (name, el = document.documentElement) => getComputedStyle(el).getPropertyValue(name).trim();
 
@@ -73,6 +74,61 @@ export function barGradient(color, { horizontal = false, el = document.documentE
   return linearFill(color, chartTokens(el), horizontal);
 }
 
+/**
+ * 柱子的端头：起点（基线一端）直角、末端圆角 radius.xs；负值柱的末端朝下（横柱朝左）。
+ * 堆叠时段与段直接相接、接缝直角，只有每根柱子最外一段的末端圆角。最外一段按 ECharts 的堆叠规则算：
+ * 按 series 声明顺序往外堆（组里第一个可见序列设了 stackOrder: 'seriesDesc' 时反过来），正负值分开堆，值为 0 的段不算，
+ * 图例关掉的序列（selected[name] === false）不参与堆叠——所以图例开关后要带上新的 selected 再算一次。
+ * 返回新的 series 数组；非柱状、极坐标的 series 原样返回。数据写在 series.data 里（数字、[x, y] 或 { value }），dataset 写法算不了，只剩主题的默认端头。
+ * @param {object[]} series
+ * @param {{ horizontal?: boolean, selected?: Record<string, boolean>, el?: Element }} [opts]  horizontal：横向柱（类目在 y 轴）；selected：图例的开关状态
+ */
+export function barEnds(series, { horizontal = false, selected = {}, el = document.documentElement } = {}) {
+  const r = chartTokens(el).radius;
+  const isBar = (s) => s && s.type === 'bar' && s.coordinateSystem !== 'polar';
+  const valueOf = (d) => {
+    const v = d !== null && typeof d === 'object' && !Array.isArray(d) ? d.value : d;
+    return Number(Array.isArray(v) ? v[horizontal ? 0 : 1] : v);
+  };
+  const groupOf = (s, si) => (s.stack ? `stack:${s.stack}` : `#${si}`);
+  const desc = new Map();    // 堆叠组 → 是否反向堆
+  const outer = new Map();   // 堆叠组 × 类目 × 正负方向 → 最外一段是哪个 series
+  series.forEach((s, si) => {
+    if (!isBar(s) || selected[s.name] === false) return;
+    const g = groupOf(s, si);
+    if (!desc.has(g)) desc.set(g, s.stackOrder === 'seriesDesc');
+    (s.data || []).forEach((d, i) => {
+      const v = valueOf(d);
+      const key = `${g}|${i}|${v > 0}`;
+      if (v && !(desc.get(g) && outer.has(key))) outer.set(key, si);
+    });
+  });
+  const [endUp, endDown] = horizontal ? [[0, r, r, 0], [r, 0, 0, r]] : [[r, r, 0, 0], [0, 0, r, r]];
+  return series.map((s, si) => (!isBar(s) || !Array.isArray(s.data) ? s : {
+    ...s,
+    data: s.data.map((d, i) => {
+      const v = valueOf(d);
+      const item = d !== null && typeof d === 'object' && !Array.isArray(d) ? d : { value: d };
+      if (!v) return item;
+      const end = outer.get(`${groupOf(s, si)}|${i}|${v > 0}`) === si ? (v > 0 ? endUp : endDown) : 0;
+      return { ...item, itemStyle: { ...item.itemStyle, borderRadius: end } };
+    }),
+  }));
+}
+
+/**
+ * 整份 option 套 barEnds，方向按 y 轴是不是类目轴判断（整张图一个方向）。
+ * 种子的 EChart 容器每次 setOption 都经过这里，图例开关后带上 selected 再算一次；直接 echarts.init 的项目自己调。
+ * @param {object} option
+ * @param {{ selected?: Record<string, boolean>, el?: Element }} [opts]
+ */
+export function withBarEnds(option, { selected, el = document.documentElement } = {}) {
+  const list = option && option.series ? [].concat(option.series) : [];
+  if (!list.some((s) => s && s.type === 'bar')) return option;
+  const horizontal = [].concat(option.yAxis ?? []).some((a) => a && a.type === 'category');
+  return { ...option, series: barEnds(list, { horizontal, selected, el }) };
+}
+
 /** ECharts 主题对象：轴、网格、图例、提示框、折线 / 柱 / 饼的默认形态 */
 export function theme(el = document.documentElement) {
   const t = chartTokens(el);
@@ -89,7 +145,8 @@ export function theme(el = document.documentElement) {
     valueAxis: { axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: t.muted, fontSize: t.font, fontFamily: t.numericFamily }, splitLine: { lineStyle: { color: t.line, width: t.lineWidth } } },   // 数值刻度用数字字体，类目轴多是中文，保持正文字体
     // 平滑 0.5 + smoothMonotone 'x'：曲线丝滑但不越过数据点（只用 0.3 会在数据点处显硬；不加 monotone 则会在点之间鼓包）；线端与拐角圆头
     line: { smooth: 0.5, smoothMonotone: 'x', symbol: 'emptyCircle', symbolSize: 6, showSymbol: false, lineStyle: { width: 2, cap: 'round', join: 'round' }, emphasis: { focus: 'series' } },
-    bar: { barMaxWidth: 24, itemStyle: { borderRadius: t.radius } },
+    // 柱子起点（基线一端）直角、末端圆角：这里是竖柱正值的默认值；横柱、堆叠、负值的端头不同，交给 withBarEnds() 按每根柱子算（种子的 EChart 容器自动套用）
+    bar: { barMaxWidth: 24, itemStyle: { borderRadius: [t.radius, t.radius, 0, 0] } },
     pie: { itemStyle: { borderColor: t.surface, borderWidth: 2 }, label: { color: t.text } },
   };
 }
@@ -140,6 +197,6 @@ export function rankBars({ categories, values, top = 3, formatter, el = document
     tooltip: { trigger: 'axis', axisPointer: { type: 'none' }, valueFormatter: formatter },
     xAxis: { type: 'value', min: 0, axisLabel: { show: false }, splitLine: { show: false } },
     yAxis: { type: 'category', data: categories.slice().reverse(), axisLine: { show: false } },   // 第一名在最上
-    series: [{ type: 'bar', data: values.slice().reverse().map((v, i, arr) => ({ value: v, itemStyle: { color: linearFill(arr.length - 1 - i < top && v > 0 ? hi : lo, t, true) } })), barMaxWidth: 16, label: { show: true, position: 'right', color: t.text, fontSize: t.font, fontFamily: t.numericFamily, formatter: formatter ? (p) => formatter(p.value) : undefined } }],
+    series: barEnds([{ type: 'bar', data: values.slice().reverse().map((v, i, arr) => ({ value: v, itemStyle: { color: linearFill(arr.length - 1 - i < top && v > 0 ? hi : lo, t, true) } })), barMaxWidth: 16, label: { show: true, position: 'right', color: t.text, fontSize: t.font, fontFamily: t.numericFamily, formatter: formatter ? (p) => formatter(p.value) : undefined } }], { horizontal: true, el }),
   };
 }

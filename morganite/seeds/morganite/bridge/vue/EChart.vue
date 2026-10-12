@@ -3,25 +3,30 @@
 // 轴、网格、图例、提示框、折线 / 柱 / 饼的默认形态来自桥接主题（运行时读 token），页面只写数据与布局，不写颜色、线型。
 // 亮 / 暗切换靠监听 <html class="dark"> 的变化重新注册主题并重建实例（ECharts 的主题在 init 时定格）——不依赖项目的状态管理。
 // 数据变化：option 函数在 watchEffect 里执行，函数体内读到的响应式数据（ref / reactive）自动成为依赖，变了就重新 setOption——页面不需要 key 重建。
+// 柱子端头（起点直角、末端圆角，堆叠只圆最外一段）在这里统一套 withBarEnds，图例开关后重算——页面不写 borderRadius。
 // 高度由外层 .chart / .chart.tall 类（recipes.css）用 token 表达。
 import { onMounted, onBeforeUnmount, ref, watchEffect } from 'vue'
 import * as echarts from 'echarts/core'
 import { LineChart, BarChart, PieChart, HeatmapChart } from 'echarts/charts'
 import { GridComponent, TooltipComponent, LegendComponent, VisualMapComponent } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
-import { registerTheme, chartTokens } from '../echarts.js'
+import { registerTheme, chartTokens, withBarEnds } from '../echarts.js'
 
 echarts.use([LineChart, BarChart, PieChart, HeatmapChart, GridComponent, TooltipComponent, LegendComponent, VisualMapComponent, CanvasRenderer])
 
 const props = defineProps({ option: { type: Function, required: true } })
 const el = ref(); let chart
 
-const apply = () => { if (chart) chart.setOption(props.option(chartTokens(), echarts), true) }
+const build = (selected) => withBarEnds(props.option(chartTokens(), echarts), { selected })
+const apply = () => { if (chart) chart.setOption(build(), true) }
+// 图例关掉一个堆叠序列后，最外一段换了序列；只合并 series，图例的开关状态不动
+const relegend = ({ selected }) => { const { series } = build(selected); if (series) chart.setOption({ series }) }
 function render() {
   if (!el.value) return
   const name = registerTheme(echarts)
   if (chart) chart.dispose()
   chart = echarts.init(el.value, name)
+  for (const type of ['legendselectchanged', 'legendselectall', 'legendinverseselect']) chart.on(type, relegend)
   apply()
 }
 let ro, mo, stop
