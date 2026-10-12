@@ -44,6 +44,7 @@
 | 数据填充渐变（2026-10-09） | 柱状图、进度条等改为渐变色，「起始点到终止点的深浅渐变」；随后改为饱和度渐变（不用明度渐变），柱状图上面亮、下面深 | 同日修正为饱和度渐变、柱子上浅下深：新增 `chart.gradient.saturation`（数值借 `{opacity.40}`，推断）：HSB 明度不变，浅端饱和度降到原色 × 0.4；竖柱上浅下深、横柱右浅左深，进度条左浅右深；中性灰没有饱和度，保持实色。落在 `element-plus.css` 进度条（含成功 / 异常 / 警示 / is-muted）、`echarts.js`（新增 `barGradient`，`rankBars` 改用渐变）与效果预览的柱状图、进度条；环形图、图例色块、滑块保持实色（进度条方向与品牌金配色 2026-10-12 更正，见下一行） |
 | 数据填充渐变配色（2026-10-12） | 渐变颜色换成 `linear-gradient(90deg, #B1863D 0%, hsl(37.3228deg 59.5252% 61.7469%) 100%)` | 新增原语 `color.brand.250`（`#D8AC63`，用户给的 hsl 按 8 位 sRGB 取整）与语义 `color.chart.gradient.start`（→ `color.brand.550` `#B1863D`，与主按钮悬停同色）、`color.chart.gradient.end`（→ `color.brand.250`），亮暗一致；品牌金的进度条、目标进度、柱状图（ECharts `barGradient` / `rankBars` 与效果预览）改用这两色。方向统一为起点深、末端浅：用户最初说的是「起始点到终止点的深浅渐变」，柱子上浅下深也是这个方向，原记录的「由浅到深」与进度条左浅右深是误记，进度条改为左深右浅，状态色与中性序列的饱和度渐变同步翻转。条内显示百分比的进度条改实色 `color.action.primary-active`：百分比贴在填充末端，白字对浅端 `#D8AC63` 只有约 2.1:1 |
 | 图表提示气泡（2026-10-12） | hover 浮窗用白色底 + 大投影 | `color.chart.tooltip` 由深金 `color.brand.600` 改为 `color.white`（暗色覆写为浮层色 `color.neutral.900`，同 `color.bg.elevated`），字由 `color.text.inverse` 改为 `color.text.primary`，加 `color.border.default` 细边，圆角 `radius.md`；新增第四层阴影 `elevation.tooltip.*`（原语 `shadow.y.3` 12px、`shadow.blur.3` 32px、`color.neutral.shadow-a12`），比下拉 / 弹窗的 `elevation.popover.*` 大一档：白底气泡压在白卡片上，靠投影浮起来。落在 `echarts.js` 主题（所有 ECharts 图表的提示框）与效果预览的折线提示；Element 的文字 Tooltip（深底白字）不变（用户确认：短提示保持反色，与图表气泡区分开）。实测（拾光商城工作台环形图）靠边的气泡被 `el-card` 的 `overflow: hidden` 裁掉 27px，主题因此把气泡挂到 body（`tooltip.appendTo`，同 Element 浮层） |
+| 曲线图底线（2026-10-12） | 曲线图的底线用 0.6px 虚线 | 新增 `chart.baseline.dash`（4px，数值借 `spacing.1`）：曲线图的 x 轴线改为线段与间隔各 4px 的虚线，线宽 `border.width.default`（0.6px）、颜色 `color.border.default`，同网格线；y 轴最底那条网格线和 x 轴线重合，曲线图不再画它（原先是两条 1px 实线叠画，亮色读数 226，比其他网格线的 240 深）。柱状图的基线保持实线。实测时发现 ECharts 的轴线与网格线一直是默认的 1px，违背本文「宽度统一是 `border.width.default`」，主题一并改为发丝线，与效果预览一致。落在 `echarts.js`（主题与 `trendLine`）和效果预览的折线图（底线画在基准面积之后，免得被实色面积盖住） |
 | 表格选中行（2026-10-09） | 表格的选中状态底色改为悬停状态色 | 纯 CSS 表格、shadcn 表格、Element 表格的选中行与当前行都改用 `color.bg.hover`；选中行再悬停 `color.bg.selected-hover` 改为中性深一档（亮 6% 黑 / 暗 12% 白，推断），shadcn 补上这条悬停；奶油金 `color.bg.selected-subtle` 保留给强调徽标与 Element 主色浅底 |
 | 数字字体（2026-10-09） | 数字数据字体用 D-DIN-PRO | 新增原语 `font.family.numeric`（D-DIN-PRO → D-DIN → Bahnschrift → 正文无衬线；不放只有 Bold 面的 DIN Alternate，免得正文数字全变粗）；`text.display.family` 改指它（统计卡、KPI、`el-statistic`、状态条数字），新增 `text.numeric.family`（表格金额与日期、百分比、涨跌、图表数值：配方 `.num` / `.num-col` / `.stat-card__delta`、Element 表格合计行、ECharts 数值轴与排行榜标签）；单号仍用等宽字体。种子不分发字体文件；D-DIN-PRO 没有等宽数字 |
 | 筹码底色（2026-10-09） | 已选条件的 tag 胶囊色为 #8A6530 10% | 新增 `color.bg.chip`（亮色 `color.brand.600-a10`，即筹码字色的同色 10% 浅底，叠在卡片上约 #F3F0EA；暗色按同一规则取亮金 `color.brand.300-a10`，约 #27231C，用户确认），配方 `.chip` 改用它；原用 `color.bg.selected`（4% 黑 / 8% 白）。批量条、图标按钮选中、进度条轨道等其余小面积选中仍是中性浅灰；Element / shadcn 没有筹码组件，`el-tag` 仍是状态标签 |
@@ -72,11 +73,11 @@
 ## 角色覆盖
 
 - 观察（有实测证据）：70 个
-- 确认（用户拍板的品牌决定，含按预期预览图的调整与 2026-10-09 按组确认的原推断值）：113 个
+- 确认（用户拍板的品牌决定，含按预期预览图的调整与 2026-10-09 按组确认的原推断值）：114 个
 - 推断：0 个——原有 56 个按 antd 规格或规则补的默认值，2026-10-09 用户按组确认，前缀已改为 `[确认]`（下表留作来源追溯）
 - 必须处理的缺口（按系统类型）：0 个
 - 可选角色未填：3 个——这个系统类型不要求、本次也没证据；有证据再填，不发明值
-- 词表外的语义名：25 个，全部来自 Citrine 桥接的扩展（`text.display.family`、`text.link.style`、`text.weight.logo`、`avatar.size.sm / md`、`control.hit-touch`、`control.segmented-inset`、`icon.size.2xl`、`illustration.size.md`、`layout.search.width`、`opacity.on-primary-muted`、`color.chart.sequential.1…5`，以及本系统新增的 `color.chart.tooltip`、`elevation.tooltip.y / blur / color`、`color.chart.gradient.start / end`、`chart.gradient.saturation`、`text.numeric.family`、`color.bg.chip`），名字与 Citrine 一致、值按 antd / Pro / 预期预览图
+- 词表外的语义名：26 个，全部来自 Citrine 桥接的扩展（`text.display.family`、`text.link.style`、`text.weight.logo`、`avatar.size.sm / md`、`control.hit-touch`、`control.segmented-inset`、`icon.size.2xl`、`illustration.size.md`、`layout.search.width`、`opacity.on-primary-muted`、`color.chart.sequential.1…5`，以及本系统新增的 `color.chart.tooltip`、`elevation.tooltip.y / blur / color`、`color.chart.gradient.start / end`、`chart.gradient.saturation`、`chart.baseline.dash`、`text.numeric.family`、`color.bg.chip`），名字与 Citrine 一致、值按 antd / Pro / 预期预览图
 
 ### 推断角色清单
 
@@ -136,6 +137,7 @@
 | `opacity.disabled` | `{opacity.40}` | 禁用态 0.4（antd 用禁用色，桥接用透明度近似） | 已确认 |
 | `opacity.on-primary-muted` | `{opacity.100}` | 金底上的次要文字不压透明度（对比余量不足） | 已确认 |
 | `chart.gradient.saturation` | `{opacity.40}` | 柱状图 / 进度条饱和度渐变的浅端：HSB 明度不变，饱和度降到原色 × 0.4（用户决定用饱和度渐变，0.4 是默认值；数值借用 opacity.40；2026-10-12 起品牌金改用 `color.chart.gradient.*` 两色，这条只管其他颜色） | 已确认 |
+| `chart.baseline.dash` | `{spacing.1}` | 曲线图底线虚线的线段与间隔 4px（用户 2026-10-12 指定底线用 0.6px 虚线；线宽走 `border.width.default`，数值借用 spacing.1） | 已确认 |
 | `layer.dropdown` | `{z.1050}` | 下拉 / 气泡 1050（antd：高于弹窗） | 已确认 |
 | `avatar.size.sm` | `{size.avatar.sm}` | 小头像 24px | 已确认 |
 | `avatar.size.md` | `{size.avatar.md}` | 头像 32px | 已确认 |
