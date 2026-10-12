@@ -300,6 +300,11 @@
         "$value": "{color.brand.500-a24}",
         "$description": "[确认] 暗色面积填充：品牌金 24%（2026-10-09 用户确认）"
       },
+      "tooltip": {
+        "$type": "color",
+        "$value": "{color.neutral.900}",
+        "$description": "[确认] 暗色图表提示气泡同暗色浮层 color.bg.elevated #1f1f1f（2026-10-12 改白底浮层时随浮层）"
+      },
       "sequential": {
         "1": {
           "$type": "color",

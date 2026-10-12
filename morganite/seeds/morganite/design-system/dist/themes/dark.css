@@ -32,6 +32,7 @@
   --color-chart-sequential-2: var(--color-neutral-700);
   --color-chart-sequential-3: var(--color-neutral-600);
   --color-chart-sequential-4: var(--color-neutral-500);
+  --color-chart-tooltip: var(--color-neutral-900);
   --color-data-decrease: var(--color-red-4);
   --color-data-inactive: var(--color-neutral-white-a25);
   --color-data-increase: var(--color-emerald-300);

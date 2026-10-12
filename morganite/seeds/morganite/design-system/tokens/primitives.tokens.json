@@ -532,6 +532,20 @@
           "hex": "#00000014"
         },
         "$description": "[观察] 浮层 / 弹窗阴影色：boxShadowSecondary 第一层 0 6px 16px 0 rgba(0,0,0,0.08)"
+      },
+      "shadow-a12": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0,
+            0
+          ],
+          "alpha": 0.12,
+          "hex": "#0000001F"
+        },
+        "$description": "[确认] 大投影色 rgba(0,0,0,0.12)：图表提示气泡（用户 2026-10-12：hover 浮窗用白色底 + 大投影）"
       }
     },
     "brand": {
@@ -1522,6 +1536,14 @@
           "value": 6
         },
         "$description": "[观察] 浮层 / 弹窗阴影 y：boxShadowSecondary 第一层（原式三层 0 6px 16px 0 / 0 3px 6px -4px / 0 9px 28px 8px）"
+      },
+      "3": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 12
+        },
+        "$description": "[确认] 大投影 y：图表提示气泡，比浮层 / 弹窗的 shadow.y.2 大一档（用户 2026-10-12：hover 浮窗用白色底 + 大投影）"
       }
     },
     "blur": {
@@ -1540,6 +1562,14 @@
           "value": 16
         },
         "$description": "[观察] 浮层 / 弹窗阴影模糊（弹窗与浮层同式）"
+      },
+      "3": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 32
+        },
+        "$description": "[确认] 大投影模糊：图表提示气泡，比浮层 / 弹窗的 shadow.blur.2 大一档（用户 2026-10-12：hover 浮窗用白色底 + 大投影）"
       }
     }
   },

@@ -10,6 +10,10 @@
   - 方向统一为起点深、末端浅（用户最初说的是「起始点到终止点的深浅渐变」，原记录的进度条左浅右深是误记）：成功 / 异常 / 警示 / 已结束（`is-muted`）进度条与目标进度的中性序列也翻成左深右浅，仍是同色饱和度渐变；柱子仍是下深上浅，横柱仍是左深右浅。
   - 进度条在条内显示百分比（`text-inside`）时改实色 `color.action.primary-active`：百分比贴在填充末端，白字对浅端 `#D8AC63` 只有约 2.1:1，实色上 5.27:1。
   - `chart.gradient.saturation` 只管品牌金以外的颜色；`echarts.js` 的 `chartTokens()` 多返回 `gradientStart` / `gradientEnd`，`barGradient` 按传入的颜色认出品牌金（`chart.1` 或顺序色封顶）。
+- 图表提示气泡改为白底浮层 + 大投影（用户：hover 浮窗用白色底 + 大投影）：
+  - `color.chart.tooltip` 由深金 `color.brand.600` 改为 `color.white`，暗色新增覆写为浮层色 `color.neutral.900`（同 `color.bg.elevated`）；新增第四层阴影 `elevation.tooltip.*`（原语 `shadow.y.3` 12px、`shadow.blur.3` 32px、`color.neutral.shadow-a12`），比下拉 / 弹窗的 `elevation.popover.*` 大一档。
+  - 肉眼可见：所有 ECharts 图表（`echarts.js` 主题）的悬停提示从深金底白字变成白底正文色字，加 `color.border.default` 细边、圆角 `radius.md` 与 0 12px 32px 的 12% 黑投影，内边距 8 × 12px（原 6 × 10px）；效果预览工作台折线的提示同样改。Element 的文字 Tooltip（图标、禁用按钮上的深底白字小气泡）不变。
+  - `chartTokens()` 多返回 `tooltipShadowY` / `tooltipShadowBlur` / `tooltipShadowColor` / `tooltipRadius` / `tooltipPadding`；`tooltipBg` 读不到时回退 `--color-bg-elevated`（原 `--color-bg-inverse`）。
 
 ## 0.1.4 — 2026-10-11
 

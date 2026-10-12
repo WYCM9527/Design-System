@@ -43,6 +43,7 @@
 | 输入框焦点（2026-10-09） | 聚焦不要加粗描边，只把描边加深 | 输入类控件（输入框、搜索、选择器、日期、文本域）聚焦只把边线换成 `color.border.focus`，线宽与悬停相同（`border.width.default`），去掉 `color.focus.ring` 外环；按钮、链接、菜单项的键盘焦点环不变。改在 `base.css`（原生输入框）、`element-plus.css`（原为 1px 内阴影 + 外环，文本域另有 2px 键盘焦点内描边）、`shadcn.css`（输入 / 文本域 / 选择器触发器不出环）与效果页搜索框 |
 | 数据填充渐变（2026-10-09） | 柱状图、进度条等改为渐变色，「起始点到终止点的深浅渐变」；随后改为饱和度渐变（不用明度渐变），柱状图上面亮、下面深 | 同日修正为饱和度渐变、柱子上浅下深：新增 `chart.gradient.saturation`（数值借 `{opacity.40}`，推断）：HSB 明度不变，浅端饱和度降到原色 × 0.4；竖柱上浅下深、横柱右浅左深，进度条左浅右深；中性灰没有饱和度，保持实色。落在 `element-plus.css` 进度条（含成功 / 异常 / 警示 / is-muted）、`echarts.js`（新增 `barGradient`，`rankBars` 改用渐变）与效果预览的柱状图、进度条；环形图、图例色块、滑块保持实色（进度条方向与品牌金配色 2026-10-12 更正，见下一行） |
 | 数据填充渐变配色（2026-10-12） | 渐变颜色换成 `linear-gradient(90deg, #B1863D 0%, hsl(37.3228deg 59.5252% 61.7469%) 100%)` | 新增原语 `color.brand.250`（`#D8AC63`，用户给的 hsl 按 8 位 sRGB 取整）与语义 `color.chart.gradient.start`（→ `color.brand.550` `#B1863D`，与主按钮悬停同色）、`color.chart.gradient.end`（→ `color.brand.250`），亮暗一致；品牌金的进度条、目标进度、柱状图（ECharts `barGradient` / `rankBars` 与效果预览）改用这两色。方向统一为起点深、末端浅：用户最初说的是「起始点到终止点的深浅渐变」，柱子上浅下深也是这个方向，原记录的「由浅到深」与进度条左浅右深是误记，进度条改为左深右浅，状态色与中性序列的饱和度渐变同步翻转。条内显示百分比的进度条改实色 `color.action.primary-active`：百分比贴在填充末端，白字对浅端 `#D8AC63` 只有约 2.1:1 |
+| 图表提示气泡（2026-10-12） | hover 浮窗用白色底 + 大投影 | `color.chart.tooltip` 由深金 `color.brand.600` 改为 `color.white`（暗色覆写为浮层色 `color.neutral.900`，同 `color.bg.elevated`），字由 `color.text.inverse` 改为 `color.text.primary`，加 `color.border.default` 细边，圆角 `radius.md`；新增第四层阴影 `elevation.tooltip.*`（原语 `shadow.y.3` 12px、`shadow.blur.3` 32px、`color.neutral.shadow-a12`），比下拉 / 弹窗的 `elevation.popover.*` 大一档：白底气泡压在白卡片上，靠投影浮起来。落在 `echarts.js` 主题（所有 ECharts 图表的提示框）与效果预览的折线提示；Element 的文字 Tooltip（深底白字）不变 |
 | 表格选中行（2026-10-09） | 表格的选中状态底色改为悬停状态色 | 纯 CSS 表格、shadcn 表格、Element 表格的选中行与当前行都改用 `color.bg.hover`；选中行再悬停 `color.bg.selected-hover` 改为中性深一档（亮 6% 黑 / 暗 12% 白，推断），shadcn 补上这条悬停；奶油金 `color.bg.selected-subtle` 保留给强调徽标与 Element 主色浅底 |
 | 数字字体（2026-10-09） | 数字数据字体用 D-DIN-PRO | 新增原语 `font.family.numeric`（D-DIN-PRO → D-DIN → Bahnschrift → 正文无衬线；不放只有 Bold 面的 DIN Alternate，免得正文数字全变粗）；`text.display.family` 改指它（统计卡、KPI、`el-statistic`、状态条数字），新增 `text.numeric.family`（表格金额与日期、百分比、涨跌、图表数值：配方 `.num` / `.num-col` / `.stat-card__delta`、Element 表格合计行、ECharts 数值轴与排行榜标签）；单号仍用等宽字体。种子不分发字体文件；D-DIN-PRO 没有等宽数字 |
 | 筹码底色（2026-10-09） | 已选条件的 tag 胶囊色为 #8A6530 10% | 新增 `color.bg.chip`（亮色 `color.brand.600-a10`，即筹码字色的同色 10% 浅底，叠在卡片上约 #F3F0EA；暗色按同一规则取亮金 `color.brand.300-a10`，约 #27231C，用户确认），配方 `.chip` 改用它；原用 `color.bg.selected`（4% 黑 / 8% 白）。批量条、图标按钮选中、进度条轨道等其余小面积选中仍是中性浅灰；Element / shadcn 没有筹码组件，`el-tag` 仍是状态标签 |
@@ -64,18 +65,18 @@
 | 页面状态与权限（2026-10-11） | 写进 DESIGN | DESIGN 新增「页面状态与权限」：加载 = 骨架屏占住最终形状；空 = 插图 + 一句说明 + 至多一个主操作；出错 = 区域内错误条 + 重试；无权限的菜单隐藏、直接访问进 403；按角色区分的操作禁用 + Tooltip 写明缺的权限；只读角色用只读态。错误条 `.error-box` 圆角随提示条改为 `radius.lg` |
 | AGENTS.md（2026-10-11） | 同意写入 | 模板去掉重复的验收条目与已失效的「推断值先确认」（推断值 2026-10-09 已全部确认）；`ds.mjs agents --write` 为测试项目生成 AGENTS.md，标题用项目名而不是目录名 |
 | 主色不当文字色（2026-10-11，验收发现） | 按 DESIGN 修 | 登录品牌面上的 logo 块原是白底主色字（3.0:1），改为 `color.bg.surface` 底 + `color.text.selected`（暗色下是深底亮金字，亮暗都过 4.5）；结果页错误码由 `color.text.brand` 改为 `color.text.selected` |
-| 按预期预览图默认调整（2026-09-29，列出后用户未反对） | 圆角加大、卡片标题字距小标题、KPI 数字半粗、图表配色只用金 + 灰 + 绿、图表提示气泡深金底、表头底深一档、卡片阴影更大更柔（2026-10-09 去掉）、顶栏搜索胶囊 | `radius.md / lg / xl`、`text.tracking.caps`、`text.display.weight`、`color.chart.*`、`color.chart.tooltip`、`color.bg.subtle`、`elevation.card.*`；配方 `.card-head h2`、`.topbar .search`；ECharts 桥接 |
+| 按预期预览图默认调整（2026-09-29，列出后用户未反对） | 圆角加大、卡片标题字距小标题、KPI 数字半粗、图表配色只用金 + 灰 + 绿、图表提示气泡深金底（2026-10-12 改白底大投影）、表头底深一档、卡片阴影更大更柔（2026-10-09 去掉）、顶栏搜索胶囊 | `radius.md / lg / xl`、`text.tracking.caps`、`text.display.weight`、`color.chart.*`、`color.chart.tooltip`、`color.bg.subtle`、`elevation.card.*`；配方 `.card-head h2`、`.topbar .search`；ECharts 桥接 |
 | 组件库桥接 | 带 Citrine 的 Element Plus / shadcn / 配方 / ECharts 桥接当起点 | `bridge/`，缺口见「桥接缺口」 |
 | 预览 | 虚拟页面（工作台 / 表单 / 抽屉 × 亮暗）确认像「Pro + 金色」 | `preview/` |
 
 ## 角色覆盖
 
 - 观察（有实测证据）：70 个
-- 确认（用户拍板的品牌决定，含按预期预览图的调整与 2026-10-09 按组确认的原推断值）：110 个
+- 确认（用户拍板的品牌决定，含按预期预览图的调整与 2026-10-09 按组确认的原推断值）：113 个
 - 推断：0 个——原有 56 个按 antd 规格或规则补的默认值，2026-10-09 用户按组确认，前缀已改为 `[确认]`（下表留作来源追溯）
 - 必须处理的缺口（按系统类型）：0 个
 - 可选角色未填：3 个——这个系统类型不要求、本次也没证据；有证据再填，不发明值
-- 词表外的语义名：22 个，全部来自 Citrine 桥接的扩展（`text.display.family`、`text.link.style`、`text.weight.logo`、`avatar.size.sm / md`、`control.hit-touch`、`control.segmented-inset`、`icon.size.2xl`、`illustration.size.md`、`layout.search.width`、`opacity.on-primary-muted`、`color.chart.sequential.1…5`，以及本系统新增的 `color.chart.tooltip`、`color.chart.gradient.start / end`、`chart.gradient.saturation`、`text.numeric.family`、`color.bg.chip`），名字与 Citrine 一致、值按 antd / Pro / 预期预览图
+- 词表外的语义名：25 个，全部来自 Citrine 桥接的扩展（`text.display.family`、`text.link.style`、`text.weight.logo`、`avatar.size.sm / md`、`control.hit-touch`、`control.segmented-inset`、`icon.size.2xl`、`illustration.size.md`、`layout.search.width`、`opacity.on-primary-muted`、`color.chart.sequential.1…5`，以及本系统新增的 `color.chart.tooltip`、`elevation.tooltip.y / blur / color`、`color.chart.gradient.start / end`、`chart.gradient.saturation`、`text.numeric.family`、`color.bg.chip`），名字与 Citrine 一致、值按 antd / Pro / 预期预览图
 
 ### 推断角色清单
 
@@ -179,7 +180,7 @@
 - `color.text.link-hover`、`color.action.danger-hover`：antd 悬停变浅会低于 4.5 → 改为变深。
 - `color.action.danger` / `color.text.danger` / `color.status.*`：antd 功能色基准档对白都不到 4.5 → 取同色板更深的档。
 - `color.focus.ring`：演示站焦点环 `#91d5ff` 对白 1.7:1 → 品牌金深一档（5.27:1）。
-- 预期预览图里对比度不够的文字：侧栏当前项金字 `#ac8c54`（对奶油金底 2.88:1）→ `color.text.sidebar-selected` 深金（4.81:1；2026-10-09 亮色当前项改为主色底块白字，3.02:1，见上表例外）；涨幅绿 `#5ca47c`（对白 2.98:1）→ `color.data.increase`（5.03:1）；图表提示气泡金底白字（3.14:1）→ `color.chart.tooltip` 深金底（5.27:1）；问候语浅灰 `#acacac`（2.27:1）→ 用 `color.text.muted`；侧栏未选中文字 `#848484`（3.37:1）→ 保持 `color.text.sidebar`。
+- 预期预览图里对比度不够的文字：侧栏当前项金字 `#ac8c54`（对奶油金底 2.88:1）→ `color.text.sidebar-selected` 深金（4.81:1；2026-10-09 亮色当前项改为主色底块白字，3.02:1，见上表例外）；涨幅绿 `#5ca47c`（对白 2.98:1）→ `color.data.increase`（5.03:1）；图表提示气泡金底白字（3.14:1）→ `color.chart.tooltip` 深金底（5.27:1；2026-10-12 用户改为白底浮层 + 正文色字）；问候语浅灰 `#acacac`（2.27:1）→ 用 `color.text.muted`；侧栏未选中文字 `#848484`（3.37:1）→ 保持 `color.text.sidebar`。
 
 ## 未纳管项
 
@@ -223,7 +224,7 @@
 | `--size-icon-2xl` | recipes.css | 补 token：`size.icon.2xl` |
 | `--text-weight-logo` | recipes.css | 补 token：`text.weight.logo`（演示站 Logo 文字实测） |
 | `--color-chart-sequential-1…5` | echarts.js（用模板字符串拼变量名，`check-bridge-vars` 识别不到） | 补 token：`color.chart.sequential.*`，四档灰 + 品牌金封顶（排行柱状图用） |
-| `--color-chart-tooltip` | echarts.js（本系统新增） | 补 token：图表提示气泡深金底；读不到时回退 `--color-bg-inverse` |
+| `--color-chart-tooltip` | echarts.js（本系统新增） | 补 token：图表提示气泡底（2026-10-12 起白底浮层，原深金底）；读不到时回退 `--color-bg-elevated` |
 
 按预期预览图对桥接的改动（2026-09-29）：删除侧栏当前项的左侧指示条与加粗（recipes.css `.nav a.active::before`、element-plus.css `.el-menu-item.is-active::before`）；统计卡 `.stat-card` 去掉左侧金色描边，与普通卡片同一形态（`StatCard.vue` / `.tsx`、`iconpark.config.ts` 里相应的注释一并改掉）；卡片标题 `.card-head h2` 改成字距小标题；顶栏搜索 `.topbar .search` 改胶囊；ECharts 默认主题名改为 `morganite`、提示气泡读 `--color-chart-tooltip`、单序列折线显示空心点；验证码输入框悬停描边改走 `--border-width-control`。
 

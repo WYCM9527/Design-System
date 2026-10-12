@@ -12,6 +12,11 @@ export interface ChartTokens {
   inverseBg: string
   inverseText: string
   tooltipBg: string
+  tooltipShadowY: number
+  tooltipShadowBlur: number
+  tooltipShadowColor: string
+  tooltipRadius: number
+  tooltipPadding: [number, number]
   fontFamily: string
   font: number
   numericFamily: string

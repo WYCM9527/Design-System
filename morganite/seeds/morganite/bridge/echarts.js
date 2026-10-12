@@ -6,7 +6,7 @@
 //   const chart = echarts.init(el, name)
 //   chart.setOption(trendLine({ days, series: [{ name: '本周', data }, { name: '上周', data }] }))
 //   series: [{ type: 'bar', data, itemStyle: { color: barGradient(chartTokens().palette[0]) } }]   // 自己写的柱状图也用柱子渐变
-// 规则见 DESIGN.md「组件原则」图表条：趋势折线 y 轴贴数据（不强制从 0）、平滑 0.5 + smoothMonotone、单序列显示空心点并填渐隐面积、多序列不显示点也不填面积；柱状图必须从 0 开始，柱子渐变起点深、末端浅（竖柱下深上浅），品牌金用 chart.gradient.start → end，其他颜色同色饱和度渐变；提示气泡用 color.chart.tooltip。
+// 规则见 DESIGN.md「组件原则」图表条：趋势折线 y 轴贴数据（不强制从 0）、平滑 0.5 + smoothMonotone、单序列显示空心点并填渐隐面积、多序列不显示点也不填面积；柱状图必须从 0 开始，柱子渐变起点深、末端浅（竖柱下深上浅），品牌金用 chart.gradient.start → end，其他颜色同色饱和度渐变；提示气泡是白底浮层（color.chart.tooltip 底、正文色字、细边、elevation.tooltip 大投影）。
 
 const read = (name, el = document.documentElement) => getComputedStyle(el).getPropertyValue(name).trim();
 
@@ -20,7 +20,9 @@ export function chartTokens(el = document.documentElement) {
     text: read('--color-text-secondary', el), muted: read('--color-text-muted', el), primary: read('--color-text-primary', el),
     line: read('--color-border-default', el), strong: read('--color-border-strong', el),
     surface: read('--color-bg-surface', el), inverseBg: read('--color-bg-inverse', el), inverseText: read('--color-text-inverse', el),
-    tooltipBg: read('--color-chart-tooltip', el) || read('--color-bg-inverse', el),
+    tooltipBg: read('--color-chart-tooltip', el) || read('--color-bg-elevated', el),
+    tooltipShadowY: num(read('--elevation-tooltip-y', el), 12), tooltipShadowBlur: num(read('--elevation-tooltip-blur', el), 32), tooltipShadowColor: read('--elevation-tooltip-color', el) || 'rgba(0, 0, 0, 0.12)',
+    tooltipRadius: num(read('--radius-md', el), 8), tooltipPadding: [num(read('--spacing-2', el), 8), num(read('--spacing-3', el), 12)],
     fontFamily: read('--font-family-body', el), font: num(read('--text-small-size', el), 12),
     numericFamily: read('--text-numeric-family', el) || read('--font-family-body', el),
     radius: num(read('--radius-xs', el), 2),
@@ -78,7 +80,8 @@ export function theme(el = document.documentElement) {
     backgroundColor: 'transparent',
     textStyle: { fontFamily: t.fontFamily, color: t.text, fontSize: t.font },
     legend: { icon: 'roundRect', itemWidth: 10, itemHeight: 10, itemGap: 16, textStyle: { color: t.text, fontSize: t.font } },
-    tooltip: { backgroundColor: t.tooltipBg, borderWidth: 0, padding: [6, 10], textStyle: { color: t.inverseText, fontSize: t.font }, axisPointer: { lineStyle: { color: t.strong }, shadowStyle: { color: t.area } } },
+    // 大投影走 elevation.tooltip：ECharts 把 shadow* 拼成 box-shadow，没有扩散半径，token 也只给 y / blur / color
+    tooltip: { backgroundColor: t.tooltipBg, borderColor: t.line, borderWidth: 1, borderRadius: t.tooltipRadius, padding: t.tooltipPadding, shadowOffsetX: 0, shadowOffsetY: t.tooltipShadowY, shadowBlur: t.tooltipShadowBlur, shadowColor: t.tooltipShadowColor, textStyle: { color: t.primary, fontSize: t.font }, axisPointer: { lineStyle: { color: t.strong }, shadowStyle: { color: t.area } } },
     categoryAxis: { axisLine: { lineStyle: { color: t.line } }, axisTick: { show: false }, axisLabel: { color: t.muted, fontSize: t.font }, splitLine: { show: false } },
     valueAxis: { axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: t.muted, fontSize: t.font, fontFamily: t.numericFamily }, splitLine: { lineStyle: { color: t.line } } },   // 数值刻度用数字字体，类目轴多是中文，保持正文字体
     // 平滑 0.5 + smoothMonotone 'x'：曲线丝滑但不越过数据点（只用 0.3 会在数据点处显硬；不加 monotone 则会在点之间鼓包）；线端与拐角圆头
