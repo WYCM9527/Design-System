@@ -1846,10 +1846,18 @@
     }
   },
   "stroke-width": {
+    "1-4": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 1.4
+      },
+      "$description": "[确认] 图标描边 1.4px：屏幕上的实际粗细，不随图标尺寸缩放（用户 2026-10-12：icon 描边粗细改为 1.4px）"
+    },
     "3": {
       "$type": "number",
       "$value": 3,
-      "$description": "[确认] IconPark 描边 3（48 网格，约 1/16，与 antd 线性图标笔画比例一致；Citrine 实测 3 在 Mac 偏细，接入时可按需调 4）（2026-10-09 用户确认）"
+      "$description": "[确认] 0.2.0 起不再被引用（icon.stroke.width 改为屏幕上的 1.4px，见 stroke-width.1-4），按版本策略留到下个大版本再删。原为 IconPark 48 网格里的描边 3，14px 图标上约 0.9px（2026-10-09 用户确认）"
     }
   },
   "decoration": {

@@ -589,9 +589,9 @@
     },
     "stroke": {
       "width": {
-        "$type": "number",
-        "$value": "{stroke-width.3}",
-        "$description": "[确认] IconPark 描边 3（与 antd 线性图标比例一致）（2026-10-09 用户确认）"
+        "$type": "dimension",
+        "$value": "{stroke-width.1-4}",
+        "$description": "[确认] 线性图标描边 1.4px：屏幕上的实际粗细，各档尺寸一样粗（vector-effect: non-scaling-stroke）；多段描边合并成一个形状再上一次色，半透明的图标色在交叠处不叠深（用户 2026-10-12：icon 描边粗细改为 1.4px 并合并栅格化）。原为 IconPark 48 网格里的 3，14px 图标上约 0.9px"
       }
     }
   },

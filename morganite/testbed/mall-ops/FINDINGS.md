@@ -65,6 +65,8 @@
 
 评审中再同步（2026-10-12，图表悬停改为浅金竖条，版本号仍是 0.2.0）：曲线图悬停原是 ECharts 默认的 1px 灰色竖虚线，和效果预览的 0.6px 金色虚线不一致；用户定为「用浅色柱状图」，浅金（`color.chart.area`）与浅灰（`color.bg.hover`）两种真实悬停截图对比后选浅金。种子的 ECharts 主题把悬停指示默认改为竖条，`upgrade --from` 直接更新两份 token、`DESIGN.md`、`AUDIT.md`，没有冲突。按种子主题原样真实悬停：工作台销售趋势（亮 / 暗）、数据报表渠道销售趋势都是盖住悬停那一格的浅金竖条，被悬停的点照常出现空心圆点；类目销售额等柱状图本来就是这根竖条，不变。build、guard `current`、`citrine-accept all` 通过（结果同上）。
 
+评审中再同步（2026-10-12，图标描边改为 1.4px 并合并上色，版本号仍是 0.2.0）：用户指出图标有透明度时显示有问题。图标色多是半透明（`color.icon.default` 65% 黑、`color.icon.muted` 45% 黑），IconPark 的图标又由多段描边拼成，各段各自上色，交叠处会叠深一块：顶栏搜索图标的把手与圆的接缝、侧栏「订单」图标的夹子压在板子上沿的地方，暗色下尤其明显。种子把 `icon.stroke.width` 改为屏幕上的 1.4px（原为 48 网格里的 3，14px 图标约 0.9px、16px 约 1px），新增运行时 `icon-merge.js`；`upgrade --from` 直接更新两份 token、`DESIGN.md`、`AUDIT.md`，没有冲突，项目只在 `src/main.js` 挂载之后加一行 `mergeIcons()`。DPR 2 实测：工作台 23 只、订单列表 20 只 IconPark 图标全部合并，描边计算值 1.4px（`vector-effect: non-scaling-stroke`），亮暗一致，交叠处与单层同色。build、guard `current`、`citrine-accept all` 通过（结果同上）。
+
 ## A. 项目自身（已修）
 
 | # | 现象 | 处理 |
