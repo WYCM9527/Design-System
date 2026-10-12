@@ -14,7 +14,7 @@ npm run accept         # 构建 + citrine-accept all：页面 × 亮暗、组件
 
 设计系统接线：
 
-- `app/design-systems/morganite` 是指向 `seeds/morganite` 的符号链接，`@wycm9527/morganite` 依赖也是 `file:` 链接到种子——改了种子的桥接、模板或 Vue 组件，重新构建就生效。开发服务器不会察觉种子的改动，要重启（FINDINGS F11）。
+- `app/design-systems/morganite` 是指向 `seeds/morganite` 的符号链接，`@wycm9527/morganite` 依赖也是 `file:` 链接到种子——改了种子的桥接、模板或 Vue 组件，重新构建就生效。开发服务器不会察觉种子的改动，要重启；改了种子的 JS（如 `echarts.js`）用 `npx vite --force` 重启，否则浏览器会继续用缓存里的旧模块（FINDINGS F11）。
 - `app/design-system/` 是 `ds.mjs init` 生成的工作副本，token 构建与守卫走 steward：
 
 ```bash

@@ -171,7 +171,7 @@ B12、B13 两处原本也是对比度问题，根因是主色被当文字色用�
 | F8 | 焦点：单选按钮组的焦点环只有 1px；上传区的文件输入用的是浏览器默认外环 | 已修，随 B11、C19：两处都是 2px `border.focus`。首测这两条读数本身也有偏差，见 F12 |
 | F9 | `ds.mjs upgrade` 把身份文件 `owned` 里的 `bridge/**`、`templates/**`、`migration/**` 也拿去和工作副本比，项目根下没有这些文件，就报成 32 条「本地删除了此文件」的冲突 | 已修（adopter 0.3.1）：三方合并只管 `design-system/`，快照内的文件随快照整体替换，dry-run 只报个数；加了回归测试 |
 | F10 | `ds.mjs ci` 生成的工作流写成 `npx citrine-accept all all`：身份文件的 `accept.command` 已含子命令，又拼了一个 `all`（碰巧能跑，citrine-accept 会滤掉重复的子命令） | 已修：照原样用 `accept.command`，测试改为精确匹配 |
-| F11 | 改了种子桥接，开发服务器还是旧样式，对照脚本量出来没变化 | 本项目 `resolve.preserveSymlinks: true`，桥接的模块路径留在 `node_modules/` 下；Vite 的监听器整个跳过 `node_modules`，也不跟进 `design-systems/morganite` 这个符号链接，文档里的 `server.watch.ignored` 反选写法在这里无效。只影响在仓库里改种子的人：改完重启开发服务器。验收不受影响，citrine-accept 用的是重新构建的 `dist/` |
+| F11 | 改了种子桥接，开发服务器还是旧样式，对照脚本量出来没变化 | 本项目 `resolve.preserveSymlinks: true`，桥接的模块路径留在 `node_modules/` 下；Vite 的监听器整个跳过 `node_modules`，也不跟进 `design-systems/morganite` 这个符号链接，文档里的 `server.watch.ignored` 反选写法在这里无效。只影响在仓库里改种子的人：改完重启开发服务器。改了种子的 JS（如 `echarts.js`）要用 `npx vite --force` 重启：页面直接导入的包内 `.js` 被当成排除预构建的 npm 依赖，地址带 `?v=<依赖哈希>`，以 `Cache-Control: max-age=31536000,immutable` 返回，浏览器之后不再请求；普通重启哈希不变，浏览器继续用缓存里的旧模块（2026-10-12 工作台排行条换渐变后没变就是这个原因）。`--force` 重新预构建会换哈希；CSS 与 `.vue` 不带 `?v=`，不受影响。验收不受影响，citrine-accept 用的是重新构建的 `dist/` |
 | F12 | 焦点检查的两个读数偏差：单选按钮组读到 1px、勾选框 3px；文件输入与开关读到浏览器默认的 1px 蓝色外环 | 实际焦点环都对（强制 `:focus-visible` 等过渡结束后读：2px `border.focus`、偏移 1px；上传区与开关轨道各有自己的环）。原因一是 Element 把 outline 放进了过渡，检查在过渡中途读数——桥接已让这两种控件的焦点环立即出现，同效果预览；二是检查先看元素自身的 outline，透明或零尺寸的原生 input 上的浏览器外环看不见，却挡住了后面对兄弟元素、开关轨道的判断。后者留给 citrine-tools |
 
 ## 复现
