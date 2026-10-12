@@ -302,14 +302,14 @@ button.user { background: var(--color-action-quiet); border: 0; font: inherit; c
 .alloc-list i { display: inline-block; width: var(--spacing-2-5); height: var(--spacing-2-5); border-radius: var(--radius-xs); background: var(--c); }
 .alloc-list .pct { font-family: var(--text-numeric-family); font-weight: var(--text-weight-strong); font-variant-numeric: var(--text-numeric-variant); color: var(--color-text-primary); }
 .alloc-list .amt { font-family: var(--text-numeric-family); color: var(--color-text-muted); font-variant-numeric: var(--text-numeric-variant); min-width: 6em; text-align: right; }
-/* 目标进度列表：名称 + 数值一行，下面是进度条（纯 CSS 用 .track / .fill，Element 用 el-progress）；填充同进度条的饱和度渐变 */
+/* 目标进度列表：名称 + 数值一行，下面是进度条（纯 CSS 用 .track / .fill，Element 用 el-progress）；填充同进度条：左深右浅，品牌金用 chart.gradient.start → end，中性序列是同色饱和度渐变 */
 .goals { display: grid; gap: var(--spacing-5); padding: 0; margin: 0; }
 .goals li { list-style: none; display: grid; gap: var(--spacing-2); }
 .goals .top { display: flex; align-items: baseline; justify-content: space-between; font-size: var(--text-body-sm-size); }
 .goals .top b { font-family: var(--text-numeric-family); font-weight: var(--text-weight-strong); color: var(--color-text-secondary); font-variant-numeric: var(--text-numeric-variant); }
 .goals .track { height: var(--spacing-1-5); border-radius: var(--radius-full); background: var(--color-bg-selected); overflow: hidden; }
-.goals .fill { --fill: var(--color-action-primary-active); height: 100%; border-radius: var(--radius-full); background: var(--fill); background: linear-gradient(to right, hwb(from var(--fill) h calc(w + (100 - w - b) * (1 - var(--chart-gradient-saturation))) b), var(--fill)); }
-.goals .fill.is-neutral { --fill: var(--color-chart-4); }
+.goals .fill { height: 100%; border-radius: var(--radius-full); background: var(--color-chart-gradient-start); background: linear-gradient(to right, var(--color-chart-gradient-start), var(--color-chart-gradient-end)); }
+.goals .fill.is-neutral { --fill: var(--color-chart-4); background: var(--fill); background: linear-gradient(to right, var(--fill), hwb(from var(--fill) h calc(w + (100 - w - b) * (1 - var(--chart-gradient-saturation))) b)); }
 
 /* ── 纯 CSS 表格 `.table`（没有组件库的模板项目用；Element / shadcn 走各自桥接）：表头 bg.subtle + text.secondary，单元格 table.cell.padding，行 hover bg.hover，发丝线 ── */
 .table-wrap { overflow-x: auto; }   /* 手机上表格内部横向滚动，文档级不溢出 */

@@ -84,7 +84,7 @@
 - 侧栏：底 `color.bg.sidebar`，项 hover `color.bg.sidebar-hover`，当前项 `color.bg.sidebar-selected` + `color.text.sidebar-selected`（不加粗、不加指示条）；文字三档 `color.text.sidebar` / `-strong` / `-muted`（分组标题用 muted）；边线 `color.border.sidebar`；宽 `layout.sidebar.width`，折叠 `layout.sidebar.collapsed-width`。
 - 表格：表头 `color.bg.subtle`（比卡片深一档）+ `color.text.secondary` × `text.weight.label`、小号字，行分隔 `color.border.default`，行 hover `color.bg.hover`，选中行与悬停同色 `color.bg.hover`（再悬停深一档 `color.bg.selected-hover`）；单元格内边距 `table.cell.padding-y / -x`；金额、日期列用 `text.numeric.family` + `text.numeric.variant`（正文字体、等宽数字，金额列小数点上下对齐），单号用 `font.family.code`。
 - 弹窗 / 抽屉：宽度只用 `layout.modal.width.sm`（确认）/ `.md`（表单）/ `layout.drawer.width`；横向表单标签列 `layout.form.label-width`，单列表单最大宽 `layout.form.max-width`（单列表单用竖向标签）。
-- 图表：分类色 `color.chart.1…6` 品牌金领衔，顺序色 `color.chart.sequential.1…5`（四档灰 + 金封顶，离散分段用）；单序列折线金色描线 + 空心点 + 自上而下渐隐的面积 `color.chart.area`，多序列不填面积；提示气泡 `color.chart.tooltip` 底 + `color.text.inverse` 字；涨跌 `color.data.increase / decrease`，已结束 `color.data.inactive`；轴与图例文字 `color.text.secondary`。柱状图、进度条这类数据填充用同色的饱和度渐变：HSB 明度不变，浅端把饱和度降到 × `chart.gradient.saturation`。竖柱上浅下深、横柱右浅左深；进度条左浅右深。中性灰没有饱和度，保持实色；环形图、图例色块也保持实色。环形图用平面，不做 3D。
+- 图表：分类色 `color.chart.1…6` 品牌金领衔，顺序色 `color.chart.sequential.1…5`（四档灰 + 金封顶，离散分段用）；单序列折线金色描线 + 空心点 + 自上而下渐隐的面积 `color.chart.area`，多序列不填面积；提示气泡 `color.chart.tooltip` 底 + `color.text.inverse` 字；涨跌 `color.data.increase / decrease`，已结束 `color.data.inactive`；轴与图例文字 `color.text.secondary`。柱状图、进度条这类数据填充用渐变，方向统一为起点深、末端浅：竖柱下深上浅，横柱和进度条左深右浅。品牌金填充用指定的两色 `color.chart.gradient.start` → `color.chart.gradient.end`；状态色、分类色等其他填充用同色的饱和度渐变：HSB 明度不变，浅端把饱和度降到 × `chart.gradient.saturation`。中性灰没有饱和度，保持实色；环形图、图例色块也保持实色。进度条在条内显示百分比时，填充改为实色（白字落在浅端看不清）。环形图用平面，不做 3D。
 - 顶栏：左侧问候语（`color.text.muted`）+ 姓名（`color.text.primary` × `text.weight.strong`），右侧胶囊搜索、带未读红点（`color.action.danger`）的图标按钮与头像下拉。
 
 ## 组件配方
@@ -106,7 +106,7 @@
 | 表格 | 表头 `color.bg.subtle`；行 hover `color.bg.hover`；选中行与悬停同色 `color.bg.hover`，再悬停 `color.bg.selected-hover` | 表头 `color.text.secondary` × `text.weight.label`（小号），副行 `color.text.muted` | 行分隔 `color.border.default`；单元格内边距 `table.cell.padding-*` |
 | 批量操作条 | `color.bg.selected` | `color.text.primary` | 上下 `color.border.default` |
 | 筹码（已选条件） | `color.bg.chip`（字色同色 10%） | `color.text.selected`，小号字 | 胶囊 `radius.full`，高 `control.height.sm`；移除按钮命中区不小于 `control.hit-min` |
-| 进度条 | 轨道 `color.bg.selected` | 百分比 `color.text.secondary` | 填充 `color.action.primary-active`（中性序列 `color.chart.4`），左浅右深的饱和度渐变（浅端饱和度 × `chart.gradient.saturation`），胶囊 `radius.full` |
+| 进度条 | 轨道 `color.bg.selected` | 百分比 `color.text.secondary`；条内百分比 `color.text.on-primary` | 填充左深右浅：品牌金 `color.chart.gradient.start` → `color.chart.gradient.end`，状态色与中性序列（`color.chart.4`）用同色饱和度渐变（浅端饱和度 × `chart.gradient.saturation`）；条内显示百分比时改实色 `color.action.primary-active`（白字 5.27:1）；胶囊 `radius.full` |
 | 徽标 / 提示条 | `color.status.<x>-bg` | `color.status.<x>` | 标签 `radius.sm`（中性类别标签用配方 `.tag`）、状态点 `radius.full`，提示条 `radius.lg` |
 | 下拉菜单 | `color.bg.elevated`；项 hover `color.bg.hover` | `color.text.primary`；危险项 `color.text.danger` | `elevation.popover.*`，`layer.dropdown`，圆角 `radius.lg` |
 | 弹窗 | 遮罩 `color.bg.overlay`；面板 `color.bg.elevated` | `color.text.primary` / `secondary` | `elevation.modal.*`，`layer.modal`，圆角 `radius.lg`，进出 `motion.duration.slow` |
@@ -125,7 +125,7 @@
 | 横向表单 | — | 标签 `color.text.primary` | 标签列 `layout.form.label-width`，单列最大宽 `layout.form.max-width` |
 | 空状态 / 结果页 | — | 标题 `color.text.primary`，说明 `color.text.secondary`；结果页错误码 `color.text.selected` | 插图 `illustration.size.md`，大图标 `icon.size.2xl`；用法见「页面状态与权限」 |
 | 登录页 | 品牌面 `color.bg.brand`；表单面 `color.bg.page` | 品牌面 `color.text.on-brand`（只放不小于 `text.heading.size` 的大字）；logo 块 `color.bg.surface` 底 + `color.text.selected` | 表单卡宽 `layout.modal.width.sm`；手机收成单栏 |
-| 图表 | 面积 `color.chart.area`（渐隐）；提示气泡 `color.chart.tooltip` | 轴与图例 `color.text.secondary`；气泡 `color.text.inverse` | 分类 `color.chart.1…6`，顺序 `color.chart.sequential.*`，涨跌 `color.data.*`；柱子饱和度渐变，上浅下深（浅端饱和度 × `chart.gradient.saturation`） |
+| 图表 | 面积 `color.chart.area`（渐隐）；提示气泡 `color.chart.tooltip` | 轴与图例 `color.text.secondary`；气泡 `color.text.inverse` | 分类 `color.chart.1…6`，顺序 `color.chart.sequential.*`，涨跌 `color.data.*`；柱子渐变下深上浅（横柱左深右浅）：品牌金 `color.chart.gradient.start` → `color.chart.gradient.end`，其他颜色同色饱和度渐变（浅端饱和度 × `chart.gradient.saturation`） |
 
 ## 页面状态与权限
 

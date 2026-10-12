@@ -75,6 +75,7 @@
   --color-border-strong: var(--color-neutral-300);
   --color-brand-100: #F9EDD3;
   --color-brand-200: #DDB67B;
+  --color-brand-250: #D8AC63;
   --color-brand-300: #D1AB62;
   --color-brand-300-a10: #D1AB621A;
   --color-brand-400: #C4A56D;
@@ -97,6 +98,8 @@
   --color-emerald-500: #4E9A6A;
   --color-chart-6: var(--color-emerald-500);
   --color-chart-area: var(--color-brand-500-a16);
+  --color-chart-gradient-end: var(--color-brand-250);
+  --color-chart-gradient-start: var(--color-brand-550);
   --color-neutral-200: #F0F0F0;
   --color-chart-sequential-1: var(--color-neutral-200);
   --color-chart-sequential-2: var(--color-neutral-300);

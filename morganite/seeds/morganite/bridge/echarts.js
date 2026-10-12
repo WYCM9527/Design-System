@@ -5,8 +5,8 @@
 //   const name = registerTheme(echarts)              // 每次亮 / 暗切换后重新调用，再 dispose + init(el, name)
 //   const chart = echarts.init(el, name)
 //   chart.setOption(trendLine({ days, series: [{ name: '本周', data }, { name: '上周', data }] }))
-//   series: [{ type: 'bar', data, itemStyle: { color: barGradient(chartTokens().palette[0]) } }]   // 自己写的柱状图也用同色饱和度渐变
-// 规则见 DESIGN.md「组件原则」图表条：趋势折线 y 轴贴数据（不强制从 0）、平滑 0.5 + smoothMonotone、单序列显示空心点并填渐隐面积、多序列不显示点也不填面积；柱状图必须从 0 开始，柱子是同色饱和度渐变（上浅下深）；提示气泡用 color.chart.tooltip。
+//   series: [{ type: 'bar', data, itemStyle: { color: barGradient(chartTokens().palette[0]) } }]   // 自己写的柱状图也用柱子渐变
+// 规则见 DESIGN.md「组件原则」图表条：趋势折线 y 轴贴数据（不强制从 0）、平滑 0.5 + smoothMonotone、单序列显示空心点并填渐隐面积、多序列不显示点也不填面积；柱状图必须从 0 开始，柱子渐变起点深、末端浅（竖柱下深上浅），品牌金用 chart.gradient.start → end，其他颜色同色饱和度渐变；提示气泡用 color.chart.tooltip。
 
 const read = (name, el = document.documentElement) => getComputedStyle(el).getPropertyValue(name).trim();
 
@@ -25,6 +25,7 @@ export function chartTokens(el = document.documentElement) {
     numericFamily: read('--text-numeric-family', el) || read('--font-family-body', el),
     radius: num(read('--radius-xs', el), 2),
     gradientSaturation: num(read('--chart-gradient-saturation', el), 0.4),
+    gradientStart: read('--color-chart-gradient-start', el), gradientEnd: read('--color-chart-gradient-end', el),
   };
 }
 
@@ -48,22 +49,25 @@ function desaturate(color, k) {
   return a < 1 ? `rgba(${out.join(', ')}, ${a})` : `rgb(${out.join(', ')})`;
 }
 
-/** 一根柱子的同色饱和度渐变：竖柱上浅下深；横柱数值端（右）浅、基线端（左）深 */
-function linearFill(color, k, horizontal) {
-  const light = desaturate(color, k);
+/** 一根柱子的渐变，起点深、末端浅：竖柱底端深、顶端浅；横柱基线端（左）深、数值端（右）浅。
+    品牌金（chart.1 / 顺序色封顶）用指定两色 chart.gradient.start → end；其他颜色同色饱和度渐变，深端是原色、浅端饱和度 × gradientSaturation */
+function linearFill(color, t, horizontal) {
+  const gold = [t.palette[0], t.sequential[t.sequential.length - 1]].some((g) => g && g.toLowerCase() === color.trim().toLowerCase());
+  const [deep, light] = gold && t.gradientStart && t.gradientEnd ? [t.gradientStart, t.gradientEnd] : [color, desaturate(color, t.gradientSaturation)];
   return horizontal
-    ? { type: 'linear', x: 0, y: 0, x2: 1, y2: 0, colorStops: [{ offset: 0, color }, { offset: 1, color: light }] }
-    : { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: light }, { offset: 1, color }] };
+    ? { type: 'linear', x: 0, y: 0, x2: 1, y2: 0, colorStops: [{ offset: 0, color: deep }, { offset: 1, color: light }] }
+    : { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: light }, { offset: 1, color: deep }] };
 }
 
 /**
- * 柱状图的同色饱和度渐变（DESIGN 图表条：HSB 明度不变，浅端饱和度 × chart.gradient.saturation；竖柱上浅下深，横柱右浅左深）。
+ * 柱状图的柱子渐变（DESIGN 图表条：起点深、末端浅，竖柱下深上浅、横柱左深右浅；品牌金用 chart.gradient.start → end，
+ * 其他颜色同色饱和度渐变——HSB 明度不变，浅端饱和度 × chart.gradient.saturation）。
  * 返回 ECharts 线性渐变对象，series 级与数据项级的 itemStyle.color 都能用。
- * @param {string} color  token 读出的实色（如 chartTokens().palette[0]）
+ * @param {string} color  token 读出的实色（如 chartTokens().palette[0]；品牌金按这个值认出来）
  * @param {{ horizontal?: boolean, el?: Element }} [opts]  horizontal：横向柱
  */
 export function barGradient(color, { horizontal = false, el = document.documentElement } = {}) {
-  return linearFill(color, chartTokens(el).gradientSaturation, horizontal);
+  return linearFill(color, chartTokens(el), horizontal);
 }
 
 /** ECharts 主题对象：轴、网格、图例、提示框、折线 / 柱 / 饼的默认形态 */
@@ -127,6 +131,6 @@ export function rankBars({ categories, values, top = 3, formatter, el = document
     tooltip: { trigger: 'axis', axisPointer: { type: 'none' }, valueFormatter: formatter },
     xAxis: { type: 'value', min: 0, axisLabel: { show: false }, splitLine: { show: false } },
     yAxis: { type: 'category', data: categories.slice().reverse(), axisLine: { show: false } },   // 第一名在最上
-    series: [{ type: 'bar', data: values.slice().reverse().map((v, i, arr) => ({ value: v, itemStyle: { color: linearFill(arr.length - 1 - i < top && v > 0 ? hi : lo, t.gradientSaturation, true) } })), barMaxWidth: 16, label: { show: true, position: 'right', color: t.text, fontSize: t.font, fontFamily: t.numericFamily, formatter: formatter ? (p) => formatter(p.value) : undefined } }],
+    series: [{ type: 'bar', data: values.slice().reverse().map((v, i, arr) => ({ value: v, itemStyle: { color: linearFill(arr.length - 1 - i < top && v > 0 ? hi : lo, t, true) } })), barMaxWidth: 16, label: { show: true, position: 'right', color: t.text, fontSize: t.font, fontFamily: t.numericFamily, formatter: formatter ? (p) => formatter(p.value) : undefined } }],
   };
 }

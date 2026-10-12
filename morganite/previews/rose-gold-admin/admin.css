@@ -44,9 +44,10 @@
 .lc__dot.is-on { background: var(--color-chart-1); }
 .lc__guide { position: absolute; top: 0; bottom: 0; border-left: var(--border-width-default) dashed var(--color-chart-1); }
 .lc__tip { position: absolute; transform: translate(-50%, calc(-100% - var(--spacing-2-5))); padding: var(--spacing-0-5) var(--spacing-2); border-radius: var(--radius-sm); background: var(--color-chart-tooltip); color: var(--color-text-inverse); font-size: var(--text-small-size); font-weight: var(--text-weight-strong); font-variant-numeric: var(--text-numeric-variant); white-space: nowrap; }
-/* 数据填充渐变（DESIGN 图表条）：同色饱和度渐变，HSB 明度不变（hwb 只加白度），浅端饱和度 × chart.gradient.saturation；柱上浅下深（目标进度条的左浅右深在配方 .goals 里）。
-   先写实色兜底：不支持相对颜色语法的浏览器丢掉第二条，仍是实色 */
-.bars i { --fill: var(--c); background: var(--fill); background: linear-gradient(to bottom, hwb(from var(--fill) h calc(w + (100 - w - b) * (1 - var(--chart-gradient-saturation))) b), var(--fill)); }
+/* 数据填充渐变（DESIGN 图表条）：起点深、末端浅，柱下深上浅（目标进度条的左深右浅在配方 .goals 里）。品牌金柱 .c1 用指定两色 chart.gradient.start → end；
+   其他分类色是同色饱和度渐变，HSB 明度不变（hwb 只加白度），浅端饱和度 × chart.gradient.saturation。先写实色兜底：不支持相对颜色语法的浏览器丢掉第二条，仍是实色 */
+.bars i { --fill: var(--c); background: var(--fill); background: linear-gradient(to top, var(--fill), hwb(from var(--fill) h calc(w + (100 - w - b) * (1 - var(--chart-gradient-saturation))) b)); }
+.bars i.c1 { background: var(--color-chart-gradient-start); background: linear-gradient(to top, var(--color-chart-gradient-start), var(--color-chart-gradient-end)); }
 
 /* ---- 资产配置环形图 ---- */
 .alloc { flex: 1; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--spacing-6); align-items: center; }

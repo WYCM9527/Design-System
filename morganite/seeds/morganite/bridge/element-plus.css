@@ -246,10 +246,11 @@
 .el-switch__core .el-switch__action { left: var(--spacing-0-5); width: calc(var(--control-height-xs) - var(--spacing-0-5) * 2); height: calc(var(--control-height-xs) - var(--spacing-0-5) * 2); background-color: var(--color-control-knob); }
 .el-switch.is-checked .el-switch__core .el-switch__action { left: calc(100% - var(--control-height-xs) + var(--spacing-0-5)); }
 .el-slider { --el-slider-main-bg-color: var(--color-action-primary-active); --el-slider-runway-bg-color: var(--color-bg-selected); --el-slider-button-size: var(--icon-size-md); }
-/* 进度填充是同色饱和度渐变（DESIGN 图表条）：HSB 明度不变，左端饱和度 × chart.gradient.saturation、右端原色；状态类只换 --fill。
+/* 进度填充渐变（DESIGN 图表条）：起点深、末端浅，左深右浅。品牌金用指定两色 chart.gradient.start → end；
+   状态 / 中性填充是同色饱和度渐变：HSB 明度不变，右端饱和度 × chart.gradient.saturation；状态类只换 --fill。
    先写实色兜底（不支持相对颜色语法时用它）；状态规则也写整段 background，免得 Element 自带的状态 background-color 垫在渐变下面 */
-.el-progress-bar__inner, .el-progress.is-success .el-progress-bar__inner, .el-progress.is-exception .el-progress-bar__inner, .el-progress.is-warning .el-progress-bar__inner, .el-progress.is-muted .el-progress-bar__inner { background: var(--fill); background: linear-gradient(to right, hwb(from var(--fill) h calc(w + (100 - w - b) * (1 - var(--chart-gradient-saturation))) b), var(--fill)) var(--fill); }   /* 渐变下垫同色实底：视觉不变，对比度工具读得到深端底色（条内百分比是白字） */
-.el-progress-bar__inner { --fill: var(--color-action-primary-active); }
+.el-progress-bar__inner { --fill: var(--color-action-primary-active); background: var(--color-chart-gradient-start); background: linear-gradient(to right, var(--color-chart-gradient-start), var(--color-chart-gradient-end)); }
+.el-progress.is-success .el-progress-bar__inner, .el-progress.is-exception .el-progress-bar__inner, .el-progress.is-warning .el-progress-bar__inner, .el-progress.is-muted .el-progress-bar__inner { background: var(--fill); background: linear-gradient(to right, var(--fill), hwb(from var(--fill) h calc(w + (100 - w - b) * (1 - var(--chart-gradient-saturation))) b)); }
 .el-progress.is-success .el-progress-bar__inner { --fill: var(--color-status-success); }
 .el-progress.is-exception .el-progress-bar__inner { --fill: var(--color-status-error); }
 .el-progress.is-warning .el-progress-bar__inner { --fill: var(--color-status-warning); }
@@ -257,6 +258,8 @@
 /* 进度条颜色跟状态走：金只给"正在发生"的；已结束 / 已下线 / 草稿等非进行中用桥接约定类 is-muted 变灰 */
 .el-progress.is-muted .el-progress-bar__inner { --fill: var(--color-data-inactive); }
 .el-progress.is-muted .el-progress-circle__path { stroke: var(--color-data-inactive); }
+/* 条内百分比（text-inside）贴在填充末端，末端是浅色，白字不够（金 2.1:1）：这时改实色 --fill（金是 action.primary-active，白字 5.27:1） */
+.el-progress.el-progress--text-inside .el-progress-bar__inner { background: var(--fill); }
 
 /* ---- 表格 ---- */
 .el-table {
@@ -686,7 +689,7 @@ code, kbd, pre, samp { font-family: var(--font-family-code); }
   --el-empty-fill-color-4: var(--color-bg-page); --el-empty-fill-color-5: var(--color-border-default); --el-empty-fill-color-6: var(--color-border-default); --el-empty-fill-color-7: var(--color-border-default); --el-empty-fill-color-8: var(--color-border-strong); --el-empty-fill-color-9: var(--color-border-strong); }
 /* 日历：上 / 下月的日期不是占位符，用 text.muted（暗色下占位符色 hover 掉到 2.9:1） */
 .el-calendar-table:not(.is-range) td.next, .el-calendar-table:not(.is-range) td.prev { color: var(--color-text-muted); }
-/* 进度条内嵌文字：Element 写死白字，接到 text.on-primary（填充是主色深一档） */
+/* 进度条内嵌文字：Element 写死白字，接到 text.on-primary（内嵌文字时填充是实色，主色深一档） */
 .el-progress-bar__innerText { color: var(--color-text-on-primary); }
 /* 头像：同配方 .avatar——不透明的奶金浅底 bg.selected-subtle + 深一档的 text.selected（亮 4.8:1、暗 6.6:1）；不透明底叠在悬停底上也不变色。Element 默认灰底白字暗色下只有 2.5:1 */
 .el-avatar { --el-avatar-bg-color: var(--color-bg-selected-subtle); --el-avatar-text-color: var(--color-text-selected); }

@@ -2,6 +2,15 @@
 
 版本策略：patch 只改描述与文档；minor 新增或修改 token（视觉会变、名字不变，条目里写清肉眼可见的影响）；major 才改名或删除 token。
 
+## 0.2.0 — 2026-10-12
+
+- 数据填充渐变换成用户指定的两色（`linear-gradient(90deg, #B1863D 0%, hsl(37.3228deg 59.5252% 61.7469%) 100%)`）：
+  - 新增 token：原语 `color.brand.250`（`#D8AC63`，用户给的 hsl 按 8 位 sRGB 取整）；语义 `color.chart.gradient.start`（→ `color.brand.550`，`#B1863D`，与主按钮悬停同色）与 `color.chart.gradient.end`（→ `color.brand.250`），亮暗一致。
+  - 肉眼可见：品牌金进度条（Element `el-progress` 默认色、配方 `.goals`）从灰调的深金（左 `#8A7B66` → 右 `#8A6530`）换成更亮的金，并翻成左深右浅（左 `#B1863D` → 右 `#D8AC63`）；品牌金柱子（ECharts `barGradient`、`rankBars` 前三名、效果预览工作台柱状图）底端 `#B1863D`、顶端 `#D8AC63`，原来是底 `#B98D44`、顶端发灰的 `#B9A78A`。
+  - 方向统一为起点深、末端浅（用户最初说的是「起始点到终止点的深浅渐变」，原记录的进度条左浅右深是误记）：成功 / 异常 / 警示 / 已结束（`is-muted`）进度条与目标进度的中性序列也翻成左深右浅，仍是同色饱和度渐变；柱子仍是下深上浅，横柱仍是左深右浅。
+  - 进度条在条内显示百分比（`text-inside`）时改实色 `color.action.primary-active`：百分比贴在填充末端，白字对浅端 `#D8AC63` 只有约 2.1:1，实色上 5.27:1。
+  - `chart.gradient.saturation` 只管品牌金以外的颜色；`echarts.js` 的 `chartTokens()` 多返回 `gradientStart` / `gradientEnd`，`barGradient` 按传入的颜色认出品牌金（`chart.1` 或顺序色封顶）。
+
 ## 0.1.4 — 2026-10-11
 
 - 用完整测试项目 `morganite/testbed/mall-ops`（拾光商城 · 运营后台：Vue 3 + Element Plus，14 页 × 4 角色 × 50 个页面状态）对照效果预览逐角色比对，修正：

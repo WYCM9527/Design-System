@@ -41,7 +41,8 @@
 | 金底文字（2026-10-09） | 主色按钮上改放白字（深字显脏） | `color.text.on-primary` → `color.white`（主按钮、分页当前页、步骤当前步、勾选标记、logo 底块、确认条主按钮，亮暗一致），`color.text.on-brand` 同步改白；白字对主色 3.02:1，低于 4.5，登记例外；悬停改为加深 `color.brand.550`（白字 3.31:1，原来变浅到 `#C4A56D` 只有 2.35:1），按下 `color.brand.600`（5.27:1） |
 | 侧栏底色（2026-10-09） | 亮色纯白、暗色纯黑 | 亮色 `color.bg.sidebar` → `color.white`（原为 ProLayout 侧栏透明、透出页面底 `#f5f5f5`），与顶栏、卡片同色；暗色本来就是 `color.black`，来源由推断改为用户决定；侧栏文字在白底上对比度更高（次要文字 5.33:1） |
 | 输入框焦点（2026-10-09） | 聚焦不要加粗描边，只把描边加深 | 输入类控件（输入框、搜索、选择器、日期、文本域）聚焦只把边线换成 `color.border.focus`，线宽与悬停相同（`border.width.default`），去掉 `color.focus.ring` 外环；按钮、链接、菜单项的键盘焦点环不变。改在 `base.css`（原生输入框）、`element-plus.css`（原为 1px 内阴影 + 外环，文本域另有 2px 键盘焦点内描边）、`shadcn.css`（输入 / 文本域 / 选择器触发器不出环）与效果页搜索框 |
-| 数据填充渐变（2026-10-09） | 柱状图、进度条等改为渐变色，起始点到终止点由浅到深；随后改为饱和度渐变（不用明度渐变），柱状图上面亮、下面深 | 同日修正为饱和度渐变、柱子上浅下深：新增 `chart.gradient.saturation`（数值借 `{opacity.40}`，推断）：HSB 明度不变，浅端饱和度降到原色 × 0.4；竖柱上浅下深、横柱右浅左深，进度条左浅右深；中性灰没有饱和度，保持实色。落在 `element-plus.css` 进度条（含成功 / 异常 / 警示 / is-muted）、`echarts.js`（新增 `barGradient`，`rankBars` 改用渐变）与效果预览的柱状图、进度条；环形图、图例色块、滑块保持实色 |
+| 数据填充渐变（2026-10-09） | 柱状图、进度条等改为渐变色，「起始点到终止点的深浅渐变」；随后改为饱和度渐变（不用明度渐变），柱状图上面亮、下面深 | 同日修正为饱和度渐变、柱子上浅下深：新增 `chart.gradient.saturation`（数值借 `{opacity.40}`，推断）：HSB 明度不变，浅端饱和度降到原色 × 0.4；竖柱上浅下深、横柱右浅左深，进度条左浅右深；中性灰没有饱和度，保持实色。落在 `element-plus.css` 进度条（含成功 / 异常 / 警示 / is-muted）、`echarts.js`（新增 `barGradient`，`rankBars` 改用渐变）与效果预览的柱状图、进度条；环形图、图例色块、滑块保持实色（进度条方向与品牌金配色 2026-10-12 更正，见下一行） |
+| 数据填充渐变配色（2026-10-12） | 渐变颜色换成 `linear-gradient(90deg, #B1863D 0%, hsl(37.3228deg 59.5252% 61.7469%) 100%)` | 新增原语 `color.brand.250`（`#D8AC63`，用户给的 hsl 按 8 位 sRGB 取整）与语义 `color.chart.gradient.start`（→ `color.brand.550` `#B1863D`，与主按钮悬停同色）、`color.chart.gradient.end`（→ `color.brand.250`），亮暗一致；品牌金的进度条、目标进度、柱状图（ECharts `barGradient` / `rankBars` 与效果预览）改用这两色。方向统一为起点深、末端浅：用户最初说的是「起始点到终止点的深浅渐变」，柱子上浅下深也是这个方向，原记录的「由浅到深」与进度条左浅右深是误记，进度条改为左深右浅，状态色与中性序列的饱和度渐变同步翻转。条内显示百分比的进度条改实色 `color.action.primary-active`：百分比贴在填充末端，白字对浅端 `#D8AC63` 只有约 2.1:1 |
 | 表格选中行（2026-10-09） | 表格的选中状态底色改为悬停状态色 | 纯 CSS 表格、shadcn 表格、Element 表格的选中行与当前行都改用 `color.bg.hover`；选中行再悬停 `color.bg.selected-hover` 改为中性深一档（亮 6% 黑 / 暗 12% 白，推断），shadcn 补上这条悬停；奶油金 `color.bg.selected-subtle` 保留给强调徽标与 Element 主色浅底 |
 | 数字字体（2026-10-09） | 数字数据字体用 D-DIN-PRO | 新增原语 `font.family.numeric`（D-DIN-PRO → D-DIN → Bahnschrift → 正文无衬线；不放只有 Bold 面的 DIN Alternate，免得正文数字全变粗）；`text.display.family` 改指它（统计卡、KPI、`el-statistic`、状态条数字），新增 `text.numeric.family`（表格金额与日期、百分比、涨跌、图表数值：配方 `.num` / `.num-col` / `.stat-card__delta`、Element 表格合计行、ECharts 数值轴与排行榜标签）；单号仍用等宽字体。种子不分发字体文件；D-DIN-PRO 没有等宽数字 |
 | 筹码底色（2026-10-09） | 已选条件的 tag 胶囊色为 #8A6530 10% | 新增 `color.bg.chip`（亮色 `color.brand.600-a10`，即筹码字色的同色 10% 浅底，叠在卡片上约 #F3F0EA；暗色按同一规则取亮金 `color.brand.300-a10`，约 #27231C，用户确认），配方 `.chip` 改用它；原用 `color.bg.selected`（4% 黑 / 8% 白）。批量条、图标按钮选中、进度条轨道等其余小面积选中仍是中性浅灰；Element / shadcn 没有筹码组件，`el-tag` 仍是状态标签 |
@@ -70,11 +71,11 @@
 ## 角色覆盖
 
 - 观察（有实测证据）：70 个
-- 确认（用户拍板的品牌决定，含按预期预览图的调整与 2026-10-09 按组确认的原推断值）：108 个
+- 确认（用户拍板的品牌决定，含按预期预览图的调整与 2026-10-09 按组确认的原推断值）：110 个
 - 推断：0 个——原有 56 个按 antd 规格或规则补的默认值，2026-10-09 用户按组确认，前缀已改为 `[确认]`（下表留作来源追溯）
 - 必须处理的缺口（按系统类型）：0 个
 - 可选角色未填：3 个——这个系统类型不要求、本次也没证据；有证据再填，不发明值
-- 词表外的语义名：20 个，全部来自 Citrine 桥接的扩展（`text.display.family`、`text.link.style`、`text.weight.logo`、`avatar.size.sm / md`、`control.hit-touch`、`control.segmented-inset`、`icon.size.2xl`、`illustration.size.md`、`layout.search.width`、`opacity.on-primary-muted`、`color.chart.sequential.1…5`，以及本系统新增的 `color.chart.tooltip`、`chart.gradient.saturation`、`text.numeric.family`、`color.bg.chip`），名字与 Citrine 一致、值按 antd / Pro / 预期预览图
+- 词表外的语义名：22 个，全部来自 Citrine 桥接的扩展（`text.display.family`、`text.link.style`、`text.weight.logo`、`avatar.size.sm / md`、`control.hit-touch`、`control.segmented-inset`、`icon.size.2xl`、`illustration.size.md`、`layout.search.width`、`opacity.on-primary-muted`、`color.chart.sequential.1…5`，以及本系统新增的 `color.chart.tooltip`、`color.chart.gradient.start / end`、`chart.gradient.saturation`、`text.numeric.family`、`color.bg.chip`），名字与 Citrine 一致、值按 antd / Pro / 预期预览图
 
 ### 推断角色清单
 
@@ -133,7 +134,7 @@
 | `motion.easing.exit` | `{easing.exit}` | antd motionEaseIn | 已确认 |
 | `opacity.disabled` | `{opacity.40}` | 禁用态 0.4（antd 用禁用色，桥接用透明度近似） | 已确认 |
 | `opacity.on-primary-muted` | `{opacity.100}` | 金底上的次要文字不压透明度（对比余量不足） | 已确认 |
-| `chart.gradient.saturation` | `{opacity.40}` | 柱状图 / 进度条饱和度渐变的浅端：HSB 明度不变，饱和度降到原色 × 0.4（用户决定用饱和度渐变，0.4 是默认值；数值借用 opacity.40） | 已确认 |
+| `chart.gradient.saturation` | `{opacity.40}` | 柱状图 / 进度条饱和度渐变的浅端：HSB 明度不变，饱和度降到原色 × 0.4（用户决定用饱和度渐变，0.4 是默认值；数值借用 opacity.40；2026-10-12 起品牌金改用 `color.chart.gradient.*` 两色，这条只管其他颜色） | 已确认 |
 | `layer.dropdown` | `{z.1050}` | 下拉 / 气泡 1050（antd：高于弹窗） | 已确认 |
 | `avatar.size.sm` | `{size.avatar.sm}` | 小头像 24px | 已确认 |
 | `avatar.size.md` | `{size.avatar.md}` | 头像 32px | 已确认 |

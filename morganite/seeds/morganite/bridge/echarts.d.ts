@@ -17,6 +17,8 @@ export interface ChartTokens {
   numericFamily: string
   radius: number
   gradientSaturation: number
+  gradientStart: string
+  gradientEnd: string
 }
 export interface BarGradientOptions { horizontal?: boolean; el?: Element }
 export interface TrendSeries { name: string; data: (number | null)[] }
