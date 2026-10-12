@@ -75,7 +75,7 @@
 
 - 按钮、输入框共用同一控件高度（`control.height.md`），小号用 `control.height.sm`，大号只给页面级唯一主操作与触屏（`control.hit-touch`）。
 - 按钮四层：主按钮金底白字，悬停加深一点（`color.action.primary-hover`）、按下再深一档（`color.action.primary-active`）——白字在变浅的金上更难读，所以不像 antd 那样悬停变浅；次要按钮白底 + `color.border.strong` 描边，悬停换底（`color.action.secondary-hover`）；文字按钮静息透明（`color.action.quiet`）、悬停出浅底（`color.action.quiet-hover`）；危险按钮 `color.action.danger` 实底白字，悬停 / 按下加深。悬停不引入新的颜色（主按钮只是同色系加深）。
-- 卡片：不投影，靠白底与页面底的底色差（`color.bg.surface` 对 `color.bg.page`）加一条很浅的细边线 `color.border.default` 定形；卡片内的分区、表格行线用同一条边线色，不另设分隔线色。卡片标题是分区标签，不与卡片里的数字抢层级：`text.small.size` × `text.weight.strong` × `color.text.secondary`，加字距 `text.tracking.caps`（西文全大写），右侧放更多操作。
+- 卡片：不投影，靠白底与页面底的底色差（`color.bg.surface` 对 `color.bg.page`）加一条很浅的细边线 `color.border.default` 定形；卡片内的分区、表格行线用同一条边线色，不另设分隔线色。卡片标题 `text.body.size` × `text.weight.strong` × `color.text.card-title`（亮色 #212121），不加字距、不转大写，右侧放更多操作；Element 的 `el-card` 标题栏、shadcn 的卡片标题同款。看板上方的分区标签（`.section-label`）仍是小号、半粗、次要色加字距 `text.tracking.caps`。
 - 输入框是填充式：静息只有底色 `color.bg.input`、没有边线（`color.border.input` 透明），悬停出现 `color.border.strong`，聚焦只把边线换成更深的 `color.border.focus`，线宽不变、不加外环（光标本身提示焦点）；选择器、日期选择、文本域与输入框同一套。
 - 阴影写法固定：`box-shadow: 0 var(--elevation-<层>-y) var(--elevation-<层>-blur) var(--elevation-<层>-color)`，四层 `card` / `popover` / `modal` / `tooltip`；`card` 层颜色是透明（卡片不投影），写法照旧保留，回退时只改 token；弹窗与下拉同一档阴影，靠遮罩区分层级；`tooltip` 是图表提示气泡的大投影，比下拉大一档（白底气泡压在白卡片上，靠投影浮起来）。
 - 浮层三件：`color.bg.elevated`（浮层表面）、`color.bg.overlay`（遮罩）、`color.bg.inverse` + `color.text.inverse`（文字 Tooltip / 深色 Toast；图表提示气泡不用反色，见图表条）。
@@ -101,7 +101,7 @@
 | 链接 | — | `color.text.link`，hover `color.text.link-hover` | 无下划线 `text.link.decoration`，常规字重 `text.weight.label` |
 | 输入框 / 选择器 | `color.bg.input` | `color.text.primary`，占位符 `color.text.placeholder` | 静息 `color.border.input`，hover `color.border.strong`，聚焦 `color.border.focus`（线宽不变、不加外环），圆角 `radius.md` |
 | 勾选框 / 单选 / 开关 | 选中 `color.action.primary`；开关滑块 `color.control.knob` | 勾 `color.text.on-primary` | 未选 `color.border.strong` × `border.width.control`，勾选框圆角 `radius.xs` |
-| 卡片 | `color.bg.surface` | 标题 `text.small.size` × `text.weight.strong` × `color.text.secondary` + `text.tracking.caps` | `color.border.default`，圆角 `radius.lg`，不投影（`elevation.card.*` 为透明），内边距 `space.card` |
+| 卡片 | `color.bg.surface` | 标题 `text.body.size` × `text.weight.strong` × `color.text.card-title` | `color.border.default`，圆角 `radius.lg`，不投影（`elevation.card.*` 为透明），内边距 `space.card` |
 | 数据卡 / 统计 | `color.bg.surface` | 数字 `text.display.*`（D-DIN-PRO），涨跌等小数字 `text.numeric.family`（正文字体），标签 `color.text.secondary` | 涨跌 `color.data.increase / decrease` |
 | 表格 | 表头 `color.bg.subtle`；行 hover `color.bg.hover`；选中行与悬停同色 `color.bg.hover`，再悬停 `color.bg.selected-hover` | 表头 `color.text.secondary` × `text.weight.label`（小号），副行 `color.text.muted` | 行分隔 `color.border.default`；单元格内边距 `table.cell.padding-*` |
 | 批量操作条 | `color.bg.selected` | `color.text.primary` | 上下 `color.border.default` |

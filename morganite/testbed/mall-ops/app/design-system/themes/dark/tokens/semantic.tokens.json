@@ -98,6 +98,11 @@
         "$value": "{color.neutral.white-a85}",
         "$description": "[观察] 暗色正文 rgba(255,255,255,0.85)，499 字"
       },
+      "card-title": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a85}",
+        "$description": "[确认] 暗色卡片标题取暗色正文 0.85（用户 2026-10-13 确认，备选为原来的次要色 0.65）：亮色由次要色提到近正文的 #212121，暗色同一层级；对表面 #141414 约 13.4:1"
+      },
       "secondary": {
         "$type": "color",
         "$value": "{color.neutral.white-a65}",

@@ -17,7 +17,7 @@
 - 确认的权威来源：本目录 `tokens/*.tokens.json`
 - 系统类型：中后台（`admin`；用户指定；侧栏 有 · 有表格的页面 4/5 · 单页最多输入框 8 · 单页最多状态徽标 16）
 - 品牌族：来源站为 antd 蓝（`#1677ff` / 演示站 `#1890ff`），按用户决定整体替换为玫瑰金（初定 `#AE8A50`，2026-10-09 提亮为 `#B98D44`）
-- 首屏模式：light；另一模式：`dark`（delta 64 条）
+- 首屏模式：light；另一模式：`dark`（delta 66 条：取证时 64 条，之后按用户决定加了图表提示气泡与卡片标题）
 
 ### 用户决定（2026-09-28）
 
@@ -48,6 +48,7 @@
 | 图表悬停竖条（2026-10-12） | 曲线图悬停的竖向指示线用浅色柱状图；浅金与浅灰两种实测对比后选浅金 | 悬停不再画竖线，改为 `color.chart.area`（品牌金 16%，暗色 24%）的竖条盖住悬停的那一格，宽度是相邻两点的间距，贴边时只铺半根；柱状图原本就是这根浅金条，现在曲线图一致。原先商城的曲线图是 ECharts 默认的 1px 灰色虚线（`color.border.strong`），效果预览是 0.6px 金色虚线，两边不一致。备选浅灰 `color.bg.hover`（同表格行悬停）未选。ECharts 主题把 `tooltip.axisPointer.type` 默认设为 `'shadow'`；时间轴 / 数值轴上竖条会缩成 1px，这类图自己设 `'line'`。效果预览折线图的金色虚线换成竖条 |
 | 图标描边（2026-10-12） | 图标描边粗细改为 1.4px 并合并栅格化，否则有透明度时会有显示 bug | `icon.stroke.width` 由数值 3（IconPark 48 网格里的 3，14px 图标上约 0.9px、16px 上 1px）改为尺寸 1.4px（新增原语 `stroke-width.1-4`；`stroke-width.3` 不再被引用，按版本策略留到下个大版本再删）；桥接让描边按屏幕粗细画（`vector-effect: non-scaling-stroke`），各档尺寸一样粗。图标色多是半透明（`color.icon.default` 65% 黑、`color.icon.muted` 45% 黑），IconPark / lucide 的图标又由多段描边拼成，交叠处会叠深：实测 16px「首页」图标的底边两层叠到暗度 224、门底三层 244，单层是 166。新增运行时 `icon-merge.js`：把每只单色图标的各段复制进一个蒙版，再用 currentColor 一次画出，合并后交叠处与单层同为 166；双色 / 多色图标是实色，不处理。落在 `iconpark.css`、`shadcn.css`（lucide；单选圆点是实心点，保持原样）、`iconpark.config.ts`（`strokeWidth` 退路改为 4.8）与效果预览（图标源码合并成一条路径） |
 | 柱子端头（2026-10-12） | 柱状图和类似样式应该直角起底、顶部圆角，以及多柱状图叠加的间距问题；多序列三种画法（并排留 2px、堆叠段间留 2px、堆叠贴合）实测对比后选堆叠贴合；进度条保持胶囊形 | ECharts 主题原先四角都是 `radius.xs`（4px）：柱子底端也是圆的，堆叠柱的每个接缝两边各缺一个圆角（实测拾光商城「新老客构成」）。改为起点（基线一端）直角、末端圆角：主题默认竖柱 `[r, r, 0, 0]`；新增 `withBarEnds(option)` / `barEnds(series)` 按每根柱子算，横柱圆右端，负值柱圆朝外的一端，堆叠段直接相接，只圆最外一段（按 ECharts 的堆叠规则：声明顺序与 `stackOrder`、正负值分开堆、0 值段不算、图例关掉的序列不算）。种子的 EChart 容器（Vue / React）每次 setOption 都套用，图例开关后重算；`rankBars` 改用它。效果预览的柱子本来就是顶端圆、底端直，不用改。未选的两种：段间留 2px 只能用卡片底色的硬影子盖出来，放在别的底色上会露出卡片底色，缝两侧还有半个像素的残影；并排看不出总量。进度条是胶囊轨道里的填充，起点被轨道的圆端裁圆，改了也看不出 |
+| 卡片标题（2026-10-13） | 卡片标题改为 14px #212121；原来的大写字距去掉；暗色取暗色正文色（备选保持次要色 65% 白，未选） | 新增原语 `color.neutral.875`（#212121，介于 850 `#262626` 与 900 `#1F1F1F` 之间）与语义 `color.text.card-title`（亮 → `color.neutral.875`，对白 16.1:1；暗 → `color.neutral.white-a85`，同暗色正文，对表面 `#141414` 约 13.4:1）。配方 `.card-head h2` 由小号 × `text.weight.strong` × `color.text.secondary` 加 `text.tracking.caps` 大写，改为 `text.body.size` × `text.weight.strong` × `color.text.card-title`，不加字距、不转大写；行高沿用标题比例（14px 时约 18.7px）：带说明的卡片头高度不变（同行 12px 说明的行高约 18.9px），只有标题的卡片头高约 2.7px，与带说明的几乎一样高（拾光商城商品表单实测 48.98 → 51.66px，带说明的 51.84px；改前两种相差 2.9px）。Element 的 `el-card` 标题栏（原为常规字重的正文色）、shadcn 的卡片标题（原为半粗正文色、字号跟外层）改为同款；token 预览页的卡片标题同步。看板上方的分区标签 `.section-label` 不变，`text.tracking.caps` 只剩它与 token 预览页的统计卡标题在用 |
 | 表格选中行（2026-10-09） | 表格的选中状态底色改为悬停状态色 | 纯 CSS 表格、shadcn 表格、Element 表格的选中行与当前行都改用 `color.bg.hover`；选中行再悬停 `color.bg.selected-hover` 改为中性深一档（亮 6% 黑 / 暗 12% 白，推断），shadcn 补上这条悬停；奶油金 `color.bg.selected-subtle` 保留给强调徽标与 Element 主色浅底 |
 | 数字字体（2026-10-09） | 数字数据字体用 D-DIN-PRO | 新增原语 `font.family.numeric`（D-DIN-PRO → D-DIN → Bahnschrift → 正文无衬线；不放只有 Bold 面的 DIN Alternate，免得正文数字全变粗）；`text.display.family` 改指它（统计卡、KPI、`el-statistic`、状态条数字），新增 `text.numeric.family`（表格金额与日期、百分比、涨跌、图表数值：配方 `.num` / `.num-col` / `.stat-card__delta`、Element 表格合计行、ECharts 数值轴与排行榜标签）；单号仍用等宽字体。种子不分发字体文件；D-DIN-PRO 没有等宽数字 |
 | 筹码底色（2026-10-09） | 已选条件的 tag 胶囊色为 #8A6530 10% | 新增 `color.bg.chip`（亮色 `color.brand.600-a10`，即筹码字色的同色 10% 浅底，叠在卡片上约 #F3F0EA；暗色按同一规则取亮金 `color.brand.300-a10`，约 #27231C，用户确认），配方 `.chip` 改用它；原用 `color.bg.selected`（4% 黑 / 8% 白）。批量条、图标按钮选中、进度条轨道等其余小面积选中仍是中性浅灰；Element / shadcn 没有筹码组件，`el-tag` 仍是状态标签 |
@@ -69,18 +70,18 @@
 | 页面状态与权限（2026-10-11） | 写进 DESIGN | DESIGN 新增「页面状态与权限」：加载 = 骨架屏占住最终形状；空 = 插图 + 一句说明 + 至多一个主操作；出错 = 区域内错误条 + 重试；无权限的菜单隐藏、直接访问进 403；按角色区分的操作禁用 + Tooltip 写明缺的权限；只读角色用只读态。错误条 `.error-box` 圆角随提示条改为 `radius.lg` |
 | AGENTS.md（2026-10-11） | 同意写入 | 模板去掉重复的验收条目与已失效的「推断值先确认」（推断值 2026-10-09 已全部确认）；`ds.mjs agents --write` 为测试项目生成 AGENTS.md，标题用项目名而不是目录名 |
 | 主色不当文字色（2026-10-11，验收发现） | 按 DESIGN 修 | 登录品牌面上的 logo 块原是白底主色字（3.0:1），改为 `color.bg.surface` 底 + `color.text.selected`（暗色下是深底亮金字，亮暗都过 4.5）；结果页错误码由 `color.text.brand` 改为 `color.text.selected` |
-| 按预期预览图默认调整（2026-09-29，列出后用户未反对） | 圆角加大、卡片标题字距小标题、KPI 数字半粗、图表配色只用金 + 灰 + 绿、图表提示气泡深金底（2026-10-12 改白底大投影）、表头底深一档、卡片阴影更大更柔（2026-10-09 去掉）、顶栏搜索胶囊 | `radius.md / lg / xl`、`text.tracking.caps`、`text.display.weight`、`color.chart.*`、`color.chart.tooltip`、`color.bg.subtle`、`elevation.card.*`；配方 `.card-head h2`、`.topbar .search`；ECharts 桥接 |
+| 按预期预览图默认调整（2026-09-29，列出后用户未反对） | 圆角加大、卡片标题字距小标题（2026-10-13 改 14px #212121）、KPI 数字半粗、图表配色只用金 + 灰 + 绿、图表提示气泡深金底（2026-10-12 改白底大投影）、表头底深一档、卡片阴影更大更柔（2026-10-09 去掉）、顶栏搜索胶囊 | `radius.md / lg / xl`、`text.tracking.caps`、`text.display.weight`、`color.chart.*`、`color.chart.tooltip`、`color.bg.subtle`、`elevation.card.*`；配方 `.card-head h2`、`.topbar .search`；ECharts 桥接 |
 | 组件库桥接 | 带 Citrine 的 Element Plus / shadcn / 配方 / ECharts 桥接当起点 | `bridge/`，缺口见「桥接缺口」 |
 | 预览 | 虚拟页面（工作台 / 表单 / 抽屉 × 亮暗）确认像「Pro + 金色」 | `preview/` |
 
 ## 角色覆盖
 
 - 观察（有实测证据）：70 个
-- 确认（用户拍板的品牌决定，含按预期预览图的调整与 2026-10-09 按组确认的原推断值）：114 个
+- 确认（用户拍板的品牌决定，含按预期预览图的调整与 2026-10-09 按组确认的原推断值）：115 个
 - 推断：0 个——原有 56 个按 antd 规格或规则补的默认值，2026-10-09 用户按组确认，前缀已改为 `[确认]`（下表留作来源追溯）
 - 必须处理的缺口（按系统类型）：0 个
 - 可选角色未填：3 个——这个系统类型不要求、本次也没证据；有证据再填，不发明值
-- 词表外的语义名：26 个，全部来自 Citrine 桥接的扩展（`text.display.family`、`text.link.style`、`text.weight.logo`、`avatar.size.sm / md`、`control.hit-touch`、`control.segmented-inset`、`icon.size.2xl`、`illustration.size.md`、`layout.search.width`、`opacity.on-primary-muted`、`color.chart.sequential.1…5`，以及本系统新增的 `color.chart.tooltip`、`elevation.tooltip.y / blur / color`、`color.chart.gradient.start / end`、`chart.gradient.saturation`、`chart.baseline.dash`、`text.numeric.family`、`color.bg.chip`），名字与 Citrine 一致、值按 antd / Pro / 预期预览图
+- 词表外的语义名：27 个，全部来自 Citrine 桥接的扩展（`text.display.family`、`text.link.style`、`text.weight.logo`、`avatar.size.sm / md`、`control.hit-touch`、`control.segmented-inset`、`icon.size.2xl`、`illustration.size.md`、`layout.search.width`、`opacity.on-primary-muted`、`color.chart.sequential.1…5`，以及本系统新增的 `color.chart.tooltip`、`elevation.tooltip.y / blur / color`、`color.chart.gradient.start / end`、`chart.gradient.saturation`、`chart.baseline.dash`、`text.numeric.family`、`color.bg.chip`、`color.text.card-title`），名字与 Citrine 一致、值按 antd / Pro / 预期预览图
 
 ### 推断角色清单
 
