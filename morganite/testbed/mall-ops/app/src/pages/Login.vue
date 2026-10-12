@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { User, Lock, Phone } from '@icon-park/vue-next'
 import { demo } from '../store'
+import { version as dsVersion } from '../../design-system/.adopter.json'
 
 const router = useRouter()
 const failed = demo('state') === 'error'   // ?state=error：密码错误态（PRD 4.1）
@@ -65,7 +66,7 @@ if (failed) setTimeout(() => formRef.value?.validateField('pwd').catch(() => {})
           <el-button @click="ElMessage.info('企业微信扫码登录建设中')">企业微信</el-button>
           <el-button @click="ElMessage.info('钉钉扫码登录建设中')">钉钉</el-button>
         </div>
-        <p class="login-foot">登录即表示同意《服务协议》与《隐私政策》 · Morganite 0.1.4</p>
+        <p class="login-foot">登录即表示同意《服务协议》与《隐私政策》 · Morganite {{ dsVersion }}</p>
       </div>
     </section>
   </div>

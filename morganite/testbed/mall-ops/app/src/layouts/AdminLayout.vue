@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Home, ChartHistogram, Order, Return, Commodity, Box, Peoples, Coupon, Remind, PeopleSafe, SettingTwo, Components, Search, Moon, SunOne, Down, HamburgerButton } from '@icon-park/vue-next'
 import { store, collapsed, roleInfo, canSee, setRole, toggleTheme, ROLES } from '../store'
+import { version as dsVersion } from '../../design-system/.adopter.json'
 
 // el-menu-item 不透传 attrs，折叠后只剩图标、没有可访问名称：用指令把 aria-label 写到根元素
 const vAriaLabel = { mounted: (el, b) => el.setAttribute('aria-label', b.value), updated: (el, b) => el.setAttribute('aria-label', b.value) }
@@ -63,7 +64,7 @@ function onCommand(cmd) {
           </el-menu-item>
         </el-menu-item-group>
       </el-menu>
-      <div class="sidebar-foot">{{ menuCollapsed ? '0.1.3' : 'Morganite 0.1.3 · 实测' }}</div>
+      <div class="sidebar-foot">{{ menuCollapsed ? dsVersion : `Morganite ${dsVersion} · 实测` }}</div>
     </aside>
 
     <button v-if="navOpen" class="sidebar-mask" type="button" aria-label="关闭导航" @click="navOpen = false" />
