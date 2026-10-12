@@ -119,7 +119,7 @@ button.user { background: var(--color-action-quiet); border: 0; font: inherit; c
 /* 详情页标题行：标题 + 状态胶囊同一行 */
 .page-head .title-row { display: flex; align-items: center; gap: var(--spacing-3); flex-wrap: wrap; }
 .page-head .title-row h1 { margin: 0; }
-/* 看板页（工作台、报表）没有大标题：分区标签（与卡片标题同款）+ 右侧操作 */
+/* 看板页（工作台、报表）没有大标题：分区标签（小号、半粗、次要色、大写字距）+ 右侧操作 */
 .section-label { font-size: var(--text-small-size); font-weight: var(--text-weight-strong); color: var(--color-text-secondary); letter-spacing: var(--text-tracking-caps); text-transform: uppercase; }
 .page-bar { display: flex; align-items: center; gap: var(--space-inline); }
 .page-bar .right { margin-left: auto; display: flex; align-items: center; gap: var(--space-inline); }
@@ -131,7 +131,7 @@ button.user { background: var(--color-action-quiet); border: 0; font: inherit; c
 
 /* ── 卡片区块 ── */
 .card-head { display: flex; align-items: center; gap: var(--spacing-3); padding: var(--spacing-4) var(--space-card); border-bottom: var(--border-width-default) solid var(--color-border-default); }
-.card-head h2 { margin: 0; font-size: var(--text-small-size); font-weight: var(--text-weight-strong); color: var(--color-text-secondary); letter-spacing: var(--text-tracking-caps); text-transform: uppercase; }   /* 卡片标题是分区标签，不与卡片里的数字抢层级；中文不受大写影响 */
+.card-head h2 { margin: 0; font-size: var(--text-body-size); font-weight: var(--text-weight-strong); color: var(--color-text-card-title); }   /* 不设行高：沿用 h2 的标题比例（14px 时约 18.7px），与同行 12px 说明的行高相当，带不带说明的卡片头一样高 */
 .card-head .right { margin-left: auto; display: flex; gap: var(--space-inline); align-items: center; }
 .card-body { padding: var(--space-card); }   /* flat 卡里直接放图表 / 自由内容时的留白（表格、筛选栏等配方自带内边距，不需要它） */
 .el-card.flat { --el-card-padding: 0; }

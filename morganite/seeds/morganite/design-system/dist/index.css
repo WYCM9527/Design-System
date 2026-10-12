@@ -130,6 +130,7 @@
   --color-neutral-700: #424242;
   --color-neutral-800: #303030;
   --color-neutral-850: #262626;
+  --color-neutral-875: #212121;
   --color-neutral-900: #1F1F1F;
   --color-neutral-950: #141414;
   --color-neutral-950-a50: #14141480;
@@ -165,6 +166,7 @@
   --color-status-warning: var(--color-orange-8);
   --color-status-warning-bg: var(--color-orange-1);
   --color-text-brand: var(--color-brand-500);
+  --color-text-card-title: var(--color-neutral-875);
   --color-text-danger: var(--color-red-7);
   --color-text-inverse: var(--color-white);
   --color-text-link: var(--color-brand-600);
@@ -406,6 +408,7 @@
   --color-status-success-bg: var(--color-emerald-dark-1);
   --color-status-warning: var(--color-orange-4);
   --color-status-warning-bg: var(--color-orange-dark-1);
+  --color-text-card-title: var(--color-neutral-white-a85);
   --color-text-danger: var(--color-red-4);
   --color-text-link: var(--color-brand-500);
   --color-text-link-hover: var(--color-brand-300);

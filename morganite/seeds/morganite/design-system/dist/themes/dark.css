@@ -50,6 +50,7 @@
   --color-status-success-bg: var(--color-emerald-dark-1);
   --color-status-warning: var(--color-orange-4);
   --color-status-warning-bg: var(--color-orange-dark-1);
+  --color-text-card-title: var(--color-neutral-white-a85);
   --color-text-danger: var(--color-red-4);
   --color-text-link: var(--color-brand-500);
   --color-text-link-hover: var(--color-brand-300);

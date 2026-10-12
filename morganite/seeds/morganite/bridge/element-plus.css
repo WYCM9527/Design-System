@@ -299,6 +299,7 @@
 /* ---- 卡片、弹窗、抽屉、浮层 ---- */
 .el-card { border-width: var(--border-width-default); --el-card-border-color: var(--color-border-default); --el-card-border-radius: var(--radius-lg); --el-card-bg-color: var(--color-bg-surface); --el-card-padding: var(--space-card); }  /* 卡片靠 border.default 发丝线与页面底色差定形（DESIGN「卡片」） */
 .el-card.is-always-shadow, .el-card.is-hover-shadow:hover { box-shadow: 0 var(--elevation-card-y) var(--elevation-card-blur) var(--elevation-card-color); }
+.el-card__header { font-size: var(--text-body-size); font-weight: var(--text-weight-strong); color: var(--color-text-card-title); }   /* 同配方 .card-head h2 */
 /* 弹窗 / 抽屉与卡片同档 radius.lg（DESIGN「圆角」） */
 .el-dialog { --el-dialog-bg-color: var(--color-bg-elevated); --el-dialog-border-radius: var(--radius-lg); --el-dialog-padding-primary: var(--space-card); --el-dialog-box-shadow: 0 var(--elevation-modal-y) var(--elevation-modal-blur) var(--elevation-modal-color); --el-dialog-title-font-size: var(--text-title-size); }
 .el-message-box { --el-messagebox-border-radius: var(--radius-lg); }

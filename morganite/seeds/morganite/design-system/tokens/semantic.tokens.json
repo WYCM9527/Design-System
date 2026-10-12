@@ -108,6 +108,11 @@
         "$value": "{color.neutral.black-a88}",
         "$description": "[观察] 承载最多文字（约 2715 字）rgba(0,0,0,0.88)，对白 16.5:1"
       },
+      "card-title": {
+        "$type": "color",
+        "$value": "{color.neutral.875}",
+        "$description": "[确认] 卡片标题 #212121（用户 2026-10-13 指定，配 text.body.size 14px；原为 color.text.secondary 的分区标签样式），对白 16.1:1"
+      },
       "secondary": {
         "$type": "color",
         "$value": "{color.neutral.black-a65}",
@@ -763,7 +768,7 @@
       "caps": {
         "$type": "dimension",
         "$value": "{font.letter-spacing.caps}",
-        "$description": "[确认] 卡片 / 分区标题的大写小字字距（预期预览图）；中文标题只取小号、半粗、次要色"
+        "$description": "[确认] 分区标签（看板的 .section-label）的大写小字字距（预期预览图）；中文标签只取小号、半粗、次要色。卡片标题 2026-10-13 起改为 14px 深色标题（用户指定），不再用它"
       }
     },
     "link": {

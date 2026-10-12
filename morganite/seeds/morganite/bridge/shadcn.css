@@ -158,6 +158,8 @@ svg.lucide[data-icon-merged] > :not([data-icon-merge], defs, mask, clipPath, pat
 /* 骨架屏：不是 accent（选中底），是 bg.skeleton；进度条轨道不是 primary 20% 洗色，是 bg.selected（DESIGN 进度条配方，同 Element 桥接） */
 [data-slot="skeleton"] { background-color: var(--color-bg-skeleton); }
 [data-slot="progress"] { background-color: var(--color-bg-selected); }
+/* 卡片标题：同配方 .card-head h2（shadcn 默认随卡片的正文色、字号跟外层） */
+[data-slot="card-title"] { font-size: var(--text-body-size); font-weight: var(--text-weight-strong); color: var(--color-text-card-title); }
 /* 表格：表头 bg.subtle + text.secondary，行 hover bg.hover，选中行与悬停同色 bg.hover、再悬停 bg.selected-hover（shadcn 默认表头正文色、hover 用 muted 50%） */
 [data-slot="table-header"] { background-color: var(--color-bg-subtle); }
 [data-slot="table-head"] { color: var(--color-text-secondary); font-weight: var(--text-weight-label); }
