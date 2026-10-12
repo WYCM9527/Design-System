@@ -298,7 +298,7 @@
       "area": {
         "$type": "color",
         "$value": "{color.brand.500-a24}",
-        "$description": "[确认] 暗色面积填充：品牌金 24%（2026-10-09 用户确认）"
+        "$description": "[确认] 暗色面积填充：品牌金 24%（2026-10-09 用户确认）；也是暗色图表悬停竖条"
       },
       "tooltip": {
         "$type": "color",
