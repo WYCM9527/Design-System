@@ -8,6 +8,8 @@ export interface ChartTokens {
   primary: string
   line: string
   strong: string
+  lineWidth: number
+  baselineDash: number
   surface: string
   inverseBg: string
   inverseText: string
@@ -27,7 +29,7 @@ export interface ChartTokens {
 }
 export interface BarGradientOptions { horizontal?: boolean; el?: Element }
 export interface TrendSeries { name: string; data: (number | null)[] }
-export interface TrendLineOptions { days: string[]; series: TrendSeries[]; area?: Record<string, unknown>; count?: boolean }
+export interface TrendLineOptions { days: string[]; series: TrendSeries[]; area?: Record<string, unknown>; count?: boolean; el?: Element }
 export interface RankBarsOptions { categories: string[]; values: number[]; top?: number; formatter?: (value: number) => string; el?: Element }
 
 export function chartTokens(el?: Element): ChartTokens

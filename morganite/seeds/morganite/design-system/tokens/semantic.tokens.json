@@ -1048,6 +1048,13 @@
         "$value": "{opacity.40}",
         "$description": "[确认] 品牌金以外的数据填充（状态色、中性色、分类色）用同色饱和度渐变：浅端把饱和度降到原色的 0.4 倍，HSB 明度不变（数值借用 opacity.40；2026-10-09 用户确认）。方向与品牌金渐变一致，起点深、末端浅：竖柱上浅下深，进度条与横柱左深右浅（2026-10-12 用户指定品牌金两色时统一；原记录的进度条左浅右深与用户最初「起始点到终止点的深浅渐变」不符，已更正）。品牌金填充用 color.chart.gradient.start → end"
       }
+    },
+    "baseline": {
+      "dash": {
+        "$type": "dimension",
+        "$value": "{spacing.1}",
+        "$description": "[确认] 曲线图底线（x 轴线）的虚线：线段与间隔都是 4px（数值借用 spacing.1），线宽 border.width.default（0.6px）、颜色 color.border.default，同网格线（用户 2026-10-12：曲线图的底线用 0.6px 虚线）。柱状图的基线保持实线"
+      }
     }
   }
 }

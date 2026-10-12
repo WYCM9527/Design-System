@@ -10,6 +10,8 @@
   --border-width-default: var(--border-width-thin);
   --border-width-indicator: var(--border-width-bold);
   --border-width-ring: 3px;
+  --spacing-1: 4px;
+  --chart-baseline-dash: var(--spacing-1);
   --opacity-40: 0.4;
   --chart-gradient-saturation: var(--opacity-40);
   --color-red-7: #CF1322;
@@ -314,7 +316,6 @@
   --spacing-2: 8px;
   --space-inline: var(--spacing-2);
   --space-stack: var(--spacing-6);
-  --spacing-1: 4px;
   --spacing-1-5: 6px;
   --spacing-2-5: 10px;
   --spacing-3: 12px;

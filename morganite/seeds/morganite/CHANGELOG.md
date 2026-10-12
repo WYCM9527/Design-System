@@ -15,6 +15,11 @@
   - 肉眼可见：所有 ECharts 图表（`echarts.js` 主题）的悬停提示从深金底白字变成白底正文色字，加 `color.border.default` 细边、圆角 `radius.md` 与 0 12px 32px 的 12% 黑投影，内边距 8 × 12px（原 6 × 10px）；效果预览工作台折线的提示同样改。Element 的文字 Tooltip（图标、禁用按钮上的深底白字小气泡）不变。
   - `chartTokens()` 多返回 `tooltipShadowY` / `tooltipShadowBlur` / `tooltipShadowColor` / `tooltipRadius` / `tooltipPadding`；`tooltipBg` 读不到时回退 `--color-bg-elevated`（原 `--color-bg-inverse`）。
   - 主题的提示框挂到 body（`tooltip.appendTo: 'body'`，同 Element 浮层）：`el-card` 是 `overflow: hidden`，靠卡片边的气泡和投影原先会被裁掉（环形图实测裁掉 27px）。页面若自己给图表设了 `tooltip.appendTo` 会覆盖这条。
+- 曲线图的底线改为 0.6px 虚线（用户：曲线图的底线用 0.6px 虚线）：
+  - 新增 `chart.baseline.dash`（4px，借 `spacing.1`）：线段与间隔各 4px，线宽 `border.width.default`、颜色 `color.border.default`，同网格线。
+  - 肉眼可见：曲线图（`trendLine`、`TrendChart`）最底下那条线从两条叠画的 1px 实线（比其他网格线深）变成一条发丝细的虚线；效果预览工作台折线图同改，底线画在基准面积之后。柱状图的基线仍是实线。
+  - ECharts 主题的轴线与网格线从默认 1px 改为 `border.width.default`（0.6px），按 DESIGN「宽度统一是发丝细线」，与效果预览一致：所有 ECharts 图表的网格线和柱状图基线都会变细、变浅一点。
+  - `chartTokens()` 多返回 `lineWidth` / `baselineDash`；`trendLine` 可传 `el`（读 token 的元素）。
 
 ## 0.1.4 — 2026-10-11
 

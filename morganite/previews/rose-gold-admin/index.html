@@ -747,11 +747,13 @@
       const y = (v) => H - ((v - min) / (max - min)) * H;
       const pts = values.map((v, i) => [x(i), y(v)]);
       const id = `grad-${el.id}`;
-      const grid = (ticks || []).map((t) => `<line class="grid-line" x1="0" x2="${W}" y1="${y(t)}" y2="${y(t)}"/>`).join("");
+      const gridLine = (t, cls = "") => `<line class="grid-line${cls}" x1="0" x2="${W}" y1="${y(t)}" y2="${y(t)}"/>`;
+      const grid = (ticks || []).filter((t) => t !== min).map((t) => gridLine(t)).join("");
+      const base = (ticks || []).includes(min) ? gridLine(min, " is-base") : "";   // 底线画在面积之后：基准面积是实色，会盖住它
       const benchLine = bench ? smooth(bench.map((v, i) => [x(i), y(v)])) : "";
       const benchPath = bench ? `<path class="bench" d="${benchLine} L${W},${H} L0,${H} Z"/><path class="bench-line" d="${benchLine}"/>` : "";
       const line = smooth(pts);
-      const svg = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="area-top"/><stop offset="1" class="area-bottom"/></linearGradient></defs>${grid}${benchPath}<path d="${line} L${W},${H} L0,${H} Z" fill="url(#${id})"/><path class="line" d="${line}"/></svg>`;
+      const svg = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="area-top"/><stop offset="1" class="area-bottom"/></linearGradient></defs>${grid}${benchPath}<path d="${line} L${W},${H} L0,${H} Z" fill="url(#${id})"/>${base}<path class="line" d="${line}"/></svg>`;
       const pos = (i) => `left:${(x(i) / W) * 100}%;top:${(y(values[i]) / H) * 100}%`;
       const dotIdx = dots === "last" ? [values.length - 1] : values.map((_, i) => i);
       const dotHtml = dotIdx.map((i) => `<span class="lc__dot${tip && tip.i === i ? " is-on" : ""}" style="${pos(i)}"></span>`).join("");

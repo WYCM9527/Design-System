@@ -35,6 +35,7 @@
 .lc.no-y { grid-template-columns: minmax(0, 1fr); }
 .lc.no-y .lc__x { grid-column: 1; }
 .lc .grid-line { stroke: var(--color-border-default); stroke-width: var(--border-width-default); vector-effect: non-scaling-stroke; }
+.lc .grid-line.is-base { stroke-dasharray: var(--chart-baseline-dash); }
 .lc .line { fill: none; stroke: var(--color-chart-1); stroke-width: var(--border-width-active); vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-linejoin: round; }
 .lc .bench { fill: var(--color-chart-sequential-1); }
 .lc .bench-line { fill: none; stroke: var(--color-chart-4); stroke-width: var(--border-width-default); vector-effect: non-scaling-stroke; }   /* 基准面积本身对比度很低，靠这条灰色细线读出走势 */

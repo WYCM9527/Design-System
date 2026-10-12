@@ -6,7 +6,7 @@
 //   const chart = echarts.init(el, name)
 //   chart.setOption(trendLine({ days, series: [{ name: '本周', data }, { name: '上周', data }] }))
 //   series: [{ type: 'bar', data, itemStyle: { color: barGradient(chartTokens().palette[0]) } }]   // 自己写的柱状图也用柱子渐变
-// 规则见 DESIGN.md「组件原则」图表条：趋势折线 y 轴贴数据（不强制从 0）、平滑 0.5 + smoothMonotone、单序列显示空心点并填渐隐面积、多序列不显示点也不填面积；柱状图必须从 0 开始，柱子渐变起点深、末端浅（竖柱下深上浅），品牌金用 chart.gradient.start → end，其他颜色同色饱和度渐变；提示气泡是白底浮层（color.chart.tooltip 底、正文色字、细边、elevation.tooltip 大投影）。
+// 规则见 DESIGN.md「组件原则」图表条：轴线与网格线是 border.width.default 发丝线；趋势折线 y 轴贴数据（不强制从 0）、底线虚线、平滑 0.5 + smoothMonotone、单序列显示空心点并填渐隐面积、多序列不显示点也不填面积；柱状图必须从 0 开始，柱子渐变起点深、末端浅（竖柱下深上浅），品牌金用 chart.gradient.start → end，其他颜色同色饱和度渐变；提示气泡是白底浮层（color.chart.tooltip 底、正文色字、细边、elevation.tooltip 大投影）。
 
 const read = (name, el = document.documentElement) => getComputedStyle(el).getPropertyValue(name).trim();
 
@@ -19,6 +19,7 @@ export function chartTokens(el = document.documentElement) {
     area: read('--color-chart-area', el),
     text: read('--color-text-secondary', el), muted: read('--color-text-muted', el), primary: read('--color-text-primary', el),
     line: read('--color-border-default', el), strong: read('--color-border-strong', el),
+    lineWidth: num(read('--border-width-default', el), 0.6), baselineDash: num(read('--chart-baseline-dash', el), 4),
     surface: read('--color-bg-surface', el), inverseBg: read('--color-bg-inverse', el), inverseText: read('--color-text-inverse', el),
     tooltipBg: read('--color-chart-tooltip', el) || read('--color-bg-elevated', el),
     tooltipShadowY: num(read('--elevation-tooltip-y', el), 12), tooltipShadowBlur: num(read('--elevation-tooltip-blur', el), 32), tooltipShadowColor: read('--elevation-tooltip-color', el) || 'rgba(0, 0, 0, 0.12)',
@@ -83,8 +84,8 @@ export function theme(el = document.documentElement) {
     // 大投影走 elevation.tooltip：ECharts 把 shadow* 拼成 box-shadow，没有扩散半径，token 也只给 y / blur / color。
     // 挂到 body（同 Element 浮层）：el-card 是 overflow: hidden，靠边的气泡和投影会被卡片裁掉
     tooltip: { appendTo: 'body', backgroundColor: t.tooltipBg, borderColor: t.line, borderWidth: 1, borderRadius: t.tooltipRadius, padding: t.tooltipPadding, shadowOffsetX: 0, shadowOffsetY: t.tooltipShadowY, shadowBlur: t.tooltipShadowBlur, shadowColor: t.tooltipShadowColor, textStyle: { color: t.primary, fontSize: t.font }, axisPointer: { lineStyle: { color: t.strong }, shadowStyle: { color: t.area } } },
-    categoryAxis: { axisLine: { lineStyle: { color: t.line } }, axisTick: { show: false }, axisLabel: { color: t.muted, fontSize: t.font }, splitLine: { show: false } },
-    valueAxis: { axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: t.muted, fontSize: t.font, fontFamily: t.numericFamily }, splitLine: { lineStyle: { color: t.line } } },   // 数值刻度用数字字体，类目轴多是中文，保持正文字体
+    categoryAxis: { axisLine: { lineStyle: { color: t.line, width: t.lineWidth } }, axisTick: { show: false }, axisLabel: { color: t.muted, fontSize: t.font }, splitLine: { show: false } },
+    valueAxis: { axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: t.muted, fontSize: t.font, fontFamily: t.numericFamily }, splitLine: { lineStyle: { color: t.line, width: t.lineWidth } } },   // 数值刻度用数字字体，类目轴多是中文，保持正文字体
     // 平滑 0.5 + smoothMonotone 'x'：曲线丝滑但不越过数据点（只用 0.3 会在数据点处显硬；不加 monotone 则会在点之间鼓包）；线端与拐角圆头
     line: { smooth: 0.5, smoothMonotone: 'x', symbol: 'emptyCircle', symbolSize: 6, showSymbol: false, lineStyle: { width: 2, cap: 'round', join: 'round' }, emphasis: { focus: 'series' } },
     bar: { barMaxWidth: 24, itemStyle: { borderRadius: t.radius } },
@@ -106,18 +107,21 @@ export function areaGradient(echarts, el = document.documentElement) {
 
 /**
  * 趋势折线配方：类目 x 轴无留白，y 轴贴数据范围（scale），所有序列统一 2px 细线（主序列靠品牌金区分，不靠粗细）；单序列显示空心点、可传渐隐面积；图例右上。
+ * 底线（x 轴线）是发丝细的虚线（chart.baseline.dash），其余网格线实线。
  * 计数型趋势（申请数、订单数这类整数）：y 轴从 0 起、刻度只取整数（minInterval 1）——否则会出现 0.5、1.5 这种"半张申请"的刻度；默认按数据自动判断（全是整数且最大值 ≤ 20），也可显式传 count。
- * @param {{ days: string[], series: { name: string, data: number[] }[], area?: object, count?: boolean }} p  area 只在单序列时传 areaGradient(echarts)
+ * @param {{ days: string[], series: { name: string, data: number[] }[], area?: object, count?: boolean, el?: Element }} p  area 只在单序列时传 areaGradient(echarts)
  */
-export function trendLine({ days, series, area, count }) {
+export function trendLine({ days, series, area, count, el = document.documentElement }) {
+  const t = chartTokens(el);
   const values = series.flatMap((s) => s.data).filter((v) => v !== null && v !== undefined);
   const isCount = count ?? (values.length > 0 && values.every((v) => Number.isInteger(v)) && Math.max(...values) <= 20);
+  const splitLine = { showMinLine: false };   // 最底那条网格线和 x 轴线重合，留着会在虚线下面垫一条实线
   return {
     grid: { left: 8, right: 8, top: 36, bottom: 0, containLabel: true },
     legend: { top: 0, right: 0 },
     tooltip: { trigger: 'axis' },
-    xAxis: { type: 'category', data: days, boundaryGap: false },
-    yAxis: isCount ? { type: 'value', min: 0, minInterval: 1, splitNumber: 4 } : { type: 'value', scale: true, splitNumber: 4 },
+    xAxis: { type: 'category', data: days, boundaryGap: false, axisLine: { lineStyle: { type: [t.baselineDash, t.baselineDash] } } },
+    yAxis: isCount ? { type: 'value', min: 0, minInterval: 1, splitNumber: 4, splitLine } : { type: 'value', scale: true, splitNumber: 4, splitLine },
     series: series.map((s) => ({ name: s.name, type: 'line', data: s.data, showSymbol: series.length === 1, areaStyle: area && series.length === 1 ? area : undefined })),   // 线宽走主题（2px），不按序列加粗
   };
 }
