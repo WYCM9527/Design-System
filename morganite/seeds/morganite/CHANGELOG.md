@@ -14,6 +14,7 @@
   - `color.chart.tooltip` 由深金 `color.brand.600` 改为 `color.white`，暗色新增覆写为浮层色 `color.neutral.900`（同 `color.bg.elevated`）；新增第四层阴影 `elevation.tooltip.*`（原语 `shadow.y.3` 12px、`shadow.blur.3` 32px、`color.neutral.shadow-a12`），比下拉 / 弹窗的 `elevation.popover.*` 大一档。
   - 肉眼可见：所有 ECharts 图表（`echarts.js` 主题）的悬停提示从深金底白字变成白底正文色字，加 `color.border.default` 细边、圆角 `radius.md` 与 0 12px 32px 的 12% 黑投影，内边距 8 × 12px（原 6 × 10px）；效果预览工作台折线的提示同样改。Element 的文字 Tooltip（图标、禁用按钮上的深底白字小气泡）不变。
   - `chartTokens()` 多返回 `tooltipShadowY` / `tooltipShadowBlur` / `tooltipShadowColor` / `tooltipRadius` / `tooltipPadding`；`tooltipBg` 读不到时回退 `--color-bg-elevated`（原 `--color-bg-inverse`）。
+  - 主题的提示框挂到 body（`tooltip.appendTo: 'body'`，同 Element 浮层）：`el-card` 是 `overflow: hidden`，靠卡片边的气泡和投影原先会被裁掉（环形图实测裁掉 27px）。页面若自己给图表设了 `tooltip.appendTo` 会覆盖这条。
 
 ## 0.1.4 — 2026-10-11
 
