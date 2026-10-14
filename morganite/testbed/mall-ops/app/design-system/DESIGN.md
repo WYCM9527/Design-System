@@ -65,7 +65,7 @@
 ## 布局与响应式
 
 - 页面骨架：顶栏 `layout.topbar.height`（固定时用 `layer.sticky`）+ 左侧栏 `layout.sidebar.width`（可折叠到 `layout.sidebar.collapsed-width`）+ 流式内容区；内容区不设居中最大宽，四周留白用 `space.gutter`。
-- 间距走 `spacing.*` 阶梯（px 系统按 4px 命名），页面级留白用四个语义间距：`space.gutter`（内容区四周）、`space.stack`（块与块之间、卡片栅格）、`space.card`（卡片 / 弹窗内边距）、`space.inline`（同一行相邻元素）。
+- 间距走 `spacing.*` 阶梯（px 系统按 4px 命名），页面级留白用四个语义间距：`space.gutter`（内容区四周）、`space.stack`（块与块之间、卡片栅格）、`space.card`（卡片 / 弹窗内边距）、`space.inline`（同一行相邻元素）。运营后台信息密，页面偏紧凑：四周留白与卡片内边距同宽，板块之间比它窄一档，卡片读成一组。
 - 圆角按容器层级递减：整块面板 / 大容器 `radius.xl` → 卡片 / 弹窗 / 抽屉 `radius.lg` → 按钮 / 输入框 `radius.md` → 标签 / Tooltip `radius.sm` → 勾选框 `radius.xs`；表格单元格直角。胶囊（`radius.full`）只给顶栏搜索、期间选择、分段选择器、筹码、进度条、状态点与头像；普通按钮和标签不做胶囊。
 - 层级最多四档：`layer.sticky`、`layer.dropdown`、`layer.modal`、`layer.toast`，用到哪档写哪档；不手写 z-index 数字。沿用 antd 的顺序：下拉高于弹窗（弹窗里的下拉才能展开），全局提示在两者之间。
 - 断点：`layout.breakpoint.narrow` 以下侧栏默认折叠、卡片栅格减列；`layout.breakpoint.mobile` 以下侧栏收成抽屉、筛选栏纵排、表格横向滚动、留白收到 `space.stack`。CSS 媒体查询无法引用 var()，配方里的断点数值是 token 的字面镜像，改 token 必须同步。
