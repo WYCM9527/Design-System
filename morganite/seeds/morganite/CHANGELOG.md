@@ -39,6 +39,10 @@
 - 板块间距收紧（用户：板块间距是否过大，稍微紧凑一些；三种收法实测对比后选定）：
   - `space.stack` 由 24px 改为 16px（`spacing.4`），`space.gutter` 由 40px 改为 24px（`spacing.6`，与卡片内边距 `space.card` 同宽）；没有新增或删除 token。
   - 肉眼可见：所有页面的内容区四周留白（含顶栏左右）由 40px 改为 24px，板块之间（页头与卡片、统计卡、看板、两栏、卡片栅格、走查页卡片）由 24px 改为 16px，登录页的品牌面板与表单区同样收紧；拾光商城工作台在 1620 × 976 下整页短 64px。手机端（≤ 768px）的内容区与顶栏留白（16px）、顶层块间距（12px）不变（配方改为引用 `space.stack`）；叠成单栏的看板卡、统计卡之间同样由 24px 改为 16px，登录页表单区的留白由 40px 改为 24px。
+- 页面导航与标题布局统一（用户：统一后台所有页面的面包屑、标题、操作区与内容布局；三轮评审 12 问拍板，见 AUDIT「页面导航与标题」）。没有新增或删除 token。
+  - 新增：配方组件 `PageHeader`（`vue/PageHeader.vue`、`react/PageHeader.tsx`：`title` / `subtitle`，`#status` 放标题旁的状态胶囊，`#actions` 放页面级操作，`#leading` 放标题左侧的头像）与 `SectionHeader`（`vue/SectionHeader.vue`、`react/SectionHeader.tsx`：H2 板块标题 + 右侧 `#actions`），输出配方类 `.page-head` 与新增的 `.section-head`（H2 `text.title-sm.size` × `text.weight.strong` × `color.text.primary`）；组件走查页加「页头与板块标题」一组。DESIGN 补「页面结构四层」（顶栏 → 页头 → 可选标签 / 筛选 → 业务内容）与「建设中页面按结果页处理」。
+  - 调整：面包屑分隔符由「/」改为细箭头（配方 `.crumbs .sep` 与 Element `.el-breadcrumb__separator` 用遮罩画，`icon.size.sm` 见方、`color.text.muted`，描边 1.4 同 `icon.stroke.width`；标记仍写「/」，页面代码不用改：分隔符元素本身 `visibility: hidden`、箭头画在 `::before` 上，「/」不进视觉与无障碍树）；页头副标题与标题的间距由 4px（`spacing.1`）改为 6px（`spacing.1-5`），所有带副标题的页头高 2px；贴在卡片顶部的 Element 标签栏当卡片标题头用：标签上下由 12px 改为 16px（`spacing.4`，与带标题的卡片头同高，标签栏高约 43 → 51px），底线从左右各缩进 24px 改为贯穿卡片（效果预览的 `.panel > .tabs` 底线本来就贯穿，上下同改 16px）；内容区直属的 Element 标签栏（报表页这类 pane 为空、只切换下方内容的）下边距归零，与下方内容相距一个 `space.stack`（原为 16 + 16 = 32px）。顶栏左侧统一是面包屑，工作台不再放问候语（问候语进页头副标题），DESIGN「顶栏」与「组件配方」表同步。
+  - 移除：配方 `.greet` / `.greet__hi` / `.greet__name`（顶栏问候语）与 `.page-bar` / `.page-bar .right`（看板顶部那一行），接入项目改用 `PageHeader` + `SectionHeader`；`.section-label` 保留，只给不值一个标题的次要分组。Element 说明「卡片顶部的 el-tabs 自动缩进」与配方清单同步。
 
 ## 0.1.4 — 2026-10-11
 

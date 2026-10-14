@@ -163,7 +163,7 @@
 .el-button { font-weight: var(--text-weight-label); }
 /* 并排按钮：同一行相邻元素的间距是 space.inline（Element 用相邻选择器写死 12px）；配方里自带 gap 的容器不再叠外边距 */
 .el-button + .el-button { margin-left: var(--space-inline); }
-:is(.page-head .actions, .page-bar .right, .card-head .right, .filter, .filter .conds, .filter .acts, .batch .right, .form-foot, .result .acts, .confirm-bar, .act-group, .login-alt, .code-row, .hform .foot) > .el-button + .el-button { margin-left: 0; }
+:is(.page-head .actions, .section-head .right, .card-head .right, .filter, .filter .conds, .filter .acts, .batch .right, .form-foot, .result .acts, .confirm-bar, .act-group, .login-alt, .code-row, .hform .foot) > .el-button + .el-button { margin-left: 0; }
 /* 通栏按钮（登录、手机底部主操作）：is-block 撑满容器，同效果预览 .btn--block；Element 没有这个属性 */
 .el-button.is-block { width: 100%; }
 .el-button + .el-button.is-block { margin-left: 0; }
@@ -452,11 +452,14 @@
 .el-timeline-item__timestamp { color: var(--color-text-muted); font-size: var(--text-small-size); line-height: var(--text-body-line-height); }
 .el-timeline-item__timestamp.is-bottom { margin-top: 0; }
 .el-timeline-item__timestamp.is-top { margin-bottom: var(--spacing-1); padding-top: 0; }
-/* ---- 面包屑（同配方 .crumbs）：text.body-sm；链接 text.secondary、当前页 text.primary，均为常规字重；分隔符 text.muted、常规字重，左右 spacing.2 ---- */
+/* ---- 面包屑（同配方 .crumbs）：text.body-sm；链接 text.secondary、当前页 text.primary，均为常规字重；
+   分隔符是细箭头：el-breadcrumb 仍传 separator="/"，span 本身 visibility: hidden（「/」从视觉与无障碍树里消失，文字扫描也不再把它当小字），箭头在 ::before 上设回 visible、用遮罩画在 text.muted 上
+   （icon.size.sm 见方，描边 1.4 同 icon.stroke.width，遮罩里写不了 var()），左右 spacing.2 ---- */
 .el-breadcrumb { font-size: var(--text-body-sm-size); line-height: var(--text-body-line-height); }
 .el-breadcrumb__inner, .el-breadcrumb__inner a, .el-breadcrumb__inner.is-link { color: var(--color-text-secondary); font-weight: var(--text-weight-label); }
 .el-breadcrumb__item:last-child .el-breadcrumb__inner, .el-breadcrumb__item:last-child .el-breadcrumb__inner a, .el-breadcrumb__item:last-child .el-breadcrumb__inner:hover, .el-breadcrumb__item:last-child .el-breadcrumb__inner a:hover { color: var(--color-text-primary); font-weight: var(--text-weight-label); }
-.el-breadcrumb__separator { color: var(--color-text-muted); font-weight: var(--font-weight-regular); margin: 0 var(--spacing-2); }
+.el-breadcrumb__separator { display: inline-flex; color: var(--color-text-muted); margin: 0 var(--spacing-2); width: var(--size-icon-sm); height: var(--size-icon-sm); font-size: 0; visibility: hidden; }
+.el-breadcrumb__separator::before { content: ""; visibility: visible; display: block; width: 100%; height: 100%; background: currentColor; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M4.5 2.5 8 6l-3.5 3.5' fill='none' stroke='%23000' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M4.5 2.5 8 6l-3.5 3.5' fill='none' stroke='%23000' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; }
 .el-upload-dragger { background: var(--color-bg-subtle); border-color: var(--color-border-strong); border-radius: var(--radius-md); }
 .el-upload-dragger:hover, .el-upload-dragger.is-dragover { border-color: var(--color-border-focus); background: var(--color-bg-selected); }
 .el-empty__description p { color: var(--color-text-muted); }
@@ -581,8 +584,14 @@ code, kbd, pre, samp { font-family: var(--font-family-code); }
    Element 给 .el-tabs__content 设 overflow: hidden，贴住 pane 边缘的内容会被裁掉一截。
    pane 切换靠 display: none 而不是 overflow 收纳，放开是安全的。 */
 .el-tabs__content { overflow: visible; }
-/* 贴在卡片顶部的标签页：标签栏左右缩进 space.card，与卡片标题对齐（同效果预览 .panel > .tabs）；标签栏下直接接内容，内容自己带内边距 */
-.el-card.flat > .el-card__body > .el-tabs > .el-tabs__header { padding: 0 var(--space-card); margin-bottom: 0; }
+/* 贴在卡片顶部的标签页当卡片标题头用（同效果预览 .panel > .tabs）：标签文字与卡片内边距 space.card 对齐、上下 spacing.4（与带标题的 .card-head 同高，约 52px），
+   底线贯穿卡片左右边缘——左右内边距放在 nav-wrap 上，Element 画底线的 nav-wrap::after 跟着 padding box 走；标签栏下直接接内容，内容自己带内边距 */
+.el-card.flat > .el-card__body > .el-tabs > .el-tabs__header { margin-bottom: 0; }
+.el-card.flat > .el-card__body > .el-tabs > .el-tabs__header .el-tabs__nav-wrap { padding: 0 var(--space-card); }
+.el-card.flat > .el-card__body > .el-tabs > .el-tabs__header .el-tabs__nav-wrap.is-scrollable { padding: 0 calc(var(--space-card) + var(--spacing-5)); }   /* 标签放不下出现前后翻页箭头时（Element 写死 20px），箭头留在内边距里 */
+.el-card.flat > .el-card__body > .el-tabs > .el-tabs__header .el-tabs__nav-prev { left: var(--space-card); }
+.el-card.flat > .el-card__body > .el-tabs > .el-tabs__header .el-tabs__nav-next { right: var(--space-card); }
+.el-card.flat > .el-card__body > .el-tabs > .el-tabs__header .el-tabs__item { padding: var(--spacing-4) 0; }
 /* 看板卡（配方 .panel）用 el-card 承载时，内容区跟着纵向撑满 */
 .el-card.panel > .el-card__body { flex: 1; display: flex; flex-direction: column; min-height: 0; }
 
@@ -758,6 +767,8 @@ code, kbd, pre, samp { font-family: var(--font-family-code); }
 /* 标签页头与内容的间距：Element 写死 15px，接到间距阶梯 */
 .el-tabs__header { margin: 0 0 var(--spacing-4); }
 .el-tabs--border-card > .el-tabs__header { margin: 0; }
+/* 直接放在内容区的标签栏（报表页这类只切换下方内容、pane 为空的页面级标签）：下边距交给内容区的 gap，不与它叠成两倍（同配方 .content > .stat-strip） */
+.content > .el-tabs > .el-tabs__header { margin-bottom: 0; }
 /* 表格合计行（show-summary）：Element 用行 hover 色做底、字重同正文，压不住正文行 → 浅底 + 500 + 等宽数字（DESIGN 表格配方「合计行」） */
 .el-table__footer-wrapper td.el-table__cell { background-color: var(--color-bg-subtle); color: var(--color-text-primary); font-weight: var(--font-weight-medium); font-family: var(--text-numeric-family); font-variant-numeric: var(--text-numeric-variant); }
 /* 弹窗尺寸档：用 class 而不是 :width="'var(--…)'" 传字符串——确认类 sm、带表单 md */

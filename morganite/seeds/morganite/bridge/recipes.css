@@ -22,9 +22,12 @@ svg.i-icon--lg { width: var(--size-icon-lg); height: var(--size-icon-lg); flex: 
 svg.i-icon--xl { width: var(--size-icon-xl); height: var(--size-icon-xl); flex: none; }
 svg.i-icon--2xl { width: var(--size-icon-2xl); height: var(--size-icon-2xl); flex: none; }
 svg.i-icon--muted { color: var(--color-icon-muted); }
-/* 面包屑（没有组件库时） */
+/* 面包屑（没有组件库时）：父级 text.secondary、当前页 text.primary，只有真实路由是 <a>。
+   分隔符是细箭头：标记里仍写 <span class="sep">/</span>，span 本身 visibility: hidden（「/」从视觉与无障碍树里消失，文字扫描也不再把它当小字），箭头在 ::before 上设回 visible、用遮罩画在 text.muted 上，
+   icon.size.sm 见方，描边 1.4 与 icon.stroke.width 同值（遮罩里写不了 var()）；Element 的 .el-breadcrumb__separator 在桥接里同一画法 */
 .crumbs { display: flex; align-items: center; gap: var(--spacing-2); font-size: var(--text-body-sm-size); color: var(--color-text-secondary); }
-.crumbs .sep { color: var(--color-text-muted); }
+.crumbs .sep { display: inline-flex; flex: none; width: var(--size-icon-sm); height: var(--size-icon-sm); font-size: 0; color: var(--color-text-muted); visibility: hidden; }
+.crumbs .sep::before { content: ""; visibility: visible; display: block; width: 100%; height: 100%; background: currentColor; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M4.5 2.5 8 6l-3.5 3.5' fill='none' stroke='%23000' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M4.5 2.5 8 6l-3.5 3.5' fill='none' stroke='%23000' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; }
 .crumbs span:last-child { color: var(--color-text-primary); }
 .crumbs a:hover { color: var(--color-text-link-hover); }
 .secondary { color: var(--color-text-secondary); }
@@ -104,25 +107,24 @@ td .link, .card-head .link, .batch .link, .empty .link, .more-link { display: in
 button.user { background: var(--color-action-quiet); border: 0; font: inherit; color: inherit; }   /* 头像区用 <button> 承载时去掉默认外观 */
 .topbar .user-name { font-size: var(--text-body-sm-size); color: var(--color-text-primary); white-space: nowrap; }
 .user-caret { color: var(--color-icon-muted); }
-/* 顶栏问候语（DESIGN「顶栏」：工作台这类首页把面包屑换成问候语）：日期 text.small × text.muted，姓名 text.title-sm × strong */
-.greet { display: flex; flex-direction: column; min-width: 0; line-height: var(--text-heading-line-height); }
-.greet__hi, .greet__name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.greet__hi { font-size: var(--text-small-size); color: var(--color-text-muted); }
-.greet__name { font-size: var(--text-title-sm-size); font-weight: var(--text-weight-strong); color: var(--color-text-primary); }
+/* 顶栏左侧统一是面包屑（.crumbs / el-breadcrumb），工作台也不例外；问候语放进工作台的页头副标题（DESIGN「页面骨架」） */
 .content { padding: var(--space-gutter); display: flex; flex-direction: column; gap: var(--space-stack); container-type: inline-size; }   /* 看板 / 两栏按内容区宽度（容器查询）切单栏，侧栏宽度变了也成立 */
 
-/* ── 页头 ── */
+/* ── 页头（bridge/vue/PageHeader.vue 与 bridge/react/PageHeader.tsx 输出这组类）：每个一级页面一个 H1 text.heading × strong；副标题 text.body × text.secondary，与标题相距 spacing.1-5；
+   右侧是页面级操作（主操作金底），与标题顶部对齐——表格、图表自己的筛选留在各自的卡片里 ── */
 .page-head { display: flex; align-items: flex-start; gap: var(--space-stack); }
-.page-head h1 { margin: 0 0 var(--spacing-1); font-size: var(--text-heading-size); line-height: var(--text-heading-line-height); font-weight: var(--text-weight-strong); }
-.page-head p { margin: 0; color: var(--color-text-secondary); }
+.page-head h1 { margin: 0; font-size: var(--text-heading-size); line-height: var(--text-heading-line-height); font-weight: var(--text-weight-strong); }
+.page-head p { margin: var(--spacing-1-5) 0 0; color: var(--color-text-secondary); }
 .page-head .actions { margin-left: auto; display: flex; gap: var(--space-inline); align-items: center; flex: none; }
 /* 详情页标题行：标题 + 状态胶囊同一行 */
 .page-head .title-row { display: flex; align-items: center; gap: var(--spacing-3); flex-wrap: wrap; }
-.page-head .title-row h1 { margin: 0; }
-/* 看板页（工作台、报表）没有大标题：分区标签（小号、半粗、次要色、大写字距）+ 右侧操作 */
+/* 板块标题（bridge/vue/SectionHeader.vue 与 bridge/react/SectionHeader.tsx）：看板页在 H1 下分板块——二级标题 text.title-sm × strong × text.primary，
+   右侧放只作用于这一板块的筛选与操作（周期切换、导出日报），与标题垂直居中；页面级操作不放这里 */
+.section-head { display: flex; align-items: center; gap: var(--space-stack); }
+.section-head h2 { margin: 0; font-size: var(--text-title-sm-size); font-weight: var(--text-weight-strong); color: var(--color-text-primary); }
+.section-head .right { margin-left: auto; display: flex; align-items: center; gap: var(--space-inline); }
+/* 次要分组的小标签（小号、半粗、次要色、大写字距）：表单分组、侧栏区块这类不值一个标题的地方；板块标题用上面的 .section-head */
 .section-label { font-size: var(--text-small-size); font-weight: var(--text-weight-strong); color: var(--color-text-secondary); letter-spacing: var(--text-tracking-caps); text-transform: uppercase; }
-.page-bar { display: flex; align-items: center; gap: var(--space-inline); }
-.page-bar .right { margin-left: auto; display: flex; align-items: center; gap: var(--space-inline); }
 
 /* ── 内容区网格：看板（主栏 : 侧栏 = 1.8 : 1）、两栏详情（1.6 : 1）、纵向堆叠；内容区窄于 880px 收成单栏（见文件末的容器查询） ── */
 .board { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); gap: var(--space-stack); align-items: stretch; }
@@ -407,9 +409,9 @@ button.user { background: var(--color-action-quiet); border: 0; font: inherit; c
   .form-grid .span2 { grid-column: auto; }
   .two-col { grid-template-columns: 1fr; }
   .pager { flex-wrap: wrap; justify-content: center; }
-  .greet__hi, .topbar .user-name, .topbar .user-caret { display: none; }   /* 顶栏只留姓名与头像 */
-  .page-bar { flex-wrap: wrap; }
-  .page-bar .right { flex: 1 1 100%; flex-wrap: wrap; margin-left: 0; }
+  .topbar .user-name, .topbar .user-caret { display: none; }   /* 顶栏只留当前页面包屑与头像 */
+  .section-head { flex-wrap: wrap; }
+  .section-head .right { flex: 1 1 100%; flex-wrap: wrap; margin-left: 0; }   /* 板块的筛选整行换下 */
   .setting { flex-wrap: wrap; }
   .login { grid-template-columns: minmax(0, 1fr); }
   .login-brand { padding: var(--spacing-6) var(--spacing-4); }

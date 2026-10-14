@@ -6,6 +6,8 @@
 import { ref, reactive, onMounted, h } from 'vue'
 import { ElMessage, ElNotification } from 'element-plus'
 import { confirmBox } from './confirm.js'
+import PageHeader from './PageHeader.vue'
+import SectionHeader from './SectionHeader.vue'
 
 const input = ref('示例文本')
 const num = ref(3)
@@ -28,6 +30,7 @@ const checks = ref(['a'])
 const checkBtns = ref(['b'])
 const radio = ref('a')
 const radioBtn = ref('week')
+const period = ref('week')
 const rate = ref(3)
 const slider = ref(40)
 const sliderRange = ref([20, 60])
@@ -93,8 +96,24 @@ onMounted(() => {
 
 <template>
   <div class="ks-page">
-    <h1>组件走查</h1>
-    <p class="muted">Element Plus {{ '2.14' }} 全部组件的静息 / 悬停 / 聚焦 / 选中 / 禁用 / 出错状态，供桥接覆盖率扫描；不是业务页面。</p>
+    <PageHeader class="head" title="组件走查" :subtitle="`Element Plus ${'2.14'} 全部组件的静息 / 悬停 / 聚焦 / 选中 / 禁用 / 出错状态，供桥接覆盖率扫描；不是业务页面。`" />
+
+    <section class="ks" data-ks="page-head">
+      <h2>页头与板块标题（配方组件 PageHeader / SectionHeader）</h2>
+      <PageHeader title="采购申请" subtitle="全部部门的申请，默认按提交时间倒序">
+        <template #actions><el-button>导出</el-button><el-button type="primary">新建申请</el-button></template>
+      </PageHeader>
+      <PageHeader class="mt" title="CG-20260910-0001">
+        <template #status><span class="status info">采购中</span></template>
+        <template #actions><el-button>返回</el-button></template>
+      </PageHeader>
+      <SectionHeader class="mt" title="经营概览">
+        <template #actions>
+          <el-radio-group v-model="period" aria-label="统计周期"><el-radio-button value="day">今日</el-radio-button><el-radio-button value="week">本周</el-radio-button><el-radio-button value="month">本月</el-radio-button></el-radio-group>
+          <el-button>导出日报</el-button>
+        </template>
+      </SectionHeader>
+    </section>
 
     <section class="ks" data-ks="button">
       <h2>按钮</h2>
@@ -472,8 +491,7 @@ onMounted(() => {
 
 <style scoped>
 .ks-page { max-width: 1120px; }
-.ks-page h1 { margin: 0 0 var(--spacing-2); font-size: var(--text-heading-size); font-weight: var(--font-weight-semibold); }
-.ks-page .muted { margin: 0 0 var(--space-stack); color: var(--color-text-muted); }
+.ks-page .head { margin-bottom: var(--space-stack); }   /* 页头用配方组件；走查页不在内容区的 gap 里排，自己留出到第一组的距离 */
 .ks { background: var(--color-bg-surface); border: var(--border-width-default) solid var(--color-border-default); border-radius: var(--radius-lg); padding: var(--space-card); margin-bottom: var(--space-stack); box-shadow: 0 var(--elevation-card-y) var(--elevation-card-blur) var(--elevation-card-color); }
 .ks h2 { margin: 0 0 var(--spacing-4); font-size: var(--text-title-size); font-weight: var(--text-weight-label); }
 .mt { margin-top: var(--spacing-4); }

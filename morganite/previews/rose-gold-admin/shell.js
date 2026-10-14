@@ -75,7 +75,7 @@
     transfer: { group: "交易", name: "资金划转", icon: "swap", desc: "划转需要先完成账户绑定。绑定流程上线后，这里会列出可划转的账户与额度。" },
   };
   const ROUTES = {
-    dashboard: { nav: "dashboard", title: "工作台", greeting: true },
+    dashboard: { nav: "dashboard", title: "工作台", crumbs: [["概览"], ["工作台"]] },
     transactions: { nav: "transactions", title: "交易记录", crumbs: [["交易"], ["交易记录"]] },
     "transactions/new": { nav: "new", title: "新建交易", crumbs: [["交易"], ["交易记录", "#/transactions"], ["新建交易"]] },
     "transactions/detail": { nav: "transactions", title: "交易详情", crumbs: [["交易"], ["交易记录", "#/transactions"], ["TX20260928001"]] },
@@ -224,10 +224,8 @@
       if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
     });
     if (!r.bare) {
-      const lead = topbar.querySelector(".greet, .crumbs");
-      lead.outerHTML = r.greeting
-        ? '<div class="greet"><span class="greet__hi">2026 年 9 月 29 日 · 周二</span><b class="greet__name">欢迎回来，王晓明</b></div>'
-        : `<nav class="crumbs" aria-label="面包屑">${r.crumbs.map(([label, href], i) => (i ? '<span class="sep">/</span>' : "") + (href ? `<a href="${href}">${label}</a>` : `<span>${label}</span>`)).join("")}</nav>`;
+      // 顶栏左侧统一是面包屑（工作台也是；问候语在工作台页头的副标题里）；分隔符文字「/」由配方 .crumbs .sep 画成细箭头
+      topbar.querySelector(".crumbs").innerHTML = r.crumbs.map(([label, href], i) => (i ? '<span class="sep" aria-hidden="true">/</span>' : "") + (href ? `<a href="${href}">${label}</a>` : `<span>${label}</span>`)).join("");
     }
     if (r.empty) {
       document.getElementById("empty-title").textContent = `${r.empty.name}正在建设中`;

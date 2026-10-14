@@ -26,6 +26,8 @@ import { Progress } from '@/components/ui/progress'
 import { Separator } from '@/components/ui/separator'
 import { StatCard } from '@wycm9527/morganite/react/StatCard'
 import { TableSkeleton } from '@wycm9527/morganite/react/TableSkeleton'
+import { PageHeader } from '@wycm9527/morganite/react/PageHeader'
+import { SectionHeader } from '@wycm9527/morganite/react/SectionHeader'
 
 function Sec({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
@@ -40,7 +42,15 @@ export function KitchenSink() {
   const [checked, setChecked] = React.useState(true)
   return (
     <>
-      <div className="page-head"><div><h1>组件走查</h1><p>shadcn/ui 核心组件 × Morganite 桥接 · 亮 / 暗两种模式下强制 hover / focus 扫描</p></div></div>
+      <PageHeader title="组件走查" subtitle="shadcn/ui 核心组件 × Morganite 桥接 · 亮 / 暗两种模式下强制 hover / focus 扫描" />
+
+      <Sec id="page-head" title="页头与板块标题（配方组件 PageHeader / SectionHeader）">
+        <PageHeader title="采购申请" subtitle="全部部门的申请，默认按提交时间倒序" actions={<><Button variant="outline">导出</Button><Button>新建申请</Button></>} />
+        <Separator className="my-4" />
+        <PageHeader title="CG-20260910-0001" status={<span className="status info">采购中</span>} actions={<Button variant="outline">返回</Button>} />
+        <Separator className="my-4" />
+        <SectionHeader title="经营概览" actions={<Button variant="outline">导出日报</Button>} />
+      </Sec>
 
       <Sec id="buttons" title="按钮">
         <div className="row">

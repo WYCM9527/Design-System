@@ -77,7 +77,8 @@ textarea.input { height: auto; min-height: calc(var(--control-height-md) * 3); p
 .tab:hover { color: var(--color-text-primary); }
 .tab[aria-selected="true"] { color: var(--color-text-selected); font-weight: var(--text-weight-label); }
 .tab[aria-selected="true"]::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: var(--border-width-active); border-radius: var(--radius-full); background: var(--color-border-current); }
-.panel > .tabs { padding: 0 var(--space-card); }
+.panel > .tabs { padding: 0 var(--space-card); }   /* 贴在卡片顶部的标签栏当卡片标题头用：左右与 space.card 对齐，底线（.tabs 的 border-bottom）贯穿卡片 */
+.panel > .tabs .tab { padding: var(--spacing-4) 0; }   /* 上下 spacing.4，与带标题的 .card-head 同高（同 Element 桥接） */
 
 /* ── 分页（当前页 bg.surface + border.current + text.selected，其余 hover bg.hover） ── */
 .pagination .select { margin-left: var(--spacing-2); }
