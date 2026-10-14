@@ -8,6 +8,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { PageHeader } from '@wycm9527/morganite/react/PageHeader'
 import { ConfirmBar, useInlineConfirm } from '@wycm9527/morganite/react/ConfirmBar'
 
 export function FormPage() {
@@ -19,7 +20,7 @@ export function FormPage() {
   const requestClose = async () => { if (note.trim() && !(await leave.ask({ message: '备注尚未保存，关闭后会丢失。', confirmText: '确定关闭', cancelText: '继续填写' }))) return; setOpen(false); setNote('') }
   return (
     <>
-      <div className="page-head"><div><h1>新建供应商</h1><p>带 * 的为必填项</p></div></div>
+      <PageHeader title="新建供应商" subtitle="带 * 的为必填项" />
       <form className="form-page card-block" onSubmit={(e) => e.preventDefault()} noValidate>
         <div className="card-head"><h2>基本信息</h2></div>
         <div className="form-grid">

@@ -2,6 +2,7 @@
 import * as React from 'react'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { PageHeader } from '@wycm9527/morganite/react/PageHeader'
 import { StatCard } from '@wycm9527/morganite/react/StatCard'
 import { TrendChart } from '@wycm9527/morganite/react/TrendChart'
 import { EChart } from '@wycm9527/morganite/react/EChart'
@@ -15,7 +16,7 @@ const rows = [['20260908-0412', '鲜果时光', '上海', '¥156.70', 'success',
 export function Dashboard() {
   return (
     <>
-      <div className="page-head"><div><h1>工作台</h1><p>2026 年 9 月 8 日 星期二 · 下午好，王小明</p></div><div className="actions"><Button variant="outline">导出报表</Button><Button>发布配置</Button></div></div>
+      <PageHeader title="工作台" subtitle="2026 年 9 月 8 日 星期二 · 下午好，王小明" actions={<><Button variant="outline">导出报表</Button><Button>发布配置</Button></>} />
       <section className="stats">
         <StatCard label="今日订单" value="12,480" delta="+8.2%" note="较昨日" />
         <StatCard label="GMV（元）" value="¥386,210" delta="+12.4%" note="较昨日" />

@@ -1,6 +1,7 @@
 // 列表页：页头 / 筛选栏 / 条件标签 / 批量条 / 表格 / 分页——骨架全部来自 recipes.css，控件是 shadcn。
 import * as React from 'react'
 import { Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react'
+import { PageHeader } from '@wycm9527/morganite/react/PageHeader'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -24,7 +25,7 @@ export function Orders() {
   const toggle = (id: string) => setSelected((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]))
   return (
     <>
-      <div className="page-head"><div><h1>单据管理</h1><p>共 128 条 · 今日新增 1,286</p></div><div className="actions"><Button variant="outline">导出</Button><Button>新建订单</Button></div></div>
+      <PageHeader title="单据管理" subtitle="共 128 条 · 今日新增 1,286" actions={<><Button variant="outline">导出</Button><Button>新建订单</Button></>} />
       <section className="card-block">
         <div className="filter">
           <div className="conds">
