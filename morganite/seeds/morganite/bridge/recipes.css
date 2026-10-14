@@ -388,8 +388,8 @@ button.user { background: var(--color-action-quiet); border: 0; font: inherit; c
   .is-collapsed .nav .nav-label { display: inline; }
   .menu-btn { display: inline-grid; }
   .collapse-btn { display: none; }   /* 折叠切换在手机上无意义（侧栏是抽屉） */
-  .content { padding: var(--spacing-4); gap: var(--spacing-3); }
-  .topbar { padding: 0 var(--spacing-4); }
+  .content { padding: var(--space-stack); gap: var(--spacing-3); }
+  .topbar { padding: 0 var(--space-stack); }
   .topbar .search, .topbar label.search { display: none; }   /* 顶栏全局搜索在手机上收起（页面内搜索仍在筛选栏）；label 写法的特异性更高，要单独列出 */
   .page-head { flex-wrap: wrap; }
   .page-head .actions { flex: 1 1 100%; flex-wrap: wrap; margin-left: 0; justify-content: flex-start; }   /* 覆盖桌面的 flex:none：动作区整行换下、内部可换行 */

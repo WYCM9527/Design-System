@@ -608,13 +608,13 @@
     },
     "stack": {
       "$type": "dimension",
-      "$value": "{spacing.6}",
-      "$description": "[观察] 工作台卡片栅格 gutter 24px，103 处"
+      "$value": "{spacing.4}",
+      "$description": "[确认] 板块之间 16px，比卡片内边距 space.card 窄一档（用户 2026-10-14：板块间距稍微紧凑一些，三种收法对比后选定）；原为演示站工作台卡片栅格 gutter 24px（103 处）"
     },
     "gutter": {
       "$type": "dimension",
-      "$value": "{spacing.10}",
-      "$description": "[观察] ProLayout 页面容器左右内边距 40px（上下 32px）"
+      "$value": "{spacing.6}",
+      "$description": "[确认] 内容区四周留白 24px，与卡片内边距 space.card 同宽（用户 2026-10-14 与 space.stack 一起收紧）；原为 ProLayout 页面容器左右内边距 40px（上下 32px）"
     },
     "card": {
       "$type": "dimension",
