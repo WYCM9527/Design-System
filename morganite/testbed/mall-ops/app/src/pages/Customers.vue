@@ -2,6 +2,7 @@
 import { computed, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Search, Filter, Download } from '@icon-park/vue-next'
+import PageHeader from '@wycm9527/morganite/vue/PageHeader.vue'
 import { can, needPerm } from '../store'
 import { customers, tone, yen, int } from '../mock/data'
 
@@ -30,15 +31,11 @@ const reset = () => { Object.assign(draft, { keyword: '', level: '', tags: [], c
 </script>
 
 <template>
-  <div class="page-head">
-    <div>
-      <h1>客户管理</h1>
-      <p>查看会员等级、消费与标签；点客户进入详情发券或打标签。</p>
-    </div>
-    <div class="actions">
+  <PageHeader title="客户管理" subtitle="查看会员等级、消费与标签；点客户进入详情发券或打标签。">
+    <template #actions>
       <el-tooltip :disabled="can('report.export')" :content="needPerm('report.export')"><span><el-button :icon="Download" :disabled="!can('report.export')" @click="ElMessage.success(`已导出 ${rows.length} 位客户`)">导出</el-button></span></el-tooltip>
-    </div>
-  </div>
+    </template>
+  </PageHeader>
 
   <el-card class="flat" shadow="always">
     <div class="filter">

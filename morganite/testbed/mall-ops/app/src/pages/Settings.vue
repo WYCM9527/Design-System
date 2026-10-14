@@ -2,6 +2,7 @@
 import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Phone, Mail } from '@icon-park/vue-next'
+import PageHeader from '@wycm9527/morganite/vue/PageHeader.vue'
 import { confirmDanger } from '@wycm9527/morganite/vue/confirm.js'
 import { store, setTheme, setPreferCollapsed, demo } from '../store'
 
@@ -17,12 +18,7 @@ const closeAccount = () => confirmDanger('注销后你将无法登录，名下�
 </script>
 
 <template>
-  <div class="page-head">
-    <div>
-      <h1>系统设置</h1>
-      <p>个人资料、通知、安全与外观偏好，修改后立即生效。</p>
-    </div>
-  </div>
+  <PageHeader title="系统设置" subtitle="个人资料、通知、安全与外观偏好，修改后立即生效。" />
 
   <el-card class="flat" shadow="always">
     <el-tabs v-model="tab">

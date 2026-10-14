@@ -2,6 +2,7 @@
 import { computed, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Plus, Search, ViewList, AppStore } from '@icon-park/vue-next'
+import PageHeader from '@wycm9527/morganite/vue/PageHeader.vue'
 import { confirmDanger } from '@wycm9527/morganite/vue/confirm.js'
 import { can, needPerm, demo } from '../store'
 import { campaigns, coupons, tone, yen, int } from '../mock/data'
@@ -30,15 +31,11 @@ async function create() {
 </script>
 
 <template>
-  <div class="page-head">
-    <div>
-      <h1>营销中心</h1>
-      <p>配置满减、折扣、秒杀与赠品活动，管理优惠券的发放与核销。</p>
-    </div>
-    <div class="actions">
+  <PageHeader title="营销中心" subtitle="配置满减、折扣、秒杀与赠品活动，管理优惠券的发放与核销。">
+    <template #actions>
       <el-tooltip :disabled="can('campaign.edit')" :content="needPerm('campaign.edit')"><span><el-button type="primary" :icon="Plus" :disabled="!can('campaign.edit')" @click="open = true">新建活动</el-button></span></el-tooltip>
-    </div>
-  </div>
+    </template>
+  </PageHeader>
 
   <el-card class="flat" shadow="always">
     <el-tabs v-model="tab">

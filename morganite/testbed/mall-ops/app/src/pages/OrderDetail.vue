@@ -3,6 +3,7 @@ import { computed, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { Copy, Edit, Down, Printer, Return, Delete, Truck } from '@icon-park/vue-next'
+import PageHeader from '@wycm9527/morganite/vue/PageHeader.vue'
 import ConfirmBar from '@wycm9527/morganite/vue/ConfirmBar.vue'
 import { useInlineConfirm } from '@wycm9527/morganite/vue/inlineConfirm.js'
 import { confirmDanger } from '@wycm9527/morganite/vue/confirm.js'
@@ -72,12 +73,11 @@ async function submitShip() {
   </el-card>
 
   <template v-else>
-    <div class="page-head">
-      <div>
-        <div class="title-row"><h1>{{ o.items[0].name }}{{ o.items.length > 1 ? ` 等 ${o.items.length} 件` : '' }}</h1><span class="status" :class="tone(o.status)">{{ o.status }}</span></div>
-        <p>订单号 <span class="mono">{{ o.id }}</span> · 下单于 {{ o.time }} · {{ o.channel }}</p>
-      </div>
-      <div class="actions">
+    <PageHeader>
+      <template #title>{{ o.items[0].name }}{{ o.items.length > 1 ? ` 等 ${o.items.length} 件` : '' }}</template>
+      <template #status><span class="status" :class="tone(o.status)">{{ o.status }}</span></template>
+      <template #subtitle>订单号 <span class="mono">{{ o.id }}</span> · 下单于 {{ o.time }} · {{ o.channel }}</template>
+      <template #actions>
         <el-button :icon="Copy" @click="copy">复制订单号</el-button>
         <el-tooltip :disabled="can('order.note')" :content="needPerm('order.note')"><span><el-button :icon="Edit" :disabled="!can('order.note')" @click="noteOpen = true">修改备注</el-button></span></el-tooltip>
         <el-dropdown trigger="click" @command="onMore">
@@ -91,8 +91,8 @@ async function submitShip() {
           </template>
         </el-dropdown>
         <el-tooltip v-if="canShip" :disabled="can('order.ship')" :content="needPerm('order.ship')"><span><el-button type="primary" :icon="Truck" :disabled="!can('order.ship')" @click="shipOpen = true">发货</el-button></span></el-tooltip>
-      </div>
-    </div>
+      </template>
+    </PageHeader>
 
     <el-card class="flat panel" shadow="always">
       <div class="card-head"><h2>订单进度</h2></div>

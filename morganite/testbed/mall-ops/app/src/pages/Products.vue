@@ -3,6 +3,7 @@ import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { Search, Filter, Plus, Upload, Close, Commodity, ViewList, AppStore } from '@icon-park/vue-next'
+import PageHeader from '@wycm9527/morganite/vue/PageHeader.vue'
 import TableSkeleton from '@wycm9527/morganite/vue/TableSkeleton.vue'
 import { can, needPerm, demo } from '../store'
 import { products, lowStock, CATEGORIES, tone, yen, int } from '../mock/data'
@@ -47,16 +48,12 @@ function toggleShelf(p, v) { ElMessage.success(v ? `「${p.name}」已上架` : 
 </script>
 
 <template>
-  <div class="page-head">
-    <div>
-      <h1>商品管理</h1>
-      <p>维护商品资料、价格与上下架；库存低于安全线的商品会标为告急。</p>
-    </div>
-    <div class="actions">
+  <PageHeader title="商品管理" subtitle="维护商品资料、价格与上下架；库存低于安全线的商品会标为告急。">
+    <template #actions>
       <el-tooltip :disabled="can('product.edit')" :content="needPerm('product.edit')"><span><el-button :icon="Upload" :disabled="!can('product.edit')" @click="ElMessage.info('批量导入模板已下载')">批量导入</el-button></span></el-tooltip>
       <el-tooltip :disabled="can('product.edit')" :content="needPerm('product.edit')"><span><el-button type="primary" :icon="Plus" :disabled="!can('product.edit')" @click="router.push('/products/new')">发布商品</el-button></span></el-tooltip>
-    </div>
-  </div>
+    </template>
+  </PageHeader>
 
   <el-alert v-if="lowStock.length" type="warning" show-icon :closable="false">
     <template #title>{{ lowStock.length }} 个在售商品库存低于安全线（20 件），大促前请及时补货。<button class="link" type="button" @click="onlyLow">只看告急商品</button></template>

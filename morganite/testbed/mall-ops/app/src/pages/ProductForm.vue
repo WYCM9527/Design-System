@@ -3,6 +3,7 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { Plus, Upload } from '@icon-park/vue-next'
+import PageHeader from '@wycm9527/morganite/vue/PageHeader.vue'
 import { can, demo } from '../store'
 import { products, CATEGORIES, yen } from '../mock/data'
 
@@ -60,13 +61,7 @@ async function submit(draft) {
 </script>
 
 <template>
-  <div class="page-head">
-    <div>
-      <h1>{{ ro ? '查看商品' : editing ? '编辑商品' : '发布商品' }}</h1>
-      <p v-if="ro">你当前的角色没有商品编辑权限，以下内容只读；需要修改请联系运营。</p>
-      <p v-else>填写商品资料，提交后进入品控审核；带 * 的为必填项。</p>
-    </div>
-  </div>
+  <PageHeader :title="ro ? '查看商品' : editing ? '编辑商品' : '发布商品'" :subtitle="ro ? '你当前的角色没有商品编辑权限，以下内容只读；需要修改请联系运营。' : '填写商品资料，提交后进入品控审核；带 * 的为必填项。'" />
 
   <el-alert v-if="!ro" type="info" show-icon :closable="false" title="贵金属商品需要上传材质证书" description="18K 金、铂金、足银类商品提交审核时须附检测证书照片，品控预计 1 个工作日内完成。" />
 

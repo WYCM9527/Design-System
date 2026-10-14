@@ -2,6 +2,7 @@
 import { computed, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Search, Filter, Picture } from '@icon-park/vue-next'
+import PageHeader from '@wycm9527/morganite/vue/PageHeader.vue'
 import ConfirmBar from '@wycm9527/morganite/vue/ConfirmBar.vue'
 import { useInlineConfirm } from '@wycm9527/morganite/vue/inlineConfirm.js'
 import { can, needPerm, demo } from '../store'
@@ -41,12 +42,7 @@ async function submitAudit() {
 </script>
 
 <template>
-  <div class="page-head">
-    <div>
-      <h1>售后退款</h1>
-      <p>审核仅退款、退货退款与换货申请；超过 48 小时未处理的申请系统会自动同意。</p>
-    </div>
-  </div>
+  <PageHeader title="售后退款" subtitle="审核仅退款、退货退款与换货申请；超过 48 小时未处理的申请系统会自动同意。" />
 
   <el-card class="flat" shadow="always">
     <el-tabs v-model="tab" @tab-change="page = 1">

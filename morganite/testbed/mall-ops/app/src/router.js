@@ -3,14 +3,14 @@ import AdminLayout from './layouts/AdminLayout.vue'
 import { canSee } from './store'
 
 // hash 路由：构建产物以 file:// 或静态服务打开都能直达任意页面（验收工具依赖这一点）
-// meta.crumbs：面包屑前几级（[文字, 链接?]），最后一级是页面标题或 crumb(route) 的返回值；meta.greeting：顶栏显示问候语而不是面包屑
+// meta.crumbs：面包屑前几级（[文字, 链接?]，分组不带链接、不可点），最后一级是页面标题或 crumb(route) 的返回值；所有页面（含工作台）顶栏左侧都是面包屑
 const page = (name) => () => import(`./pages/${name}.vue`)
 const routes = [
   { path: '/login', component: page('Login'), meta: { title: '登录', bare: true } },
   {
     path: '/', component: AdminLayout,
     children: [
-      { path: '', name: 'dashboard', component: page('Dashboard'), meta: { title: '工作台', menu: 'dashboard', greeting: true } },
+      { path: '', name: 'dashboard', component: page('Dashboard'), meta: { title: '工作台', menu: 'dashboard', crumbs: [['概览']] } },
       { path: 'analytics', component: page('Analytics'), meta: { title: '数据报表', menu: 'analytics', crumbs: [['概览']] } },
       { path: 'orders', component: page('Orders'), meta: { title: '订单管理', menu: 'orders', crumbs: [['交易']] } },
       { path: 'orders/:id', component: page('OrderDetail'), meta: { title: '订单详情', menu: 'orders', crumbs: [['交易'], ['订单管理', '/orders']], crumb: (r) => r.params.id } },

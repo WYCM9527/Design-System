@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { Ticket, Tag, Lock } from '@icon-park/vue-next'
+import PageHeader from '@wycm9527/morganite/vue/PageHeader.vue'
 import StatCard from '@wycm9527/morganite/vue/StatCard.vue'
 import { confirmDanger } from '@wycm9527/morganite/vue/confirm.js'
 import { can, needPerm, demo } from '../store'
@@ -32,19 +33,15 @@ function freeze() {
   </el-card>
 
   <template v-else>
-    <div class="page-head">
-      <div class="head-main">
-        <span class="avatar">{{ c.name[0] }}</span>
-        <div>
-          <div class="title-row"><h1>{{ c.name }}</h1><span class="badge" :class="c.levelIx === 3 ? 'brand' : 'neutral'">{{ c.level }}</span><span class="status" :class="tone(c.status)">{{ c.status }}</span></div>
-          <p>客户 ID <span class="mono">{{ c.id }}</span> · {{ c.channel }}注册于 {{ c.joined }} · 生日 {{ c.birthday }}</p>
-        </div>
-      </div>
-      <div class="actions">
+    <PageHeader :title="c.name">
+      <template #leading><span class="avatar">{{ c.name[0] }}</span></template>
+      <template #status><span class="badge" :class="c.levelIx === 3 ? 'brand' : 'neutral'">{{ c.level }}</span><span class="status" :class="tone(c.status)">{{ c.status }}</span></template>
+      <template #subtitle>客户 ID <span class="mono">{{ c.id }}</span> · {{ c.channel }}注册于 {{ c.joined }} · 生日 {{ c.birthday }}</template>
+      <template #actions>
         <el-tooltip :disabled="can('coupon.issue')" :content="needPerm('coupon.issue')"><span><el-button :icon="Ticket" :disabled="!can('coupon.issue') || c.status === '已冻结'" @click="couponOpen = true">发优惠券</el-button></span></el-tooltip>
         <el-tooltip :disabled="can('customer.edit')" :content="needPerm('customer.edit')"><span><el-button type="danger" plain :icon="Lock" :disabled="!can('customer.edit') || c.status === '已冻结'" @click="freeze">冻结</el-button></span></el-tooltip>
-      </div>
-    </div>
+      </template>
+    </PageHeader>
 
     <div class="stats">
       <StatCard label="累计消费" :value="yen(c.spent)" note="近 3 年" />
@@ -107,7 +104,6 @@ function freeze() {
 </template>
 
 <style scoped>
-.head-main { display: flex; align-items: center; gap: var(--spacing-4); }
 .profile { display: grid; gap: var(--space-stack); }
 .tag-edit { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-2); }
 .coupon-pick { display: grid; gap: var(--spacing-3); }

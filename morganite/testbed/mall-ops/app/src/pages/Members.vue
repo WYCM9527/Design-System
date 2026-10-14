@@ -2,6 +2,7 @@
 import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Plus } from '@icon-park/vue-next'
+import PageHeader from '@wycm9527/morganite/vue/PageHeader.vue'
 import { confirmDanger } from '@wycm9527/morganite/vue/confirm.js'
 import { ROLES, PERM_LABELS } from '../store'
 import { members } from '../mock/data'
@@ -40,13 +41,9 @@ const remove = (m) => confirmDanger(`移除后 ${m.name} 立即无法登录，�
 </script>
 
 <template>
-  <div class="page-head">
-    <div>
-      <h1>成员与角色</h1>
-      <p>邀请成员、分配角色；角色决定能看到哪些菜单、能做哪些操作。</p>
-    </div>
-    <div class="actions"><el-button type="primary" :icon="Plus" @click="inviteOpen = true">邀请成员</el-button></div>
-  </div>
+  <PageHeader title="成员与角色" subtitle="邀请成员、分配角色；角色决定能看到哪些菜单、能做哪些操作。">
+    <template #actions><el-button type="primary" :icon="Plus" @click="inviteOpen = true">邀请成员</el-button></template>
+  </PageHeader>
 
   <el-card class="flat" shadow="always">
     <div class="card-head"><h2>成员</h2><span class="sub">{{ list.length }} 人 · 停用 {{ list.filter((m) => !m.enabled).length }} 人</span></div>

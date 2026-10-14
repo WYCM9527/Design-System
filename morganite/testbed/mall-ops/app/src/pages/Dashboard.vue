@@ -3,12 +3,14 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { Download, Plus, Right } from '@icon-park/vue-next'
+import PageHeader from '@wycm9527/morganite/vue/PageHeader.vue'
+import SectionHeader from '@wycm9527/morganite/vue/SectionHeader.vue'
 import StatCard from '@wycm9527/morganite/vue/StatCard.vue'
 import TrendChart from '@wycm9527/morganite/vue/TrendChart.vue'
 import EChart from '@wycm9527/morganite/vue/EChart.vue'
 import TableSkeleton from '@wycm9527/morganite/vue/TableSkeleton.vue'
 import { rankBars } from '@wycm9527/morganite/echarts'
-import { can, needPerm, demo } from '../store'
+import { store, can, needPerm, demo } from '../store'
 import { trend, channelShare, topProducts, todos, goals, orders, tone, yen } from '../mock/data'
 
 const router = useRouter()
@@ -16,6 +18,7 @@ const state = demo('state')          // ?state=loading | empty（PRD 4.2）
 const loading = state === 'loading'
 const empty = state === 'empty'
 const period = ref('week')
+const today = '2026 年 10 月 9 日 周五'   // 问候语在页头副标题里（顶栏统一是面包屑）
 
 const series = [{ name: '本期', data: trend.current }, { name: '上期', data: trend.previous }]
 const rank = () => rankBars({ categories: topProducts.map((p) => p.name), values: topProducts.map((p) => p.sales), formatter: (v) => `${v} 件` })
@@ -27,9 +30,16 @@ const recent = orders.slice(0, 6)
 </script>
 
 <template>
-  <div class="page-bar">
-    <span class="section-label">经营概览</span>
-    <div class="right">
+  <PageHeader title="工作台" :subtitle="`欢迎回来，${store.user.name} · ${today}`">
+    <template #actions>
+      <el-tooltip :disabled="can('product.edit')" :content="needPerm('product.edit')" placement="bottom">
+        <span><el-button type="primary" :icon="Plus" :disabled="!can('product.edit')" @click="router.push('/products/new')">发布商品</el-button></span>
+      </el-tooltip>
+    </template>
+  </PageHeader>
+
+  <SectionHeader title="经营概览">
+    <template #actions>
       <el-radio-group v-model="period" aria-label="统计周期">
         <el-radio-button value="today">今日</el-radio-button>
         <el-radio-button value="week">本周</el-radio-button>
@@ -38,11 +48,8 @@ const recent = orders.slice(0, 6)
       <el-tooltip :disabled="can('report.export')" :content="needPerm('report.export')" placement="bottom">
         <span><el-button :icon="Download" :disabled="!can('report.export')" @click="ElMessage.success('日报已开始生成，完成后在消息中心下载')">导出日报</el-button></span>
       </el-tooltip>
-      <el-tooltip :disabled="can('product.edit')" :content="needPerm('product.edit')" placement="bottom">
-        <span><el-button type="primary" :icon="Plus" :disabled="!can('product.edit')" @click="router.push('/products/new')">发布商品</el-button></span>
-      </el-tooltip>
-    </div>
-  </div>
+    </template>
+  </SectionHeader>
 
   <div class="stats">
     <template v-if="loading"><div v-for="i in 4" :key="i" class="stat-card"><el-skeleton :rows="2" animated /></div></template>

@@ -1,6 +1,7 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
 import { Left } from '@icon-park/vue-next'
+import PageHeader from '@wycm9527/morganite/vue/PageHeader.vue'
 import { announcements } from '../mock/data'
 
 const route = useRoute()
@@ -13,13 +14,11 @@ const a = announcements.find((x) => x.id === route.params.id)
     <div class="empty"><div class="illu" /><b>公告不存在或已撤回</b><el-button @click="router.push('/notices')">返回消息中心</el-button></div>
   </el-card>
   <template v-else>
-    <div class="page-head">
-      <div>
-        <div class="title-row"><h1>{{ a.title }}</h1><span v-if="a.id === 'a1'" class="badge brand">置顶</span></div>
-        <p>{{ a.author }} · 发布于 <span class="num">{{ a.time }}</span> · 全员可见</p>
-      </div>
-      <div class="actions"><el-button :icon="Left" @click="router.push('/notices')">返回</el-button></div>
-    </div>
+    <PageHeader :title="a.title">
+      <template v-if="a.id === 'a1'" #status><span class="badge brand">置顶</span></template>
+      <template #subtitle>{{ a.author }} · 发布于 <span class="num">{{ a.time }}</span> · 全员可见</template>
+      <template #actions><el-button :icon="Left" @click="router.push('/notices')">返回</el-button></template>
+    </PageHeader>
     <el-card class="flat" shadow="always">
       <article class="card-body article">
         <p>各位同事：双十一大促（10 月 20 日 – 11 月 11 日）期间订单量预计为平日的 4–6 倍。为保证发货时效与售后体验，现将安排通知如下。</p>

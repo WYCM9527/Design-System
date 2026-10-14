@@ -2,6 +2,7 @@
 import { computed, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Right } from '@icon-park/vue-next'
+import PageHeader from '@wycm9527/morganite/vue/PageHeader.vue'
 import { store, demo } from '../store'
 import { notices, announcements } from '../mock/data'
 
@@ -19,13 +20,9 @@ function open(n) { if (!read[n.id]) { read[n.id] = true; store.unread = Math.max
 </script>
 
 <template>
-  <div class="page-head">
-    <div>
-      <h1>消息中心</h1>
-      <p>订单异常、待审核事项与系统通知；公告由运营中心发布。</p>
-    </div>
-    <div class="actions"><el-button :disabled="!unread || empty" @click="readAll">全部标为已读</el-button></div>
-  </div>
+  <PageHeader title="消息中心" subtitle="订单异常、待审核事项与系统通知；公告由运营中心发布。">
+    <template #actions><el-button :disabled="!unread || empty" @click="readAll">全部标为已读</el-button></template>
+  </PageHeader>
 
   <el-card class="flat panel" shadow="always">
     <div class="card-head"><h2>公告</h2></div>

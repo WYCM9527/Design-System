@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Download } from '@icon-park/vue-next'
+import PageHeader from '@wycm9527/morganite/vue/PageHeader.vue'
 import EChart from '@wycm9527/morganite/vue/EChart.vue'
 import StatCard from '@wycm9527/morganite/vue/StatCard.vue'
 import { trendLine, barGradient } from '@wycm9527/morganite/echarts'
@@ -53,18 +54,19 @@ const summary = ({ columns }) => columns.map((col, i) => (i === 0 ? '合计' : c
 </script>
 
 <template>
-  <div class="page-bar">
-    <span class="section-label">数据报表</span>
-    <div class="right">
+  <!-- 统计区间、粒度、导出都作用于整页（两个标签共用），所以放在页头右侧；没有副标题 -->
+  <PageHeader title="数据报表">
+    <template #actions>
       <el-date-picker v-model="range" type="daterange" value-format="YYYY-MM-DD" start-placeholder="开始" end-placeholder="结束" aria-label="统计区间" class="w-date" />
       <el-segmented v-model="grain" :options="[{ label: '日', value: 'day' }, { label: '周', value: 'week' }, { label: '月', value: 'month' }]" aria-label="粒度" />
       <el-tooltip :disabled="can('report.export')" :content="needPerm('report.export')"><span><el-button :icon="Download" :disabled="!can('report.export')" @click="ElMessage.success('报表已开始导出')">导出</el-button></span></el-tooltip>
-    </div>
-  </div>
+    </template>
+  </PageHeader>
 
-  <el-tabs v-model="tab">
+  <!-- 页面级标签只切换下方内容（pane 留空）；没有「查看结算」权限时只剩一个标签，整个标签栏不显示 -->
+  <el-tabs v-if="can('finance.view')" v-model="tab">
     <el-tab-pane label="销售分析" name="sales" />
-    <el-tab-pane v-if="can('finance.view')" label="渠道结算" name="settlement" />
+    <el-tab-pane label="渠道结算" name="settlement" />
   </el-tabs>
 
   <template v-if="tab === 'sales'">

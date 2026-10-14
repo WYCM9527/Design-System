@@ -3,6 +3,7 @@ import { computed, nextTick, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { Search, Filter, Download, Close, Refresh } from '@icon-park/vue-next'
+import PageHeader from '@wycm9527/morganite/vue/PageHeader.vue'
 import TableSkeleton from '@wycm9527/morganite/vue/TableSkeleton.vue'
 import { confirmDanger } from '@wycm9527/morganite/vue/confirm.js'
 import { can, needPerm, demo } from '../store'
@@ -68,17 +69,13 @@ function batchClose() {
 </script>
 
 <template>
-  <div class="page-head">
-    <div>
-      <h1>订单管理</h1>
-      <p>查询、筛选与批量处理近 90 天的订单，点订单号进入详情。</p>
-    </div>
-    <div class="actions">
+  <PageHeader title="订单管理" subtitle="查询、筛选与批量处理近 90 天的订单，点订单号进入详情。">
+    <template #actions>
       <el-tooltip :disabled="can('report.export')" :content="needPerm('report.export')">
         <span><el-button :icon="Download" :disabled="!can('report.export')" @click="ElMessage.success(`已按当前条件导出 ${rows.length} 条`)">导出</el-button></span>
       </el-tooltip>
-    </div>
-  </div>
+    </template>
+  </PageHeader>
 
   <div class="stat-strip" role="group" aria-label="按状态快速筛选">
     <button class="cell is-clickable" :class="{ 'is-active': !quick }" type="button" @click="quick = ''; page = 1">全部<span class="value">{{ source.length }}</span></button>

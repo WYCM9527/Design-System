@@ -39,8 +39,8 @@ const groups = [
 ]
 const visibleGroups = computed(() => groups.map((g) => ({ ...g, items: g.items.filter((i) => canSee(i.key)) })).filter((g) => g.items.length))
 const menuCollapsed = computed(() => collapsed.value && !isMobile.value)
+// 顶栏左侧统一是面包屑（工作台也是，问候语在工作台页头的副标题里）；分隔符「/」由桥接画成细箭头
 const crumbs = computed(() => [...(route.meta.crumbs || []), [route.meta.crumb ? route.meta.crumb(route) : route.meta.title]])
-const today = '2026 年 10 月 9 日 · 周五'
 
 function onCommand(cmd) {
   if (cmd === 'logout') router.push('/login')
@@ -72,8 +72,7 @@ function onCommand(cmd) {
     <div class="main">
       <header class="topbar">
         <button class="iconbtn menu-btn" type="button" aria-label="打开导航" aria-controls="sidebar" :aria-expanded="navOpen" @click="navOpen = true"><HamburgerButton class="i-icon--lg" /></button>
-        <div v-if="route.meta.greeting" class="greet"><span class="greet__hi">{{ today }}</span><b class="greet__name">欢迎回来，{{ store.user.name }}</b></div>
-        <el-breadcrumb v-else separator="/" aria-label="面包屑">
+        <el-breadcrumb separator="/" aria-label="面包屑">
           <el-breadcrumb-item v-for="([label, to], i) in crumbs" :key="i" :to="to">{{ label }}</el-breadcrumb-item>
         </el-breadcrumb>
         <el-input class="search" placeholder="搜索订单号 / 商品 / 客户" aria-label="全局搜索" clearable>
