@@ -47,3 +47,7 @@
 # 升级到 0.2.0（2026-10-15）
 
 项目清单一直停在 0.1.1，快照（指向种子的符号链接）早已是 0.2.0：桥接、配方和 `PageHeader` 是新的，项目自己的 token CSS（`design-system/dist`，由工作副本构建）还是 0.1.1。新桥接引用的卡片标题色、数据填充渐变、曲线底线虚线、提示气泡投影 4 个 token 在这里不存在，间距等也是旧值，页面是新旧混着的。用户同意后运行 `ds.mjs upgrade`：直接更新 7 个工作副本文件（两份 token、暗色 token 与说明、`DESIGN.md`、`AUDIT.md`、`preview.local.css`），没有冲突，页面不用改。build、guard `current`，`citrine-accept all` 四步通过：5 个页面状态 × 亮暗的问题项全 0（tinyTargets 76 为提示项），组件走查亮 / 暗各 87 个元素 0 发现，992px / 390px 与焦点通过。实测工作台卡片标题 14px / 600 / `rgb(33, 33, 33)`，`space.stack` 16px、`space.gutter` 24px。
+
+# 升级到 0.3.0（2026-10-15）
+
+种子 0.3.0 把侧栏菜单项改为 40px 高、同组相邻项间距 12px、文字 500（用户指定，见种子 CHANGELOG 0.3.0）。用户同意后运行 `ds.mjs upgrade`：直接更新语义 token、`DESIGN.md`、`AUDIT.md`，没有冲突，页面不用改。实测：4 个菜单项都是 40px 高、500 字重（当前项同字重，分组标题仍是 400），「业务」组两项相隔 12px；992px 折叠后分组标题隐藏，组与组之间同样隔 12px（种子在实测拾光商城折叠态时补上）；390px 抽屉与展开态一致。build、guard `current`，`citrine-accept all` 四步通过：5 个页面状态 × 亮暗的问题项全 0（tinyTargets 76 为提示项），组件走查亮 / 暗各 87 个元素 0 发现，992px / 390px 与焦点通过。

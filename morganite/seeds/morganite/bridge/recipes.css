@@ -74,14 +74,16 @@ td .link, .card-head .link, .batch .link, .empty .link, .more-link { display: in
 .app-brand .logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .is-collapsed .app-brand { padding: 0; justify-content: center; }
 .is-collapsed .app-brand > :not(.logo) { display: none; }   /* 纯 CSS 壳层（无框架 v-if）折叠时隐藏品牌文字 */
-.sidebar .el-menu { border-right: 0; flex: 1; padding-top: var(--spacing-2); }
+.sidebar .el-menu { border-right: 0; flex: 1; padding-top: var(--spacing-2); overflow: hidden auto; }   /* 侧栏是 100vh 且裁切溢出：窗口不够高时菜单区自己滚动，否则底部的项被裁掉、点不到 */
 /* 不用 Element 菜单时的侧栏导航（React / 静态页）：分组标题 + 链接，当前项亮色主色底块 + 白字白图标、暗色金色暗底 + 亮金字，不加指示条，与 el-menu 桥接同一形态 */
-.nav { flex: 1; padding: var(--spacing-2); display: flex; flex-direction: column; gap: var(--spacing-0-5); overflow: hidden auto; }
+.nav { flex: 1; padding: var(--spacing-2); display: flex; flex-direction: column; overflow: hidden auto; }
+.nav :is(a, button) + :is(a, button) { margin-top: var(--layout-sidebar-item-gap); }   /* 间距只给同组相邻项，分组标题靠自己的上下留白，与 el-menu 一致 */
 .nav-group { font-size: var(--text-caption-size); color: var(--color-text-sidebar-muted); padding: var(--spacing-3-5) var(--spacing-3) var(--spacing-1-5); white-space: nowrap; }
-.nav a, .nav button { display: flex; align-items: center; gap: var(--spacing-2-5); min-height: var(--control-height-md); padding: 0 var(--spacing-3); border-radius: var(--radius-md); color: var(--color-text-sidebar); position: relative; text-decoration: none; background: transparent; border: 0; font: inherit; width: 100%; text-align: left; cursor: pointer; white-space: nowrap; }
+.nav a, .nav button { display: flex; align-items: center; gap: var(--spacing-2-5); min-height: var(--layout-sidebar-item-height); padding: 0 var(--spacing-3); border-radius: var(--radius-md); color: var(--color-text-sidebar); position: relative; text-decoration: none; background: transparent; border: 0; font: inherit; font-weight: var(--text-weight-nav); width: 100%; text-align: left; cursor: pointer; white-space: nowrap; }
 .nav a:hover, .nav button:hover { background: var(--color-bg-sidebar-hover); }
-.nav a.active, .nav button.active { background: var(--color-bg-sidebar-selected); color: var(--color-text-sidebar-selected); font-weight: var(--text-weight-label); }   /* 图标随文字色；不加粗、不加指示条 */
+.nav a.active, .nav button.active { background: var(--color-bg-sidebar-selected); color: var(--color-text-sidebar-selected); font-weight: var(--text-weight-nav); }   /* 图标随文字色；与其他项同字重、不加指示条 */
 .is-collapsed .nav-group { display: none; }
+.is-collapsed .nav .nav-group:not(:first-child) + :is(a, button) { margin-top: var(--layout-sidebar-item-gap); }   /* 标题隐藏后相邻两组的项会贴在一起：组与组之间也留同样的项间距 */
 .is-collapsed .nav a, .is-collapsed .nav button { justify-content: center; padding: 0; }
 .is-collapsed .nav .nav-label { display: none; }
 .sidebar-foot { padding: var(--spacing-3) var(--spacing-4); border-top: var(--border-width-default) solid var(--color-border-sidebar); font-size: var(--text-small-size); color: var(--color-text-sidebar-muted); white-space: nowrap; overflow: hidden; }
@@ -386,6 +388,7 @@ button.user { background: var(--color-action-quiet); border: 0; font: inherit; c
   .is-collapsed .app-brand { padding: 0 var(--spacing-4); justify-content: flex-start; }   /* 抽屉里永远是展开形态：折叠态样式全部还原 */
   .is-collapsed .app-brand > :not(.logo) { display: inline; }
   .is-collapsed .nav-group { display: block; }
+  .is-collapsed .nav .nav-group:not(:first-child) + :is(a, button) { margin-top: 0; }
   .is-collapsed .nav a, .is-collapsed .nav button { justify-content: flex-start; padding: 0 var(--spacing-3); }
   .is-collapsed .nav .nav-label { display: inline; }
   .menu-btn { display: inline-grid; }

@@ -293,6 +293,9 @@
   --layout-search-width: var(--size-search);
   --size-sidebar-collapsed: 64px;
   --layout-sidebar-collapsed-width: var(--size-sidebar-collapsed);
+  --spacing-3: 12px;
+  --layout-sidebar-item-gap: var(--spacing-3);
+  --layout-sidebar-item-height: var(--size-control-lg);
   --size-sidebar: 208px;
   --layout-sidebar-width: var(--size-sidebar);
   --size-topbar: 56px;
@@ -322,7 +325,6 @@
   --spacing-1-5: 6px;
   --spacing-10: 40px;
   --spacing-2-5: 10px;
-  --spacing-3: 12px;
   --spacing-3-5: 14px;
   --spacing-5: 20px;
   --spacing-8: 32px;
@@ -354,5 +356,6 @@
   --text-weight-brand: var(--font-weight-semibold);
   --text-weight-label: var(--font-weight-regular);
   --text-weight-logo: var(--font-weight-semibold);
+  --text-weight-nav: var(--font-weight-medium);
   --text-weight-strong: var(--font-weight-semibold);
 }

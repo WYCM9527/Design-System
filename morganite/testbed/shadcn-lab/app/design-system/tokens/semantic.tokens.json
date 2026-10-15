@@ -748,6 +748,11 @@
         "$value": "{font.weight.regular}",
         "$description": "[观察] 按钮 / 表单标签 400（antd 只用 400 与 600）"
       },
+      "nav": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.medium}",
+        "$description": "[确认] 导航菜单（侧栏、横向菜单）文字 500：用户 2026-10-15 指定侧栏文字加粗一级（原随正文 400）；当前项同字重，不额外加粗。Windows 的微软雅黑没有 500，按字体匹配规则显示成 400"
+      },
       "strong": {
         "$type": "fontWeight",
         "$value": "{font.weight.semibold}",
@@ -814,6 +819,16 @@
         "$type": "dimension",
         "$value": "{size.sidebar-collapsed}",
         "$description": "[观察] 折叠 64px（源码默认值）"
+      },
+      "item-height": {
+        "$type": "dimension",
+        "$value": "{size.control.lg}",
+        "$description": "[确认] 侧栏菜单项高 40px：用户 2026-10-15 指定（原借按钮 / 输入框的 control.height.md 32px，按钮与输入框不变）"
+      },
+      "item-gap": {
+        "$type": "dimension",
+        "$value": "{spacing.3}",
+        "$description": "[确认] 同一分组里相邻两个侧栏菜单项的间距 12px：用户 2026-10-15 指定（原 spacing.0-5 2px）；分组标题自带上下留白，不受影响"
       }
     },
     "breakpoint": {
