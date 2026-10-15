@@ -17,7 +17,8 @@ export const NARROW = {
 export const FOCUS = { pages: { dashboard: '#/' }, steps: 80, inputBorder: true };        // Tab 焦点遍历；输入类控件按 DESIGN 只把边线换成 border.focus、不加外环，焦点检查按边线认
 // 品牌黄审计：Morganite 的金（#B98D44，色相约 37°、饱和度 0.46）不落在工具判黄的范围（色相 40–64°、饱和度 ≥ 0.55），这里一般不用追加
 export const YELLOW_ALLOW = [];
-// 已批准的对比度例外：Morganite AUDIT「对比度基线」已登记例外的镜像（系统改了例外，这里跟着改；不要为了过验收在这里加新例外）
+// 已批准的对比度例外：Morganite AUDIT「对比度基线」已登记例外的镜像（系统改了例外，这里跟着改；不要为了过验收在这里加新例外）。
+// citrine-tools 内置的 Citrine 例外按 design-system/.adopter.json 的 system 只对 Citrine 项目生效，这里不用写 CITRINE_APPROVED
 export const APPROVED_CONTRAST = [
   { fg: '#FFFFFF', bg: '#B98D44', why: '金底白字 3.02:1：主按钮、分页当前页、侧栏当前项、选中日、主色徽标、深色 / 勾选标签、当前步骤' },
   { fg: 'rgba(0, 0, 0, 0.45)', why: '亮色占位符（占位符底线 3:1）' },

@@ -248,8 +248,9 @@
   --font-weight-medium: 500;
   --font-weight-regular: 400;
   --font-weight-semibold: 600;
+  --icon-set-iconpark: IconPark;
+  --icon-library: var(--icon-set-iconpark);
   --icon-set-antd: @ant-design/icons;
-  --icon-library: var(--icon-set-antd);
   --size-icon-2xl: 24px;
   --icon-size-2xl: var(--size-icon-2xl);
   --size-icon-lg: 16px;

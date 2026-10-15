@@ -106,6 +106,7 @@
     "design-system/theme-map.json",
     "design-system/tokens/**",
     "design-system/themes/**",
+    "design-system/preview/preview.local.css",
     "bridge/**",
     "templates/**",
     "migration/**"

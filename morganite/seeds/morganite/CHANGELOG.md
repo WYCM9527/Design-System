@@ -2,7 +2,7 @@
 
 版本策略：patch 只改描述与文档；minor 新增或修改 token（视觉会变、名字不变，条目里写清肉眼可见的影响）；major 才改名或删除 token。
 
-## 0.2.0 — 2026-10-12
+## 0.2.0 — 2026-10-15
 
 - 数据填充渐变换成用户指定的两色（`linear-gradient(90deg, #B1863D 0%, hsl(37.3228deg 59.5252% 61.7469%) 100%)`）：
   - 新增 token：原语 `color.brand.250`（`#D8AC63`，用户给的 hsl 按 8 位 sRGB 取整）；语义 `color.chart.gradient.start`（→ `color.brand.550`，`#B1863D`，与主按钮悬停同色）与 `color.chart.gradient.end`（→ `color.brand.250`），亮暗一致。
@@ -32,6 +32,7 @@
 - 柱子改为起点直角、末端圆角（用户：柱状图和类似样式应该直角起底、顶部圆角，以及多柱状图叠加问题；多序列三种画法实测对比后选堆叠贴合）：
   - 肉眼可见：所有 ECharts 柱子的底端（横柱的左端）从圆角变成直角，末端仍是 `radius.xs`（4px）圆角；堆叠柱的接缝处不再两边各缺一个圆角，段与段直接相接，只有最外一段是圆的；负值柱圆朝外的一端。效果预览的柱子本来如此，不变；进度条保持胶囊形。
   - `echarts.js` 新增 `withBarEnds(option)` 与 `barEnds(series)`：按每根柱子算端头，跟随 ECharts 的堆叠规则（声明顺序与 `stackOrder`、正负值分开堆、0 值段不算、图例关掉的序列不算）。种子的 EChart 容器（`vue/EChart.vue`、`react/EChart.tsx`）每次 setOption 都套用，图例开关后重算；`rankBars` 改用它。直接 `echarts.init` 的项目自己调 `withBarEnds`，否则只有主题默认的竖柱正值端头。
+  - 负值柱的渐变跟着倒过来，仍是基线一端深、末端浅（原先 `barGradient` 不知道正负，负值柱是基线一端浅、末端深）：`barEnds` 对负值项把相对柱子自身的线性渐变翻转（series 级与数据项级的颜色都算，全局坐标的渐变不动；同一份 option 套两次也只翻一次）。拾光商城目前没有负值柱，页面没有变化。
 - 卡片标题改为 14px #212121（用户：卡片标题改为 14px #212121；去掉大写字距、暗色取正文色两项实测对比后确认）：
   - 新增 token：原语 `color.neutral.875`（`#212121`）；语义 `color.text.card-title`（亮 → `color.neutral.875`，暗 → `color.neutral.white-a85`，同暗色正文）。
   - 肉眼可见：配方 `.card-head h2`（工作台、报表、详情、表单等页的卡片标题）从 12px 次要色（65% 黑 / 65% 白）加 0.06em 字距、西文大写，变成 14px 半粗 `#212121`（暗色 85% 白），不加字距、不转大写。带说明的卡片头高度不变；只有标题的卡片头高约 2.7px，与带说明的几乎一样高（效果预览的新建交易、交易详情页因此长 5–8px）。效果预览的卡片标题随配方改。
@@ -43,6 +44,12 @@
   - 新增：配方组件 `PageHeader`（`vue/PageHeader.vue`、`react/PageHeader.tsx`：`title` / `subtitle`，`#status` 放标题旁的状态胶囊，`#actions` 放页面级操作，`#leading` 放标题左侧的头像）与 `SectionHeader`（`vue/SectionHeader.vue`、`react/SectionHeader.tsx`：H2 板块标题 + 右侧 `#actions`），输出配方类 `.page-head` 与新增的 `.section-head`（H2 `text.title-sm.size` × `text.weight.strong` × `color.text.primary`）；组件走查页加「页头与板块标题」一组。DESIGN 补「页面结构四层」（顶栏 → 页头 → 可选标签 / 筛选 → 业务内容）与「建设中页面按结果页处理」。
   - 调整：面包屑分隔符由「/」改为细箭头（配方 `.crumbs .sep` 与 Element `.el-breadcrumb__separator` 用遮罩画，`icon.size.sm` 见方、`color.text.muted`，描边 1.4 同 `icon.stroke.width`；标记仍写「/」，页面代码不用改：分隔符元素本身 `visibility: hidden`、箭头画在 `::before` 上，「/」不进视觉与无障碍树）；页头副标题与标题的间距由 4px（`spacing.1`）改为 6px（`spacing.1-5`），所有带副标题的页头高 2px；贴在卡片顶部的 Element 标签栏当卡片标题头用：标签上下由 12px 改为 16px（`spacing.4`，与带标题的卡片头同高，标签栏高约 43 → 51px），底线从左右各缩进 24px 改为贯穿卡片（效果预览的 `.panel > .tabs` 底线本来就贯穿，上下同改 16px）；内容区直属的 Element 标签栏（报表页这类 pane 为空、只切换下方内容的）下边距归零，与下方内容相距一个 `space.stack`（原为 16 + 16 = 32px）。顶栏左侧统一是面包屑，工作台不再放问候语（问候语进页头副标题），DESIGN「顶栏」与「组件配方」表同步。
   - 移除：配方 `.greet` / `.greet__hi` / `.greet__name`（顶栏问候语）与 `.page-bar` / `.page-bar .right`（看板顶部那一行），接入项目改用 `PageHeader` + `SectionHeader`；`.section-label` 保留，只给不值一个标题的次要分组。Element 说明「卡片顶部的 el-tabs 自动缩进」与配方清单同步。
+- 图标库登记改为实际在用的 IconPark（用户：图标库登记改成实际在用的 IconPark，shadcn 用 lucide）：
+  - 新增原语 `icon.set.iconpark`（`IconPark`），`icon.library` 由 `icon.set.antd`（`@ant-design/icons`）改指它；`icon.set.antd` 不再被引用，按版本策略留到下个大版本再删。
+  - 页面没有变化：Element 桥接、说明与两个栈的脚手架本来就用 IconPark / lucide-react，只是登记跟上实际（antd 图标是填充路径，用不上 1.4px 描边与 `mergeIcons()`）；CSS 变量 `--icon-library` 的值由 `@ant-design/icons` 变为 `IconPark`。DESIGN「图标」写明 shadcn 栈用 lucide-react。
+- 原语 `radius.xs`（4px）与 `spacing.3-5`（14px）的说明由 `[推断]` 改为 `[确认]`（用户 2026-10-14），值不变；种子里不再有 `[推断]`。
+- 身份文件 `owned` 加入 `design-system/preview/preview.local.css`（配方在 token 预览页里的对应）：原先接入时拷进项目后就不再随 upgrade 更新，本版卡片标题等改动在项目的预览页上看不到；现在走三方合并，项目没改过就直接更新，改过会报冲突。0.1.x 各版这个文件没变过，从 0.1.x 升级时都是直接更新。
+- 验收要 citrine-tools ≥ 1.2.0（与本版同时发布，随 Citrine 2.12.1）：1.1.x 不认模板里的 `APPROVED_CONTRAST`。1.2.0 起 Citrine 的内置例外按 `design-system/.adopter.json` 的 `system` 只对 Citrine 项目生效，Morganite 项目的文字不再被 Citrine 的状态色放行；模板 `accept.config.mjs` 的说明同步。
 
 ## 0.1.4 — 2026-10-11
 

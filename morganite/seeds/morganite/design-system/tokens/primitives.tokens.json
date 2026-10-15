@@ -1210,7 +1210,7 @@
         "unit": "px",
         "value": 4
       },
-      "$description": "[推断] 勾选框等 ≤ 16px 的小元素圆角：antd 勾选框 borderRadiusSM 4px（与 radius.sm 同值）"
+      "$description": "[确认] 勾选框等 ≤ 16px 的小元素圆角：antd 勾选框 borderRadiusSM 4px（与 radius.sm 同值；用户 2026-10-14 确认）"
     }
   },
   "spacing": {
@@ -1308,7 +1308,7 @@
         "unit": "px",
         "value": 14
       },
-      "$description": "[推断] 14px 间距：配方步长（导航分组上内边距、表单底栏、分段项），演示站无对应值"
+      "$description": "[确认] 14px 间距：配方步长（导航分组上内边距、表单底栏、分段项），演示站无对应值（用户 2026-10-14 确认）"
     }
   },
   "size": {
@@ -1886,7 +1886,12 @@
       "antd": {
         "$type": "string",
         "$value": "@ant-design/icons",
-        "$description": "[观察] 线性图标（anticon，148 处 outline）；种子不带图标资源，接入方自行安装"
+        "$description": "[确认] 0.2.0 起不再被引用（icon.library 改指 icon.set.iconpark），按版本策略留到下个大版本再删。原为演示站观察到的线性图标（anticon，148 处 outline），是填充路径，用不上 icon.stroke.width"
+      },
+      "iconpark": {
+        "$type": "string",
+        "$value": "IconPark",
+        "$description": "[确认] 字节跳动 IconPark（Apache-2.0）描边型线性图标：Vue 3 用 @icon-park/vue-next，React 用 @icon-park/react，静态页用 @icon-park/svg；Element Plus 桥接 iconpark.css / iconpark.config 按它写。种子不带图标资源，接入方自行安装（用户 2026-10-14：图标库登记改为实际在用的 IconPark）"
       }
     }
   }

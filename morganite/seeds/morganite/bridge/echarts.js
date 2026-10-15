@@ -74,8 +74,17 @@ export function barGradient(color, { horizontal = false, el = document.documentE
   return linearFill(color, chartTokens(el), horizontal);
 }
 
+const FLIPPED = Symbol('morganite.bar-gradient-flipped');
+/** 负值柱的渐变：柱子从基线往下（横柱往左）长，相对柱子自身的线性渐变要倒过来，才是基线一端深、末端浅。
+    全局坐标的渐变不动；翻过的打记号，同一份 option 经过两次 barEnds（如 rankBars 的结果再进 EChart 容器）也只翻一次 */
+function flipForNegative(fill) {
+  if (!fill || typeof fill !== 'object' || fill.type !== 'linear' || fill.global || fill[FLIPPED] || !Array.isArray(fill.colorStops)) return fill;
+  const colorStops = fill.colorStops.map((s) => ({ ...s, offset: 1 - s.offset })).reverse();
+  return { type: 'linear', x: fill.x, y: fill.y, x2: fill.x2, y2: fill.y2, colorStops, [FLIPPED]: true };
+}
+
 /**
- * 柱子的端头：起点（基线一端）直角、末端圆角 radius.xs；负值柱的末端朝下（横柱朝左）。
+ * 柱子的端头：起点（基线一端）直角、末端圆角 radius.xs；负值柱的末端朝下（横柱朝左），渐变也跟着倒过来（仍是基线一端深）。
  * 堆叠时段与段直接相接、接缝直角，只有每根柱子最外一段的末端圆角。最外一段按 ECharts 的堆叠规则算：
  * 按 series 声明顺序往外堆（组里第一个可见序列设了 stackOrder: 'seriesDesc' 时反过来），正负值分开堆，值为 0 的段不算，
  * 图例关掉的序列（selected[name] === false）不参与堆叠——所以图例开关后要带上新的 selected 再算一次。
@@ -111,7 +120,13 @@ export function barEnds(series, { horizontal = false, selected = {}, el = docume
       const item = d !== null && typeof d === 'object' && !Array.isArray(d) ? d : { value: d };
       if (!v) return item;
       const end = outer.get(`${groupOf(s, si)}|${i}|${v > 0}`) === si ? (v > 0 ? endUp : endDown) : 0;
-      return { ...item, itemStyle: { ...item.itemStyle, borderRadius: end } };
+      const itemStyle = { ...item.itemStyle, borderRadius: end };
+      if (v < 0) {
+        const fill = itemStyle.color ?? s.itemStyle?.color;
+        const flipped = flipForNegative(fill);
+        if (flipped !== fill) itemStyle.color = flipped;
+      }
+      return { ...item, itemStyle };
     }),
   }));
 }

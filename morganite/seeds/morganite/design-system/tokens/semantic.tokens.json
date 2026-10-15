@@ -589,8 +589,8 @@
     },
     "library": {
       "$type": "string",
-      "$value": "{icon.set.antd}",
-      "$description": "[观察] anticon 线性图标 148 处"
+      "$value": "{icon.set.iconpark}",
+      "$description": "[确认] IconPark 描边型线性图标，配合 icon.stroke.width 与 mergeIcons()；shadcn 栈跟随 shadcn/ui 用 lucide-react（同为描边型，同样按 icon.stroke.width 画）。用户 2026-10-14 确认登记为实际在用的图标库；原为演示站观察到的 @ant-design/icons（anticon 148 处），填充路径，用不上描边粗细"
     },
     "stroke": {
       "width": {
