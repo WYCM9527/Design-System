@@ -827,8 +827,8 @@
       },
       "item-gap": {
         "$type": "dimension",
-        "$value": "{spacing.3}",
-        "$description": "[确认] 同一分组里相邻两个侧栏菜单项的间距 12px：用户 2026-10-15 指定（原 spacing.0-5 2px）；分组标题自带上下留白，不受影响"
+        "$value": "{spacing.2}",
+        "$description": "[确认] 同一分组里相邻两个侧栏菜单项的间距 8px：用户 2026-10-15 指定（先定 12px，评审中收到 8px；原 spacing.0-5 2px）；分组标题自带上下留白，不受影响；折叠后标题隐藏，组与组之间也用它"
       }
     },
     "breakpoint": {

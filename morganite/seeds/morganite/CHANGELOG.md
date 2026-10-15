@@ -4,10 +4,10 @@
 
 ## 0.3.0 — 2026-10-15
 
-- 侧栏菜单项加高、拉开、加粗一级（用户指定：菜单项高度 40px、每项间距 12px、侧栏文字字重加粗一级）：
-  - 新增 token：`layout.sidebar.item-height`（→ `size.control.lg`，40px）、`layout.sidebar.item-gap`（→ `spacing.3`，12px）、`text.weight.nav`（→ `font.weight.medium`，500）；DESIGN「字重」一条改为导航菜单单独一档。
-  - 肉眼可见：侧栏菜单项从 32px 高变成 40px（原借按钮 / 输入框的 `control.height.md`，按钮与输入框不变）；同一分组里相邻两项的间距从 2px 变成 12px，分组标题的上下留白不变；折叠后分组标题隐藏，组与组之间也隔 12px（原来 Element 侧栏两组的项贴在一起、`.nav` 隔 2px）；菜单项文字从 400 变成 500，当前项同字重（仍不额外加粗），分组标题与页脚不变。Element `el-menu`（含折叠态与子菜单标题；横向菜单只跟着改字重）与 React / 静态页的 `.nav` 同改，效果预览随配方变化。Windows 的微软雅黑没有 500，字重在 Windows 上看起来不变。
-  - 侧栏变高：12 项三组的侧栏从 627px 涨到 813px，常见笔记本的浏览器窗口放不下。Element 侧栏的菜单区（`.sidebar .el-menu`）改为窗口不够高时自己滚动，品牌区与页脚不动；`.nav` 本来就能滚。
+- 侧栏菜单项加高、拉开、加粗一级（用户指定：菜单项高度 40px、每项间距 8px、侧栏文字字重加粗一级）：
+  - 新增 token：`layout.sidebar.item-height`（→ `size.control.lg`，40px）、`layout.sidebar.item-gap`（→ `spacing.2`，8px）、`text.weight.nav`（→ `font.weight.medium`，500）；DESIGN「字重」一条改为导航菜单单独一档。
+  - 肉眼可见：侧栏菜单项从 32px 高变成 40px（原借按钮 / 输入框的 `control.height.md`，按钮与输入框不变）；同一分组里相邻两项的间距从 2px 变成 8px，分组标题的上下留白不变；折叠后分组标题隐藏，组与组之间也隔 8px（原来 Element 侧栏两组的项贴在一起、`.nav` 隔 2px）；菜单项文字从 400 变成 500，当前项同字重（仍不额外加粗），分组标题与页脚不变。Element `el-menu`（含折叠态与子菜单标题；横向菜单只跟着改字重）与 React / 静态页的 `.nav` 同改，效果预览随配方变化。Windows 的微软雅黑没有 500，字重在 Windows 上看起来不变。
+  - 侧栏变高：12 项三组的侧栏从 627px 涨到 777px，比不少笔记本的浏览器窗口高。Element 侧栏的菜单区（`.sidebar .el-menu`）改为窗口不够高时自己滚动，品牌区与页脚不动；`.nav` 本来就能滚。
   - `.nav` 的项间距改由同组相邻项的外边距给（原为整列 `gap: 2px`，分组标题与第一项之间也算一份），与 `el-menu` 一致：分组标题到第一项少 2px。
 
 ## 0.2.0 — 2026-10-15

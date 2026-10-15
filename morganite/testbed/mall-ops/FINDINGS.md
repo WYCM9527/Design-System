@@ -79,6 +79,8 @@
 
 评审中同步 0.3.0（2026-10-15，侧栏菜单项加高、拉开、加粗一级）：用户指定侧栏菜单项高度 40px、每项间距 12px、文字字重加粗一级；500 与 600 用真实截图对比后选 500，范围定为改种子、两个实验项目一起升级。种子新增 `layout.sidebar.item-height`、`layout.sidebar.item-gap`、`text.weight.nav`，见种子 CHANGELOG 0.3.0。`upgrade --from` 直接更新语义 token、`DESIGN.md`、`AUDIT.md`（折叠态修正后又同步一次 `DESIGN.md`、`AUDIT.md`），没有冲突，项目页面不用改。实测（1440 × 900，不注入样式）：12 个菜单项都是 40px 高、500 字重（当前项同字重，分组标题仍是 400），同组相邻项间距 12px，分组标题的上下留白不变；完整显示 12 个菜单项所需的窗口高度由 627px 涨到 813px，1366 × 680 的窗口里菜单区自己滚动，品牌区与页脚不动。折叠态第一次实测时，分组标题隐藏后两组的项贴在一起（组内 12px、组间 0），种子补上组间同样的间距后复测：折叠宽 64px，项 48 × 40、图标居中，所有相邻项都隔 12px；手机抽屉（390px）与展开态一致。另外发现开发服务器看不到桥接的改动：本项目经包名 `@wycm9527/morganite/bridge/…` 引入桥接，路径落在 `node_modules`，Vite 不监听那里，种子桥接改了以后要等项目内的样式文件有变动或重启开发服务器才会更新；`npm run build` 不受影响。build、guard `current`、`citrine-accept all` 通过：100 个页面状态 small / noName / overflowX / truncated / lowContrast / dupIds / yellow 全 0（tinyTargets 362 为提示项，不变），组件走查亮 / 暗各 623 个交互元素 0 发现，992px / 390px 与焦点通过。
 
+评审中再同步（2026-10-15，侧栏项间距由 12px 收到 8px，版本号仍是 0.3.0）：用户看过后要求间距收到 8px。种子把 `layout.sidebar.item-gap` 改为 `spacing.2`（8px），`upgrade --from` 直接更新语义 token、`AUDIT.md`，没有冲突，项目页面不用改。实测（不注入样式）：同组相邻项、折叠后组与组之间都是 8px，其余同上（项高 40px、字重 500、分组标题 400，手机抽屉与展开态一致）；完整显示 12 个菜单项所需的窗口高度由 813px 降到 777px，1366 × 680 的窗口里菜单区仍要滚动、页脚不动。build、guard `current`、`citrine-accept all` 通过（结果同上）。
+
 ## A. 项目自身（已修）
 
 | # | 现象 | 处理 |
