@@ -42,8 +42,9 @@ jobs:
 
   # 同一个 tag 顺带把该系统的包发到 npm registry：种子 + <id>/tools（有的话），但只发 package.json 里带 publishConfig 的（显式选择进 registry；
   # web-to-design-system 提炼出来的种子默认没有 publishConfig，只走文件夹 / Release 直链渠道）。已在 registry 的版本跳过。
-  # 认证两选一：npm「Trusted Publishing」（在 npmjs.com 每个包的设置里登记本仓库 + release.yml，靠 OIDC，零密钥，推荐；新包要先登记）；
-  # 或仓库 Secret NPM_TOKEN（granular token，勾 publish 与 bypass 2FA）。两者都没配时本 job 会失败，但不影响上面的 GitHub Release。
+  # 认证两选一：npm「Trusted Publishing」（在 npmjs.com 每个包的设置里登记本仓库 + release.yml，Environment 留空，Allowed actions 勾 npm publish——
+  # 2026-09-03 后新建的登记默认只允许 npm stage publish；靠 OIDC，零密钥，推荐；包要先存在才能登记，新登记 2 天内要完成一次成功发布否则作废，见 GUIDE 8b）；
+  # 或仓库 Secret NPM_TOKEN（granular token，勾 publish 与 bypass 2FA；npm 正在限制这类 token 直接发布）。两者都没配时本 job 会失败，但不影响上面的 GitHub Release。
   publish:
     needs: release
     runs-on: ubuntu-latest
@@ -68,5 +69,5 @@ jobs:
           for d in $DIRS; do
             N=$(node -p "require('./$d/package.json').name"); V=$(node -p "require('./$d/package.json').version")
             if [ -n "$(npm view "$N@$V" version 2>/dev/null)" ]; then echo "$N@$V 已在 registry，跳过"; continue; fi
-            if (cd "$d" && npm publish --provenance --access public); then echo "已发布 $N@$V"; else echo "::error::发布 $N@$V 失败（Trusted Publisher 未登记 / 工作流文件名不符 / NPM_TOKEN 无效）"; exit 1; fi
+            if (cd "$d" && npm publish --provenance --access public); then echo "已发布 $N@$V"; else echo "::error::发布 $N@$V 失败（ENEEDAUTH：Trusted Publisher 没登记 / 字段不符 / 登记已过期；E403 OIDC permission denied：登记的 Allowed actions 没勾 npm publish；或 NPM_TOKEN 无效。见 GUIDE 8b）"; exit 1; fi
           done
