@@ -1,5 +1,5 @@
 // 页面审计（在页面里执行）：小字号、无名称控件、横向溢出、nowrap 截断、低对比度、小命中区、重复 id、无 alt 图片。
-// 阈值与例外与 DESIGN.md「验收基线」一致：正文 ≥ 4.5:1，大字 ≥ 3:1；已批准的品牌例外单列为 approvedExceptions 而不算失败。
+// 阈值与例外与 DESIGN.md「验收基线」一致：正文 ≥ 4.5:1，大字 ≥ 3:1；已批准的例外（window.__ACCEPT_APPROVED__）单列为 approvedExceptions 而不算失败。
 // 由 scan-pages.mjs 以字符串注入（Runtime.evaluate），不要在这里用 import。
 (() => {
   const out = { url: location.hash, small: [], noName: [], overflowX: [], truncated: [], lowContrast: [], tinyTargets: [], dupIds: [], imgNoAlt: 0 };
@@ -25,11 +25,10 @@
     const bold = parseInt(cs.fontWeight) >= 700; const large = fs >= 24 || (fs >= 18.66 && bold); const need = large ? 3 : 4.5;
     if (cr < need) { const k = desc(el) + '|' + cs.color + '|' + Math.round(cr * 10); if (!seenLow.has(k)) seenLow.set(k, { el: desc(el), text: t.slice(0, 18), fs, cr: +cr.toFixed(2), fg: cs.color, bg: `rgb(${Math.round(bg.r)},${Math.round(bg.g)},${Math.round(bg.b)})`, disabled: !!el.closest('[disabled],.is-disabled,[aria-disabled="true"]') }); }
   }
-  // 已批准的品牌例外（DESIGN「验收基线」）：success / warning / error 文字色，危险按钮白字；占位符（亮 neutral.400 / 暗 neutral.500）
-  const APPROVED_FG = new Set(['rgb(11, 158, 116)', 'rgb(215, 103, 18)', 'rgb(238, 72, 75)', 'rgb(156, 163, 175)', 'rgb(102, 109, 123)']);
+  // 已批准的例外由 scan-pages 注入：Citrine 项目带上 Citrine DESIGN「验收基线」的内置例外，再加项目 accept.config.mjs 的 APPROVED_CONTRAST（见 lib/approved.mjs）
   const near = (p, q) => !!p && !!q && Math.abs(p.r - q.r) <= 1 && Math.abs(p.g - q.g) <= 1 && Math.abs(p.b - q.b) <= 1 && Math.abs((p.a ?? 1) - (q.a ?? 1)) <= 0.02;
-  const projectApproved = window.__ACCEPT_APPROVED__ || [];   /* 项目 accept.config.mjs 的 APPROVED_CONTRAST，由 scan-pages 注入 */
-  const isApproved = (x) => APPROVED_FG.has(x.fg) || (x.fg === 'rgb(255, 255, 255)' && x.bg === 'rgb(238,72,75)') || projectApproved.some((a) => near(parse(x.fg), a.fg) && (!a.bg || near(parse(x.bg), a.bg)) && (!a.minRatio || x.cr >= a.minRatio));
+  const approved = window.__ACCEPT_APPROVED__ || [];
+  const isApproved = (x) => approved.some((a) => near(parse(x.fg), a.fg) && (!a.bg || near(parse(x.bg), a.bg)) && (!a.minRatio || x.cr >= a.minRatio));
   const low = [...seenLow.values()].filter((x) => !x.disabled);
   out.small = [...seenSmall.values()]; out.lowContrast = low.filter((x) => !isApproved(x)); out.approvedExceptions = low.filter(isApproved).length;
   document.querySelectorAll('button, a, [role="button"], [role="menuitem"], [role="tab"], input, select, textarea').forEach((el) => {

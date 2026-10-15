@@ -5,9 +5,9 @@
 import { writeFileSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { launch, sleep } from './lib/cdp.mjs';
-import { PROJECT, requireDist, outDir, args, parseModes, modeQuery, loadConfig, pageUrl, startServer, READY, resetUrl } from './lib/paths.mjs';
+import { APP, PROJECT, requireDist, outDir, args, parseModes, modeQuery, loadConfig, pageUrl, startServer, READY, resetUrl } from './lib/paths.mjs';
 import { YELLOW_ALLOW } from './lib/yellow-allow.mjs';
-import { normalizeApproved } from './lib/approved.mjs';
+import { approvedFor } from './lib/approved.mjs';
 
 const opt = args();
 requireDist();
@@ -20,8 +20,8 @@ const pages = PAGES.filter(([n]) => match(n));
 const OUT = outDir('pages');
 const audit = readFileSync(resolve(import.meta.dirname, 'lib/page-audit.js'), 'utf8');
 const PROBE = readFileSync(resolve(import.meta.dirname, 'lib/component-probe.js'), 'utf8');
-const allowSel = [...YELLOW_ALLOW, ...(cfg.YELLOW_ALLOW || [])].join(', ');
-const approvedJs = `window.__ACCEPT_APPROVED__ = ${JSON.stringify(normalizeApproved(cfg.APPROVED_CONTRAST))}; 1`;   // 项目登记的已批准对比度例外，页面审计据此把对应低对比计入 approved   // 页面级静息黄色的允许清单：默认 + 项目追加
+const allowSel = [...YELLOW_ALLOW, ...(cfg.YELLOW_ALLOW || [])].join(', ');   // 页面级静息黄色的允许清单：默认 + 项目追加
+const approvedJs = `window.__ACCEPT_APPROVED__ = ${JSON.stringify(approvedFor('pages', cfg, APP))}; 1`;   // 已批准的对比度例外（Citrine 内置按项目所用系统开关 + 项目 APPROVED_CONTRAST），页面审计据此把对应低对比计入 approved
 
 const server = await startServer();
 const browser = await launch({ width: 1600, height: 1000 });

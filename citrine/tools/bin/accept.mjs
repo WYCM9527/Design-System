@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // citrine-accept <pages|components|narrow|focus|previews|all> [--project <appDir>] [--modes all|light|dark] [--no-shots] [--out <dir>] [--previews <dir>] [--with-previews]
-// 依次运行对应脚本；all = pages → components → narrow → focus，加 --with-previews 才跑 E/S 像素对照（只有黄金后台有预览页）。任一步失败即退出非零。
+// 依次运行对应脚本；all = pages → components → narrow → focus，加 --with-previews 才跑 E/S 像素对照（只有黄金后台有预览页）。
+// 每一步都跑完再汇总（前一步失败不挡后面的步骤），有失败时以第一个失败步骤的退出码退出。
 import { spawnSync } from 'node:child_process';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -14,8 +15,15 @@ const SCRIPTS = { pages: 'scan-pages.mjs', components: 'scan-components.mjs', na
 const steps = cmd === 'all' ? ['pages', 'components', 'narrow', 'focus', ...(argv.includes('--with-previews') ? ['previews'] : [])] : [cmd];
 if (!steps.every((s) => SCRIPTS[s])) { console.error(`未知步骤 ${cmd}；可用：${Object.keys(SCRIPTS).join(' | ')} | all`); process.exit(2); }
 const withModes = (s) => (['pages', 'components'].includes(s) && !rest.some((a) => a.startsWith('--modes')) ? ['--modes', 'all'] : []);
+const results = [];
 for (const s of steps) {
   console.log(`\n▶ citrine-accept ${s}`);
   const r = spawnSync(process.execPath, [resolve(TOOLS, SCRIPTS[s]), ...withModes(s), ...rest], { stdio: 'inherit' });
-  if (r.status !== 0) process.exit(r.status ?? 1);
+  results.push({ step: s, code: r.status ?? 1 });
 }
+if (results.length > 1) {
+  console.log('\n== citrine-accept 汇总');
+  for (const { step, code } of results) console.log(`  ${step.padEnd(10)} ${code === 0 ? '通过' : `未通过（退出码 ${code}）`}`);
+}
+const failed = results.find((x) => x.code !== 0);
+if (failed) process.exit(failed.code);
