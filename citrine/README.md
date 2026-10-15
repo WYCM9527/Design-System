@@ -4,7 +4,7 @@
 
 ![Citrine · 实测项目「轻采」亮 / 暗模式](docs/screenshots/hero.png)
 
-版本 **2.12.0** · Core 323 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
+版本 **2.12.1** · Core 323 个 token · dark 70 条 delta · 变更见 [CHANGELOG](seeds/brand-yellow-e/CHANGELOG.md)
 
 ---
 

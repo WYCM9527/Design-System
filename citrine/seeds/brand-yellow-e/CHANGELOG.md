@@ -2,6 +2,24 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.12.1 — 2026-10-15（tools 1.2.0 / adopter 0.3.3：验收与接入工具支持第二套设计系统）
+
+种子的 token、桥接、配方都没变，接入 Citrine 的项目页面不变；本版只发工具。问题来自第二套设计系统 Morganite 的实测项目：它们也用 citrine-accept 验收、用 adopter 接入。
+
+- **tools 1.2.0**（`@wycm9527/citrine-tools`）：
+  - 新增 `APPROVED_CONTRAST`：项目在 `accept.config.mjs` 里登记所用设计系统的已批准对比度例外（`fg` 必填，`bg`、`minRatio` 可选），页面扫描与组件走查都认。别的设计系统的项目要装 ≥ 1.2.0。
+  - Citrine 的内置例外（状态色文字、危险按钮白字）只对 Citrine 项目生效：按 `design-system/.adopter.json` 的 `system` 判断，读不到清单的老项目照旧带上，`CITRINE_APPROVED = true / false` 可显式指定。此前页面审计把它写死，别的系统的文字只要碰巧是这几种颜色就被放行。
+  - 组件走查的背景按祖先链逐层合成（与页面审计同一算法）：此前半透明叠半透明被当成不透明，两层 4% 黑的悬停底被算成纯黑，误报「悬停后对比掉档」。
+  - `citrine-accept all` 每一步都跑完再汇总，有失败时以第一个失败步骤的退出码退出；此前第一步失败就停，后面的步骤不跑。
+  - 焦点检查：透明、零尺寸或被裁掉的原生控件（单选、勾选、开关、文件输入、下拉框里隐藏的输入）自身的浏览器外环不算，接着看兄弟、父级、开关轨道、上传区上看得见的环，输出里标 `(hidden)`。此前这层看不见的外环挡住了后面的判断，读到的是浏览器默认的 1px 蓝环。另有可选的 `FOCUS.inputBorder`：输入类控件按边线变成 `--color-border-focus` 认焦点，给规定输入框不加外环的设计系统用，默认关闭。
+  - 复测：轻采新旧工具对照，页面 47 个状态 × 亮暗逐项一致，组件走查亮暗各 616 个元素 0 发现，三端、焦点通过；焦点读数里文件输入由看不见的 1px 外环改为父级上的 2px 外环，下拉框由隐藏输入上的外环改为输入框阴影。黄金后台全量验收（组件走查亮暗各 618 个元素）与 shadcn 实验室的焦点检查同样通过。
+- **adopter 0.3.1 – 0.3.3**：
+  - `upgrade` 只三方合并工作副本 `design-system/`：身份文件 `owned` 里的桥接 / 模板 / 迁移对照随快照整体替换，不再误报几十条「本地删除」冲突（0.3.1）；新版把一个工作副本文件新加进 `owned` 时同样走合并，项目没改过就直接更新（0.3.3）。
+  - 符号链接快照（仓库内开发模式）的种子就地改了、版本号没变时，`upgrade` / `status` 按 hash 判断，不再把上游改动当成本地修改（0.3.2）。
+  - `agents --write` 改为替换既有 `AGENTS.md` 里的设计系统区块，标题与项目自己的章节不动；不加 `--write` 时打印会替换哪几行、增删哪些行。此前是追加到文件末尾，模板改了没法原地刷新（0.3.3）。`agents` 加 `--name`，标题默认读 `package.json` 的 name（0.3.1）。
+  - `ci` 生成的验收步骤不再重复子命令（原为 `citrine-accept all all`，0.3.1）；打印的安装命令带 `--save-exact`（0.3.3）。
+- 仓库维护：`release.mjs` 的「最新」标记只留给 Citrine（README 与 GUIDE 用 `releases/latest/download` 直链装工具，别的系统发版成为「最新」会让链接 404）；CI 加跑 adopter 的 AGENTS 单测。
+
 ## 2.12.0 — 2026-09-24（数据大字换 DIN 系字体）
 
 - **新增 token `font.family.numeric`**（`DIN-Bold, D-DIN, DIN Alternate, Bahnschrift, Barlow, 正文栈`）与 **`text.display.family`**：统计卡数字（`.stat-card__value`）、状态条数字（`.stat-strip .value`）、Element `el-statistic` 的数字改用 DIN 系字体——用户决定：KPI 数字要有"数据感"，与中文标签在字形上拉开。`DIN-Bold` 是免费 D-DIN 的 Bold 面对外暴露的族名（也是设计稿常写的名字）；项目有授权 DIN Pro / FF DIN 时在 `app.css` 用 `@font-face` 声明为 `DIN-Bold` 即被优先选中；没装 DIN 的机器 macOS 落到系统自带 DIN Alternate（只有 Bold 面）、Windows 落到 Bahnschrift，都是 DIN 血统，再退到 Barlow / 正文无衬线。种子不分发字体文件（授权与体积）。
