@@ -2,6 +2,8 @@
 
 > 本文件记录设计意图与使用规则。对已确认纳管的设计决定，具体视觉数值的唯一来源是 `tokens/*.tokens.json`；不要在这里重复色值、尺寸或阴影参数。未迁移的旧规范仅作为审计证据，不与 Token 双重维护。
 >
+> 评判标准：本文件与 token 是规范本身，任何预览或项目与它冲突都以它为准；视觉基准是效果预览（种子仓库 `morganite/previews/rose-gold-admin/`），接入项目的页面应与它一致，它与本文件冲突时改预览；`preview/` 下的壳层 / 表单 / 抽屉只和来源站比像不像，`token-board.html` 只列值，都不作评判。
+>
 > 来源：以 Ant Design Pro v6 为视觉底座，从 https://preview.pro.ant.design/dashboard/analysis、https://preview.pro.ant.design/list/table-list、https://preview.pro.ant.design/form/basic-form 以及查询表格里的新建弹窗与详情抽屉实测提炼（2026-09-28），再按用户决定把品牌色换成玫瑰金。证据、推断、缺口与用户决定见 `AUDIT.md`。
 >
 > 适用类型：**中后台**（`admin`）——侧栏 + 表格 + 图表 + 弹窗尺寸的工作台。词表里其他类型才有的角色（见 `AUDIT.md`「可选角色」）本系统不发明值；需要时先走提案。
@@ -17,10 +19,10 @@
 5. 链接靠色相识别：`color.text.link`，不加下划线（`text.link.decoration`）、不用斜体（`text.link.style`），悬停变深（`color.text.link-hover`）。正文里的链接和表格操作列的「配置 / 详情」是同一种样式。
 6. 尺寸只从 token 拿：控件高 `control.height.*`，间距 `space.* / spacing.*`，圆角 `radius.*` 按容器层级递减，字号走 `text.*.size` 阶梯；不在阶梯之外取值。
 7. 字重只有两档：正文、按钮、表单标签、菜单用 `text.weight.label`；表头、标题、卡片标题用 `text.weight.strong`；统计大字用 `text.display.weight`（半粗）。选中态不靠加粗，靠颜色和底色。
-8. 禁用 = `opacity.disabled`；只读 = `color.bg.readonly`；加载 = 骨架屏 `color.bg.skeleton*`，不用禁用态假装。
+8. 禁用 = `opacity.disabled`；只读 = `color.bg.readonly`；加载 = 骨架屏 `color.bg.skeleton*`，不用禁用态假装。加载 / 空 / 出错三态与按角色隐藏、禁用的规则见「页面状态与权限」。
 9. 图标类控件必须有 `aria-label`、命中区 ≥ `control.hit-min`；所有颜色和尺寸都必须能在 `dist/tokens.css` 里找到名字。
 10. 壳层尺寸只从 token 拿：侧栏 `layout.sidebar.width` / `-collapsed-width`，顶栏 `layout.topbar.height`，弹窗 `layout.modal.width.*`，抽屉 `layout.drawer.width`，表单标签列 `layout.form.label-width`；表格单元格内边距 `table.cell.padding-*`。
-11. 图表只用 `color.chart.1…6`（金、深灰、浅金、中灰、浅灰、绿）、顺序色 `color.chart.sequential.*` 与面积 `color.chart.area`，提示气泡用 `color.chart.tooltip`；涨跌用 `color.data.increase / decrease`（绿涨红跌，公司约定变了只改这两个别名），不在图表里直接写状态色。
+11. 图表只用 `color.chart.1…6`（金、深灰、浅金、中灰、浅灰、绿）、顺序色 `color.chart.sequential.*` 与面积 `color.chart.area`，提示气泡用白底浮层 `color.chart.tooltip`（大投影 `elevation.tooltip.*`）；涨跌用 `color.data.increase / decrease`（绿涨红跌，公司约定变了只改这两个别名），不在图表里直接写状态色。
 12. 改完跑 steward `guard`（构建与登记一致）和 `status`（页面字面量清零）。
 
 ## 视觉语言
@@ -63,26 +65,28 @@
 ## 布局与响应式
 
 - 页面骨架：顶栏 `layout.topbar.height`（固定时用 `layer.sticky`）+ 左侧栏 `layout.sidebar.width`（可折叠到 `layout.sidebar.collapsed-width`）+ 流式内容区；内容区不设居中最大宽，四周留白用 `space.gutter`。
-- 间距走 `spacing.*` 阶梯（px 系统按 4px 命名），页面级留白用四个语义间距：`space.gutter`（内容区四周）、`space.stack`（块与块之间、卡片栅格）、`space.card`（卡片 / 弹窗内边距）、`space.inline`（同一行相邻元素）。
+- 页面结构自上而下四层，所有页面一致、一律左对齐：全局顶栏 → 页头 → 可选的标签页 / 筛选 → 业务内容。顶栏左侧统一是面包屑（`text.body-sm.size`；父级 `color.text.secondary`、当前页 `color.text.primary`，分隔符是 `color.text.muted` 的细箭头，只有真实路由可点），工作台也不例外。页头（配方 `.page-head`，组件 `PageHeader`）：每个一级页面一个 H1（`text.heading.size` × `text.weight.strong`），副标题 `text.body.size` × `color.text.secondary`、与标题相距 `spacing.1-5`、没必要就省略；右侧放页面级操作（主操作金底），与标题顶部对齐。看板页在 H1 下分板块：板块标题（配方 `.section-head`，组件 `SectionHeader`）是 `text.title-sm.size` × `text.weight.strong` × `color.text.primary` 的 H2，右侧放只作用于这一板块的筛选（周期切换、导出日报）；表格、图表自己的筛选留在各自的卡片里。标签页紧接页头：只切换下方内容的页面级标签 pane 为空、与内容相距 `space.stack`，只剩一个标签时不显示标签栏。页面不自己加 margin-top，块间距全部由内容区的 `space.stack` 给。
+- 间距走 `spacing.*` 阶梯（px 系统按 4px 命名），页面级留白用四个语义间距：`space.gutter`（内容区四周）、`space.stack`（块与块之间、卡片栅格）、`space.card`（卡片 / 弹窗内边距）、`space.inline`（同一行相邻元素）。运营后台信息密，页面偏紧凑：四周留白与卡片内边距同宽，板块之间比它窄一档，卡片读成一组。
 - 圆角按容器层级递减：整块面板 / 大容器 `radius.xl` → 卡片 / 弹窗 / 抽屉 `radius.lg` → 按钮 / 输入框 `radius.md` → 标签 / Tooltip `radius.sm` → 勾选框 `radius.xs`；表格单元格直角。胶囊（`radius.full`）只给顶栏搜索、期间选择、分段选择器、筹码、进度条、状态点与头像；普通按钮和标签不做胶囊。
 - 层级最多四档：`layer.sticky`、`layer.dropdown`、`layer.modal`、`layer.toast`，用到哪档写哪档；不手写 z-index 数字。沿用 antd 的顺序：下拉高于弹窗（弹窗里的下拉才能展开），全局提示在两者之间。
 - 断点：`layout.breakpoint.narrow` 以下侧栏默认折叠、卡片栅格减列；`layout.breakpoint.mobile` 以下侧栏收成抽屉、筛选栏纵排、表格横向滚动、留白收到 `space.stack`。CSS 媒体查询无法引用 var()，配方里的断点数值是 token 的字面镜像，改 token 必须同步。
+- 页面形态走配方，不在页面上另写栅格：看板 `.board`（主图 + 侧栏 KPI）、两栏 `.two-col`（主内容 + 侧信息）、纵向堆叠 `.stack`、卡片栅格 `.card-grid`、设置行 `.setting`、横向表单 `.hform`、登录页 `.login`。看板与两栏在内容区放不下右栏的 KPI 大字时收成单栏——按内容区宽度（容器查询）而不是视口判断，侧栏展开或折叠都成立。筛选项宽度只用三档：`.w-search`（`layout.search.width`）、`.w-select`、`.w-date`。
 
 ## 组件原则
 
 - 按钮、输入框共用同一控件高度（`control.height.md`），小号用 `control.height.sm`，大号只给页面级唯一主操作与触屏（`control.hit-touch`）。
 - 按钮四层：主按钮金底白字，悬停加深一点（`color.action.primary-hover`）、按下再深一档（`color.action.primary-active`）——白字在变浅的金上更难读，所以不像 antd 那样悬停变浅；次要按钮白底 + `color.border.strong` 描边，悬停换底（`color.action.secondary-hover`）；文字按钮静息透明（`color.action.quiet`）、悬停出浅底（`color.action.quiet-hover`）；危险按钮 `color.action.danger` 实底白字，悬停 / 按下加深。悬停不引入新的颜色（主按钮只是同色系加深）。
-- 卡片：不投影，靠白底与页面底的底色差（`color.bg.surface` 对 `color.bg.page`）加一条很浅的细边线 `color.border.default` 定形；卡片内的分区、表格行线用同一条边线色，不另设分隔线色。卡片标题是分区标签，不与卡片里的数字抢层级：`text.small.size` × `text.weight.strong` × `color.text.secondary`，加字距 `text.tracking.caps`（西文全大写），右侧放更多操作。
+- 卡片：不投影，靠白底与页面底的底色差（`color.bg.surface` 对 `color.bg.page`）加一条很浅的细边线 `color.border.default` 定形；卡片内的分区、表格行线用同一条边线色，不另设分隔线色。卡片标题 `text.body.size` × `text.weight.strong` × `color.text.card-title`（亮色 #212121），不加字距、不转大写，右侧放更多操作；Element 的 `el-card` 标题栏、shadcn 的卡片标题同款。贴在卡片顶部的标签栏当卡片标题头用：标签与 `space.card` 对齐、上下 `spacing.4`（与带标题的卡片头同高），底线贯穿卡片左右边缘。小号、半粗、次要色加字距 `text.tracking.caps` 的分区标签（`.section-label`）只给不值一个标题的次要分组；看板的板块标题是 H2（`.section-head`，见「布局与响应式」）。
 - 输入框是填充式：静息只有底色 `color.bg.input`、没有边线（`color.border.input` 透明），悬停出现 `color.border.strong`，聚焦只把边线换成更深的 `color.border.focus`，线宽不变、不加外环（光标本身提示焦点）；选择器、日期选择、文本域与输入框同一套。
-- 阴影写法固定：`box-shadow: 0 var(--elevation-<层>-y) var(--elevation-<层>-blur) var(--elevation-<层>-color)`，三层 `card` / `popover` / `modal`；`card` 层颜色是透明（卡片不投影），写法照旧保留，回退时只改 token；弹窗与下拉同一档阴影，靠遮罩区分层级。
-- 浮层三件：`color.bg.elevated`（浮层表面）、`color.bg.overlay`（遮罩）、`color.bg.inverse` + `color.text.inverse`（Tooltip / 深色 Toast）。
+- 阴影写法固定：`box-shadow: 0 var(--elevation-<层>-y) var(--elevation-<层>-blur) var(--elevation-<层>-color)`，四层 `card` / `popover` / `modal` / `tooltip`；`card` 层颜色是透明（卡片不投影），写法照旧保留，回退时只改 token；弹窗与下拉同一档阴影，靠遮罩区分层级；`tooltip` 是图表提示气泡的大投影，比下拉大一档（白底气泡压在白卡片上，靠投影浮起来）。
+- 浮层三件：`color.bg.elevated`（浮层表面）、`color.bg.overlay`（遮罩）、`color.bg.inverse` + `color.text.inverse`（文字 Tooltip / 深色 Toast；图表提示气泡不用反色，见图表条）。
 - 状态色是文字色不是填充色：徽标 / 提示条 = `color.status.<x>` + `color.status.<x>-bg`；表格里的状态可以是「状态点 + 文字」，点只是辅助。
-- 图标：`icon.library` 的线性图标为主，默认尺寸 `icon.size.md`（与正文同高），另有 `icon.size.xs / sm / lg / xl / 2xl`；接 IconPark 时描边用 `icon.stroke.width`。颜色：操作图标 `color.icon.default`，装饰与顶栏操作 `color.icon.muted`，双色插图 `color.icon.brand` + `color.icon.two-tone`。
+- 图标：`icon.library`（IconPark；shadcn 栈跟随 shadcn/ui 用 lucide-react）的描边型线性图标为主，默认尺寸 `icon.size.md`（与正文同高），另有 `icon.size.xs / sm / lg / xl / 2xl`；描边在屏幕上恒为 `icon.stroke.width`（1.4px），各档尺寸一样粗；每只图标的多段描边合并成一个形状再上一次色，半透明的图标色在描边交叠处不叠深。颜色：操作图标 `color.icon.default`，装饰与顶栏操作 `color.icon.muted`，双色插图 `color.icon.brand` + `color.icon.two-tone`。
 - 侧栏：底 `color.bg.sidebar`，项 hover `color.bg.sidebar-hover`，当前项 `color.bg.sidebar-selected` + `color.text.sidebar-selected`（不加粗、不加指示条）；文字三档 `color.text.sidebar` / `-strong` / `-muted`（分组标题用 muted）；边线 `color.border.sidebar`；宽 `layout.sidebar.width`，折叠 `layout.sidebar.collapsed-width`。
 - 表格：表头 `color.bg.subtle`（比卡片深一档）+ `color.text.secondary` × `text.weight.label`、小号字，行分隔 `color.border.default`，行 hover `color.bg.hover`，选中行与悬停同色 `color.bg.hover`（再悬停深一档 `color.bg.selected-hover`）；单元格内边距 `table.cell.padding-y / -x`；金额、日期列用 `text.numeric.family` + `text.numeric.variant`（正文字体、等宽数字，金额列小数点上下对齐），单号用 `font.family.code`。
 - 弹窗 / 抽屉：宽度只用 `layout.modal.width.sm`（确认）/ `.md`（表单）/ `layout.drawer.width`；横向表单标签列 `layout.form.label-width`，单列表单最大宽 `layout.form.max-width`（单列表单用竖向标签）。
-- 图表：分类色 `color.chart.1…6` 品牌金领衔，顺序色 `color.chart.sequential.1…5`（四档灰 + 金封顶，离散分段用）；单序列折线金色描线 + 空心点 + 自上而下渐隐的面积 `color.chart.area`，多序列不填面积；提示气泡 `color.chart.tooltip` 底 + `color.text.inverse` 字；涨跌 `color.data.increase / decrease`，已结束 `color.data.inactive`；轴与图例文字 `color.text.secondary`。柱状图、进度条这类数据填充用同色的饱和度渐变：HSB 明度不变，浅端把饱和度降到 × `chart.gradient.saturation`。竖柱上浅下深、横柱右浅左深；进度条左浅右深。中性灰没有饱和度，保持实色；环形图、图例色块也保持实色。环形图用平面，不做 3D。
-- 顶栏：左侧问候语（`color.text.muted`）+ 姓名（`color.text.primary` × `text.weight.strong`），右侧胶囊搜索、带未读红点（`color.action.danger`）的图标按钮与头像下拉。
+- 图表：分类色 `color.chart.1…6` 品牌金领衔，顺序色 `color.chart.sequential.1…5`（四档灰 + 金封顶，离散分段用）；单序列折线金色描线 + 空心点 + 自上而下渐隐的面积 `color.chart.area`，多序列不填面积；提示气泡是白底浮层：`color.chart.tooltip` 底 + `color.text.primary` 字 + `color.border.default` 细边 + `elevation.tooltip.*` 大投影，圆角 `radius.md`，浮在卡片之上，靠边也不被卡片裁掉；悬停时用浅金竖条 `color.chart.area` 盖住悬停的那一格（宽度是相邻两个点或两根柱子的间距），曲线图和柱状图一样，不画竖线；涨跌 `color.data.increase / decrease`，已结束 `color.data.inactive`；轴与图例文字 `color.text.secondary`。轴线与网格线是 `color.border.default` 发丝线（`border.width.default`）；曲线图的底线（x 轴线）同色同宽、改用虚线 `chart.baseline.dash`，柱状图的基线保持实线。柱子起点（基线一端）直角、末端圆角 `radius.xs`：竖柱圆顶端，横柱圆右端，负值柱圆朝外的那一端；堆叠柱段与段直接相接、接缝直角，只圆每根柱子最外的一段（图例关掉某个序列后按剩下的重算）。进度条是胶囊轨道里的填充，两端保持圆形。柱状图、进度条这类数据填充用渐变，方向统一为起点深、末端浅：竖柱下深上浅，横柱和进度条左深右浅，负值柱反过来（基线一端深）。品牌金填充用指定的两色 `color.chart.gradient.start` → `color.chart.gradient.end`；状态色、分类色等其他填充用同色的饱和度渐变：HSB 明度不变，浅端把饱和度降到 × `chart.gradient.saturation`。中性灰没有饱和度，保持实色；环形图、图例色块也保持实色。进度条在条内显示百分比时，填充改为实色（白字落在浅端看不清）。环形图用平面，不做 3D。
+- 顶栏：左侧面包屑（见「布局与响应式」），右侧胶囊搜索、带未读红点（`color.action.danger`）的图标按钮与头像下拉。问候语不放顶栏，工作台把它写进页头的副标题。
 
 ## 组件配方
 
@@ -98,29 +102,42 @@
 | 链接 | — | `color.text.link`，hover `color.text.link-hover` | 无下划线 `text.link.decoration`，常规字重 `text.weight.label` |
 | 输入框 / 选择器 | `color.bg.input` | `color.text.primary`，占位符 `color.text.placeholder` | 静息 `color.border.input`，hover `color.border.strong`，聚焦 `color.border.focus`（线宽不变、不加外环），圆角 `radius.md` |
 | 勾选框 / 单选 / 开关 | 选中 `color.action.primary`；开关滑块 `color.control.knob` | 勾 `color.text.on-primary` | 未选 `color.border.strong` × `border.width.control`，勾选框圆角 `radius.xs` |
-| 卡片 | `color.bg.surface` | 标题 `text.small.size` × `text.weight.strong` × `color.text.secondary` + `text.tracking.caps` | `color.border.default`，圆角 `radius.lg`，不投影（`elevation.card.*` 为透明），内边距 `space.card` |
+| 卡片 | `color.bg.surface` | 标题 `text.body.size` × `text.weight.strong` × `color.text.card-title` | `color.border.default`，圆角 `radius.lg`，不投影（`elevation.card.*` 为透明），内边距 `space.card` |
 | 数据卡 / 统计 | `color.bg.surface` | 数字 `text.display.*`（D-DIN-PRO），涨跌等小数字 `text.numeric.family`（正文字体），标签 `color.text.secondary` | 涨跌 `color.data.increase / decrease` |
 | 表格 | 表头 `color.bg.subtle`；行 hover `color.bg.hover`；选中行与悬停同色 `color.bg.hover`，再悬停 `color.bg.selected-hover` | 表头 `color.text.secondary` × `text.weight.label`（小号），副行 `color.text.muted` | 行分隔 `color.border.default`；单元格内边距 `table.cell.padding-*` |
 | 批量操作条 | `color.bg.selected` | `color.text.primary` | 上下 `color.border.default` |
 | 筹码（已选条件） | `color.bg.chip`（字色同色 10%） | `color.text.selected`，小号字 | 胶囊 `radius.full`，高 `control.height.sm`；移除按钮命中区不小于 `control.hit-min` |
-| 进度条 | 轨道 `color.bg.selected` | 百分比 `color.text.secondary` | 填充 `color.action.primary-active`（中性序列 `color.chart.4`），左浅右深的饱和度渐变（浅端饱和度 × `chart.gradient.saturation`），胶囊 `radius.full` |
-| 徽标 / 提示条 | `color.status.<x>-bg` | `color.status.<x>` | 标签 `radius.sm`、状态点 `radius.full`，提示条 `radius.lg` |
+| 进度条 | 轨道 `color.bg.selected` | 百分比 `color.text.secondary`；条内百分比 `color.text.on-primary` | 填充左深右浅：品牌金 `color.chart.gradient.start` → `color.chart.gradient.end`，状态色与中性序列（`color.chart.4`）用同色饱和度渐变（浅端饱和度 × `chart.gradient.saturation`）；条内显示百分比时改实色 `color.action.primary-active`（白字 5.27:1）；胶囊 `radius.full` |
+| 徽标 / 提示条 | `color.status.<x>-bg` | `color.status.<x>` | 标签 `radius.sm`（中性类别标签用配方 `.tag`）、状态点 `radius.full`，提示条 `radius.lg` |
 | 下拉菜单 | `color.bg.elevated`；项 hover `color.bg.hover` | `color.text.primary`；危险项 `color.text.danger` | `elevation.popover.*`，`layer.dropdown`，圆角 `radius.lg` |
 | 弹窗 | 遮罩 `color.bg.overlay`；面板 `color.bg.elevated` | `color.text.primary` / `secondary` | `elevation.modal.*`，`layer.modal`，圆角 `radius.lg`，进出 `motion.duration.slow` |
 | Tooltip / 深色 Toast | `color.bg.inverse` | `color.text.inverse` | 圆角 `radius.sm`，`layer.toast` |
-| 标签页 | — | 默认 `color.text.secondary`，选中 `color.text.selected` | 选中下划线 `color.border.current` × `border.width.active` |
-| 分段选择器 / 按钮组 | 轨道 `color.bg.hover`；当前项 `color.action.selected` | 当前 `color.text.on-selected`，其余 `color.text.secondary` | 内衬 `control.segmented-inset` |
-| 分页 | 当前页 `color.action.primary`；其余 hover `color.bg.hover` | 当前 `color.text.on-primary` × `text.weight.strong`，其余 `color.text.primary` | `control.height.md`（小号 `control.height.sm`） |
+| 标签页 | — | 默认 `color.text.secondary`，选中 `color.text.selected`；`text.weight.label`，选中不加粗 | 选中下划线 `color.border.current` × `border.width.active`；贴在卡片顶部时当卡片标题头用：标签与 `space.card` 对齐、上下 `spacing.4`，底线贯穿卡片 |
+| 分段选择器 / 按钮组 | 轨道 `color.bg.hover`；当前项 `color.action.selected` | 当前 `color.text.on-selected`，其余 `color.text.secondary`；`text.body-sm.size`，常规字重，选中不加粗 | 内衬 `control.segmented-inset`；不描边 |
+| 头像 | `color.bg.selected-subtle`（不透明的奶金浅底，叠在悬停底上也不变色） | `color.text.selected` | 胶囊 `radius.full`，尺寸 `avatar.size.*` |
+| 分页（纯 CSS / shadcn 用配方 `.pagination` + `.page`） | 当前页 `color.action.primary`；其余 hover `color.bg.hover` | 当前 `color.text.on-primary` × `text.weight.strong`，其余 `color.text.primary` | `control.height.md`（小号 `control.height.sm`） |
 | 日期面板 | 选中日 `color.action.primary`；范围内 `color.bg.selected-subtle` | 选中日 `color.text.on-primary`；今天 `color.text.primary` × 500 | 选中块 `radius.full` |
 | 树 | 当前节点 `color.bg.selected-subtle`；hover `color.bg.hover` | `color.text.primary`，当前节点 500 | 行高 `control.height.md`，圆角 `radius.md` |
-| 步骤条 | 当前步圆点 `color.action.primary`；其余圆点 `color.bg.surface` | 当前步序号 `color.text.on-primary`；已完成的勾 `color.text.selected`；未开始 `color.text.muted` | 已完成圆点描边与连线 `color.border.current`；未开始描边 `color.border.strong`、连线 `color.border.default`；圆点 `control.height.sm` |
+| 步骤条 | 当前步圆点 `color.action.primary`；其余圆点 `color.bg.surface` | 当前步序号 `color.text.on-primary`；已完成的勾 `color.text.selected`；未开始 `color.text.muted`；标题 `text.weight.label`，说明 `color.text.muted` 小号 | 已完成圆点描边与连线 `color.border.current`；未开始描边 `color.border.strong`、连线 `color.border.default`；圆点 `control.height.sm`。横排：圆点在左、标题与说明在右，连线是标题行后面接到下一步的细线；手机竖排、去掉连线 |
 | 时间线 | 节点 `color.bg.surface` | 事件 `color.text.primary`，时间 `color.text.muted` | 当前节点描边 `color.action.primary`，异常 `color.status.error`，其余 `color.border.strong`；竖线 `color.border.default` |
 | 侧栏 | `color.bg.sidebar`；项 hover `color.bg.sidebar-hover`；当前 `color.bg.sidebar-selected` | `color.text.sidebar` / `-strong` / `-muted`；当前 `color.text.sidebar-selected`（常规字重） | `color.border.sidebar`；当前项无指示条；宽 `layout.sidebar.width`，折叠 `layout.sidebar.collapsed-width` |
-| 顶栏 | `color.bg.surface` | 问候语 `color.text.muted`、姓名 `color.text.primary`；操作图标 `color.icon.muted` | 高 `layout.topbar.height`，`layer.sticky`，底边线 `color.border.sidebar`；搜索 `layout.search.width` × `radius.full`；未读红点 `color.action.danger` |
+| 顶栏 | `color.bg.surface` | 面包屑父级 `color.text.secondary`、当前页 `color.text.primary`、箭头 `color.text.muted`；操作图标 `color.icon.muted` | 高 `layout.topbar.height`，`layer.sticky`，底边线 `color.border.sidebar`；搜索 `layout.search.width` × `radius.full`；未读红点 `color.action.danger` |
 | 抽屉 | 遮罩 `color.bg.overlay`；面板 `color.bg.elevated` | `color.text.primary` | 宽 `layout.drawer.width`，`elevation.modal.*`，`layer.modal` |
 | 横向表单 | — | 标签 `color.text.primary` | 标签列 `layout.form.label-width`，单列最大宽 `layout.form.max-width` |
-| 空状态 / 结果页 | — | 标题 `color.text.primary`，说明 `color.text.secondary` | 插图 `illustration.size.md`，大图标 `icon.size.2xl` |
-| 图表 | 面积 `color.chart.area`（渐隐）；提示气泡 `color.chart.tooltip` | 轴与图例 `color.text.secondary`；气泡 `color.text.inverse` | 分类 `color.chart.1…6`，顺序 `color.chart.sequential.*`，涨跌 `color.data.*`；柱子饱和度渐变，上浅下深（浅端饱和度 × `chart.gradient.saturation`） |
+| 空状态 / 结果页 | — | 标题 `color.text.primary`，说明 `color.text.secondary`；结果页错误码 `color.text.selected` | 插图 `illustration.size.md`，大图标 `icon.size.2xl`；用法见「页面状态与权限」 |
+| 登录页 | 品牌面 `color.bg.brand`；表单面 `color.bg.page` | 品牌面 `color.text.on-brand`（只放不小于 `text.heading.size` 的大字）；logo 块 `color.bg.surface` 底 + `color.text.selected` | 表单卡宽 `layout.modal.width.sm`；手机收成单栏 |
+| 图表 | 面积 `color.chart.area`（渐隐）；悬停竖条 `color.chart.area`；提示气泡 `color.chart.tooltip`（白底浮层） | 轴与图例 `color.text.secondary`；气泡 `color.text.primary` | 气泡 `color.border.default` 细边 + `elevation.tooltip.*` 大投影、圆角 `radius.md`；分类 `color.chart.1…6`，顺序 `color.chart.sequential.*`，涨跌 `color.data.*`；柱子起点直角、末端 `radius.xs` 圆角，堆叠只圆最外一段；柱子渐变下深上浅（横柱左深右浅，负值柱基线一端深）：品牌金 `color.chart.gradient.start` → `color.chart.gradient.end`，其他颜色同色饱和度渐变（浅端饱和度 × `chart.gradient.saturation`） |
+
+## 页面状态与权限
+
+每块取数的区域都有加载、空、出错、正常四态，样式全部来自配方，页面只决定文案。
+
+- 加载：骨架屏占住最终形状（表格用 `TableSkeleton` / `.tskel`，列宽与真实表格一致），加载完成不跳版；不用转圈盖住整块，也不用禁用态假装加载。按钮自己的提交中用按钮的 loading，不压淡。
+- 空：插图 + 一句说明 + 至多一个主操作（`.empty`）。说明讲原因和下一步；筛选后没有结果时，操作是「清空筛选」而不是新建。
+- 出错：区域内的错误条（`.error-box`，`color.status.error` 成对，写清原因，右侧「重试」），页头与筛选栏保留，不整页跳走；只有整页级失败（500、网络断开）才用结果页 `.result`。
+- 权限分三层：没有权限的菜单与入口直接隐藏，不放禁用的菜单项；直接访问无权限的地址进 403 结果页（`.result`），给「返回工作台」；同一页面里按角色区分的操作，按钮保持可见但禁用（`opacity.disabled`），悬停出 Tooltip 写明缺哪项权限——禁用按钮不触发悬停，Tooltip 挂在外层包裹元素上。
+- 只读角色看表单用只读态（`color.bg.readonly`）并在表单顶部说明原因，不用禁用态。
+- 模块还没上线（建设中）：整页结果状态 `.result`（插图 + 「某某正在建设中」+ 去处），和 403 / 404 一样不加页头 H1——模块名已经在面包屑和结果标题里，再加一个只是重复。
 
 ## 交互与无障碍
 
@@ -141,6 +158,7 @@
 - **可访问名称**：所有按钮、链接、菜单项有名称；图片有 alt。
 - **溢出与截断**：任何模式、任何页面无横向溢出；nowrap 文字无截断。
 - **键盘焦点**：Tab 遍历每个可聚焦元素都能看出焦点：按钮、链接、菜单项有焦点环，输入类控件边线变成 `color.border.focus`。
+- **与视觉基准一致**：同类页面与组件的尺寸、内边距、字号、颜色、边线、圆角与效果预览一致；效果预览里有、种子里没有的组件样式（预览自带的参考实现），项目用到时先提案移进配方，不在项目里照着预览另写一套。
 - **构建一致性**：steward `validate-system` / `build-tokens` / `guard` 三绿。
 
 ## Do / Don't

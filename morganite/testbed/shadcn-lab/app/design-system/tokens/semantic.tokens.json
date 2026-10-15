@@ -108,6 +108,11 @@
         "$value": "{color.neutral.black-a88}",
         "$description": "[观察] 承载最多文字（约 2715 字）rgba(0,0,0,0.88)，对白 16.5:1"
       },
+      "card-title": {
+        "$type": "color",
+        "$value": "{color.neutral.875}",
+        "$description": "[确认] 卡片标题 #212121（用户 2026-10-13 指定，配 text.body.size 14px；原为 color.text.secondary 的分区标签样式），对白 16.1:1"
+      },
       "secondary": {
         "$type": "color",
         "$value": "{color.neutral.black-a65}",
@@ -412,12 +417,12 @@
       "area": {
         "$type": "color",
         "$value": "{color.brand.500-a16}",
-        "$description": "[确认] 面积填充：品牌金 16%（2026-10-09 用户确认）"
+        "$description": "[确认] 面积填充：品牌金 16%（2026-10-09 用户确认）；也是图表悬停竖条，盖住悬停的那一格（用户 2026-10-12：悬停用浅色柱状图，浅金与浅灰 color.bg.hover 实测对比后选浅金）"
       },
       "tooltip": {
         "$type": "color",
-        "$value": "{color.brand.600}",
-        "$description": "[确认] 图表提示气泡深金底（预期预览图为金底白字 3.1:1，压深一档到 5.27:1），文字用 color.text.inverse"
+        "$value": "{color.white}",
+        "$description": "[确认] 图表提示气泡底：白底浮层（同 color.bg.elevated，暗色覆写为浮层色），配 color.text.primary 字、color.border.default 细边与 elevation.tooltip 大投影（用户 2026-10-12：hover 浮窗用白色底 + 大投影）；原为深金底 color.brand.600 + 白字"
       },
       "sequential": {
         "1": {
@@ -444,6 +449,18 @@
           "$type": "color",
           "$value": "{color.brand.500}",
           "$description": "[确认] 顺序色封顶：品牌金（排行榜前三名）（2026-10-09 用户确认）"
+        }
+      },
+      "gradient": {
+        "start": {
+          "$type": "color",
+          "$value": "{color.brand.550}",
+          "$description": "[确认] 品牌金数据填充渐变的起点（深端）：进度条左端、竖柱底端、横柱基线端（用户 2026-10-12 指定 #B1863D）"
+        },
+        "end": {
+          "$type": "color",
+          "$value": "{color.brand.250}",
+          "$description": "[确认] 品牌金数据填充渐变的末端（浅端）：进度条右端、竖柱顶端、横柱数值端（用户 2026-10-12 指定 hsl(37.3228deg 59.5252% 61.7469%) ≈ #D8AC63）"
         }
       }
     },
@@ -572,14 +589,14 @@
     },
     "library": {
       "$type": "string",
-      "$value": "{icon.set.antd}",
-      "$description": "[观察] anticon 线性图标 148 处"
+      "$value": "{icon.set.iconpark}",
+      "$description": "[确认] IconPark 描边型线性图标，配合 icon.stroke.width 与 mergeIcons()；shadcn 栈跟随 shadcn/ui 用 lucide-react（同为描边型，同样按 icon.stroke.width 画）。用户 2026-10-14 确认登记为实际在用的图标库；原为演示站观察到的 @ant-design/icons（anticon 148 处），填充路径，用不上描边粗细"
     },
     "stroke": {
       "width": {
-        "$type": "number",
-        "$value": "{stroke-width.3}",
-        "$description": "[确认] IconPark 描边 3（与 antd 线性图标比例一致）（2026-10-09 用户确认）"
+        "$type": "dimension",
+        "$value": "{stroke-width.1-4}",
+        "$description": "[确认] 线性图标描边 1.4px：屏幕上的实际粗细，各档尺寸一样粗（vector-effect: non-scaling-stroke）；多段描边合并成一个形状再上一次色，半透明的图标色在交叠处不叠深（用户 2026-10-12：icon 描边粗细改为 1.4px 并合并栅格化）。原为 IconPark 48 网格里的 3，14px 图标上约 0.9px"
       }
     }
   },
@@ -591,13 +608,13 @@
     },
     "stack": {
       "$type": "dimension",
-      "$value": "{spacing.6}",
-      "$description": "[观察] 工作台卡片栅格 gutter 24px，103 处"
+      "$value": "{spacing.4}",
+      "$description": "[确认] 板块之间 16px，比卡片内边距 space.card 窄一档（用户 2026-10-14：板块间距稍微紧凑一些，三种收法对比后选定）；原为演示站工作台卡片栅格 gutter 24px（103 处）"
     },
     "gutter": {
       "$type": "dimension",
-      "$value": "{spacing.10}",
-      "$description": "[观察] ProLayout 页面容器左右内边距 40px（上下 32px）"
+      "$value": "{spacing.6}",
+      "$description": "[确认] 内容区四周留白 24px，与卡片内边距 space.card 同宽（用户 2026-10-14 与 space.stack 一起收紧）；原为 ProLayout 页面容器左右内边距 40px（上下 32px）"
     },
     "card": {
       "$type": "dimension",
@@ -751,7 +768,7 @@
       "caps": {
         "$type": "dimension",
         "$value": "{font.letter-spacing.caps}",
-        "$description": "[确认] 卡片 / 分区标题的大写小字字距（预期预览图）；中文标题只取小号、半粗、次要色"
+        "$description": "[确认] 分区标签（.section-label，次要分组）的大写小字字距（预期预览图）；中文标签只取小号、半粗、次要色。卡片标题 2026-10-13 起改为 14px 深色标题、看板板块标题 2026-10-14 起改为 16px 的 H2（用户指定），都不再用它"
       }
     },
     "link": {
@@ -903,6 +920,23 @@
         "$value": "{color.neutral.shadow-a8}",
         "$description": "[观察] 同上"
       }
+    },
+    "tooltip": {
+      "y": {
+        "$type": "dimension",
+        "$value": "{shadow.y.3}",
+        "$description": "[确认] 图表提示气泡阴影 y：大投影，比 elevation.popover 大一档（用户 2026-10-12：hover 浮窗用白色底 + 大投影）"
+      },
+      "blur": {
+        "$type": "dimension",
+        "$value": "{shadow.blur.3}",
+        "$description": "[确认] 图表提示气泡阴影模糊（用户 2026-10-12：hover 浮窗用白色底 + 大投影）"
+      },
+      "color": {
+        "$type": "color",
+        "$value": "{color.neutral.shadow-a12}",
+        "$description": "[确认] 图表提示气泡阴影色（用户 2026-10-12：hover 浮窗用白色底 + 大投影）"
+      }
     }
   },
   "motion": {
@@ -1017,7 +1051,14 @@
       "saturation": {
         "$type": "number",
         "$value": "{opacity.40}",
-        "$description": "[确认] 柱状图 / 进度条的饱和度渐变：浅端把饱和度降到原色的 0.4 倍，HSB 明度不变（数值借用 opacity.40）；柱状图顶端浅、底端深，进度条左浅右深（用户 2026-10-09 决定；倍数为默认值，待确认）（2026-10-09 用户确认）"
+        "$description": "[确认] 品牌金以外的数据填充（状态色、中性色、分类色）用同色饱和度渐变：浅端把饱和度降到原色的 0.4 倍，HSB 明度不变（数值借用 opacity.40；2026-10-09 用户确认）。方向与品牌金渐变一致，起点深、末端浅：竖柱上浅下深，进度条与横柱左深右浅（2026-10-12 用户指定品牌金两色时统一；原记录的进度条左浅右深与用户最初「起始点到终止点的深浅渐变」不符，已更正）。品牌金填充用 color.chart.gradient.start → end"
+      }
+    },
+    "baseline": {
+      "dash": {
+        "$type": "dimension",
+        "$value": "{spacing.1}",
+        "$description": "[确认] 曲线图底线（x 轴线）的虚线：线段与间隔都是 4px（数值借用 spacing.1），线宽 border.width.default（0.6px）、颜色 color.border.default，同网格线（用户 2026-10-12：曲线图的底线用 0.6px 虚线）。柱状图的基线保持实线"
       }
     }
   }

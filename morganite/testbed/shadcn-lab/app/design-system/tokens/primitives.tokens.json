@@ -155,6 +155,20 @@
         },
         "$description": "[确认] 暗色顺序色第一档（2026-10-09 用户确认）"
       },
+      "875": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.1294,
+            0.1294,
+            0.1294
+          ],
+          "alpha": 1,
+          "hex": "#212121"
+        },
+        "$description": "[确认] 卡片标题文字色（用户 2026-10-13 指定 #212121）；介于 850 #262626 与 900 #1F1F1F 之间"
+      },
       "900": {
         "$type": "color",
         "$value": {
@@ -532,6 +546,20 @@
           "hex": "#00000014"
         },
         "$description": "[观察] 浮层 / 弹窗阴影色：boxShadowSecondary 第一层 0 6px 16px 0 rgba(0,0,0,0.08)"
+      },
+      "shadow-a12": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0,
+            0,
+            0
+          ],
+          "alpha": 0.12,
+          "hex": "#0000001F"
+        },
+        "$description": "[确认] 大投影色 rgba(0,0,0,0.12)：图表提示气泡（用户 2026-10-12：hover 浮窗用白色底 + 大投影）"
       }
     },
     "brand": {
@@ -576,6 +604,20 @@
           "hex": "#DDB67B"
         },
         "$description": "[确认] 浅金：图表第三色（预期预览图环图 / 柱状取样，随主色提亮）"
+      },
+      "250": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.8471,
+            0.6745,
+            0.3882
+          ],
+          "alpha": 1,
+          "hex": "#D8AC63"
+        },
+        "$description": "[确认] 数据填充渐变的浅端：用户 2026-10-12 指定 hsl(37.3228deg 59.5252% 61.7469%)，按 8 位 sRGB 取 #D8AC63（进度条 / 柱状图品牌金渐变的末端，起点是 brand.550）"
       },
       "300": {
         "$type": "color",
@@ -631,7 +673,7 @@
           "alpha": 1,
           "hex": "#B1863D"
         },
-        "$description": "[确认] 主按钮悬停：比主色深一点（白字 3.31:1）"
+        "$description": "[确认] 主按钮悬停：比主色深一点（白字 3.31:1）；2026-10-12 起兼作数据填充渐变的起点（用户指定 #B1863D）"
       },
       "600": {
         "$type": "color",
@@ -1168,7 +1210,7 @@
         "unit": "px",
         "value": 4
       },
-      "$description": "[推断] 勾选框等 ≤ 16px 的小元素圆角：antd 勾选框 borderRadiusSM 4px（与 radius.sm 同值）"
+      "$description": "[确认] 勾选框等 ≤ 16px 的小元素圆角：antd 勾选框 borderRadiusSM 4px（与 radius.sm 同值；用户 2026-10-14 确认）"
     }
   },
   "spacing": {
@@ -1266,7 +1308,7 @@
         "unit": "px",
         "value": 14
       },
-      "$description": "[推断] 14px 间距：配方步长（导航分组上内边距、表单底栏、分段项），演示站无对应值"
+      "$description": "[确认] 14px 间距：配方步长（导航分组上内边距、表单底栏、分段项），演示站无对应值（用户 2026-10-14 确认）"
     }
   },
   "size": {
@@ -1508,6 +1550,14 @@
           "value": 6
         },
         "$description": "[观察] 浮层 / 弹窗阴影 y：boxShadowSecondary 第一层（原式三层 0 6px 16px 0 / 0 3px 6px -4px / 0 9px 28px 8px）"
+      },
+      "3": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 12
+        },
+        "$description": "[确认] 大投影 y：图表提示气泡，比浮层 / 弹窗的 shadow.y.2 大一档（用户 2026-10-12：hover 浮窗用白色底 + 大投影）"
       }
     },
     "blur": {
@@ -1526,6 +1576,14 @@
           "value": 16
         },
         "$description": "[观察] 浮层 / 弹窗阴影模糊（弹窗与浮层同式）"
+      },
+      "3": {
+        "$type": "dimension",
+        "$value": {
+          "unit": "px",
+          "value": 32
+        },
+        "$description": "[确认] 大投影模糊：图表提示气泡，比浮层 / 弹窗的 shadow.blur.2 大一档（用户 2026-10-12：hover 浮窗用白色底 + 大投影）"
       }
     }
   },
@@ -1537,7 +1595,7 @@
           "unit": "em",
           "value": 0.06
         },
-        "$description": "[确认] 卡片 / 分区标题的大写小字字距（预期预览图 PORTFOLIO PERFORMANCE 一类标题）"
+        "$description": "[确认] 分区标签的大写小字字距（预期预览图 PORTFOLIO PERFORMANCE 一类标题）"
       },
       "none": {
         "$type": "dimension",
@@ -1802,10 +1860,18 @@
     }
   },
   "stroke-width": {
+    "1-4": {
+      "$type": "dimension",
+      "$value": {
+        "unit": "px",
+        "value": 1.4
+      },
+      "$description": "[确认] 图标描边 1.4px：屏幕上的实际粗细，不随图标尺寸缩放（用户 2026-10-12：icon 描边粗细改为 1.4px）"
+    },
     "3": {
       "$type": "number",
       "$value": 3,
-      "$description": "[确认] IconPark 描边 3（48 网格，约 1/16，与 antd 线性图标笔画比例一致；Citrine 实测 3 在 Mac 偏细，接入时可按需调 4）（2026-10-09 用户确认）"
+      "$description": "[确认] 0.2.0 起不再被引用（icon.stroke.width 改为屏幕上的 1.4px，见 stroke-width.1-4），按版本策略留到下个大版本再删。原为 IconPark 48 网格里的描边 3，14px 图标上约 0.9px（2026-10-09 用户确认）"
     }
   },
   "decoration": {
@@ -1820,7 +1886,12 @@
       "antd": {
         "$type": "string",
         "$value": "@ant-design/icons",
-        "$description": "[观察] 线性图标（anticon，148 处 outline）；种子不带图标资源，接入方自行安装"
+        "$description": "[确认] 0.2.0 起不再被引用（icon.library 改指 icon.set.iconpark），按版本策略留到下个大版本再删。原为演示站观察到的线性图标（anticon，148 处 outline），是填充路径，用不上 icon.stroke.width"
+      },
+      "iconpark": {
+        "$type": "string",
+        "$value": "IconPark",
+        "$description": "[确认] 字节跳动 IconPark（Apache-2.0）描边型线性图标：Vue 3 用 @icon-park/vue-next，React 用 @icon-park/react，静态页用 @icon-park/svg；Element Plus 桥接 iconpark.css / iconpark.config 按它写。种子不带图标资源，接入方自行安装（用户 2026-10-14：图标库登记改为实际在用的 IconPark）"
       }
     }
   }

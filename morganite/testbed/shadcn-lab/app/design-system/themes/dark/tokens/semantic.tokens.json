@@ -98,6 +98,11 @@
         "$value": "{color.neutral.white-a85}",
         "$description": "[观察] 暗色正文 rgba(255,255,255,0.85)，499 字"
       },
+      "card-title": {
+        "$type": "color",
+        "$value": "{color.neutral.white-a85}",
+        "$description": "[确认] 暗色卡片标题取暗色正文 0.85（用户 2026-10-13 确认，备选为原来的次要色 0.65）：亮色由次要色提到近正文的 #212121，暗色同一层级；对表面 #141414 约 13.4:1"
+      },
       "secondary": {
         "$type": "color",
         "$value": "{color.neutral.white-a65}",
@@ -298,7 +303,12 @@
       "area": {
         "$type": "color",
         "$value": "{color.brand.500-a24}",
-        "$description": "[确认] 暗色面积填充：品牌金 24%（2026-10-09 用户确认）"
+        "$description": "[确认] 暗色面积填充：品牌金 24%（2026-10-09 用户确认）；也是暗色图表悬停竖条"
+      },
+      "tooltip": {
+        "$type": "color",
+        "$value": "{color.neutral.900}",
+        "$description": "[确认] 暗色图表提示气泡同暗色浮层 color.bg.elevated #1f1f1f（2026-10-12 改白底浮层时随浮层）"
       },
       "sequential": {
         "1": {
