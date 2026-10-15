@@ -12,7 +12,7 @@
 //   node ds.mjs export   --to <dir> [--system <id|路径|npm包名>] [--with element-plus,shadcn] [--dry-run] [--force]   # 纯 CSS 交付（非 Node 项目）
 //   node ds.mjs scope    --root <class> --to <dir> [--with element-plus] [--system …]                             # 范围根：只覆盖部分路由板块（@scope 包裹）
 //   node ds.mjs propose  --title "…" [--layer token|bridge|recipes|component|docs|tools] [--scene …] [--expect …] [--tokens a,b] [--write]   # 提案草稿 + 预填 issue 链接
-//   node ds.mjs agents   [--project <dir>] [--stack <栈>] [--name <项目名>] [--write]   # 默认只打印；--write 新建或追加；标题默认取 package.json 的 name
+//   node ds.mjs agents   [--project <dir>] [--stack <栈>] [--name <项目名>] [--write]   # 默认只打印并说明 --write 会怎么改；--write 新建、替换既有设计系统区块或追加；标题默认取 package.json 的 name
 //   node ds.mjs ci       [--project <dir>] [--to <path>] [--no-accept] [--dry-run] [--force]   # 写 GitHub Actions 门禁：快照完整 → guard current → 构建 → 验收全绿
 //   node ds.mjs steward  locate|install [--project <dir>]
 //   node ds.mjs self-update
@@ -30,7 +30,7 @@ import { latestTag, downloadSubdir } from './lib/fetch.mjs';
 import { classify, classifyByHash, conflictMarkers, resolveJsonConflict } from './lib/merge.mjs';
 import { shaText } from './lib/util.mjs';
 import { locateSteward, installSteward, stewardInstallHint, stewardInfo, MIN_STEWARD } from './lib/steward.mjs';
-import { renderAgents, resolvePlaceholders, writeAgents } from './lib/agents.mjs';
+import { planAgents, renderAgents, resolvePlaceholders, writeAgents } from './lib/agents.mjs';
 import { scopeWrap, guardSnippet } from './lib/scope.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -92,7 +92,7 @@ function printWiring(identity, stackId, source) {
   if (source === 'folder') lines.push(`  1. 让 import 路径生效（folder 来源用 file: 链接，与 npm 同一套路径）：\n     npm i file:./${readManifest().snapshot}\n     Vite 配 optimizeDeps.exclude: ['${identity.upstream.npm}'] 与 resolve.preserveSymlinks: true（file: 是符号链接）`);
   else lines.push(`  1. Vite 配 optimizeDeps.exclude: ['${identity.upstream.npm}']（包里是源码组件）`);
   lines.push(`  2. 样式入口（建议 src/styles/globals.css；${stack.snippet} 模板已按来源解析）：\n${snippet.split('\n').map((l) => '     ' + l).join('\n')}`);
-  lines.push(`  3. 构建 token 与校验（steward）：\n     npm i -D ${identity.build?.tool || 'style-dictionary'}\n     node <steward>/scripts/build-tokens.mjs --project "${project}"\n     node <steward>/scripts/guard.mjs --project "${project}"    # 应为 current`);
+  lines.push(`  3. 构建 token 与校验（steward）：\n     npm i -D --save-exact ${identity.build?.tool || 'style-dictionary'}\n     node <steward>/scripts/build-tokens.mjs --project "${project}"\n     node <steward>/scripts/guard.mjs --project "${project}"    # 应为 current`);
   if (identity.accept?.npm) lines.push(`  4. 验收：npm i -D ${identity.accept.npm} → 按快照里的 ${identity.accept.configTemplate} 建 accept.config.mjs → npx ${identity.accept.command}`);
   lines.push(`  5. 项目规则：node <adopter>/scripts/ds.mjs agents --stack ${stackId}（展示给用户确认后加 --write）`);
   const sw = stewardInfo(project);
@@ -129,7 +129,7 @@ function nodeModulesSync(m, identity, version) {
     const asset = `${(up.npm || m.npm).replace(/^@/, '').replace('/', '-')}-${version}.tgz`;
     return { current, cmd: `npm i ${up.repo ? `https://github.com/${up.repo}/releases/download/${up.tagPrefix || ''}${version}/${asset}` : `<新版 ${asset} 的下载地址>`}` };
   }
-  return { current, cmd: `npm i ${m.npm}@${version}` };
+  return { current, cmd: `npm i --save-exact ${m.npm}@${version}` };
 }
 
 const commands = {
@@ -520,9 +520,27 @@ const commands = {
     const m = readManifest() || fail(`没有 ${MANIFEST}；先 init / adopt`);
     const identity = readIdentity(snapshotDirOf(m)) || fail('快照缺 design-system.json');
     const content = renderAgents(project, identity, snapshotDirOf(m), args.stack || m.stack, { name: typeof args.name === 'string' ? args.name : undefined });
-    if (!args.write) { console.log(content); console.log('\n（未写入。给用户看过、确认后加 --write：新建或追加，不覆盖。）'); return; }
-    const how = writeAgents(project, content);
-    console.log(how === 'created' ? '已新建 AGENTS.md' : '已把设计系统区块追加到既有 AGENTS.md 末尾');
+    const file = join(project, 'AGENTS.md');
+    const changes = (plan) => [...plan.removed.map((l) => `  − ${l}`), ...plan.added.map((l) => `  + ${l}`)].map((l) => (l.length > 160 ? l.slice(0, 159) + '…' : l)).join('\n');
+    if (!args.write) {
+      const plan = planAgents(existsSync(file) ? readFileSync(file, 'utf8') : null, content);
+      console.log(content);
+      const tell = {
+        created: '--write 会新建 AGENTS.md。',
+        replaced: `--write 会替换 AGENTS.md 第 ${plan.range?.[0]}–${plan.range?.[1]} 行的设计系统区块（区块外的标题与项目自己的章节不动），区块内 −${plan.removed.length} / +${plan.added.length} 行：\n${changes(plan)}`,
+        appended: 'AGENTS.md 里没有设计系统区块，--write 会把它追加到末尾。',
+        unchanged: 'AGENTS.md 的设计系统区块已与上面一致，--write 不会改动。',
+      }[plan.how];
+      console.log(`\n（未写入。${tell}${plan.how === 'unchanged' ? '' : '给用户看过、确认后再加 --write。'}）`);
+      return;
+    }
+    const plan = writeAgents(project, content);
+    console.log({
+      created: '已新建 AGENTS.md',
+      replaced: `已替换 AGENTS.md 第 ${plan.range?.[0]}–${plan.range?.[1]} 行的设计系统区块（−${plan.removed.length} / +${plan.added.length} 行），区块外不动`,
+      appended: '已把设计系统区块追加到既有 AGENTS.md 末尾',
+      unchanged: 'AGENTS.md 的设计系统区块已是最新，未改动',
+    }[plan.how]);
   },
 
   /**

@@ -79,6 +79,7 @@ test('端到端：init（folder）→ 本地改 token + DESIGN → upgrade --fro
   const run = (cmdArgs, opts = {}) => execFileSync('node', [DS, ...cmdArgs, '--project', proj], { encoding: 'utf8', ...opts });
   const out = run(['init', '--system', 'downloaded-seed', '--stack', 'element-plus']);
   assert.match(out, /已接入 Citrine/);
+  assert.match(out, /npm i -D --save-exact style-dictionary@\d/);
   assert.ok(existsSync(join(proj, 'design-systems/citrine/design-system.json')));
   assert.ok(existsSync(join(proj, 'design-system/.adopter.json')));
   // 本地改：semantic tokens 里加一个自有 token；DESIGN.md 追加一行
@@ -156,6 +157,33 @@ test('upgrade：owned 含 bridge/** 时，桥接随快照替换，不当成「�
   assert.ok(!existsSync(join(proj, 'bridge')), '桥接不该被写进项目根');
   assert.match(readFileSync(join(proj, 'design-systems/citrine/bridge/recipes.css'), 'utf8'), new RegExp(`/\\* ${next.replaceAll('.', '\\.')} \\*/`));
   assert.match(readFileSync(join(proj, 'design-system/DESIGN.md'), 'utf8'), new RegExp(`<!-- ${next.replaceAll('.', '\\.')} -->`));
+});
+
+test('upgrade：新版把一个工作副本文件加进 owned（旧版不管、init 时拷来）→ 以旧快照里的同名文件作基线，本地未改就直接更新', () => {
+  const proj = tmp();
+  execFileSync('git', ['init', '-q'], { cwd: proj });
+  const seed = join(proj, 'downloaded-seed');
+  cpSync(SEED, seed, { recursive: true, filter: (src) => !src.includes('node_modules') });
+  const F = 'design-system/preview/preview.local.css';
+  mkdirSync(join(seed, 'design-system/preview'), { recursive: true });
+  writeFileSync(join(seed, F), '/* v1 */\n');
+  const run = (cmdArgs) => execFileSync('node', [DS, ...cmdArgs, '--project', proj], { encoding: 'utf8' });
+  run(['init', '--system', 'downloaded-seed', '--stack', 'element-plus']);
+  assert.equal(readFileSync(join(proj, F), 'utf8'), '/* v1 */\n');
+  const cur = JSON.parse(readFileSync(join(seed, 'design-system.json'), 'utf8')).version;
+  const next = cur.replace(/(\d+)$/, (m) => String(Number(m) + 1));
+  const up = join(tmp(), 'seed-next');
+  cpSync(seed, up, { recursive: true });
+  const upId = JSON.parse(readFileSync(join(up, 'design-system.json'), 'utf8'));
+  upId.version = next;
+  upId.owned = [...upId.owned, F];
+  writeFileSync(join(up, 'design-system.json'), JSON.stringify(upId, null, 2) + '\n');
+  writeFileSync(join(up, F), '/* v2 */\n');
+  const dry = run(['upgrade', '--dry-run', '--from', up]);
+  assert.match(dry, new RegExp(`直接更新（本地未改）（1）：\\n\\s+${F.replaceAll('.', '\\.')}`));
+  assert.doesNotMatch(dry, /冲突（\d+）|保留本地/);
+  run(['upgrade', '--from', up]);
+  assert.equal(readFileSync(join(proj, F), 'utf8'), '/* v2 */\n');
 });
 
 test('upgrade：快照是指向种子的符号链接，种子就地改了但版本号没变 → 按「直接更新」合并，status 不当手改', () => {
