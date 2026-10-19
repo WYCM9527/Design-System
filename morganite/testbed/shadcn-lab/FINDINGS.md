@@ -65,3 +65,7 @@ citrine-tools 改为按设计系统取品牌色口径（工具 1.3.0，仓库内
 修完复测：页面品牌金 0 处，组件走查亮 / 暗各 87 个元素 0 发现，静息金亮 26 组、暗 31 组。
 
 进 CI 前 steward `status` 报 `in-progress`（CI 要求 `unified`）：`src/components/ui/` 是按原样保留的 shadcn 上游源码，里面的 `ring-[3px]`、`rounded-[4px]` 等任意值被算成字面量债。照 Citrine 的 shadcn 实验项目登记豁免 `design-system/exemptions.json`（理由：组件内部几何，颜色全走契约变量，视觉由桥接按 `data-slot` 接管），之后 `unified`、字面量债 0。侧栏页脚原来写死「Morganite 0.1.0」，改为从 `design-system/.adopter.json` 读版本。
+
+# 升级到 0.3.1（2026-10-19）
+
+种子 0.3.1 把优惠券券面加进品牌面的位置：新增配方 `.coupon`，身份文件的品牌金允许清单加 `.coupon-value`（用户决定，见种子 CHANGELOG 0.3.1），token 不变。本项目没有优惠券，页面不用改。用户已同意种子再改时直接同步两个实验项目，于是运行 `ds.mjs upgrade`：直接更新 `DESIGN.md`、`AUDIT.md`，没有冲突。build、guard `current`、status `unified`，`citrine-accept all` 四步通过：5 个页面状态 × 亮暗的问题项全 0（tinyTargets 76 为提示项），允许清单 80 条、页面品牌金 0 处，组件走查亮 / 暗各 87 个元素 0 发现（静息金亮 26 组、暗 31 组），992px / 390px 与焦点通过。

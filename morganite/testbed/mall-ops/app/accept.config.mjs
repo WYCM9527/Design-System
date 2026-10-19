@@ -73,8 +73,7 @@ export const NARROW = {
 export const FOCUS = { pages: { dashboard: '#/', orders: '?preset=1#/orders', 'product-new': '#/products/new', settings: '?tab=profile#/settings' }, steps: 80, inputBorder: true };
 // 品牌金审计：判色范围与允许出现金色的位置登记在设计系统身份文件 design-system.json 的 accept.brand（依据 DESIGN；要 citrine-tools ≥ 1.3.0）；
 // 本项目另有合法位置时追加在这里并写明理由，如 ['.welcome-banner']
-// .coupon-value：优惠券卡片的面额块是品牌面 color.bg.brand（券面）。DESIGN 只把品牌面给登录页品牌区与欢迎横幅，这是项目级偏离，待用户确认（品牌金审计 2026-10-19 首次发现，见 FINDINGS）
-export const BRAND_ALLOW = ['.coupon-value'];
+export const BRAND_ALLOW = [];
 // 已批准的对比度例外：Morganite AUDIT「对比度基线」已登记例外的镜像（照抄种子模板，不为过验收新增）
 export const APPROVED_CONTRAST = [
   { fg: '#FFFFFF', bg: '#B98D44', why: '金底白字 3.02:1：主按钮、分页当前页、侧栏当前项、选中日、主色徽标、深色 / 勾选标签、当前步骤' },

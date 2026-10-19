@@ -290,6 +290,14 @@ button.user { background: var(--color-action-quiet); border: 0; font: inherit; c
 .code-row { display: flex; gap: var(--space-inline); width: 100%; }
 .code-row .input, .code-row .el-input { flex: 1; }
 
+/* ── 优惠券券面：左侧面额块是品牌面 bg.brand + text.on-brand（面额用展示字；门槛小字属「金底白字」例外），右侧放名称、状态与操作；已结束 / 过期 / 草稿的券加 .is-off，面额块变灰 ── */
+.coupon { display: grid; grid-template-columns: var(--illustration-size-md) minmax(0, 1fr); border: var(--border-width-default) solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; }
+.coupon-value { display: grid; place-content: center; gap: var(--spacing-1); text-align: center; padding: var(--spacing-3); background: var(--color-bg-brand); color: var(--color-text-on-brand); font-size: var(--text-small-size); }
+.coupon-value b { font-family: var(--text-display-family); font-size: var(--text-heading-size); font-weight: var(--text-display-weight); line-height: var(--text-heading-line-height); }
+.coupon.is-off .coupon-value { background: var(--color-bg-subtle); color: var(--color-text-muted); }
+.coupon-body { display: grid; gap: var(--spacing-2); padding: var(--spacing-3) var(--spacing-4); min-width: 0; }
+.coupon-foot { display: flex; align-items: center; justify-content: space-between; }
+
 /* ── 图表容器：高度用 token 表达（控件高度 × 7 / × 9） ── */
 .chart { height: calc(var(--control-height-md) * 7); width: 100%; }
 .chart.tall { height: calc(var(--control-height-md) * 9); }

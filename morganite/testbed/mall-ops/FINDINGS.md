@@ -205,13 +205,15 @@ citrine-tools 改为按设计系统取品牌色口径（工具 1.3.0，仓库内
 
 | # | 现象 | 处理 |
 | --- | --- | --- |
-| G1 | 优惠券卡片的面额块是品牌面（`Campaigns.vue` 的 `.coupon-value`：`color.bg.brand` 底、`color.text.on-brand` 字，已结束 / 过期 / 草稿的券变灰），优惠券页签亮暗共 10 处 | **待用户决定**。DESIGN 只把品牌面给登录页品牌区与欢迎横幅，券面不在其中。现在 `BRAND_ALLOW` 登记了 `.coupon-value`，验收按项目级偏离放行 |
+| G1 | 优惠券卡片的面额块是品牌面（`Campaigns.vue` 的 `.coupon-value`：`color.bg.brand` 底、`color.text.on-brand` 字，已结束 / 过期 / 草稿的券变灰），优惠券页签亮暗共 10 处 | 用户 2026-10-19 决定改规范（Morganite 0.3.1）：券面加进 DESIGN 的品牌面位置，样式收进配方 `.coupon`，身份文件允许清单加 `.coupon-value`。本项目改用配方，删掉页面里的券面样式与 `BRAND_ALLOW` 登记，券面外观不变 |
 | G2 | 结果页与空状态的双色插图（配方 `.result .illu`、`.empty .illu`）被报，22 处 | 设计如此（插图是金 + 灰双色），是清单漏列，已补进身份文件 |
 | G3 | 遮罩加载（`v-loading`）的转圈是金色，2 处 | 已修（种子桥接）：转圈与图标改 `color.icon.default`。DESIGN 要求加载用骨架屏，转圈只作兜底，不占金色位置 |
 | G4 | 组件走查：默认 `el-link` 悬停显出链接金 | 设计如此（静息为正文色的链接，悬停显出 `color.text.link-hover`，同面包屑与标题链接），写进 DESIGN「验收基线」，身份文件 `hoverAllow` 放行 |
 | G5 | 组件走查：上传拖拽框、照片墙「+」框悬停出现金边线 | 已修（种子桥接）：悬停改 `color.border.strong`（拖拽框加悬停底），拖入文件时才换焦点色边线，同配方 `.upload-zone` |
 
 修完复测：页面扫描 100 个页面状态的品牌金 0 处，组件走查亮 / 暗各 623 个元素 0 发现，静息金亮 111 组、暗 113 组，都落在清单内（浮层与弹层里的金逐一核对过）。种子与本项目 guard `current`，steward status `unified`。本项目也进了仓库 CI 的验收矩阵（`.github/workflows/ci.yml`），改了种子或桥接会自动跑完整验收。
+
+优惠券券面改用配方 `.coupon`（Morganite 0.3.1）后复测：`ds.mjs upgrade` 直接更新 `DESIGN.md`、`AUDIT.md`，没有冲突；`citrine-accept all` 四步通过，允许清单 80 条（全部来自身份文件，项目 `BRAND_ALLOW` 为空），页面品牌金 0 处，组件走查与静息金组数同上。优惠券页亮 / 暗截图与改前逐像素一致，只有侧栏页脚的版本号不同。
 
 ## 复现
 

@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/WYCM9527/Design-System/main/design-system-adopter/schema/design-system.schema.json",
   "id": "morganite",
   "name": "Morganite 玫瑰金",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "中后台 · Ant Design Pro v6 底座 · 玫瑰金 #B98D44 金底白字 + antd 纯灰骨架 · 亮 / 暗 · Element Plus / shadcn/ui / ECharts 桥接",
   "upstream": {
     "repo": "WYCM9527/Design-System",
@@ -99,7 +99,7 @@
     "configTemplate": "templates/accept.config.mjs",
     "brand": {
       "name": "品牌金",
-      "note": "主按钮 / 勾选开关选中 / 进度滑杆评分 / 页签 / 侧栏当前项 / 当前页码 / 选中日与选中项 / 步骤与时间线 / 主色徽标与深色标签 / 筹码 / 链接 / 头像 / 图表 / 登录品牌区",
+      "note": "主按钮 / 勾选开关选中 / 进度滑杆评分 / 页签 / 侧栏当前项 / 当前页码 / 选中日与选中项 / 步骤与时间线 / 主色徽标与深色标签 / 筹码 / 链接 / 头像 / 图表 / 登录品牌区 / 优惠券券面",
       "hue": [30, 45],
       "saturation": [0.35, 0.8],
       "lightness": [0.25, 0.75],
@@ -176,6 +176,7 @@
           ".empty .illu",
           ".i-icon--brand",
           ".login-brand",
+          ".coupon-value",
           ".c1",
           ".c3",
           ".goals .fill",

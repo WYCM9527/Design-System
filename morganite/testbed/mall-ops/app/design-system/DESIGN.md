@@ -27,7 +27,7 @@
 
 ## 视觉语言
 
-- 品牌色：玫瑰金是中等明度的暖金色，面积小、位置固定——主按钮、侧栏当前项、墨条、指示条、勾选选中、图表首色；大面积品牌面 `color.bg.brand` 只给登录页品牌区与欢迎横幅，上面放 `color.text.on-brand`。落在金底上的文字按用户要求用白字（对比度例外见「验收基线」）；需要金色文字时用 `color.text.brand`，且只给不小于标题档的展示字。图表也一样克制：金领衔，其余是深灰、浅金、中灰、浅灰和一个绿。
+- 品牌色：玫瑰金是中等明度的暖金色，面积小、位置固定——主按钮、侧栏当前项、墨条、指示条、勾选选中、图表首色；大面积品牌面 `color.bg.brand` 只给登录页品牌区、欢迎横幅与优惠券券面的面额块，上面放 `color.text.on-brand`。落在金底上的文字按用户要求用白字（对比度例外见「验收基线」）；需要金色文字时用 `color.text.brand`，且只给不小于标题档的展示字。图表也一样克制：金领衔，其余是深灰、浅金、中灰、浅灰和一个绿。
 - 中性色：纯灰，沿用 antd——文字、分隔、悬停都用半透明黑叠加，落在任何底色上都不发脏。层次以底色差为主：页面底 `color.bg.page` → 卡片 `color.bg.surface` → 表头 / 次级容器 `color.bg.subtle`，卡片不投影，只加一条很浅的细边线 `color.border.default`。边线分两档：卡片边、容器分隔、表格行线用很浅的 `color.border.default`；按钮、勾选框这类控件描边用深一档的 `color.border.strong`，两档不混用。宽度统一是 `border.width.default` 这一档发丝细线（焦点环、出错态与指示条除外）。整体是 flat-first：浮起感只留给弹窗、下拉这类真正悬浮的表面。
 - 文字三档：`color.text.primary` 给正文、标题、表头、表单标签；`color.text.secondary` 给说明、菜单、次要信息；`color.text.muted` 给时间戳、帮助文字、表格副行。`color.text.placeholder` 只用于输入框占位与空值提示，不承载需要读的信息。
 - 字体：正文用系统字体栈 `font.family.body`，不加载网络字体；等宽 `font.family.code` 给代码与单号；数据大字（统计数字、KPI、`el-statistic`）用 D-DIN-PRO（`text.display.family`，字体栈见 `font.family.numeric`）；表格金额与日期、百分比、涨跌、图表数值、页码这些小号数字用正文字体配等宽数字（`text.numeric.family` + `text.numeric.variant`）——D-DIN-PRO 窄体细笔画在 12px 下压不住旁边的中文。种子不带字体文件：没装 D-DIN-PRO 的机器退到 D-DIN、Bahnschrift、正文无衬线，项目要各端一致需自行托管。正文 `text.body.size`，阶梯从小到大是 `text.caption.size`（与 `text.small.size`、`text.body-sm.size` 同档，也是最小字号）→ `text.body.size` → `text.title-sm.size` → `text.title.size` → `text.heading.size` → `text.display.size` → `text.hero.size`。统计数字用 `text.display.*`。D-DIN-PRO 没有等宽数字，只用在不需要上下对齐的大数字上。
@@ -126,6 +126,7 @@
 | 横向表单 | — | 标签 `color.text.primary` | 标签列 `layout.form.label-width`，单列最大宽 `layout.form.max-width` |
 | 空状态 / 结果页 | — | 标题 `color.text.primary`，说明 `color.text.secondary`；结果页错误码 `color.text.selected` | 插图 `illustration.size.md`，大图标 `icon.size.2xl`；用法见「页面状态与权限」 |
 | 登录页 | 品牌面 `color.bg.brand`；表单面 `color.bg.page` | 品牌面 `color.text.on-brand`（只放不小于 `text.heading.size` 的大字）；logo 块 `color.bg.surface` 底 + `color.text.selected` | 表单卡宽 `layout.modal.width.sm`；手机收成单栏 |
+| 优惠券券面（配方 `.coupon`） | 面额块是品牌面 `color.bg.brand`；已结束 / 过期 / 草稿（`.is-off`）改 `color.bg.subtle` | 面额 `text.display.family` × `text.heading.size`、门槛小号字，都用 `color.text.on-brand`；失效券 `color.text.muted` | 卡片边线 `color.border.default`，圆角 `radius.lg`；面额块宽 `illustration.size.md` |
 | 图表 | 面积 `color.chart.area`（渐隐）；悬停竖条 `color.chart.area`；提示气泡 `color.chart.tooltip`（白底浮层） | 轴与图例 `color.text.secondary`；气泡 `color.text.primary` | 气泡 `color.border.default` 细边 + `elevation.tooltip.*` 大投影、圆角 `radius.md`；分类 `color.chart.1…6`，顺序 `color.chart.sequential.*`，涨跌 `color.data.*`；柱子起点直角、末端 `radius.xs` 圆角，堆叠只圆最外一段；柱子渐变下深上浅（横柱左深右浅，负值柱基线一端深）：品牌金 `color.chart.gradient.start` → `color.chart.gradient.end`，其他颜色同色饱和度渐变（浅端饱和度 × `chart.gradient.saturation`） |
 
 ## 页面状态与权限
@@ -153,12 +154,12 @@
 - **已批准的例外**：
   - 填充式输入框的静息边线 `color.border.input` 对卡片（亮 / 暗）——用户选择 Ant Design Pro v6 原样的填充式，输入框靠 `color.bg.input` 与卡片区分；回补路径：改回描边式时把 `color.border.input` 指向 `color.border.strong` 同档。
   - 卡片 / 分隔线 `color.border.default` 对页面底（亮色）——用户指定很浅的半透明黑边线（2026-10-09），卡片靠白底与页面底的底色差定形，边线只做轻提示；回补路径：把 `color.border.default` 指回 `color.neutral.300`（与控件描边同档，过 1.3 底线）。暗色边线不受影响。
-  - 金底白字：`color.text.on-primary` / `color.text.on-brand` 对 `color.action.primary`（亮 / 暗），以及亮色侧栏当前项 `color.text.sidebar-selected` 对 `color.bg.sidebar-selected`——都低于正文 4.5 底线（主按钮之外，分页当前页、日期选中日、主色徽标、深色 / 勾选标签也是这一对）；用户指定金底放白字（2026-10-09，深字显脏）。勾选标记这类图形对金底刚好过 3:1。回补路径：文字改回 `color.neutral.900`（深字），或把金底压深到 `color.brand.600` 一档（白字可过 4.5）；侧栏当前项也可恢复奶油金底配深金字。暗色侧栏当前项不受影响。
+  - 金底白字：`color.text.on-primary` / `color.text.on-brand` 对 `color.action.primary`（亮 / 暗），以及亮色侧栏当前项 `color.text.sidebar-selected` 对 `color.bg.sidebar-selected`——都低于正文 4.5 底线（主按钮之外，分页当前页、日期选中日、主色徽标、深色 / 勾选标签、优惠券券面也是这一对）；用户指定金底放白字（2026-10-09，深字显脏）。勾选标记这类图形对金底刚好过 3:1。回补路径：文字改回 `color.neutral.900`（深字），或把金底压深到 `color.brand.600` 一档（白字可过 4.5）；侧栏当前项也可恢复奶油金底配深金字。暗色侧栏当前项不受影响。
   - 暗色链接 / 文字按钮压在悬停行与气泡上（`color.text.link` 对悬停后的底，约 4.3:1）——用户 2026-10-09 决定保持暗色链接色；回补路径：暗色 `color.text.link` 改指 `color.brand.300`（约 6.1:1）。
 - **可访问名称**：所有按钮、链接、菜单项有名称；图片有 alt。
 - **溢出与截断**：任何模式、任何页面无横向溢出；nowrap 文字无截断。
 - **键盘焦点**：Tab 遍历每个可聚焦元素都能看出焦点：按钮、链接、菜单项有焦点环，输入类控件边线变成 `color.border.focus`。
-- **金色位置**：玫瑰金只出现在本文写明的位置——主按钮、勾选 / 开关选中、进度、滑块、评分、页签选中、侧栏当前项、当前页码、选中日与选中项、步骤与时间线的当前 / 已完成、主色徽标与深色 / 勾选标签、筹码、链接与选中文字、头像、结果页 / 空状态的双色插图、图表、登录页品牌区。悬停与聚焦不新引入金色，例外只有两种：焦点环与输入类控件的聚焦边线（`color.focus.ring` / `color.border.focus`），以及静息是正文色的链接（面包屑、标题链接、默认 `el-link`）悬停显出 `color.text.link-hover`。验收工具按身份文件 `design-system.json` 的 `accept.brand` 检查（判色范围与选择器清单是本条的镜像）；项目自己的合法位置写进 `accept.config.mjs` 的 `BRAND_ALLOW` 并写理由。
+- **金色位置**：玫瑰金只出现在本文写明的位置——主按钮、勾选 / 开关选中、进度、滑块、评分、页签选中、侧栏当前项、当前页码、选中日与选中项、步骤与时间线的当前 / 已完成、主色徽标与深色 / 勾选标签、筹码、链接与选中文字、头像、结果页 / 空状态的双色插图、图表、登录页品牌区、优惠券券面（配方 `.coupon`）。欢迎横幅也可以用品牌面，但没有配方，项目用到时把它的选择器写进 `BRAND_ALLOW`。悬停与聚焦不新引入金色，例外只有两种：焦点环与输入类控件的聚焦边线（`color.focus.ring` / `color.border.focus`），以及静息是正文色的链接（面包屑、标题链接、默认 `el-link`）悬停显出 `color.text.link-hover`。验收工具按身份文件 `design-system.json` 的 `accept.brand` 检查（判色范围与选择器清单是本条的镜像）；项目自己的合法位置写进 `accept.config.mjs` 的 `BRAND_ALLOW` 并写理由。
 - **与视觉基准一致**：同类页面与组件的尺寸、内边距、字号、颜色、边线、圆角与效果预览一致；效果预览里有、种子里没有的组件样式（预览自带的参考实现），项目用到时先提案移进配方，不在项目里照着预览另写一套。
 - **构建一致性**：steward `validate-system` / `build-tokens` / `guard` 三绿。
 

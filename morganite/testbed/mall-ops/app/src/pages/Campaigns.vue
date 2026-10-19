@@ -121,11 +121,5 @@ async function create() {
 .ccard { display: grid; gap: var(--spacing-2); padding: var(--spacing-4); border: var(--border-width-default) solid var(--color-border-default); border-radius: var(--radius-lg); }
 .ccard-top { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-2); }
 .ccard-name { font-weight: var(--text-weight-label); }
-.coupon { display: grid; grid-template-columns: var(--illustration-size-md) minmax(0, 1fr); border: var(--border-width-default) solid var(--color-border-default); border-radius: var(--radius-lg); overflow: hidden; }
-.coupon-value { display: grid; place-content: center; gap: var(--spacing-1); text-align: center; padding: var(--spacing-3); background: var(--color-bg-brand); color: var(--color-text-on-brand); font-size: var(--text-small-size); }
-.coupon-value b { font-family: var(--text-display-family); font-size: var(--text-heading-size); font-weight: var(--text-display-weight); line-height: var(--text-heading-line-height); }
-.coupon.is-off .coupon-value { background: var(--color-bg-subtle); color: var(--color-text-muted); }
-.coupon-body { display: grid; gap: var(--spacing-2); padding: var(--spacing-3) var(--spacing-4); min-width: 0; }
-.coupon-foot { display: flex; align-items: center; justify-content: space-between; }
 .dialog-grid { padding: 0; }
 </style>

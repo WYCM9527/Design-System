@@ -2,7 +2,7 @@
 
 **中后台 · Ant Design Pro v6 底座 · 玫瑰金 #B98D44 金底白字 + antd 纯灰骨架 · 亮 / 暗 · Element Plus / shadcn/ui / ECharts 桥接**
 
-版本 **0.3.0** · Core 359 个 token · dark 66 条 delta · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 [Pro 演示站](https://preview.pro.ant.design/dashboard/analysis)的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 变更见 [CHANGELOG](seeds/morganite/CHANGELOG.md)
+版本 **0.3.1** · Core 359 个 token · dark 66 条 delta · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 [Pro 演示站](https://preview.pro.ant.design/dashboard/analysis)的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 变更见 [CHANGELOG](seeds/morganite/CHANGELOG.md)
 
 一句话：保留 Ant Design 的交互结构、密度与纯灰骨架，把品牌色换成玫瑰金——金底放白字（主按钮、侧栏当前项；暗色侧栏当前项是金色暗底 + 亮金字），链接 / 选中 / 焦点取同色系深一档；输入框为填充式（Pro v6 原样）。圆角、0.6px 描边、卡片标题、图表配色（只用金 + 灰 + 绿、绿涨红跌）按一张预期预览图调整过；卡片不投影，只留一条很浅的边线。
 
@@ -39,8 +39,7 @@ morganite/
 - 规则：`seeds/morganite/design-system/DESIGN.md`（速查、视觉语言、组件配方、验收基线已写完）。
 - 预览：`seeds/morganite/design-system/preview/index.html`（工作台 / 表单 / 抽屉 × 亮暗，与来源站首屏对照）、`token-board.html`、对比度报告 `contrast.md`；效果预览 `previews/rose-gold-admin/index.html`：8 个页面合在一个文件里，按路由跳转——工作台 `#/dashboard`、交易记录 `#/transactions`、新建交易 `#/transactions/new`、交易详情 `#/transactions/detail`、系统设置 `#/settings`、组件走查 `#/kitchen`、登录 `#/login`、空状态 `#/empty/<模块>`；侧栏、顶栏、路由由 `shell.js` 提供，浏览器前进 / 后退可用，亮 / 暗选择跨页保留；原来的分页文件保留为跳转页。
 - 桥接：从 Citrine 2.12.0 拷入 Element Plus / shadcn / 页面配方 / ECharts 桥接当起点，引用的缺失变量已全部补 token（22 个，外加 ECharts 顺序色 5 个与提示气泡 1 个，见 AUDIT「桥接缺口」）；两套组件库桥接都用真实组件走查过：Element Plus 在 `testbed/element-lab`，shadcn/ui 在 `testbed/shadcn-lab`（见各自 FINDINGS），citrine-accept 验收都全绿。完整业务项目 `testbed/mall-ops` 对照效果预览逐角色比对后，0.1.4 校正了 Element 桥接 30 余处、收进 14 个页面形态配方，项目层样式清零，验收全绿（见它的 FINDINGS）。
-- 验收：沿用 Citrine 的 citrine-accept（清单模板 `seeds/morganite/templates/accept.config.mjs`）。对比度例外靠 `APPROVED_CONTRAST`；品牌金审计按身份文件 `design-system.json` 的 `accept.brand` 检查金色是否只出现在 DESIGN「验收基线」列出的位置（要 citrine-tools ≥ 1.3.0，仓库内已生效）。三个实测项目都在仓库 CI 的验收矩阵里，改了种子或桥接会自动跑完整验收。
-- 待办：品牌金审计要等 citrine-tools 1.3.0 上 npm（随 Citrine 下次发版）才对仓库外的项目生效，在那之前装 npm 版的项目查不到金色用错位置。
+- 验收：沿用 Citrine 的 citrine-accept（清单模板 `seeds/morganite/templates/accept.config.mjs`）。对比度例外靠 `APPROVED_CONTRAST`；品牌金审计按身份文件 `design-system.json` 的 `accept.brand` 检查金色是否只出现在 DESIGN「验收基线」列出的位置（要 citrine-tools ≥ 1.3.0）。三个实测项目都在仓库 CI 的验收矩阵里，改了种子或桥接会自动跑完整验收。
 
 ## 接入
 
