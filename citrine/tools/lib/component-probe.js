@@ -1,12 +1,15 @@
-// 组件走查探针（在页面里执行，由 scan-components.mjs 以字符串注入）：
-// __ks.snapshot(root) 列出可见的黄色属性；__ks.probe(el) 返回元素及其后代的黄色属性与文字对比；__ks.foreign(root) 找不来自 token 的颜色。
-// 判黄：色相 40–64°、饱和度 ≥ 0.55、明度 0.28–0.78（品牌黄 50°；暗色 warning 的橙 37° 不算）。token 颜色集合由外部注入到 window.__ksTokens。
+// 组件走查探针（在页面里执行，由 scan-components.mjs / scan-pages.mjs 以字符串注入）：
+// __ks.snapshot(root) 列出可见的品牌色属性；__ks.probe(el) 返回元素及其后代的品牌色属性与文字对比；__ks.foreign(root) 找不来自 token 的颜色；__ks.brandAudit(allowSel) 列出允许清单之外的品牌色。
+// 判色范围由外部注入到 window.__ksBrand（{ hue, saturation, lightness }，见 lib/brand.mjs；null 表示不判）；没注入时是 Citrine 的品牌黄：色相 40–64°、饱和度 ≥ 0.55、明度 0.28–0.78（品牌黄 50°；暗色 warning 的橙 37° 不算）。
+// token 颜色集合由外部注入到 window.__ksTokens。
 window.__ks = (() => {
   const __cv = document.createElement('canvas'); __cv.width = __cv.height = 1; const __cx = __cv.getContext('2d', { willReadFrequently: true }); const parseAny = (s) => { if (!s || s === 'transparent' || s === 'none') return null; __cx.clearRect(0, 0, 1, 1); __cx.fillStyle = '#000'; __cx.fillStyle = s; if (__cx.fillStyle === '#000000' && !/black|#000|rgb\(0, 0, 0\)/.test(s)) { /* 未识别的字符串会保持上一个值 */ } __cx.fillRect(0, 0, 1, 1); const d = __cx.getImageData(0, 0, 1, 1).data; return { r: d[0], g: d[1], b: d[2], a: Math.round((d[3] / 255) * 1000) / 1000 }; };
   const parse = (s) => { const m = /rgba?\(([^)]+)\)/.exec(s || ''); if (m) { const p = m[1].split(/[\s,\/]+/).filter(Boolean).map(Number); return { r: p[0], g: p[1], b: p[2], a: p.length > 3 ? p[3] : 1 }; } return /^(oklab|oklch|lab|lch|color|hsl|hwb)\(/.test(String(s || '').trim()) ? parseAny(s) : null; };
   const colorsIn = (s) => (s || '').match(/rgba?\([^)]+\)/g) || [];
   const hsl = (c) => { const r = c.r / 255, g = c.g / 255, b = c.b / 255, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2; if (max === min) return { h: 0, s: 0, l }; const d = max - min; const s = l > 0.5 ? d / (2 - max - min) : d / (max + min); let h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4; return { h: h * 60, s, l }; };
-  const isYellow = (c) => { if (!c || c.a < 0.15) return false; const { h, s, l } = hsl(c); return h >= 40 && h <= 64 && s >= 0.55 && l >= 0.28 && l <= 0.78; };
+  const BRAND = window.__ksBrand === undefined ? { hue: [40, 64], saturation: [0.55, 1], lightness: [0.28, 0.78] } : window.__ksBrand;
+  const within = (v, [lo, hi]) => v >= lo && v <= hi;
+  const isBrand = (c) => { if (!BRAND || !c || c.a < 0.15) return false; const { h, s, l } = hsl(c); return within(h, BRAND.hue) && within(s, BRAND.saturation) && within(l, BRAND.lightness); };
   const lum = (c) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(c.r) + 0.7152 * f(c.g) + 0.0722 * f(c.b); };
   const contrast = (a, b) => { const l1 = lum(a), l2 = lum(b); return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05); };
   const blend = (fg, bg) => ({ r: fg.r * fg.a + bg.r * (1 - fg.a), g: fg.g * fg.a + bg.g * (1 - fg.a), b: fg.b * fg.a + bg.b * (1 - fg.a), a: 1 });
@@ -16,20 +19,20 @@ window.__ks = (() => {
   const section = (el) => { const s = el.closest('[data-ks]'); if (s) return s.getAttribute('data-ks'); if (el.closest('.el-overlay, .el-dialog, .el-drawer, .el-message-box')) return 'modal'; if (el.closest('.el-message')) return 'message'; if (el.closest('.el-notification')) return 'notification'; if (el.closest('.el-popper')) return 'popper:' + (el.closest('.el-popper').className.split(' ').find((c) => /__popper|dropdown|picker/.test(c)) || 'popper'); return el.closest('.sidebar, aside') ? 'sidebar' : el.closest('header, .topbar') ? 'topbar' : 'page'; };
   const path = (el) => { const parts = []; let e = el; for (let i = 0; e && i < 3 && e !== document.body; i++, e = e.parentElement) parts.unshift(sig(e)); return parts.join(' > '); };
   const bgOf = (el) => { const chain = []; let e = el; while (e && e !== document.documentElement) { const c = parse(getComputedStyle(e).backgroundColor); if (c && c.a > 0) { chain.push(c); if (c.a >= 0.99) break; } e = e.parentElement; } let bg = { r: 255, g: 255, b: 255, a: 1 }; for (let i = chain.length - 1; i >= 0; i--) bg = blend(chain[i], bg); return bg; };   /* 由底向上逐层合成（同 page-audit）：半透明叠半透明不能当成不透明——两层 4% 黑悬停底曾被算成纯黑 */
-  const yellowProps = (el, out) => { const cs = getComputedStyle(el); const push = (prop, val) => out.push({ path: path(el), prop, value: val, section: section(el) });
-    if (hasText(el) && isYellow(parse(cs.color))) push('color', cs.color);
-    if (isYellow(parse(cs.backgroundColor))) push('background-color', cs.backgroundColor);
-    for (const side of ['Top', 'Right', 'Bottom', 'Left']) { if (parseFloat(cs['border' + side + 'Width']) > 0 && cs['border' + side + 'Style'] !== 'none' && isYellow(parse(cs['border' + side + 'Color']))) { push('border-color', cs['border' + side + 'Color']); break; } }
-    if (parseFloat(cs.outlineWidth) > 0 && cs.outlineStyle !== 'none' && isYellow(parse(cs.outlineColor))) push('outline-color', cs.outlineColor);
-    if (cs.textDecorationLine !== 'none' && hasText(el) && isYellow(parse(cs.textDecorationColor))) push('text-decoration-color', cs.textDecorationColor);
-    for (const c of colorsIn(cs.boxShadow)) if (isYellow(parse(c))) { push('box-shadow', c); break; }
-    for (const c of colorsIn(cs.backgroundImage)) if (isYellow(parse(c))) { push('background-image', c); break; }
-    if (el instanceof SVGElement) { if (isYellow(parse(cs.fill))) push('fill', cs.fill); if (parseFloat(cs.strokeWidth) > 0 && isYellow(parse(cs.stroke))) push('stroke', cs.stroke); } };
-  /** 页面级静息黄色审计：列出不在允许清单（el.closest(allowSel)）内的黄色属性。品牌黄只允许出现在主按钮 / 勾选开关选中 / 进度滑杆 / 当前页 / 数据卡描边 / Logo 等固定位置。 */
-  const yellowAudit = (allowSel) => { const out = []; const walk = (el) => { if (!(el instanceof Element) || !visible(el)) return; if (!(allowSel && el.closest(allowSel))) yellowProps(el, out); for (const c of el.children) walk(c); }; walk(document.body); return out.slice(0, 30); };
-  const snapshot = (root) => { const out = []; const walk = (el) => { if (!(el instanceof Element) || !visible(el)) return; yellowProps(el, out); for (const c of el.children) walk(c); }; walk(root); return out; };
+  const brandProps = (el, out) => { const cs = getComputedStyle(el); const push = (prop, val) => out.push({ path: path(el), prop, value: val, section: section(el) });
+    if (hasText(el) && isBrand(parse(cs.color))) push('color', cs.color);
+    if (isBrand(parse(cs.backgroundColor))) push('background-color', cs.backgroundColor);
+    for (const side of ['Top', 'Right', 'Bottom', 'Left']) { if (parseFloat(cs['border' + side + 'Width']) > 0 && cs['border' + side + 'Style'] !== 'none' && isBrand(parse(cs['border' + side + 'Color']))) { push('border-color', cs['border' + side + 'Color']); break; } }
+    if (parseFloat(cs.outlineWidth) > 0 && cs.outlineStyle !== 'none' && isBrand(parse(cs.outlineColor))) push('outline-color', cs.outlineColor);
+    if (cs.textDecorationLine !== 'none' && hasText(el) && isBrand(parse(cs.textDecorationColor))) push('text-decoration-color', cs.textDecorationColor);
+    for (const c of colorsIn(cs.boxShadow)) if (isBrand(parse(c))) { push('box-shadow', c); break; }
+    for (const c of colorsIn(cs.backgroundImage)) if (isBrand(parse(c))) { push('background-image', c); break; }
+    if (el instanceof SVGElement) { if (isBrand(parse(cs.fill))) push('fill', cs.fill); if (parseFloat(cs.strokeWidth) > 0 && isBrand(parse(cs.stroke))) push('stroke', cs.stroke); } };
+  /** 页面级静息品牌色审计：列出不在允许清单（el.closest(allowSel)）内的品牌色属性。品牌色只允许出现在设计系统规定的固定位置（Citrine：主按钮 / 勾选开关选中 / 进度滑杆 / 当前页 / 数据卡描边 / Logo）。 */
+  const brandAudit = (allowSel) => { if (allowSel) document.querySelector(allowSel); /* 选择器写错时在这里抛错，由调用方报出，而不是悄悄放过 */ const out = []; const walk = (el) => { if (!(el instanceof Element) || !visible(el)) return; if (!(allowSel && el.closest(allowSel))) brandProps(el, out); for (const c of el.children) walk(c); }; walk(document.body); return out.slice(0, 30); };
+  const snapshot = (root) => { const out = []; const walk = (el) => { if (!(el instanceof Element) || !visible(el)) return; brandProps(el, out); for (const c of el.children) walk(c); }; walk(root); return out; };
   const textInfo = (el) => { const cs = getComputedStyle(el); const fg = parse(cs.color); if (!fg || !hasText(el)) return null; const bg = bgOf(el); const f = fg.a < 1 ? blend(fg, bg) : fg; return { fg: cs.color, bg: 'rgb(' + Math.round(bg.r) + ',' + Math.round(bg.g) + ',' + Math.round(bg.b) + ')', ratio: +contrast(f, bg).toFixed(2), size: parseFloat(cs.fontSize), weight: parseInt(cs.fontWeight) }; };
-  const probe = (el) => { const yellow = snapshot(el); const texts = []; const walk = (e, d) => { if (!(e instanceof Element) || d > 4 || !visible(e)) return; const t = textInfo(e); if (t) texts.push({ path: path(e), ...t }); for (const c of e.children) walk(c, d + 1); }; walk(el, 0); return { yellow, texts, section: section(el), sig: path(el) }; };
+  const probe = (el) => { const brand = snapshot(el); const texts = []; const walk = (e, d) => { if (!(e instanceof Element) || d > 4 || !visible(e)) return; const t = textInfo(e); if (t) texts.push({ path: path(e), ...t }); for (const c of e.children) walk(c, d + 1); }; walk(el, 0); return { brand, texts, section: section(el), sig: path(el) }; };
   const TOKENS = new Set(window.__ksTokens || []);
   const norm = (c) => c ? (Math.round(c.r) + ',' + Math.round(c.g) + ',' + Math.round(c.b)) : null;
   const foreign = (root) => { const out = []; const seen = new Set(); const check = (el, prop, val, cond = true) => { const c = parse(val); if (!c || c.a < 0.05 || !cond) return; const k = norm(c); if (TOKENS.has(k) || k === '255,255,255' || k === '0,0,0') return; const key = section(el) + '|' + path(el) + '|' + prop; if (seen.has(key)) return; seen.add(key); out.push({ section: section(el), path: path(el), prop, value: 'rgb(' + k + ')' + (c.a < 1 ? ' @' + c.a.toFixed(2) : '') }); };
@@ -40,5 +43,5 @@ window.__ks = (() => {
       for (const c of colorsIn(cs.boxShadow)) check(el, 'box-shadow', c); for (const c of colorsIn(cs.backgroundImage)) check(el, 'background-image', c);
       if (el instanceof SVGElement) { check(el, 'fill', cs.fill, cs.fill !== 'none'); check(el, 'stroke', cs.stroke, parseFloat(cs.strokeWidth) > 0); }
       for (const c of el.children) walk(c); }; walk(root); return out; };
-  return { snapshot, probe, visible, sig, section, path, foreign , yellowAudit };
+  return { snapshot, probe, visible, sig, section, path, foreign, brandAudit };
 })();

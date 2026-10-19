@@ -126,6 +126,27 @@
         },
         "configTemplate": {
           "type": "string"
+        },
+        "brand": {
+          "type": "object",
+          "description": "品牌色审计口径（citrine-tools ≥ 1.3.0 读取，见 citrine/tools/README「品牌色口径」）：判色范围 + 静息态允许出现品牌色的位置。缺省时 Citrine 用内置的品牌黄，别的系统不审计。",
+          "required": ["hue", "saturation", "lightness"],
+          "properties": {
+            "name": { "type": "string", "description": "报告里的称呼，如「品牌金」" },
+            "note": { "type": "string", "description": "允许位置的一句话概括，写在失败信息里" },
+            "hue": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2, "description": "色相范围（度），写 [最小, 最大]" },
+            "saturation": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2, "description": "饱和度范围（0–1），写 [最小, 最大]" },
+            "lightness": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2, "description": "明度范围（0–1），写 [最小, 最大]" },
+            "focusRing": { "type": "boolean", "description": "焦点指示本身是品牌色：组件走查不把聚焦时出现在外环 / 环形阴影 / 边线上的品牌色算作泄漏" },
+            "hoverAllow": { "type": "array", "items": { "type": "string" }, "description": "悬停时允许新出现品牌色的元素（CSS 选择器）" },
+            "allow": {
+              "description": "静息态允许出现品牌色的位置（CSS 选择器）：数组，或按技术栈分组的对象",
+              "oneOf": [
+                { "type": "array", "items": { "type": "string" } },
+                { "type": "object", "additionalProperties": { "type": "array", "items": { "type": "string" } } }
+              ]
+            }
+          }
         }
       }
     },

@@ -1,5 +1,6 @@
-// 页面级静息黄色的默认允许清单（DESIGN「黄不表达强调」的白名单）：Element Plus 桥接 · shadcn 桥接 · recipes 配方。
-// 项目在 accept.config.mjs 里用 YELLOW_ALLOW: ['selector', …] 追加自己的合法位置（要有理由，如营销页 hero）。
+// Citrine 项目页面级静息黄色的允许清单（Citrine DESIGN「黄不表达强调」的白名单）：Element Plus 桥接 · shadcn 桥接 · recipes 配方。
+// 别的设计系统在身份文件 accept.brand 里登记自己的判色范围与清单（见 lib/brand.mjs）。
+// 项目在 accept.config.mjs 里用 BRAND_ALLOW: ['selector', …]（旧名 YELLOW_ALLOW）追加自己的合法位置（要有理由，如营销页 hero）。
 export const YELLOW_ALLOW = [
   // Element Plus：主按钮（含禁用态，靑 opacity 变淡）、勾选 / 单选 / 开关选中、进度 / 滑杆、当前页码、当前步骤、时间线主节点、加载转圈
   '.el-button--primary:not(.is-plain):not(.is-text):not(.is-link)', '.el-checkbox__input.is-checked', '.el-checkbox__input.is-indeterminate', '.el-checkbox-button.is-checked',

@@ -254,7 +254,7 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 | `npm i @wycm9527/citrine` 404 / 超时 | 多半是 registry 访问问题：换镜像 `npm config set registry https://registry.npmmirror.com`，或走第 2 节方式 B（文件夹渠道 + Release 直链） |
 | 队友 `npm install` 报找不到 `file:/tmp/...` 或 `file:../ds/...` | 有人用机器专属路径装了种子 / 工具。改成第 2 节的写法：种子走文件夹渠道（`file:./design-systems/citrine`），工具走 Release 直链 |
 | 验收报「暗色未生效」 | 页面没把 `?theme=dark` 落成 `<html class="dark">`（`index.html` 首屏先读 URL 再读 localStorage）；项目确实没有暗色就 `--modes light` |
-| 验收报「品牌黄出现在允许清单之外」 | 页面把黄色用成了强调 / 状态（如未读点、引用块边线）——换中性或状态色；确属合法位置（登录品牌区、数据卡骨架）写进 `accept.config.mjs` 的 `YELLOW_ALLOW` 并写理由 |
+| 验收报「品牌黄出现在允许清单之外」 | 页面把黄色用成了强调 / 状态（如未读点、引用块边线）——换中性或状态色；确属合法位置（登录品牌区、数据卡骨架）写进 `accept.config.mjs` 的 `BRAND_ALLOW`（旧名 `YELLOW_ALLOW`）并写理由；别的设计系统报自己的品牌色（如 Morganite 的「品牌金」），判色范围与清单在它的身份文件 `accept.brand` |
 | 组件走查被跳过（KITCHEN 为 null） | Element 项目挂 `@wycm9527/citrine/vue/KitchenSink.vue` 到 `/kitchen`，shadcn 拷 `templates/KitchenSink.tsx`，`KITCHEN: '#/kitchen'` |
 | 只想覆盖部分板块 | 多应用各自 `init`；同一应用按路由用范围根（5c）；同屏混排不支持 |
 | 项目不是 Node 工程 / 装不了 npm | 走 5b：`ds.mjs export` 出纯 CSS，模板用配方类，验收加 `--url` 与 `--tokens`；不要手抄变量值 |
