@@ -53,3 +53,15 @@
 种子 0.3.0 把侧栏菜单项改为 40px 高、同组相邻项间距 12px、文字 500（用户指定，见种子 CHANGELOG 0.3.0）。用户同意后运行 `ds.mjs upgrade`：直接更新语义 token、`DESIGN.md`、`AUDIT.md`，没有冲突，页面不用改。实测：4 个菜单项都是 40px 高、500 字重（当前项同字重，分组标题仍是 400），「业务」组两项相隔 12px；992px 折叠后分组标题隐藏，组与组之间同样隔 12px（种子在实测拾光商城折叠态时补上）；390px 抽屉与展开态一致。build、guard `current`，`citrine-accept all` 四步通过：5 个页面状态 × 亮暗的问题项全 0（tinyTargets 76 为提示项），组件走查亮 / 暗各 87 个元素 0 发现，992px / 390px 与焦点通过。
 
 评审中项间距由 12px 收到 8px（版本号仍是 0.3.0）：再运行一次 `ds.mjs upgrade`，直接更新语义 token、`AUDIT.md`，没有冲突。实测「业务」组两项、992px 折叠后的组与组之间都是 8px，其余不变；`citrine-accept all` 四步通过（结果同上）。
+
+# 品牌金审计与 CI（2026-10-19）
+
+citrine-tools 改为按设计系统取品牌色口径（工具 1.3.0，仓库内已生效）：Morganite 的判色范围与允许清单登记在身份文件 `accept.brand`（shadcn 一组按 `data-slot` 写），本项目清单的 `YELLOW_ALLOW` 换成 `BRAND_ALLOW`（空）。首轮页面扫描 0 处；组件走查亮暗各 5 组，都是同一个问题：
+
+| # | 现象 | 根因 | 处理 |
+| --- | --- | --- | --- |
+| G1 | 确认弹窗的「取消」、浮层 / 提示 / 弹窗的触发按钮悬停变金底（第一轮 S2 修了按钮，没修全） | S2 的悬停接管限定了 `[data-slot="button"]`。这些元素是同一套 `buttonVariants` 类名，但不带它：`AlertDialogCancel` 没有 `data-slot`；触发器用 `asChild` 包 `<Button>` 时，触发器的 `data-slot`（如 `popover-trigger`）覆盖了按钮自己的。悬停于是仍走 shadcn 的 `--accent`（本系统是选中色） | 已修（桥接）：描边 / 幽灵按钮的规则改为只认类名片段，不再限 `data-slot` |
+
+修完复测：页面品牌金 0 处，组件走查亮 / 暗各 87 个元素 0 发现，静息金亮 26 组、暗 31 组。
+
+进 CI 前 steward `status` 报 `in-progress`（CI 要求 `unified`）：`src/components/ui/` 是按原样保留的 shadcn 上游源码，里面的 `ring-[3px]`、`rounded-[4px]` 等任意值被算成字面量债。照 Citrine 的 shadcn 实验项目登记豁免 `design-system/exemptions.json`（理由：组件内部几何，颜色全走契约变量，视觉由桥接按 `data-slot` 接管），之后 `unified`、字面量债 0。侧栏页脚原来写死「Morganite 0.1.0」，改为从 `design-system/.adopter.json` 读版本。

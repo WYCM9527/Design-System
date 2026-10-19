@@ -1,4 +1,4 @@
-// {{PROJECT}} 的验收清单（@wycm9527/citrine-tools 的 citrine-accept 读取；APPROVED_CONTRAST 要 citrine-tools ≥ 1.2.0）。
+// {{PROJECT}} 的验收清单（@wycm9527/citrine-tools 的 citrine-accept 读取；APPROVED_CONTRAST 要 citrine-tools ≥ 1.2.0，品牌金审计要 ≥ 1.3.0）。
 // 演示参数放在 # 之前（?theme=dark、?state=empty），页面用 location.search 读；名字 → 「?演示参数#路由」。
 // 亮暗两遍：工具用 ?theme=light|dark 打开每个页面——项目要在首屏把它落成 <html class="dark">（先读 URL 再读 localStorage，避免闪烁）。
 export const DARK_SELECTOR = 'html.dark';
@@ -15,8 +15,9 @@ export const NARROW = {
   pages: [['dashboard', '#/']]
 };
 export const FOCUS = { pages: { dashboard: '#/' }, steps: 80, inputBorder: true };        // Tab 焦点遍历；输入类控件按 DESIGN 只把边线换成 border.focus、不加外环，焦点检查按边线认
-// 品牌黄审计：Morganite 的金（#B98D44，色相约 37°、饱和度 0.46）不落在工具判黄的范围（色相 40–64°、饱和度 ≥ 0.55），这里一般不用追加
-export const YELLOW_ALLOW = [];
+// 品牌金审计：判色范围与允许出现金色的位置登记在设计系统身份文件 design-system.json 的 accept.brand（依据 DESIGN；要 citrine-tools ≥ 1.3.0）；
+// 本项目另有合法位置时追加在这里并写明理由，如 ['.welcome-banner']
+export const BRAND_ALLOW = [];
 // 已批准的对比度例外：Morganite AUDIT「对比度基线」已登记例外的镜像（系统改了例外，这里跟着改；不要为了过验收在这里加新例外）。
 // citrine-tools 内置的 Citrine 例外按 design-system/.adopter.json 的 system 只对 Citrine 项目生效，这里不用写 CITRINE_APPROVED
 export const APPROVED_CONTRAST = [

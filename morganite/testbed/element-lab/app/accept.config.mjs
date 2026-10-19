@@ -14,8 +14,9 @@ export const NARROW = {
   pages: [['dashboard', '#/'], ['kitchen', '#/kitchen']]
 };
 export const FOCUS = { pages: { dashboard: '#/' }, steps: 80, inputBorder: true };   // 输入类控件只换边线（DESIGN），按边线认焦点
-// 品牌黄审计：Morganite 的金（#B98D44，色相约 37°、饱和度 0.46）不落在工具判黄的范围里，这里不需要追加
-export const YELLOW_ALLOW = [];
+// 品牌金审计：判色范围与允许出现金色的位置登记在设计系统身份文件 design-system.json 的 accept.brand（依据 DESIGN；要 citrine-tools ≥ 1.3.0）；
+// 本项目另有合法位置时追加在这里并写明理由，如 ['.welcome-banner']
+export const BRAND_ALLOW = [];
 // 已批准的对比度例外：设计系统 AUDIT「对比度基线」已登记的例外的镜像，先在系统里登记，再写到这里
 export const APPROVED_CONTRAST = [
   { fg: '#FFFFFF', bg: '#B98D44', why: '金底白字 3.02:1：主按钮、分页当前页、侧栏当前项、选中日、主色徽标、深色 / 勾选标签、当前步骤（用户指定金底放白字）' },

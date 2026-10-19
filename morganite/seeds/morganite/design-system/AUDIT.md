@@ -257,7 +257,7 @@ shadcn/ui 实测（2026-10-09，`morganite/testbed/shadcn-lab`，记录在它的
 - 桥接沿用 Citrine 的实现：Element Plus 栈的 extra 带 IconPark 桥接（图标库 2026-10-14 已登记为 IconPark、shadcn 栈用 lucide-react，见用户决定表）；桥接里其他 Citrine 式的组件习惯还没按 antd 的做法逐个走查（选中块已改；表格操作列的描边胶囊 `.act` 用户 2026-10-09 决定保持，见用户决定表）。
 - 开关关闭态：用户决定保持 `color.border.strong` 轨道（2026-10-09），白滑块对轨道约 1.4:1，关闭态主要靠滑块位置与文字标签区分；若在低对比屏上看不清，改指 `color.data.inactive`（25% 黑，antd 原值）即可。
 - Element 选中块已在实测项目里亮 / 暗核对（日期面板、徽标、标签、评分、树、两种分页）；引导指示点、表头单选筛选、树拖放目标没有在真实组件里看过。分段类（单选 / 多选按钮组、`el-segmented`）当前项是灰轨道上的白块，亮色下对轨道约 1.09:1，选中不加粗（同效果预览），主要靠白块与字色（`color.text.on-selected` 对其余项的 `color.text.secondary`）区分。
-- 验收工具沿用 Citrine 的 citrine-accept（身份文件 `accept`、清单模板 `templates/accept.config.mjs`）：Morganite 的例外靠 `APPROVED_CONTRAST`，要 citrine-tools ≥ 1.2.0——仓库内已生效，npm 上的 1.2.0 随 Citrine 下次发版。品牌黄审计对 Morganite 的金不生效（工具判黄范围是色相 40–64°、饱和度 ≥ 0.55），金色用错位置不会被自动发现。
+- 验收工具沿用 Citrine 的 citrine-accept（身份文件 `accept`、清单模板 `templates/accept.config.mjs`）：Morganite 的对比度例外靠 `APPROVED_CONTRAST`（citrine-tools ≥ 1.2.0）。品牌金审计 2026-10-19 起按身份文件的 `accept.brand` 检查：判色范围色相 30–45°、饱和度 0.35–0.8、明度 0.25–0.75，覆盖品牌族 200–700 档（浅金图表色到链接悬停的深金）；奶油底（50 / 100）、暗色金调表面（800 / 900）与警示橙（饱和度 1.0）都在范围外。允许清单按 DESIGN「验收基线」的「金色位置」逐项列出，分 Element Plus / 配方 / shadcn 三组。要 citrine-tools ≥ 1.3.0——仓库内已生效，npm 上的 1.3.0 随 Citrine 下次发版，在那之前装 npm 版的项目查不到金色用错位置。首轮实跑（三个实测项目）发现的三处泄漏已在桥接改回中性：遮罩加载转圈、Element 上传框悬停、shadcn 套用按钮类名的弹窗按钮 / 浮层触发器悬停；商城优惠券面额块用品牌面是项目级偏离，待用户确认（见商城 FINDINGS）。
 - 词表外的 11 个语义名跟随 Citrine 桥接，若词表以后收编或改名，需要同步。
 - 成功色 `color.status.success*` 与「涨」统一成同一种祖母绿，用户 2026-10-09 确认保持；若要回到 antd 的绿，改回 antd green 色板即可。
 - 视觉已偏离 Ant Design Pro 原样：圆角、描边宽、侧栏当前项、卡片标题、图表配色按预期预览图改过，卡片按用户决定不投影，页面留白与板块间距按用户决定收紧（40 / 24px → 24 / 16px）；交互结构、控件尺寸与控件内部的密度仍是 antd。

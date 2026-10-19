@@ -39,7 +39,8 @@ morganite/
 - 规则：`seeds/morganite/design-system/DESIGN.md`（速查、视觉语言、组件配方、验收基线已写完）。
 - 预览：`seeds/morganite/design-system/preview/index.html`（工作台 / 表单 / 抽屉 × 亮暗，与来源站首屏对照）、`token-board.html`、对比度报告 `contrast.md`；效果预览 `previews/rose-gold-admin/index.html`：8 个页面合在一个文件里，按路由跳转——工作台 `#/dashboard`、交易记录 `#/transactions`、新建交易 `#/transactions/new`、交易详情 `#/transactions/detail`、系统设置 `#/settings`、组件走查 `#/kitchen`、登录 `#/login`、空状态 `#/empty/<模块>`；侧栏、顶栏、路由由 `shell.js` 提供，浏览器前进 / 后退可用，亮 / 暗选择跨页保留；原来的分页文件保留为跳转页。
 - 桥接：从 Citrine 2.12.0 拷入 Element Plus / shadcn / 页面配方 / ECharts 桥接当起点，引用的缺失变量已全部补 token（22 个，外加 ECharts 顺序色 5 个与提示气泡 1 个，见 AUDIT「桥接缺口」）；两套组件库桥接都用真实组件走查过：Element Plus 在 `testbed/element-lab`，shadcn/ui 在 `testbed/shadcn-lab`（见各自 FINDINGS），citrine-accept 验收都全绿。完整业务项目 `testbed/mall-ops` 对照效果预览逐角色比对后，0.1.4 校正了 Element 桥接 30 余处、收进 14 个页面形态配方，项目层样式清零，验收全绿（见它的 FINDINGS）。
-- 待办：重拍种子预览截图 → `publish-check.mjs` 通过 → 打 tag（推断值已全部确认）。
+- 验收：沿用 Citrine 的 citrine-accept（清单模板 `seeds/morganite/templates/accept.config.mjs`）。对比度例外靠 `APPROVED_CONTRAST`；品牌金审计按身份文件 `design-system.json` 的 `accept.brand` 检查金色是否只出现在 DESIGN「验收基线」列出的位置（要 citrine-tools ≥ 1.3.0，仓库内已生效）。三个实测项目都在仓库 CI 的验收矩阵里，改了种子或桥接会自动跑完整验收。
+- 待办：品牌金审计要等 citrine-tools 1.3.0 上 npm（随 Citrine 下次发版）才对仓库外的项目生效，在那之前装 npm 版的项目查不到金色用错位置。
 
 ## 接入
 

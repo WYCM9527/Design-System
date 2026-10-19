@@ -2,13 +2,20 @@
 
 版本策略：patch 只改描述与文档；minor 新增或修改 token（视觉会变、名字不变，条目里写清肉眼可见的影响）；major 才改名或删除 token。
 
-## 0.3.0 — 2026-10-15
+## 0.3.0 — 2026-10-19
 
 - 侧栏菜单项加高、拉开、加粗一级（用户指定：菜单项高度 40px、每项间距 8px、侧栏文字字重加粗一级）：
   - 新增 token：`layout.sidebar.item-height`（→ `size.control.lg`，40px）、`layout.sidebar.item-gap`（→ `spacing.2`，8px）、`text.weight.nav`（→ `font.weight.medium`，500）；DESIGN「字重」一条改为导航菜单单独一档。
   - 肉眼可见：侧栏菜单项从 32px 高变成 40px（原借按钮 / 输入框的 `control.height.md`，按钮与输入框不变）；同一分组里相邻两项的间距从 2px 变成 8px，分组标题的上下留白不变；折叠后分组标题隐藏，组与组之间也隔 8px（原来 Element 侧栏两组的项贴在一起、`.nav` 隔 2px）；菜单项文字从 400 变成 500，当前项同字重（仍不额外加粗），分组标题与页脚不变。Element `el-menu`（含折叠态与子菜单标题；横向菜单只跟着改字重）与 React / 静态页的 `.nav` 同改，效果预览随配方变化。Windows 的微软雅黑没有 500，字重在 Windows 上看起来不变。
   - 侧栏变高：12 项三组的侧栏从 627px 涨到 777px，比不少笔记本的浏览器窗口高。Element 侧栏的菜单区（`.sidebar .el-menu`）改为窗口不够高时自己滚动，品牌区与页脚不动；`.nav` 本来就能滚。
   - `.nav` 的项间距改由同组相邻项的外边距给（原为整列 `gap: 2px`，分组标题与第一项之间也算一份），与 `el-menu` 一致：分组标题到第一项少 2px。
+- 品牌金审计：身份文件 `design-system.json` 的 `accept` 新增 `brand`，登记判色范围（色相 30–45°、饱和度 0.35–0.8、明度 0.25–0.75）与静息态允许出现金色的位置（Element Plus 46 条、配方 21 条、shadcn 12 条），依据 DESIGN「验收基线」新加的「金色位置」。焦点环与聚焦边线、静息为正文色的链接悬停显出的链接金不算泄漏。
+  - 要 citrine-tools ≥ 1.3.0：仓库内已生效，npm 上的 1.3.0 随 Citrine 下次发版。低于 1.3.0 时和原来一样只查 Citrine 的黄，对金色不起作用。
+  - 清单模板 `templates/accept.config.mjs` 的 `YELLOW_ALLOW` 改名 `BRAND_ALLOW`。工具照认旧名，已接入的项目不必改。
+- 首轮审计查出三处金色泄漏，桥接改回中性（肉眼可见）：
+  - Element 遮罩加载（`v-loading`）的转圈与图标从主色金改为 `color.icon.default` 灰，文字不变。DESIGN 本来就要求加载用骨架屏。
+  - Element 上传：拖拽框悬停从金边线改为 `color.border.strong` 加悬停底，拖入文件时才换焦点色边线与选中底，同配方 `.upload-zone`；照片墙「+」框悬停从金边线改为 `color.border.strong`，图标变深。
+  - shadcn：描边 / 幽灵按钮的悬停接管不再限于 `data-slot="button"`。确认弹窗的「取消」、用 `asChild` 包按钮的浮层 / 提示 / 弹窗触发器原来悬停变金底（shadcn 的 `--accent` 契约），现在和普通按钮一样是中性悬停。
 
 ## 0.2.0 — 2026-10-15
 

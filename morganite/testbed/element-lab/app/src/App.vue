@@ -2,6 +2,7 @@
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Home, ApplicationTwo, Search, MenuFold, MenuUnfold, HamburgerButton } from '@icon-park/vue-next'
+import { version as dsVersion } from '../design-system/.adopter.json'
 
 const route = useRoute()
 const router = useRouter()
@@ -37,7 +38,7 @@ const title = computed(() => route.meta.title)
           </router-link>
         </template>
       </nav>
-      <div class="sidebar-foot">{{ collapsed && !isMobile ? '0.1' : 'Morganite 0.1 · 实测' }}</div>
+      <div class="sidebar-foot">{{ collapsed && !isMobile ? dsVersion : `Morganite ${dsVersion} · 实测` }}</div>
     </aside>
 
     <button v-if="navOpen" class="sidebar-mask" aria-label="关闭菜单" @click="navOpen = false" />

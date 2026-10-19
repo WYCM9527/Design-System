@@ -7,6 +7,7 @@ import { Kitchen } from './pages/Kitchen'
 import { Orders } from './pages/Orders'
 import { Dashboard } from './pages/Dashboard'
 import { FormPage } from './pages/FormPage'
+import { version as dsVersion } from '../design-system/.adopter.json'
 
 const ROUTES: Record<string, { title: string; group: string; icon: React.ComponentType<{ className?: string }>; page: React.ComponentType }> = {
   '/': { title: '工作台', group: '概览', icon: LayoutDashboard, page: Dashboard },
@@ -49,7 +50,7 @@ export default function App() {
             </React.Fragment>
           ))}
         </nav>
-        <div className="sidebar-foot">{collapsed ? '0.1' : 'Morganite 0.1 · shadcn'}</div>
+        <div className="sidebar-foot">{collapsed ? dsVersion : `Morganite ${dsVersion} · shadcn`}</div>
       </aside>
       {navOpen && <button className="sidebar-mask" aria-label="关闭菜单" onClick={() => setNavOpen(false)} />}
       <div className="main">

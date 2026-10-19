@@ -199,6 +199,20 @@ B12、B13 两处原本也是对比度问题，根因是主色被当文字色用�
 | F14 | 评审中同步卡片标题（2026-10-13）：项目的 token 预览页 `design-system/preview/shell.html` 卡片标题仍是旧的小号大写字距。身份文件 `owned` 不含 `design-system/preview/`，接入时拷来的 `preview.local.css`（配方在预览虚拟项目里的对应）从此不随 `upgrade` 更新 | 已修（Morganite 0.2.0，用户 2026-10-14 同意）：身份文件 `owned` 加入 `design-system/preview/preview.local.css`，走三方合并，项目没改过就直接更新、改过报冲突；adopter 0.3.3 加了「新版把文件新加进 `owned`」的回归测试。本项目是符号链接快照，`upgrade` 没有旧基线的内容可比，把它列成「保留本地（上游未变）」——核对与 0.1.4 原版逐字节一致后取上游，`ds.mjs status` 报工作副本与快照一致；这个限制写进了 adopter 的升级剧本 |
 | F15 | 评审中同步页面导航（2026-10-14）：`ds.mjs agents --write` 对已有 `AGENTS.md` 是「追加到末尾」而不是替换对应区块，模板改了之后没法原地刷新；本项目只把生成结果的第 13–14 行接进现有文件。对照时还发现模板 2026-10-12 补的「图标」一条（`IconProvider` + `mergeIcons()`）从未同步进本项目的 `AGENTS.md` | 已修（adopter 0.3.3）：`agents --write` 找到既有的设计系统区块就原地替换，标题与项目自己的章节不动；不加 `--write` 时打印会替换哪几行、增删哪些行。本项目（用户 2026-10-14 同意补「图标」一条）先看打印：替换第 3–18 行、−0 / +1 行，正是「图标」那一条，再 `--write` 写入，标题「拾光商城 · 运营后台」保留 |
 
+## G. 品牌金审计（2026-10-19，Morganite 0.3.0）
+
+citrine-tools 改为按设计系统取品牌色口径（工具 1.3.0，仓库内已生效）：判色范围与允许出现金色的位置登记在身份文件 `design-system.json` 的 `accept.brand`，依据 DESIGN「验收基线」的「金色位置」。本项目清单的 `YELLOW_ALLOW` 换成 `BRAND_ALLOW`。在此之前工具只认 Citrine 的黄，本项目的金色从来没被检查过。首轮页面扫描报 34 处、组件走查亮暗各 4 组：
+
+| # | 现象 | 处理 |
+| --- | --- | --- |
+| G1 | 优惠券卡片的面额块是品牌面（`Campaigns.vue` 的 `.coupon-value`：`color.bg.brand` 底、`color.text.on-brand` 字，已结束 / 过期 / 草稿的券变灰），优惠券页签亮暗共 10 处 | **待用户决定**。DESIGN 只把品牌面给登录页品牌区与欢迎横幅，券面不在其中。现在 `BRAND_ALLOW` 登记了 `.coupon-value`，验收按项目级偏离放行 |
+| G2 | 结果页与空状态的双色插图（配方 `.result .illu`、`.empty .illu`）被报，22 处 | 设计如此（插图是金 + 灰双色），是清单漏列，已补进身份文件 |
+| G3 | 遮罩加载（`v-loading`）的转圈是金色，2 处 | 已修（种子桥接）：转圈与图标改 `color.icon.default`。DESIGN 要求加载用骨架屏，转圈只作兜底，不占金色位置 |
+| G4 | 组件走查：默认 `el-link` 悬停显出链接金 | 设计如此（静息为正文色的链接，悬停显出 `color.text.link-hover`，同面包屑与标题链接），写进 DESIGN「验收基线」，身份文件 `hoverAllow` 放行 |
+| G5 | 组件走查：上传拖拽框、照片墙「+」框悬停出现金边线 | 已修（种子桥接）：悬停改 `color.border.strong`（拖拽框加悬停底），拖入文件时才换焦点色边线，同配方 `.upload-zone` |
+
+修完复测：页面扫描 100 个页面状态的品牌金 0 处，组件走查亮 / 暗各 623 个元素 0 发现，静息金亮 111 组、暗 113 组，都落在清单内（浮层与弹层里的金逐一核对过）。种子与本项目 guard `current`，steward status `unified`。本项目也进了仓库 CI 的验收矩阵（`.github/workflows/ci.yml`），改了种子或桥接会自动跑完整验收。
+
 ## 复现
 
 ```bash

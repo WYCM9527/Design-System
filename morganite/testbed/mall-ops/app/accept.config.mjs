@@ -1,4 +1,4 @@
-// 拾光商城 · 运营后台的验收清单（@wycm9527/citrine-tools 的 citrine-accept 读取；APPROVED_CONTRAST 要 citrine-tools ≥ 1.2.0）。
+// 拾光商城 · 运营后台的验收清单（@wycm9527/citrine-tools 的 citrine-accept 读取；APPROVED_CONTRAST 要 citrine-tools ≥ 1.2.0，品牌金审计要 ≥ 1.3.0）。
 // 演示参数放在 # 之前（?theme=dark、?state=empty、?role=finance），页面用 location.search 读；名字 → 「?演示参数#路由」。
 // 亮暗两遍：工具用 ?theme=light|dark 打开每个页面，index.html 首屏把它落成 <html class="dark">（先读 URL 再读 localStorage）。
 // 页面状态覆盖 PRD §9 的验证矩阵：每个列表页的加载 / 空 / 出错，表单的校验失败与只读，无权限角色的 403，详情的抽屉 / 弹窗直达。
@@ -71,8 +71,10 @@ export const NARROW = {
 };
 // Tab 焦点遍历；输入类控件按 DESIGN 只把边线换成 border.focus、不加外环，焦点检查按边线认
 export const FOCUS = { pages: { dashboard: '#/', orders: '?preset=1#/orders', 'product-new': '#/products/new', settings: '?tab=profile#/settings' }, steps: 80, inputBorder: true };
-// 品牌黄审计：Morganite 的金（#B98D44，色相约 37°、饱和度 0.46）不落在工具判黄的范围里，这里不需要追加
-export const YELLOW_ALLOW = [];
+// 品牌金审计：判色范围与允许出现金色的位置登记在设计系统身份文件 design-system.json 的 accept.brand（依据 DESIGN；要 citrine-tools ≥ 1.3.0）；
+// 本项目另有合法位置时追加在这里并写明理由，如 ['.welcome-banner']
+// .coupon-value：优惠券卡片的面额块是品牌面 color.bg.brand（券面）。DESIGN 只把品牌面给登录页品牌区与欢迎横幅，这是项目级偏离，待用户确认（品牌金审计 2026-10-19 首次发现，见 FINDINGS）
+export const BRAND_ALLOW = ['.coupon-value'];
 // 已批准的对比度例外：Morganite AUDIT「对比度基线」已登记例外的镜像（照抄种子模板，不为过验收新增）
 export const APPROVED_CONTRAST = [
   { fg: '#FFFFFF', bg: '#B98D44', why: '金底白字 3.02:1：主按钮、分页当前页、侧栏当前项、选中日、主色徽标、深色 / 勾选标签、当前步骤' },

@@ -463,7 +463,8 @@
 .el-breadcrumb__separator { display: inline-flex; color: var(--color-text-muted); margin: 0 var(--spacing-2); width: var(--size-icon-sm); height: var(--size-icon-sm); font-size: 0; visibility: hidden; }
 .el-breadcrumb__separator::before { content: ""; visibility: visible; display: block; width: 100%; height: 100%; background: currentColor; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M4.5 2.5 8 6l-3.5 3.5' fill='none' stroke='%23000' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M4.5 2.5 8 6l-3.5 3.5' fill='none' stroke='%23000' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; }
 .el-upload-dragger { background: var(--color-bg-subtle); border-color: var(--color-border-strong); border-radius: var(--radius-md); }
-.el-upload-dragger:hover, .el-upload-dragger.is-dragover { border-color: var(--color-border-focus); background: var(--color-bg-selected); }
+.el-upload-dragger:hover { border-color: var(--color-border-strong); background: var(--color-bg-hover); }   /* 同配方 .upload-zone：悬停只换底，拖入时才换焦点色边线 */
+.el-upload-dragger.is-dragover { border-color: var(--color-border-focus); background: var(--color-bg-selected); }
 .el-empty__description p { color: var(--color-text-muted); }
 .el-result__title p { font-size: var(--text-title-size); font-weight: var(--text-weight-strong); }
 .el-form-item__label { color: var(--color-text-primary); font-weight: var(--text-weight-label); font-size: var(--text-body-sm-size); }   /* 表单标签 text.body-sm（同效果预览 .field > label） */
@@ -562,7 +563,7 @@ code, kbd, pre, samp { font-family: var(--font-family-code); }
   color: var(--color-text-primary);
 }
 .el-table-filter__list-item:hover, .el-table-filter__list-item:focus { background: var(--color-bg-hover); color: var(--color-text-primary); }
-.el-upload--picture-card:hover { border-color: var(--color-border-focus); color: var(--color-text-primary); }
+.el-upload--picture-card:hover { border-color: var(--color-border-strong); color: var(--color-text-primary); }
 .el-drawer__dragger:hover::before { background-color: var(--color-border-strong); }
 
 /* ---- 日期面板：选中日金底白字、范围内奶金浅底、今天正文色（主色不做文字）----
@@ -674,6 +675,8 @@ code, kbd, pre, samp { font-family: var(--font-family-code); }
 .el-upload-list__item .el-icon--close-tip { color: var(--color-text-secondary); }
 /* 加载、结果、消息类的 primary 变体 */
 .el-loading-spinner .el-loading-text { color: var(--color-text-secondary); }
+.el-loading-spinner .path { stroke: var(--color-icon-default); }   /* 遮罩转圈不跟主色：金色只给 DESIGN 列出的位置（加载本该用骨架屏） */
+.el-loading-spinner i { color: var(--color-icon-default); }
 .el-result .icon-primary { --el-result-color: var(--color-icon-brand); }
 .el-message-box__status.el-message-box-icon--primary { --el-messagebox-color: var(--color-text-primary); }
 .el-notification .el-notification--primary { --el-notification-icon-color: var(--color-text-primary); }

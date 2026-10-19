@@ -108,7 +108,7 @@
   const params = new URLSearchParams(location.search);
   const app = document.querySelector(".app");
   const nav = NAV.map((g) => `<div class="nav-group">${g.group}</div>` + g.items.map((it) => `<a href="${it.href}" data-nav="${it.key}">${icon(it.icon)}<span class="nav-label">${it.label}</span></a>`).join("")).join("");
-  app.insertAdjacentHTML("afterbegin", `<aside class="sidebar" id="sidebar"><a class="app-brand" href="#/dashboard"><span class="logo">M</span><span>玫瑰金后台</span></a><nav class="nav" aria-label="主导航">${nav}</nav><div class="sidebar-foot">Morganite 0.1.0 · 效果预览</div></aside><button class="sidebar-mask" type="button" aria-label="关闭导航"></button>`);
+  app.insertAdjacentHTML("afterbegin", `<aside class="sidebar" id="sidebar"><a class="app-brand" href="#/dashboard"><span class="logo">M</span><span>玫瑰金后台</span></a><nav class="nav" aria-label="主导航">${nav}</nav><div class="sidebar-foot">Morganite · 效果预览</div></aside><button class="sidebar-mask" type="button" aria-label="关闭导航"></button>`);
   app.querySelector(".main").insertAdjacentHTML("afterbegin", `<header class="topbar">
     <button class="iconbtn menu-btn" type="button" aria-label="打开导航" aria-controls="sidebar" aria-expanded="false">${icon("menu")}</button>
     <nav class="crumbs" aria-label="面包屑"></nav>

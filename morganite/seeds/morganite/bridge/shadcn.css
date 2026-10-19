@@ -183,10 +183,11 @@ svg.lucide[data-icon-merged] > :not([data-icon-merge], defs, mask, clipPath, pat
 /* 弹窗面板是浮层表面（DESIGN「弹窗」= bg.elevated）：shadcn 写的 bg-background 在本系统映射页面底，面板会发灰 */
 [data-slot="dialog-content"], [data-slot="alert-dialog-content"], [data-slot="sheet-content"], [data-slot="drawer-content"] { background-color: var(--color-bg-elevated); }
 /* 描边 / 幽灵按钮（outline / ghost）：DESIGN「次要按钮 / 文字按钮」——白底 + 控件描边，悬停只换底、文字保持正文色。
-   shadcn 悬停用 accent（本系统是「选中」语义：浅底 + 深金字），暗色描边取 --input（填充式下透明）；按钮没有变体属性，用稳定的类名片段区分 */
-[data-slot="button"][class*="bg-background"][class*="hover:bg-accent"] { background-color: var(--color-bg-surface); border-color: var(--color-border-strong); }
-[data-slot="button"][class*="bg-background"][class*="hover:bg-accent"]:hover { background-color: var(--color-action-secondary-hover); color: var(--color-text-primary); }
-[data-slot="button"][class*="hover:bg-accent"]:not([class*="bg-background"]):hover { background-color: var(--color-action-quiet-hover); color: var(--color-text-primary); }
+   shadcn 悬停用 accent（本系统是「选中」语义：浅底 + 深金字），暗色描边取 --input（填充式下透明）；按钮没有变体属性，用稳定的类名片段区分。
+   不限 data-slot="button"：确认弹窗的「取消」也是这套类名但没有 data-slot；asChild 包按钮的 Popover / Tooltip / Dialog 触发器，data-slot 会被触发器的覆盖 */
+[class*="bg-background"][class*="hover:bg-accent"] { background-color: var(--color-bg-surface); border-color: var(--color-border-strong); }
+[class*="bg-background"][class*="hover:bg-accent"]:hover { background-color: var(--color-action-secondary-hover); color: var(--color-text-primary); }
+[class*="hover:bg-accent"]:not([class*="bg-background"]):hover { background-color: var(--color-action-quiet-hover); color: var(--color-text-primary); }
 /* 按钮：常规字重、图标间距 spacing.1-5（与效果预览一致）；shadcn 是 font-medium + gap-2 */
 [data-slot="button"] { font-weight: var(--text-weight-label); gap: var(--spacing-1-5); }
 [data-slot="button"].h-9:has(> svg):not(.size-9) { padding-inline: var(--spacing-4); }   /* 带图标的按钮不收窄（shadcn has-[>svg]:px-3），与无图标按钮同宽留白 */
