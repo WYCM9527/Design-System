@@ -2,6 +2,19 @@
 
 版本策略：patch 只改描述与文档，以及让组件库遵守既有规则的桥接修正；minor 新增 token、改 token 值（视觉会变、名字不变，条目里必须写清肉眼可见的影响）或新增桥接 / 消费产物；major 才改名或删除 token，并附兼容 shim。
 
+## 2.12.2 — 2026-10-19（tools 1.3.0：品牌色审计按设计系统取口径）
+
+种子的 token、桥接、配方都没变，接入 Citrine 的项目页面不变；本版只发工具。起因是第二套设计系统 Morganite 的金色：1.2.x 只认 Citrine 的黄，别的设计系统的品牌色用错位置查不出来。
+
+- **tools 1.3.0**（`@wycm9527/citrine-tools`）：
+  - 品牌色口径按项目所用的设计系统取：身份文件 `design-system.json` 的 `accept.brand` 登记判色范围（`hue` / `saturation` / `lightness`）、静息态允许出现品牌色的位置（`allow`，数组或按技术栈分组）、焦点指示是否本来就是品牌色（`focusRing`）、悬停时允许显出品牌色的元素（`hoverAllow`）；项目 `accept.config.mjs` 的 `BRAND` 可逐字段覆盖，写 `false` 关闭。Citrine 项目和读不到 `.adopter.json` 的老项目照旧用内置的品牌黄与 `lib/yellow-allow.mjs`；别的设计系统没登记时不审计，扫描开头写明「未配置」。详见工具 README「品牌色口径」。
+  - 项目追加的合法位置改名 `BRAND_ALLOW`，旧名 `YELLOW_ALLOW` 照认，已接入的项目不必改。
+  - 允许清单里的选择器写错时，页面扫描报「审计出错」并算失败。此前出错只记进报告，扫描照样通过。
+  - 报告字段改名：页面报告的 `yellow` 改为 `brand`，组件走查的 `hover-yellow` / `focus-yellow` 改为 `hover-brand` / `focus-brand`。读 `.accept/*/report.json` 的脚本要跟着改。
+  - 复测：Citrine 三个实测项目照旧按内置的黄检查，页面扫描与组件走查都通过（静息黄 65 / 65 / 10 组都在清单内，0 发现）。Morganite 三个实测项目第一次查到金色用错位置，修正后全绿（见 Morganite 0.3.0）。
+- adopter（版本不变）：身份文件 schema 登记可选的 `accept.brand`。
+- 仓库维护：CI 的验收矩阵加上 Morganite 三个实测项目（拾光商城、element-lab、shadcn-lab），改了种子、桥接或工具都会跑。
+
 ## 2.12.1 — 2026-10-15（tools 1.2.0 / adopter 0.3.3：验收与接入工具支持第二套设计系统）
 
 种子的 token、桥接、配方都没变，接入 Citrine 的项目页面不变；本版只发工具。问题来自第二套设计系统 Morganite 的实测项目：它们也用 citrine-accept 验收、用 adopter 接入。
