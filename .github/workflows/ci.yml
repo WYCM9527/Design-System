@@ -1,7 +1,7 @@
 # CI：改种子 / 桥接 / 工具 / skill 的任何一处，都要过这四道门——
 #   checks：adopter 单测、Citrine 迁移角色表与 token 源一致、每个设计系统六处版本号一致、每个种子 dist 与 token 源一致（系统清单来自 scripts/systems.mjs）
-#   accept：三个实测项目各自 npm ci → guard current → status unified → 全量验收（页面 × 亮暗 / 组件走查 / 三端 / 焦点 / 黄金后台 E-S 像素对照）
-# 验收在无头 Chrome 上跑（runner 自带 google-chrome），CJK 字体装 fonts-noto-cjk（字体栈里有 Noto Sans CJK SC）。
+#   accept：六个实测项目（Citrine 三个、Morganite 三个）各自 npm ci → guard current → status unified → 全量验收（页面 × 亮暗 / 组件走查 / 三端 / 焦点 / 黄金后台 E-S 像素对照）
+# 验收在无头 Chrome 上跑（runner 自带 google-chrome），CJK 字体装 fonts-noto-cjk（Citrine 字体栈里有 Noto Sans CJK SC；Morganite 沿用 antd 字体栈，中文靠系统回退到它）。
 name: CI
 
 on:
@@ -64,7 +64,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        project: [golden-admin, light-procure, shadcn-lab]
+        include:
+          - { project: golden-admin, id: golden-admin, app: citrine/testbed/golden-admin/app }
+          - { project: light-procure, id: light-procure, app: citrine/testbed/light-procure/app }
+          - { project: shadcn-lab, id: shadcn-lab, app: citrine/testbed/shadcn-lab/app }
+          - { project: Morganite · mall-ops, id: morganite-mall-ops, app: morganite/testbed/mall-ops/app }
+          - { project: Morganite · element-lab, id: morganite-element-lab, app: morganite/testbed/element-lab/app }
+          - { project: Morganite · shadcn-lab, id: morganite-shadcn-lab, app: morganite/testbed/shadcn-lab/app }
     env:
       CHROME_FLAGS: --no-sandbox --disable-dev-shm-usage --disable-gpu
     steps:
@@ -77,20 +83,20 @@ jobs:
       - name: steward（guard / status）
         run: git clone --depth 1 https://github.com/WYCM9527/skills.git skills
       - name: "依赖（file: 链接到种子与工具）"
-        working-directory: citrine/testbed/${{ matrix.project }}/app
+        working-directory: ${{ matrix.app }}
         run: npm ci --no-audit --no-fund
       - name: guard current · status unified
         run: |
-          APP="$PWD/citrine/testbed/${{ matrix.project }}/app"
+          APP="$PWD/${{ matrix.app }}"
           node skills/design-system-steward/scripts/guard.mjs --project "$APP" | tee /tmp/guard.json | grep -q '"status": "current"'
           node skills/design-system-steward/scripts/status.mjs --project "$APP" | tee /tmp/status.json | grep -q '"status": "unified"'
       - name: 全量验收
-        working-directory: citrine/testbed/${{ matrix.project }}/app
+        working-directory: ${{ matrix.app }}
         run: npm run accept
       - name: 失败留证（截图与报告）
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: accept-${{ matrix.project }}
-          path: citrine/testbed/${{ matrix.project }}/app/.accept
+          name: accept-${{ matrix.id }}
+          path: ${{ matrix.app }}/.accept
           retention-days: 7
