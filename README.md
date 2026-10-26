@@ -5,7 +5,7 @@
 | 设计系统 | 定位 | 版本 |
 | --- | --- | --- |
 | [**Citrine · 黄晶**](citrine/) | 中后台 · 品牌黄唯一焦点 + 冷灰骨架 · 亮 / 暗 · 三端（桌面 / 窄屏 / 手机） · Element Plus / shadcn/ui / ECharts 桥接 · 给编码 Agent 的配方与验收基线 | 2.12.2 |
-| [**Morganite 玫瑰金**](morganite/) | 中后台 · Ant Design Pro v6 底座 · 玫瑰金 #B98D44 金底白字 + antd 纯灰骨架 · 亮 / 暗 · Element Plus / shadcn/ui / ECharts 桥接 | 0.3.1 |
+| [**Morganite 玫瑰金**](morganite/) | 中后台 · Ant Design Pro v6 底座 · 玫瑰金 #B98D44 金底白字 + antd 纯灰骨架 · 亮 / 暗 · Element Plus / shadcn/ui / ECharts 桥接 · [在线效果预览](https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/) | 0.3.2 |
 
 一行一个系统，目录 `<id>/seeds/<seed-name>/` 带身份文件就算一个（`node scripts/systems.mjs` 列清单）；从网站提炼新系统的流程见 [docs/GUIDE.md §8c](docs/GUIDE.md#8c-维护者新增一个设计系统从网站提炼)。
 
@@ -32,9 +32,11 @@ npm i @wycm9527/citrine && npm i -D @wycm9527/citrine-tools style-dictionary@5.5
 
 两种方式队友都零配置。唯独不要 `npm i file:/tmp/ds/...`：那是只在你电脑上存在的路径，队友 `npm install` 会失败。
 
+**Morganite 玫瑰金**没有发布到 npm，只走方式 B：`cp -R /tmp/ds/morganite/seeds/morganite vendor/morganite`，验收工具与构建器照样 `npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2`。可以直接粘给 AI 的接入提示词在 [morganite/README.md](morganite/README.md#接入交给-ai-做)。
+
 **没有开发经验、全程靠 AI 的同学看 [docs/TUTORIAL.md（零基础上手教程）](docs/TUTORIAL.md)**：介绍 → 执行步骤 → 后续更新 → 特殊情况 → FAQ，每一步都是可直接粘给 AI 的提示词。完整参考（原理、命令速查、维护者事项）见 [docs/GUIDE.md](docs/GUIDE.md)。
 
-然后对 Agent 说一句话即可，skill 会问「从 0 开始 / 更换现有规范 / 只更新」并走完全流程（接入 → 构建 → 接线 → 项目规则 → 验收）。三段可直接粘贴的提示词：
+然后对 Agent 说一句话即可，skill 会问「从 0 开始 / 更换现有规范 / 只更新」并走完全流程（接入 → 构建 → 接线 → 项目规则 → 验收）。三段可直接粘贴的提示词（用 Morganite 就把 Citrine 换成 Morganite）：
 
 > **新项目**：用 Citrine 设计系统起一个 Vue 3 + Element Plus 的中后台，按 design-system-adopter 的「从 0 开始」把系统接好、验收跑绿之后再开始做页面。配方不够用时提提案，不要在页面上补样式。
 >

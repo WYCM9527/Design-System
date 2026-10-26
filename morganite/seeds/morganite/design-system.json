@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/WYCM9527/Design-System/main/design-system-adopter/schema/design-system.schema.json",
   "id": "morganite",
   "name": "Morganite 玫瑰金",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "中后台 · Ant Design Pro v6 底座 · 玫瑰金 #B98D44 金底白字 + antd 纯灰骨架 · 亮 / 暗 · Element Plus / shadcn/ui / ECharts 桥接",
   "upstream": {
     "repo": "WYCM9527/Design-System",
@@ -67,10 +67,11 @@
     }
   },
   "export": {
-    "note": "纯 CSS 交付：非 Node 项目用 ds.mjs export --to <static 目录> 得到 index.css + base.css，按顺序 <link>，项目样式只引用变量。",
+    "note": "纯 CSS 交付：非 Node 项目用 ds.mjs export --to <static 目录> 得到 index.css + base.css，按顺序 <link>，项目样式只引用变量。base.css 会自己引入同目录的 fonts.css（数字字体 D-DIN），几个文件放在同一目录、一起部署。",
     "core": [
       "design-system/dist/index.css",
       "bridge/base.css",
+      "bridge/fonts.css",
       "bridge/recipes.css"
     ],
     "optional": {

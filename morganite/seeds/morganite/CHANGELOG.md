@@ -2,6 +2,18 @@
 
 版本策略：patch 只改描述与文档；minor 新增或修改 token（视觉会变、名字不变，条目里写清肉眼可见的影响）；major 才改名或删除 token。
 
+## 0.3.2 — 2026-10-26
+
+- 数字字体随设计系统分发（用户决定：设计系统要交给同事用，没装 D-DIN-PRO 的电脑也要显示同一款数字字体）：
+  - 新增 `bridge/fonts.css`：内嵌 Datto 原版 D-DIN（Regular 400 / Bold 700，SIL OFL 1.1，文件里附版权声明与许可全文）。`base.css`、`element-plus.css`、`shadcn.css` 开头引入它，身份文件 `export.core` 加上它，npm 包、文件夹快照、纯 CSS 导出（`ds.mjs export`）与范围包（`ds.mjs scope`）都带着；项目的样式入口不用改。
+  - 肉眼可见：没装 D-DIN-PRO 的电脑上，数据大字（统计卡、KPI、`el-statistic`、状态条数字）从系统字体（Mac 上是 SF，Windows 上是 Bahnschrift）变成 D-DIN。D-DIN 只有 400 / 700 两档，`text.display.weight`（600）显示 Bold，比装了 D-DIN-PRO 的 SemiBold 略粗。装了 D-DIN-PRO 的电脑不变；token 值不变。
+  - 体积：fonts.css 77 KB（gzip 57 KB），进项目的 CSS 包。项目设了 CSP 时要允许 `font-src data:`。
+  - D-DIN-PRO 不随系统分发：它是第三方在 D-DIN 上的扩展，名字含 Datto 的保留名，授权链说不清。
+  - token 说明、DESIGN「字体」、AUDIT 的用户决定与风险同步；`shadcn.css` 头注释里的包名示例由 Citrine 改为 Morganite。
+- 效果预览有了在线网址（GitHub Pages）：<https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/>，DESIGN 的评判标准写上它。
+- 上手说明：README 补齐按技术栈接入与可以直接粘给 AI 的提示词；仓库的零基础教程与 GUIDE 写明 Morganite 怎么装（不在 npm 上，从文件夹接入）。
+- adopter 0.3.4 的 `ds.mjs scope`：前面带注释的 `@import` / `@font-face` 原先会被包进 `@scope`（引入失效），现在照样提升到顶层；Citrine 现有的范围包重新生成逐字节相同。
+
 ## 0.3.1 — 2026-10-19
 
 - 优惠券券面加进品牌面的位置（用户决定：品牌金审计在拾光商城查出券面面额块用了品牌面，选择改规范，所有项目都能用）：

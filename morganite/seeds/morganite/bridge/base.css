@@ -1,6 +1,8 @@
 /* Morganite 玫瑰金 · 基础桥接（纯 CSS 栈）。只引用 design-system/dist 里的变量，不写任何色值与像素；
    与组件库无关。项目样式放在它之后，同样只引用变量。有 Element Plus / shadcn 等组件库时，桥接要按组件逐条接管——那是系统层工作，向设计系统维护者提提案。 */
 
+@import "./fonts.css";
+
 html {
   color-scheme: light dark;
   -webkit-text-size-adjust: 100%;

@@ -1720,7 +1720,7 @@
           "Segoe UI Symbol",
           "Noto Color Emoji"
         ],
-        "$description": "[观察] 演示站 body 字体栈去掉首位网络字体 AlibabaSans（种子不带字体文件），与 antd design.md 系统字体栈一致"
+        "$description": "[观察] 演示站 body 字体栈去掉首位网络字体 AlibabaSans（种子不带正文字体文件），与 antd design.md 系统字体栈一致"
       },
       "mono": {
         "$type": "fontFamily",
@@ -1749,7 +1749,7 @@
           "Noto Sans",
           "sans-serif"
         ],
-        "$description": "[确认] 数据大字字体栈（用户 2026-10-09 指定 D-DIN-PRO；同日改定只给 text.display.family，小号数字回到正文字体）：D-DIN-PRO 有 400–900 六档字重；没装时退到免费的 D-DIN、Windows 自带的 Bahnschrift（DIN 1451 系），再退到正文无衬线。不放 macOS 的 DIN Alternate——只有 Bold 面，会让正文数字全变粗。种子不分发字体文件（授权与体积），项目要统一显示时自行用 @font-face 托管。D-DIN-PRO 没有等宽数字，tabular-nums 对它不生效"
+        "$description": "[确认] 数据大字字体栈（用户 2026-10-09 指定 D-DIN-PRO；同日改定只给 text.display.family，小号数字回到正文字体）：D-DIN-PRO 有 400–900 六档字重；没装时用 D-DIN——桥接 fonts.css 内嵌 Datto 原版 D-DIN（400 / 700，SIL OFL 1.1；2026-10-26 用户决定随系统分发），三个桥接入口都会引入，所以各端一致；只引 dist、不引桥接，或 CSP 不允许 data: 字体时，才退到 Windows 自带的 Bahnschrift（DIN 1451 系）与正文无衬线。不放 macOS 的 DIN Alternate——只有 Bold 面，会让正文数字全变粗。D-DIN-PRO 是第三方在 D-DIN 上的扩展，名字含 D-DIN 的保留名，授权链说不清，不随系统分发。D-DIN-PRO 与 D-DIN 都没有等宽数字，tabular-nums 对它们不生效"
       }
     },
     "numeric": {

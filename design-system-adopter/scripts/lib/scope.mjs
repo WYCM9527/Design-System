@@ -8,7 +8,7 @@ export function splitTopLevel(css) {
   const out = [];
   let i = 0, start = 0, depth = 0, quote = null;
   const n = css.length;
-  const push = (end) => { const text = css.slice(start, end); if (text.trim()) out.push({ text, name: (text.trim().match(/^@([\w-]+)/) || [])[1] || null }); start = end; };
+  const push = (end) => { const text = css.slice(start, end); if (text.trim()) out.push({ text, name: (text.replace(/^(\s*\/\*[\s\S]*?\*\/)*\s*/, '').match(/^@([\w-]+)/) || [])[1] || null }); start = end; };
   while (i < n) {
     const c = css[i], next = css[i + 1];
     if (quote) { if (c === '\\') { i += 2; continue; } if (c === quote) quote = null; i++; continue; }

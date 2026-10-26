@@ -720,7 +720,7 @@
       "family": {
         "$type": "fontFamily",
         "$value": "{font.family.numeric}",
-        "$description": "[确认] 数据大字（统计卡、KPI、el-statistic、状态条数字）用 D-DIN-PRO（用户 2026-10-09 指定，原为正文字体栈）"
+        "$description": "[确认] 数据大字（统计卡、KPI、el-statistic、状态条数字）用 D-DIN 系：装了 D-DIN-PRO 用它，没装用随桥接分发的 D-DIN（用户 2026-10-09 指定 D-DIN-PRO，原为正文字体栈；2026-10-26 起随系统分发 D-DIN）"
       }
     },
     "hero": {
@@ -792,7 +792,7 @@
       "variant": {
         "$type": "string",
         "$value": "{font.numeric.tabular}",
-        "$description": "[确认] 金额 / 单号 / 表格数字用 tabular-nums：正文字体有等宽数字，金额列小数点上下对齐；数据大字的 D-DIN-PRO 没有等宽数字，这条对它不生效（2026-10-09 用户确认）"
+        "$description": "[确认] 金额 / 单号 / 表格数字用 tabular-nums：正文字体有等宽数字，金额列小数点上下对齐；数据大字的 D-DIN-PRO 与 D-DIN 都没有等宽数字，这条对它们不生效（2026-10-09 用户确认）"
       },
       "family": {
         "$type": "fontFamily",

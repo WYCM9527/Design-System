@@ -37,6 +37,16 @@ test('scopeWrap：提升 @import / @theme / @keyframes / @layer 语句，其余�
   assert.equal((text.match(/{/g) || []).length, (text.match(/}/g) || []).length);
 });
 
+test('scopeWrap：前面带注释的 @import / @font-face 照样提升（桥接文件头都有注释）', () => {
+  const css = `/* 桥接头注释 */\n\n@import "./fonts.css";\n\nhtml { color: red; }\n/*! 版权 */\n@font-face { font-family: "X"; src: url("data:font/woff;base64,d09GRg==") format("woff"); }\n/* 许可全文 */\n`;
+  const { text, hoisted } = scopeWrap(css, 'morganite');
+  assert.deepEqual(hoisted.sort(), ['font-face', 'import']);
+  const head = text.slice(0, text.indexOf('@scope (html.morganite)'));
+  assert.match(head, /@import "\.\/fonts\.css";/);
+  assert.match(head, /@font-face \{ font-family: "X"/);
+  assert.match(text, /@scope \(html\.morganite\) \{[\s\S]*:scope \{ color: red; \}/);
+});
+
 test('ds.mjs scope 命令：从种子生成范围包，四文件 + 清单，含 :scope 与 @scope 头', () => {
   const to = join(mkdtempSync(join(tmpdir(), 'ds-scope-')), 'scoped');
   const out = execFileSync('node', [DS, 'scope', '--system', SEED, '--root', 'citrine', '--to', to, '--with', 'element-plus', '--project', dirname(to)], { encoding: 'utf8' });

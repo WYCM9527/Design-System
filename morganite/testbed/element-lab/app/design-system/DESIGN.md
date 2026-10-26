@@ -2,7 +2,7 @@
 
 > 本文件记录设计意图与使用规则。对已确认纳管的设计决定，具体视觉数值的唯一来源是 `tokens/*.tokens.json`；不要在这里重复色值、尺寸或阴影参数。未迁移的旧规范仅作为审计证据，不与 Token 双重维护。
 >
-> 评判标准：本文件与 token 是规范本身，任何预览或项目与它冲突都以它为准；视觉基准是效果预览（种子仓库 `morganite/previews/rose-gold-admin/`），接入项目的页面应与它一致，它与本文件冲突时改预览；`preview/` 下的壳层 / 表单 / 抽屉只和来源站比像不像，`token-board.html` 只列值，都不作评判。
+> 评判标准：本文件与 token 是规范本身，任何预览或项目与它冲突都以它为准；视觉基准是效果预览（种子仓库 `morganite/previews/rose-gold-admin/`，在线版 <https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/>），接入项目的页面应与它一致，它与本文件冲突时改预览；`preview/` 下的壳层 / 表单 / 抽屉只和来源站比像不像，`token-board.html` 只列值，都不作评判。
 >
 > 来源：以 Ant Design Pro v6 为视觉底座，从 https://preview.pro.ant.design/dashboard/analysis、https://preview.pro.ant.design/list/table-list、https://preview.pro.ant.design/form/basic-form 以及查询表格里的新建弹窗与详情抽屉实测提炼（2026-09-28），再按用户决定把品牌色换成玫瑰金。证据、推断、缺口与用户决定见 `AUDIT.md`。
 >
@@ -30,7 +30,7 @@
 - 品牌色：玫瑰金是中等明度的暖金色，面积小、位置固定——主按钮、侧栏当前项、墨条、指示条、勾选选中、图表首色；大面积品牌面 `color.bg.brand` 只给登录页品牌区、欢迎横幅与优惠券券面的面额块，上面放 `color.text.on-brand`。落在金底上的文字按用户要求用白字（对比度例外见「验收基线」）；需要金色文字时用 `color.text.brand`，且只给不小于标题档的展示字。图表也一样克制：金领衔，其余是深灰、浅金、中灰、浅灰和一个绿。
 - 中性色：纯灰，沿用 antd——文字、分隔、悬停都用半透明黑叠加，落在任何底色上都不发脏。层次以底色差为主：页面底 `color.bg.page` → 卡片 `color.bg.surface` → 表头 / 次级容器 `color.bg.subtle`，卡片不投影，只加一条很浅的细边线 `color.border.default`。边线分两档：卡片边、容器分隔、表格行线用很浅的 `color.border.default`；按钮、勾选框这类控件描边用深一档的 `color.border.strong`，两档不混用。宽度统一是 `border.width.default` 这一档发丝细线（焦点环、出错态与指示条除外）。整体是 flat-first：浮起感只留给弹窗、下拉这类真正悬浮的表面。
 - 文字三档：`color.text.primary` 给正文、标题、表头、表单标签；`color.text.secondary` 给说明、菜单、次要信息；`color.text.muted` 给时间戳、帮助文字、表格副行。`color.text.placeholder` 只用于输入框占位与空值提示，不承载需要读的信息。
-- 字体：正文用系统字体栈 `font.family.body`，不加载网络字体；等宽 `font.family.code` 给代码与单号；数据大字（统计数字、KPI、`el-statistic`）用 D-DIN-PRO（`text.display.family`，字体栈见 `font.family.numeric`）；表格金额与日期、百分比、涨跌、图表数值、页码这些小号数字用正文字体配等宽数字（`text.numeric.family` + `text.numeric.variant`）——D-DIN-PRO 窄体细笔画在 12px 下压不住旁边的中文。种子不带字体文件：没装 D-DIN-PRO 的机器退到 D-DIN、Bahnschrift、正文无衬线，项目要各端一致需自行托管。正文 `text.body.size`，阶梯从小到大是 `text.caption.size`（与 `text.small.size`、`text.body-sm.size` 同档，也是最小字号）→ `text.body.size` → `text.title-sm.size` → `text.title.size` → `text.heading.size` → `text.display.size` → `text.hero.size`。统计数字用 `text.display.*`。D-DIN-PRO 没有等宽数字，只用在不需要上下对齐的大数字上。
+- 字体：正文用系统字体栈 `font.family.body`，不加载网络字体；等宽 `font.family.code` 给代码与单号；数据大字（统计数字、KPI、`el-statistic`）用 D-DIN 系（`text.display.family`，字体栈见 `font.family.numeric`：装了 D-DIN-PRO 用它，没装用随桥接分发的 D-DIN）；表格金额与日期、百分比、涨跌、图表数值、页码这些小号数字用正文字体配等宽数字（`text.numeric.family` + `text.numeric.variant`）——D-DIN 系窄体细笔画在 12px 下压不住旁边的中文。D-DIN 随桥接分发（`bridge/fonts.css` 内嵌原版字体，三个桥接入口都会引入），没装 D-DIN-PRO 的电脑也显示同一款数字字体；它只有 400 / 700 两档，`text.display.weight`（600）在这些电脑上显示 Bold，比装了 D-DIN-PRO 的略粗。项目设了 CSP 时要允许 `font-src data:`。正文 `text.body.size`，阶梯从小到大是 `text.caption.size`（与 `text.small.size`、`text.body-sm.size` 同档，也是最小字号）→ `text.body.size` → `text.title-sm.size` → `text.title.size` → `text.heading.size` → `text.display.size` → `text.hero.size`。统计数字用 `text.display.*`。D-DIN-PRO 与 D-DIN 都没有等宽数字，只用在不需要上下对齐的大数字上。
 - 状态色：成功绿（与「涨」同一种祖母绿）、警示橙、错误红、信息蓝，沿用 antd 功能色的色相并压深到文字可读。警示不用 antd 默认的金黄，因为它和品牌金同色相；错误红与品牌金在色相上离得远，但依然不单靠颜色区分，胶囊里一定有文字。
 - 壳层：保留能放二级菜单的宽侧栏；亮色下侧栏是纯白底（`color.bg.sidebar`，与顶栏、卡片同色，和浅灰页面底分开），当前项是主色底块配白字白图标，侧栏与内容区之间一条 `color.border.sidebar` 细线；顶栏也是白底。暗色下侧栏是纯黑底（与页面底同色，靠 `color.border.sidebar` 分开），当前项换成金色暗底配亮金字。
 
@@ -103,7 +103,7 @@
 | 输入框 / 选择器 | `color.bg.input` | `color.text.primary`，占位符 `color.text.placeholder` | 静息 `color.border.input`，hover `color.border.strong`，聚焦 `color.border.focus`（线宽不变、不加外环），圆角 `radius.md` |
 | 勾选框 / 单选 / 开关 | 选中 `color.action.primary`；开关滑块 `color.control.knob` | 勾 `color.text.on-primary` | 未选 `color.border.strong` × `border.width.control`，勾选框圆角 `radius.xs` |
 | 卡片 | `color.bg.surface` | 标题 `text.body.size` × `text.weight.strong` × `color.text.card-title` | `color.border.default`，圆角 `radius.lg`，不投影（`elevation.card.*` 为透明），内边距 `space.card` |
-| 数据卡 / 统计 | `color.bg.surface` | 数字 `text.display.*`（D-DIN-PRO），涨跌等小数字 `text.numeric.family`（正文字体），标签 `color.text.secondary` | 涨跌 `color.data.increase / decrease` |
+| 数据卡 / 统计 | `color.bg.surface` | 数字 `text.display.*`（D-DIN 系），涨跌等小数字 `text.numeric.family`（正文字体），标签 `color.text.secondary` | 涨跌 `color.data.increase / decrease` |
 | 表格 | 表头 `color.bg.subtle`；行 hover `color.bg.hover`；选中行与悬停同色 `color.bg.hover`，再悬停 `color.bg.selected-hover` | 表头 `color.text.secondary` × `text.weight.label`（小号），副行 `color.text.muted` | 行分隔 `color.border.default`；单元格内边距 `table.cell.padding-*` |
 | 批量操作条 | `color.bg.selected` | `color.text.primary` | 上下 `color.border.default` |
 | 筹码（已选条件） | `color.bg.chip`（字色同色 10%） | `color.text.selected`，小号字 | 胶囊 `radius.full`，高 `control.height.sm`；移除按钮命中区不小于 `control.hit-min` |

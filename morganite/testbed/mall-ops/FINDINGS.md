@@ -215,6 +215,15 @@ citrine-tools 改为按设计系统取品牌色口径（工具 1.3.0，仓库内
 
 优惠券券面改用配方 `.coupon`（Morganite 0.3.1）后复测：`ds.mjs upgrade` 直接更新 `DESIGN.md`、`AUDIT.md`，没有冲突；`citrine-accept all` 四步通过，允许清单 80 条（全部来自身份文件，项目 `BRAND_ALLOW` 为空），页面品牌金 0 处，组件走查与静息金组数同上。优惠券页亮 / 暗截图与改前逐像素一致，只有侧栏页脚的版本号不同。
 
+## H. 数字字体随系统分发（2026-10-26，Morganite 0.3.2）
+
+设计系统要交给同事用，用户决定随系统带上免费的 D-DIN：种子新增 `bridge/fonts.css`（内嵌原版 D-DIN 400 / 700），`element-plus.css` 开头引入它，token 不变，本项目的样式入口不用改。`ds.mjs upgrade` 直接更新 `DESIGN.md`、`AUDIT.md` 与两份 token 源（只改说明），没有冲突。
+
+- 构建产物（Vite）里有两条 D-DIN `@font-face`；版权注释被压缩工具去掉，字体文件自带的 name 表仍有版权与 OFL 全文。
+- 本机装了 D-DIN-PRO：统计卡数字渲染为 D-DIN-PRO SemiBold，工作台亮色截图与改前逐像素一致，只有侧栏页脚的版本号不同。
+- 在浏览器里临时把 D-DIN-PRO 从字体栈去掉（模拟没装的同事）：改前统计卡数字是系统字体 SF，改后是内嵌的 D-DIN Bold（`text.display.weight` 600 落到 700 那一档），与 D-DIN-PRO 同一字形、略粗。
+- `citrine-accept all` 四步通过：100 个页面状态的问题项全 0（tinyTargets 362 为提示项），页面品牌金 0 处，组件走查亮 / 暗各 623 个元素 0 发现（静息金亮 111 组、暗 113 组），992px / 390px 与焦点通过；guard `current`，status `unified`。
+
 ## 复现
 
 ```bash

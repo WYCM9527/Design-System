@@ -1,6 +1,6 @@
 # Morganite 玫瑰金 种子
 
-版本 0.3.1 · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 Pro 演示站的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 纯数据包：本目录即分发单元（文件夹直接下载，或发布为 npm 包 `@wycm9527/morganite`），身份文件 `design-system.json`，接入 / 更新由 [design-system-adopter](https://github.com/WYCM9527/Design-System/tree/main/design-system-adopter) skill 驱动 · 变更见 [CHANGELOG.md](CHANGELOG.md)
+版本 0.3.2 · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 Pro 演示站的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 纯数据包：本目录即分发单元（目前只发文件夹，没有发布到 npm；包名 `@wycm9527/morganite` 只在项目里以 file: 依赖使用），身份文件 `design-system.json`，接入 / 更新由 [design-system-adopter](https://github.com/WYCM9527/Design-System/tree/main/design-system-adopter) skill 驱动 · 变更见 [CHANGELOG.md](CHANGELOG.md)
 
 适用类型：**中后台**——侧栏 + 表格 + 图表 + 弹窗尺寸的工作台。
 
@@ -19,7 +19,7 @@ design-system/
 ├── scope-map.json                  # 空；局部规范在目标项目里按证据登记
 ├── style-dictionary.config.mjs     # 与 design-system-steward 脚手架相同
 └── dist/                           # 构建产物，随种子提交：纯 CSS 渠道 ds.mjs export 直接读它；接入项目里 steward 会按工作副本重建
-bridge/                             # base.css（纯 CSS 栈）+ 从 citrine 拷入的 element-plus / shadcn 桥接、recipes、配方组件（起点，见 AUDIT「桥接缺口」）
+bridge/                             # base.css（纯 CSS 栈）+ fonts.css（数字字体 D-DIN，三个桥接入口都会引入）+ 从 citrine 拷入的 element-plus / shadcn 桥接、recipes、配方组件（起点，见 AUDIT「桥接缺口」）
 templates/                          # 接线模板：entry-*.css（样式入口）、notes-*.md（接线要点）、AGENTS.md（项目规则模板）
 migration/roles.json                # 旧规范 → 新 token 的角色对照（adopter「更换现有规范」的 settle 阶段用），hints 已含 antd v5/v6 CSS 变量、v4 Less 变量与默认色值
 design-system.json                  # 身份文件：id / 版本 / upstream / 栈 / owned 清单——adopter skill 靠它识别与更新
@@ -29,13 +29,15 @@ package.json                        # 包定义：exports 暴露 bridge/* 与 de
 ## 用法
 
 ```bash
-# 装好 design-system-adopter 之后，把本目录放进项目任意位置（或 npm i @wycm9527/morganite），然后：
-node .cursor/skills/design-system-adopter/scripts/ds.mjs init --system morganite --stack css
+# 装好 design-system-adopter 之后，把本目录放进项目任意位置（如 vendor/morganite），然后按技术栈选一个：
+node .cursor/skills/design-system-adopter/scripts/ds.mjs init --system morganite --stack element-plus   # Vue 3 + Element Plus
+node .cursor/skills/design-system-adopter/scripts/ds.mjs init --system morganite --stack shadcn         # React + Tailwind v4 + shadcn/ui
+node .cursor/skills/design-system-adopter/scripts/ds.mjs init --system morganite --stack css            # 其他（纯 CSS）
 # init 做的事：落成只读快照 design-systems/morganite/ → 生成工作副本 design-system/ → 写 .adopter.json → 打印样式入口与接线步骤
 # 然后 steward：validate-system → build-tokens（需要 style-dictionary@5.5.2）→ guard 应为 current
 ```
 
-可用的栈：`css`（纯 CSS（任意栈））、`element-plus`（Vue 3 + Element Plus）、`shadcn`（React + Tailwind v4 + shadcn/ui）。样式入口见 `templates/entry-*.css`；项目自己的样式只引用 `var(--color-*)` / `var(--spacing-*)` 等变量。
+可用的栈：`css`（纯 CSS（任意栈））、`element-plus`（Vue 3 + Element Plus）、`shadcn`（React + Tailwind v4 + shadcn/ui）。样式入口见 `templates/entry-*.css`；项目自己的样式只引用 `var(--color-*)` / `var(--spacing-*)` 等变量。数字字体 D-DIN 由桥接自带（`bridge/fonts.css`，SIL OFL 1.1），项目不用另装字体；设了 CSP 的项目要允许 `font-src data:`。
 
 ## 从旧规范迁移
 

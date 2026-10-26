@@ -102,3 +102,7 @@ citrine-tools 改为按设计系统取品牌色口径（工具 1.3.0，仓库内
 # 升级到 0.3.1（2026-10-19）
 
 种子 0.3.1 把优惠券券面加进品牌面的位置：新增配方 `.coupon`，身份文件的品牌金允许清单加 `.coupon-value`（用户决定，见种子 CHANGELOG 0.3.1），token 不变。本项目没有优惠券，页面不用改。用户已同意种子再改时直接同步两个实验项目，于是运行 `ds.mjs upgrade`：直接更新 `DESIGN.md`、`AUDIT.md`，没有冲突。build、guard `current`、status `unified`，`citrine-accept all` 四步通过：2 个页面状态 × 亮暗的问题项全 0（tinyTargets 24 为提示项），允许清单 80 条、页面品牌金 0 处，组件走查亮 / 暗各 613 个元素 0 发现（静息金亮 110 组、暗 112 组），992px / 390px 与焦点通过。
+
+# 升级到 0.3.2（2026-10-26）
+
+种子 0.3.2 随设计系统分发数字字体：新增 `bridge/fonts.css`（内嵌原版 D-DIN 400 / 700），`element-plus.css` 开头引入它（用户决定，见种子 CHANGELOG 0.3.2），token 不变，项目的样式入口不用改。按用户同意的「种子再改时直接同步两个实验项目」运行 `ds.mjs upgrade`：直接更新 `DESIGN.md`、`AUDIT.md` 与两份 token 源（只改说明），没有冲突。构建产物里有两条 D-DIN `@font-face`。build、guard `current`、status `unified`，`citrine-accept all` 四步通过：2 个页面状态 × 亮暗的问题项全 0（tinyTargets 24 为提示项），页面品牌金 0 处，组件走查亮 / 暗各 613 个元素 0 发现（静息金亮 110 组、暗 112 组），992px / 390px 与焦点通过。

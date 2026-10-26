@@ -2,9 +2,11 @@
 
 **中后台 · Ant Design Pro v6 底座 · 玫瑰金 #B98D44 金底白字 + antd 纯灰骨架 · 亮 / 暗 · Element Plus / shadcn/ui / ECharts 桥接**
 
-版本 **0.3.1** · Core 359 个 token · dark 66 条 delta · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 [Pro 演示站](https://preview.pro.ant.design/dashboard/analysis)的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 变更见 [CHANGELOG](seeds/morganite/CHANGELOG.md)
+版本 **0.3.2** · Core 359 个 token · dark 66 条 delta · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 [Pro 演示站](https://preview.pro.ant.design/dashboard/analysis)的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 变更见 [CHANGELOG](seeds/morganite/CHANGELOG.md)
 
 一句话：保留 Ant Design 的交互结构、密度与纯灰骨架，把品牌色换成玫瑰金——金底放白字（主按钮、侧栏当前项；暗色侧栏当前项是金色暗底 + 亮金字），链接 / 选中 / 焦点取同色系深一档；输入框为填充式（Pro v6 原样）。圆角、0.6px 描边、卡片标题、图表配色（只用金 + 灰 + 绿、绿涨红跌）按一张预期预览图调整过；卡片不投影，只留一条很浅的边线。
+
+**看效果**：[在线效果预览](https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/)——工作台、交易记录、新建交易、交易详情、系统设置、组件走查、登录、空状态 8 个页面，顶栏右侧切亮 / 暗。接入后的页面应该和它一致。
 
 ---
 
@@ -13,7 +15,7 @@
 预览有好几种，评判时按这个顺序：
 
 1. **规范本身**：种子 `seeds/morganite/design-system/` 里的 token（`tokens/*.tokens.json`、`themes/*/tokens/`）与 `DESIGN.md`，用户的每项决定记在 `AUDIT.md`。任何预览、项目和它冲突，都以它为准。
-2. **视觉基准**：效果预览 `previews/rose-gold-admin/`——页面与组件「应该长什么样」看它，用户的视觉决定都是对着它定的。它和规范冲突时改预览。
+2. **视觉基准**：效果预览 `previews/rose-gold-admin/`（[在线版](https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/)，随 main 分支自动更新）——页面与组件「应该长什么样」看它，用户的视觉决定都是对着它定的。它和规范冲突时改预览。
 3. **落地验证**：实测项目 `testbed/element-lab`、`testbed/shadcn-lab` 与完整业务项目 `testbed/mall-ops`——检查真实组件库接入后是否与效果预览一致、验收（citrine-accept）是否全绿；它们不是标准，不一致就修桥接或配方。
 4. **只做对照，不作评判**：种子自带的 `design-system/preview/`（壳层 / 表单 / 抽屉）用来和来源站 Ant Design Pro 比像不像；`token-board.html` 是 token 清单，看值不看页面。
 
@@ -41,16 +43,52 @@ morganite/
 - 桥接：从 Citrine 2.12.0 拷入 Element Plus / shadcn / 页面配方 / ECharts 桥接当起点，引用的缺失变量已全部补 token（22 个，外加 ECharts 顺序色 5 个与提示气泡 1 个，见 AUDIT「桥接缺口」）；两套组件库桥接都用真实组件走查过：Element Plus 在 `testbed/element-lab`，shadcn/ui 在 `testbed/shadcn-lab`（见各自 FINDINGS），citrine-accept 验收都全绿。完整业务项目 `testbed/mall-ops` 对照效果预览逐角色比对后，0.1.4 校正了 Element 桥接 30 余处、收进 14 个页面形态配方，项目层样式清零，验收全绿（见它的 FINDINGS）。
 - 验收：沿用 Citrine 的 citrine-accept（清单模板 `seeds/morganite/templates/accept.config.mjs`）。对比度例外靠 `APPROVED_CONTRAST`；品牌金审计按身份文件 `design-system.json` 的 `accept.brand` 检查金色是否只出现在 DESIGN「验收基线」列出的位置（要 citrine-tools ≥ 1.3.0）。三个实测项目都在仓库 CI 的验收矩阵里，改了种子或桥接会自动跑完整验收。
 
-## 接入
+## 接入（交给 AI 做）
+
+Morganite 和 Citrine 用同一套接入工具 [design-system-adopter](../design-system-adopter/)，区别只有两点：**种子没有发布到 npm**，从本仓库拷文件夹进项目；验收工具与 Citrine 共用 npm 包 `@wycm9527/citrine-tools`（命令 `citrine-accept`）。数字字体 D-DIN 由桥接自带，不用另装。
+
+**第一次接入**：用 Cursor（Agent 模式）、Claude Code 或 Codex 打开项目，把下面整段发出去，只改【】里的内容；技术信息不知道就写「不确定」。
+
+```text
+请帮当前打开的项目接入 Morganite 玫瑰金设计系统。
+用途：【项目用途，如：管理供应商资料】
+本次范围：【新建项目，或要调整的页面】
+需要保留：【不改的内容，没有就填"无"】
+技术栈：【Vue 3 + Element Plus / React + shadcn/ui / 不确定】
+
+来源：https://github.com/WYCM9527/Design-System（公开仓库，浅克隆到项目外的临时目录）。
+先只读识别项目目录、技术栈和接入状态，简要说明路线；旧项目写入前确认工作区已提交，并保存接入前的 git 存档点。
+1. 把仓库里的 design-system-adopter 装进项目的 skill 目录（Cursor 是 .cursor/skills/design-system-adopter，Claude Code 是 .claude/skills/），读它的 SKILL.md，之后按它的流程做，不自己发明步骤。
+2. Morganite 没有发布到 npm：把仓库里的 morganite/seeds/morganite 拷进项目（如 vendor/morganite），再 ds.mjs init --system morganite，--stack 按技术栈选 element-plus / shadcn / css；按 init 打印的步骤用 file: 链接快照，装 @wycm9527/citrine-tools 与 style-dictionary。不要把 /tmp 这类项目外路径写进 package.json。
+3. 新项目先建一个能启动的应用再接入，没指定就用 Vue 3 + Element Plus；旧项目沿用原技术，只做指定范围的第一期换肤，完成后暂停。
+4. 接好样式入口和亮 / 暗主题，steward 构建后 guard 要是 current；AGENTS.md 写入前给我看；做一个最小示例页，建验收清单，跑 citrine-accept all。
+页面要和效果预览一致：https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/
+结束时给我：预览网址、Morganite 版本、存档点、做了什么，以及通过 / 未通过 / 跳过 / 未执行的检查结果。
+```
+
+**接入以后**，日常用短提示词，每次发一段：
+
+> **做页面**：在当前已接入 Morganite 的项目中做页面。页面：【页面名称】；功能：【需要的功能】。先读项目规则（AGENTS.md）和 design-system/DESIGN.md；颜色、间距、字号只用规范变量，页面骨架用现成配方，缺配方先告诉我，不在页面上补样式。完成后跑验收，给我预览网址和检查结果。
+>
+> **更新**：检查 Morganite 有没有新版本，按 design-system-adopter 的「更新」剧本先 dry-run 给我看差异（尤其是我本地改过的部分），确认后再升级并跑验收。
+
+只改部分页面、旧项目继续迁移、验收进 CI、队友接手、规范不够用时怎么提提案，见[零基础上手教程](../docs/TUTORIAL.md)，那里的提示词两套系统通用。
+
+**自己敲命令**（想知道 AI 做了什么，或不用 AI 时）：
 
 ```bash
 git clone --depth 1 https://github.com/WYCM9527/Design-System.git /tmp/ds
 mkdir -p .cursor/skills && cp -R /tmp/ds/design-system-adopter .cursor/skills/
 mkdir -p vendor && cp -R /tmp/ds/morganite/seeds/morganite vendor/morganite
-node .cursor/skills/design-system-adopter/scripts/ds.mjs init --system morganite --stack css
+# --stack 按技术栈选：element-plus（Vue 3 + Element Plus）/ shadcn（React + Tailwind v4 + shadcn/ui）/ css（其他）
+node .cursor/skills/design-system-adopter/scripts/ds.mjs init --system morganite --stack element-plus
 ```
 
-然后 steward `validate-system → build-tokens → guard`，再对 Agent 说「用 Morganite 玫瑰金 起项目」。升级走 `ds.mjs status / upgrade`（按 tag `morganite-vX.Y.Z`）。
+init 把种子落成只读快照 `design-systems/morganite/`、生成工作副本 `design-system/`，并打印接下来的步骤（`npm i file:./design-systems/morganite`、装验收工具与 style-dictionary、Vite 配置、样式入口）；之后 `vendor/morganite` 可以删。然后 steward `build-tokens → guard`（应为 `current`）。升级走 `ds.mjs status / upgrade`（按 tag `morganite-vX.Y.Z` 找新版本）。
+
+**非 Node 项目**（Flask / Django / PHP / 静态页）：到 [Releases](https://github.com/WYCM9527/Design-System/releases?q=morganite&expanded=true) 下载最新的 `morganite-css-<版本>.tgz`，解压到静态目录，按顺序 `<link>` `index.css` → `base.css`（它会自己引入同目录的 `fonts.css`）→ `recipes.css` → 你自己的样式；自己的样式只引用变量。
+
+**数字字体**：数据大字（统计卡、KPI）用 D-DIN 系——装了 D-DIN-PRO 的电脑用它，没装的用桥接自带的 D-DIN（`bridge/fonts.css`，SIL OFL 1.1）。两者字形相同，D-DIN 只有 400 / 700 两档，半粗（600）会显示成 Bold、略粗一点。项目设了 CSP 时要允许 `font-src data:`。
 
 ## 发版
 
