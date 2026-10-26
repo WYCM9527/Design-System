@@ -84,7 +84,7 @@ try {
     await browser.goto(pageUrl(server.url, cfg.KITCHEN, modeQuery(mode), cfg.DEFAULT_QUERY), "document.readyState === 'complete' && document.querySelectorAll('.ks').length >= 10");
     await sleep(1500);
     // 走查读的是状态终值：禁用过渡与动画，否则 forcePseudoState 后立即读计算值会拿到过渡中间值——快机器上接近静息色（掩盖泄漏），慢机器（CI）上是无意义的中间灰
-    await evalJs(`(() => { const st = document.createElement('style'); st.id = '__ks-no-motion'; st.textContent = '*, *::before, *::after { transition: none !important; animation-duration: 0s !important; animation-delay: 0s !important; }'; document.head.appendChild(st); return 'ok' })()`);
+    await browser.noMotion();
     await evalJs(`window.__ksTokens = ${JSON.stringify(tokenRgbs)}; ${brandJs(BRAND)} 'ok'`); await evalJs(PROBE + "; 'ok'");
     const findings = [], rest = []; let probed = 0;
     const h = await evalJs('document.documentElement.scrollHeight');

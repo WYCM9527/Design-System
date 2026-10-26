@@ -66,6 +66,8 @@ export async function launch({ width = 1600, height = 1000, scale = 1, port = 92
       await send('Page.navigate', { url });
       await waitFor(async () => { const ok = await evalJs(ready); if (!ok) throw new Error('not ready'); return true; });
     },
+    /** 禁用过渡与动画（正在进行的直接跳到终值）：审计要读状态终值，过渡中间值在慢机器（CI）上会被误判 */
+    noMotion: () => evalJs(`(() => { if (!document.getElementById('__ks-no-motion')) { const st = document.createElement('style'); st.id = '__ks-no-motion'; st.textContent = '*, *::before, *::after { transition: none !important; animation-duration: 0s !important; animation-delay: 0s !important; }'; document.head.appendChild(st); } return 'ok' })()`),
     /** 清掉持久化的角色 / 主题，保证每个状态从干净的 storage 开始 */
     resetStorage: async (originUrl) => { await send('Page.navigate', { url: originUrl }); await sleep(200); try { await evalJs('localStorage.clear(); sessionStorage.clear(); "ok"'); } catch {} await send('Page.navigate', { url: 'about:blank' }); await sleep(80); },
     screenshot: async (opts = {}) => Buffer.from((await send('Page.captureScreenshot', { format: 'png', ...opts })).result.data, 'base64'),

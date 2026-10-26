@@ -35,6 +35,7 @@ try {
       await browser.resetStorage(resetUrl(server.url));
       await browser.goto(pageUrl(server.url, spec, modeQuery(mode), cfg.DEFAULT_QUERY), READY);
       await sleep(1000);
+      await browser.noMotion();   // 懒加载的路由在慢机器（CI）上挂载晚，1 秒时状态切换的过渡可能还没走完，读到中间色会误报低对比
       let res; try { await browser.evalJs(approvedJs); res = await browser.evalJs(audit); } catch (e) { res = { error: String(e).slice(0, 200) }; }
       res.brand = [];
       if (BRAND) try { await browser.evalJs(probeJs); res.brand = await browser.evalJs(`__ks.brandAudit(${JSON.stringify(allowSel)})`); } catch (e) { res.brandError = String(e).slice(0, 160); }
