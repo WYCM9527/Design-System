@@ -2,6 +2,12 @@
 
 版本策略：patch 只改描述与文档；minor 新增或修改 token（视觉会变、名字不变，条目里写清肉眼可见的影响）；major 才改名或删除 token。
 
+## 0.3.4 — 2026-10-27
+
+- npm 包页面（就是本种子的 README）补上在线效果预览和接入入口（给 AI 的提示词、安装命令）；README 里指向 LICENSE、CHANGELOG 的相对链接改成绝对地址，npm 页面上也能点开。
+- 发布改由 GitHub Actions 自动完成（npm Trusted Publishing，带 provenance）：0.3.3 是手工首发，本版起打 tag 即自动发到 npm。
+- token、桥接与配方不变，页面不变。
+
 ## 0.3.3 — 2026-10-27
 
 - 发布到 npm（用户决定：设计系统要交给同事用，装法和 Citrine 一样，少一步拷文件夹）：包名 `@wycm9527/morganite`，`npm i @wycm9527/morganite` 后照常 `ds.mjs init --system morganite`。文件夹渠道与 Releases 直链照旧可用，已经用文件夹接入的项目不用换。
