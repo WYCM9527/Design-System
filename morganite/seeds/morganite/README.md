@@ -1,6 +1,6 @@
 # Morganite 玫瑰金 种子
 
-版本 0.3.2 · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 Pro 演示站的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 纯数据包：本目录即分发单元（目前只发文件夹，没有发布到 npm；包名 `@wycm9527/morganite` 只在项目里以 file: 依赖使用），身份文件 `design-system.json`，接入 / 更新由 [design-system-adopter](https://github.com/WYCM9527/Design-System/tree/main/design-system-adopter) skill 驱动 · 变更见 [CHANGELOG.md](CHANGELOG.md)
+版本 0.3.3 · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 Pro 演示站的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 纯数据包：本目录即分发单元（npm 包 `@wycm9527/morganite`，也可以整个文件夹拷进项目；许可 MIT，内嵌的 D-DIN 字体按 SIL OFL 1.1，见 [LICENSE](LICENSE)），身份文件 `design-system.json`，接入 / 更新由 [design-system-adopter](https://github.com/WYCM9527/Design-System/tree/main/design-system-adopter) skill 驱动 · 变更见 [CHANGELOG.md](CHANGELOG.md)
 
 适用类型：**中后台**——侧栏 + 表格 + 图表 + 弹窗尺寸的工作台。
 
@@ -23,13 +23,17 @@ bridge/                             # base.css（纯 CSS 栈）+ fonts.css（数
 templates/                          # 接线模板：entry-*.css（样式入口）、notes-*.md（接线要点）、AGENTS.md（项目规则模板）
 migration/roles.json                # 旧规范 → 新 token 的角色对照（adopter「更换现有规范」的 settle 阶段用），hints 已含 antd v5/v6 CSS 变量、v4 Less 变量与默认色值
 design-system.json                  # 身份文件：id / 版本 / upstream / 栈 / owned 清单——adopter skill 靠它识别与更新
-package.json                        # 包定义：exports 暴露 bridge/* 与 design-system/*
+package.json                        # 包定义：exports 暴露 bridge/* 与 design-system/*；files 决定 npm 包与 Releases 里的 tgz 带哪些文件
+LICENSE                             # MIT；bridge/fonts.css 内嵌的 D-DIN 字体按 SIL OFL 1.1（许可全文在该文件末尾）
 ```
 
 ## 用法
 
 ```bash
-# 装好 design-system-adopter 之后，把本目录放进项目任意位置（如 vendor/morganite），然后按技术栈选一个：
+# 装好 design-system-adopter 之后先装种子，二选一：
+npm i @wycm9527/morganite                  # npm（验收工具另装 npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2）
+# 或把本目录放进项目任意位置（如 vendor/morganite）：init 落成快照后按它打印的步骤 npm i file:./design-systems/morganite
+# 然后按技术栈选一个：
 node .cursor/skills/design-system-adopter/scripts/ds.mjs init --system morganite --stack element-plus   # Vue 3 + Element Plus
 node .cursor/skills/design-system-adopter/scripts/ds.mjs init --system morganite --stack shadcn         # React + Tailwind v4 + shadcn/ui
 node .cursor/skills/design-system-adopter/scripts/ds.mjs init --system morganite --stack css            # 其他（纯 CSS）

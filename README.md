@@ -5,7 +5,7 @@
 | 设计系统 | 定位 | 版本 |
 | --- | --- | --- |
 | [**Citrine · 黄晶**](citrine/) | 中后台 · 品牌黄唯一焦点 + 冷灰骨架 · 亮 / 暗 · 三端（桌面 / 窄屏 / 手机） · Element Plus / shadcn/ui / ECharts 桥接 · 给编码 Agent 的配方与验收基线 | 2.12.2 |
-| [**Morganite 玫瑰金**](morganite/) | 中后台 · Ant Design Pro v6 底座 · 玫瑰金 #B98D44 金底白字 + antd 纯灰骨架 · 亮 / 暗 · Element Plus / shadcn/ui / ECharts 桥接 · [在线效果预览](https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/) | 0.3.2 |
+| [**Morganite 玫瑰金**](morganite/) | 中后台 · Ant Design Pro v6 底座 · 玫瑰金 #B98D44 金底白字 + antd 纯灰骨架 · 亮 / 暗 · Element Plus / shadcn/ui / ECharts 桥接 · [在线效果预览](https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/) | 0.3.3 |
 
 一行一个系统，目录 `<id>/seeds/<seed-name>/` 带身份文件就算一个（`node scripts/systems.mjs` 列清单）；从网站提炼新系统的流程见 [docs/GUIDE.md §8c](docs/GUIDE.md#8c-维护者新增一个设计系统从网站提炼)。
 
@@ -32,7 +32,7 @@ npm i @wycm9527/citrine && npm i -D @wycm9527/citrine-tools style-dictionary@5.5
 
 两种方式队友都零配置。唯独不要 `npm i file:/tmp/ds/...`：那是只在你电脑上存在的路径，队友 `npm install` 会失败。
 
-**Morganite 玫瑰金**没有发布到 npm，只走方式 B：`cp -R /tmp/ds/morganite/seeds/morganite vendor/morganite`，验收工具与构建器照样 `npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2`。可以直接粘给 AI 的接入提示词在 [morganite/README.md](morganite/README.md#接入交给-ai-做)。
+**Morganite 玫瑰金**装法相同，换掉种子即可：方式 A `npm i @wycm9527/morganite`，方式 B `cp -R /tmp/ds/morganite/seeds/morganite vendor/morganite`；验收工具与构建器同样是 `@wycm9527/citrine-tools` 和 `style-dictionary@5.5.2`。可以直接粘给 AI 的接入提示词在 [morganite/README.md](morganite/README.md#接入交给-ai-做)。
 
 **没有开发经验、全程靠 AI 的同学看 [docs/TUTORIAL.md（零基础上手教程）](docs/TUTORIAL.md)**：介绍 → 执行步骤 → 后续更新 → 特殊情况 → FAQ，每一步都是可直接粘给 AI 的提示词。完整参考（原理、命令速查、维护者事项）见 [docs/GUIDE.md](docs/GUIDE.md)。
 

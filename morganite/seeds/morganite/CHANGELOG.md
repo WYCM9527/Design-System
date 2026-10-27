@@ -2,6 +2,15 @@
 
 版本策略：patch 只改描述与文档；minor 新增或修改 token（视觉会变、名字不变，条目里写清肉眼可见的影响）；major 才改名或删除 token。
 
+## 0.3.3 — 2026-10-27
+
+- 发布到 npm（用户决定：设计系统要交给同事用，装法和 Citrine 一样，少一步拷文件夹）：包名 `@wycm9527/morganite`，`npm i @wycm9527/morganite` 后照常 `ds.mjs init --system morganite`。文件夹渠道与 Releases 直链照旧可用，已经用文件夹接入的项目不用换。
+  - 许可：MIT，`bridge/fonts.css` 内嵌的 D-DIN 字体仍按 SIL OFL 1.1；`package.json` 写 `(MIT AND OFL-1.1)`，新增 `LICENSE`。此前是 `UNLICENSED`。
+  - 包里补上 `migration/`：身份文件登记的 `migration/roles.json`（旧项目换规范时用）此前不在 `files` 里，Releases 里的 `wycm9527-morganite-*.tgz` 同样缺；文件夹渠道整目录拷贝，不受影响。
+  - `package.json` 补 `repository`（CI 带 provenance 发布时要核对）、`homepage`、`bugs`、`keywords`、`publishConfig`；`description` 改成一句定位（原来是五个来源网址的拼接）。
+  - token、桥接与配方不变，页面不变。
+- README、仓库的零基础教程与 GUIDE 改为 npm 装法。
+
 ## 0.3.2 — 2026-10-26
 
 - 数字字体随设计系统分发（用户决定：设计系统要交给同事用，没装 D-DIN-PRO 的电脑也要显示同一款数字字体）：

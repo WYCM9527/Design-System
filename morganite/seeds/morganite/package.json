@@ -1,9 +1,24 @@
 {
   "name": "@wycm9527/morganite",
-  "version": "0.3.2",
-  "description": "Morganite 玫瑰金 · 从 https://preview.pro.ant.design/dashboard/analysis、https://preview.pro.ant.design/list/table-list、https://preview.pro.ant.design/form/basic-form、https://preview.pro.ant.design/list/table-list#新建弹窗、https://preview.pro.ant.design/list/table-list#详情抽屉 实测提炼的设计系统种子：DTCG token、DESIGN 规范、基础 CSS 桥接。纯数据包：接入 / 更新由 design-system-adopter skill 驱动（识别 design-system.json）。",
-  "license": "UNLICENSED",
+  "version": "0.3.3",
+  "description": "Morganite 玫瑰金 · 中后台设计系统种子：Ant Design Pro v6 底座，玫瑰金 #B98D44 金底白字 + antd 纯灰骨架，DTCG token（亮 / 暗）、DESIGN 规范、Element Plus / shadcn/ui / ECharts / IconPark 桥接、页面骨架配方与 Vue / React 配方组件，自带数字字体 D-DIN。纯数据包：接入 / 更新由 design-system-adopter skill 驱动（识别 design-system.json）。",
+  "license": "(MIT AND OFL-1.1)",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WYCM9527/Design-System.git",
+    "directory": "morganite/seeds/morganite"
+  },
+  "keywords": [
+    "design-system",
+    "design-tokens",
+    "dtcg",
+    "ant-design",
+    "element-plus",
+    "shadcn",
+    "tailwind",
+    "echarts"
+  ],
   "engines": {
     "node": ">=22"
   },
@@ -15,6 +30,7 @@
     "!design-system/preview/static",
     "design-system.json",
     "templates",
+    "migration",
     "README.md",
     "CHANGELOG.md"
   ],
@@ -57,5 +73,12 @@
     "vue": {
       "optional": true
     }
+  },
+  "homepage": "https://github.com/WYCM9527/Design-System/tree/main/morganite#readme",
+  "bugs": {
+    "url": "https://github.com/WYCM9527/Design-System/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

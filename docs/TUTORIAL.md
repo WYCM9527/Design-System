@@ -58,7 +58,7 @@
 
 按项目类型接入：
 4. 新项目使用当前空目录，不另套同名文件夹；默认 Vue 3 + Element Plus，有团队要求则沿用。先建立并验证可启动的应用，再装设计系统，不能只凭 package.json 判断已有完整应用。已有项目沿用原技术，仅做指定范围的第一期换肤，完成后暂停。
-5. Node 项目按流程安装开发依赖 @wycm9527/citrine-tools（两套系统共用的验收工具）和种子声明的构建依赖，检查 steward 是否可用且满足最低版本。种子：Citrine 装 npm 包 @wycm9527/citrine；Morganite 没有发布到 npm，把该仓库的 morganite/seeds/morganite 拷进项目再按流程 init。npm 获取失败先诊断（国内可换镜像 https://registry.npmmirror.com），也可使用该仓库的种子目录和官方 Releases；不把项目外的临时路径写进依赖。
+5. Node 项目按流程安装开发依赖 @wycm9527/citrine-tools（两套系统共用的验收工具）和种子声明的构建依赖，检查 steward 是否可用且满足最低版本。种子装 npm 包：Citrine 是 @wycm9527/citrine，Morganite 是 @wycm9527/morganite。npm 获取失败先诊断（国内可换镜像 https://registry.npmmirror.com），也可使用该仓库的种子目录和官方 Releases；不把项目外的临时路径写进依赖。
 6. 非 Node 项目走纯 CSS 导出流程，保留原运行方式；本地导出和验收仍需工具。使用已取得的验收脚本或明确安装 @wycm9527/citrine-tools，先建有实际页面的 accept.config.mjs，再对运行中的服务检查。端口由你确认。
 7. 只改部分页面时，先判断能否隔离并记录保留页面的原始状态；核对实际使用者的浏览器兼容性。若组件库缺少适配，说明哪些效果做不到，等我选择，不冒充已完整接入。
 

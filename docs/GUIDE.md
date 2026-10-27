@@ -2,7 +2,7 @@
 
 给要把公司设计系统（**Citrine 黄晶**或 **Morganite 玫瑰金**）用进自己项目的同学。全程由 Agent（Cursor / Codex / Claude Code）执行，你只做三件事：装好、说一句话、在它停下来问你时拍板。读完约 10 分钟。
 
-两套系统接入方式相同，下文命令与提示词以 Citrine 为例，用 Morganite 时把名字换掉即可。唯一的区别在安装：Morganite 没有发布到 npm，种子只走文件夹渠道（见第 2 节末尾）；验收工具两套共用 `@wycm9527/citrine-tools`。Morganite 的效果先看[在线效果预览](https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/)，接入提示词见 [morganite/README.md](../morganite/README.md#接入交给-ai-做)。
+两套系统接入方式相同，下文命令与提示词以 Citrine 为例，用 Morganite 时把名字换掉即可（种子包 `@wycm9527/morganite`，文件夹 `morganite/seeds/morganite`，见第 2 节末尾）；验收工具两套共用 `@wycm9527/citrine-tools`，不用换。Morganite 的效果先看[在线效果预览](https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/)，接入提示词见 [morganite/README.md](../morganite/README.md#接入交给-ai-做)。
 
 > 没有开发经验、只想照着粘提示词的同学，看 [TUTORIAL.md（零基础上手教程）](TUTORIAL.md)；本文是完整参考。
 
@@ -10,7 +10,7 @@
 
 | 东西 | 在哪 | 干什么 | 你需要碰吗 |
 | --- | --- | --- | --- |
-| **设计系统种子** | `citrine/seeds/brand-yellow-e/`（也是 npm 包 `@wycm9527/citrine`）；`morganite/seeds/morganite/`（只发文件夹，不在 npm 上） | token、DESIGN 规范、Element Plus / shadcn 桥接、页面配方、Vue / React 配方组件，带身份文件 `design-system.json` | 只读。放进项目当快照 |
+| **设计系统种子** | `citrine/seeds/brand-yellow-e/`（也是 npm 包 `@wycm9527/citrine`）；`morganite/seeds/morganite/`（npm 包 `@wycm9527/morganite`） | token、DESIGN 规范、Element Plus / shadcn 桥接、页面配方、Vue / React 配方组件，带身份文件 `design-system.json` | 只读。放进项目当快照 |
 | **design-system-adopter** | 仓库根 `design-system-adopter/` | 让 Agent 会「接入 / 换规范 / 更新」的 skill + 零依赖 CLI（`scripts/ds.mjs`） | 装一次进项目 |
 | **design-system-steward** | [WYCM9527/skills](https://github.com/WYCM9527/skills) | 构建 token、Guard 校验、存量迁移的治理工具 | adopter 找不到时会带你装 |
 | **验收工具** | `citrine/tools/`（npm 包 `@wycm9527/citrine-tools`，命令 `citrine-accept`） | 无头 Chrome 扫对比度、命名、品牌色泄漏、三端响应、Tab 焦点 | 装进项目 devDependencies |
@@ -55,11 +55,11 @@ npm i -D https://github.com/WYCM9527/Design-System/releases/latest/download/wycm
 
 两种方式 adopter 都认，队友都零配置（A 写进 `package.json` 的是版本号，B 是项目内相对路径 `file:./design-systems/citrine`），已接入的项目不必换。**唯独不要 `npm i file:/tmp/ds/...`**：那会把一条只在你电脑上存在的路径写进 `package.json`，队友 `npm install` 直接失败。国内访问 registry.npmjs.org 慢或不通时，`npm config set registry https://registry.npmmirror.com`（镜像同步公开包，通常十分钟内）或改用方式 B。
 
-**Morganite 玫瑰金**：种子没有发布到 npm，只走方式 B 的文件夹渠道；验收工具与 token 构建器照样从 npm 装（和 Citrine 同一个工具包）：
+**Morganite 玫瑰金**：换掉种子即可（0.3.3 起在 npm 上），验收工具与 token 构建器和 Citrine 是同一个工具包：
 
 ```bash
-mkdir -p vendor && cp -R /tmp/ds/morganite/seeds/morganite vendor/morganite
-npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2
+npm i @wycm9527/morganite && npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2
+#   方式 B：cp -R /tmp/ds/morganite/seeds/morganite vendor/morganite，工具同上面的 Releases 直链
 node .cursor/skills/design-system-adopter/scripts/ds.mjs init --system morganite --stack element-plus   # 或 shadcn / css
 ```
 
@@ -71,7 +71,7 @@ steward 不用手动装：Agent 走到需要构建时会先找（`~/.cursor/skil
 
 不想碰命令行的同学，打开 Cursor（或 Codex / Claude Code）的 Agent，把下面整段原文粘贴发送即可。它会自己检查环境、下载、安装、自检，只在一处需要你开口（项目名），装好后问你一句「新项目还是旧项目换新」就接着走。
 
-用 Morganite 时改三处：开头的 **Citrine** 换成 **Morganite**；「三、安装」第 2 条整条换成「种子没有发布到 npm，直接走文件夹渠道：`mkdir -p vendor && cp -R /tmp/ds/morganite/seeds/morganite vendor/morganite`，然后 `npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2`」；「四、自检」第一条里的 `citrine` 换成 `morganite`。或者直接用 [morganite/README.md](../morganite/README.md#接入交给-ai-做) 里更短的那段。
+用 Morganite 时改三处：开头的 **Citrine** 换成 **Morganite**；「三、安装」第 2 条里的种子包 `@wycm9527/citrine` 换成 `@wycm9527/morganite`，文件夹 `/tmp/ds/citrine/seeds/brand-yellow-e vendor/citrine` 换成 `/tmp/ds/morganite/seeds/morganite vendor/morganite`（验收工具 `@wycm9527/citrine-tools` 与 `wycm9527-citrine-tools-` 两套共用，不换）；「四、自检」第一条里的 `citrine` 换成 `morganite`。或者直接用 [morganite/README.md](../morganite/README.md#接入交给-ai-做) 里更短的那段。
 
 > 你现在全权负责把公司设计系统 **Citrine** 的整套工作流装进这台电脑的项目里。我是小白，不要问我技术问题：能自动判断的全部自动做，只在标注【必须问我】的地方停下来问；每一步先用一句话说你在做什么，做完把结果给我看；任何一步失败就停下，用大白话告诉我原因和我该做什么，不要自己换别的办法绕过去。
 >
@@ -263,7 +263,7 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 | 现象 | 原因 / 处理 |
 | --- | --- |
 | `upgrade` / `steward install` 报下载失败 | 访问 GitHub 不通（仓库是公开的，不是权限问题）：换网络重试；完全离线用 `upgrade --from <种子目录或 tgz>`（tgz 到 Releases 页下载） |
-| `npm i @wycm9527/citrine` 404 / 超时 | 多半是 registry 访问问题：换镜像 `npm config set registry https://registry.npmmirror.com`，或走第 2 节方式 B（文件夹渠道 + Release 直链）。`@wycm9527/morganite` 404 是正常的：Morganite 只发文件夹，按第 2 节末尾的写法接入 |
+| `npm i @wycm9527/citrine`（或 `@wycm9527/morganite`）404 / 超时 | 多半是 registry 访问问题：换镜像 `npm config set registry https://registry.npmmirror.com`，或走第 2 节方式 B（文件夹渠道 + Release 直链）。Morganite 0.3.3 起才在 npm 上，要更早的版本走方式 B |
 | 队友 `npm install` 报找不到 `file:/tmp/...` 或 `file:../ds/...` | 有人用机器专属路径装了种子 / 工具。改成第 2 节的写法：种子走文件夹渠道（`file:./design-systems/citrine`），工具走 Release 直链 |
 | 验收报「暗色未生效」 | 页面没把 `?theme=dark` 落成 `<html class="dark">`（`index.html` 首屏先读 URL 再读 localStorage）；项目确实没有暗色就 `--modes light` |
 | 验收报「品牌黄出现在允许清单之外」 | 页面把黄色用成了强调 / 状态（如未读点、引用块边线）——换中性或状态色；确属合法位置（登录品牌区、数据卡骨架）写进 `accept.config.mjs` 的 `BRAND_ALLOW`（旧名 `YELLOW_ALLOW`）并写理由；别的设计系统报自己的品牌色（如 Morganite 的「品牌金」），判色范围与清单在它的身份文件 `accept.brand` |
@@ -283,7 +283,7 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 - 每次 push / PR 自动跑 CI：adopter 单测、Citrine 角色表与 token 源一致、**每个系统**六处版本号一致（`scripts/check-versions.mjs`）、**每个种子** `dist` 与源一致（循环 `build-tokens` 后 `git diff` 必须为空——所以 `dist/` 要随种子提交），以及三个实测项目的 guard / status / 全量验收（并行三个 job，失败会上传截图与报告为 artifact）。不绿不合。
 - 发版（任意系统）：改种子 `design-system.json` 与 `package.json` 版本、写种子 CHANGELOG、更新种子 README 版本行（`版本 x.y.z · `）、`<id>/README.md` 版本行（`版本 **x.y.z**`）与仓库根 README 表格里该系统的行，`node scripts/check-versions.mjs --system <id>` 通过后打 tag `<id>-vX.Y.Z` 推送——`release.yml` 从 tag 解析出 `<id>` 与版本，自动建 GitHub Release（说明取该种子 CHANGELOG 段落，附件 = 种子 npm pack + `<id>/tools` 的 npm pack（有的话）+ 纯 CSS 包 `<id>-css-X.Y.Z.tgz`）。手动补历史版本：`node scripts/release.mjs --system <id> --version X.Y.Z --notes-only`；本地预演加 `--dry-run`。
 - 效果预览的在线版（GitHub Pages，仓库 Settings → Pages 的 Source 选 GitHub Actions）由 `.github/workflows/pages.yml` 发布：只打包 `morganite/previews/` 和它用相对路径引用的种子 `dist/`、`bridge/*.css`，目录层级与仓库相同；这些文件有改动推到 main 就自动重新发布，也可以在 Actions 里手动运行。不用「从分支发布」：`.cursor/skills/web-to-design-system` 链到单独克隆的 `skills/`，GitHub 的机器上是断链，打包整个仓库会失败。别的系统也要在线预览时，在工作流里加对应的复制行与 `paths`。
-- npm 发布是 `release.yml` 的第二个 job：同一个 tag 把该系统里 **`package.json` 带 `publishConfig` 的包**发到 registry（Citrine 的种子与工具带；web-to-design-system 提炼出来的种子默认不带，只走文件夹 / Release 直链渠道——要上 npm 就加 `"publishConfig": { "access": "public" }` 并先登记 Trusted Publisher）。已存在的版本跳过，所以只升种子不升工具也没事；带 provenance。认证走 npm **Trusted Publishing**（零密钥）：在 npmjs.com 每个包的 Settings → Trusted Publisher 登记 GitHub `WYCM9527/Design-System` + 工作流 `release.yml`，Environment 留空，**Allowed actions 勾上 `npm publish`**（2026-09-03 之后新建的登记默认只允许 `npm stage publish`，直接发布会报 403 `OIDC permission denied for this action`；报 `ENEEDAUTH` 则是登记没对上——没登记、字段不符或已过期）。npm 只能给已存在的包登记，**新包首发手工**；**新登记 2 天内必须完成一次成功发布，否则作废、要删了重建**，所以登记要紧挨着一个真会发这个包的 tag（版本已在 registry、被跳过的不算）。现状：Citrine 种子 2.11.5 起、工具 1.2.0（随 2.12.1）起自动发布——工具在 2.11.5 登记后因版本没变被跳过、没完成首发，之后 1.1.2 / 1.1.3 自动发布都认证失败（1.1.3 手动补发，1.1.2 没上 npm），2026-10-15 重新登记才好。换仓库或改工作流文件名要重新登记；也可退回仓库 Secret `NPM_TOKEN`（granular token，勾 publish + bypass 2FA；npm 正在限制这类 token 直接发布，不保证长期可用）。**工具有改动必升 `<id>/tools/package.json` 的版本号**，否则 registry 上已存在同版本会被跳过、Release 里同名 tgz 内容不同。
+- npm 发布是 `release.yml` 的第二个 job：同一个 tag 把该系统里 **`package.json` 带 `publishConfig` 的包**发到 registry（Citrine 的种子与工具、Morganite 的种子带；web-to-design-system 提炼出来的种子默认不带，只走文件夹 / Release 直链渠道——要上 npm 按 8c 第 9 步）。已存在的版本跳过，所以只升种子不升工具也没事；带 provenance。认证走 npm **Trusted Publishing**（零密钥）：在 npmjs.com 每个包的 Settings → Trusted Publisher 登记 GitHub `WYCM9527/Design-System` + 工作流 `release.yml`，Environment 留空，**Allowed actions 勾上 `npm publish`**（2026-09-03 之后新建的登记默认只允许 `npm stage publish`，直接发布会报 403 `OIDC permission denied for this action`；报 `ENEEDAUTH` 则是登记没对上——没登记、字段不符或已过期）。npm 只能给已存在的包登记，**新包首发手工**；**新登记 2 天内必须完成一次成功发布，否则作废、要删了重建**，所以登记要紧挨着一个真会发这个包的 tag（版本已在 registry、被跳过的不算）。现状：Citrine 种子 2.11.5 起、工具 1.2.0（随 2.12.1）起自动发布——工具在 2.11.5 登记后因版本没变被跳过、没完成首发，之后 1.1.2 / 1.1.3 自动发布都认证失败（1.1.3 手动补发，1.1.2 没上 npm），2026-10-15 重新登记才好。Morganite 种子 0.3.3 首发手工，还没登记 Trusted Publisher：下一个 Morganite 版本打 tag 前再登记（登记后 2 天内要发出去）；忘了登记，publish job 会报 `ENEEDAUTH`，Release 不受影响，登记后重跑这个 job 即可（版本还不在 registry，不会被跳过）。换仓库或改工作流文件名要重新登记；也可退回仓库 Secret `NPM_TOKEN`（granular token，勾 publish + bypass 2FA；npm 正在限制这类 token 直接发布，不保证长期可用）。**工具有改动必升 `<id>/tools/package.json` 的版本号**，否则 registry 上已存在同版本会被跳过、Release 里同名 tgz 内容不同。
 
 ## 8c. 维护者：新增一个设计系统（从网站提炼）
 
@@ -297,7 +297,7 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 6. **门禁**：`node skills/web-to-design-system/scripts/publish-check.mjs --seed <id>/seeds/<id>` 全 ✔（0.x 想带着 `[推断]` 先发就 `--allow-inferred`，CHANGELOG 写清）；`node scripts/check-versions.mjs --system <id>` 通过。
 7. **发版**：PR 合并 → 打 tag `<id>-v0.1.0` 推送 → Release 自动建。消费者按第 2 节的方式 B 接入（拷 `<id>/seeds/<id>` 进项目，`ds.mjs init --system <id> --stack css|element-plus|shadcn`），升级走 `ds.mjs status / upgrade`。
 8. **法律边界**：种子里只有度量值（颜色、尺寸、字重），不放来源站点的 logo、图标字体、商用字体文件；字体栈里出现商用字体要在 DESIGN 注明授权情况。开源授权（如 SIL OFL）的字体可以随种子分发，但要用版权方的原版文件、原样附上版权声明与许可全文，子集化或转格式就要按许可改名（Morganite 的 `bridge/fonts.css` 内嵌 D-DIN 即如此）。
-9. **上不上 npm（默认不上）**：提炼出的种子不带 `publishConfig`，不进 registry——文件夹渠道（`npm i file:./design-systems/<id>`）与 Release 直链已经够 adopter 接入和按 tag 升级，npm 只是对 Node 项目省一步。满足三件事再上：`publish-check` 全 ✔ 且没有未确认的 `[推断]`、组件库桥接走查过、至少一个真实项目接入。上的时候给种子 `package.json` 加 `"publishConfig": { "access": "public" }`、把 license 从 `UNLICENSED` 改成明确许可、首发手工 `npm publish`，再在 npmjs 登记 Trusted Publisher（勾 `npm publish`，2 天内要再发一个新版本的 tag 完成首次自动发布，见 8b），之后 `release.yml` 会自动发。要付费分发就不走公开 npm：私有仓库 + 付费后加协作者，adopter 用 `GITHUB_TOKEN` 拉私有上游。（2026-09-22 记录，待第一套系统达到条件时执行。）
+9. **上不上 npm（默认不上）**：提炼出的种子不带 `publishConfig`，不进 registry——文件夹渠道（`npm i file:./design-systems/<id>`）与 Release 直链已经够 adopter 接入和按 tag 升级，npm 只是对 Node 项目省一步。满足三件事再上：`publish-check` 全 ✔ 且没有未确认的 `[推断]`、组件库桥接走查过、至少一个真实项目接入。上的时候给种子 `package.json` 加 `"publishConfig": { "access": "public" }`、把 license 从 `UNLICENSED` 改成明确许可（带第三方字体等资源的写成 SPDX 组合并附 `LICENSE`，如 Morganite 的 `(MIT AND OFL-1.1)`）、补 `repository`（url 与 `directory`，CI 带 provenance 发布要核对），用 `npm pack --dry-run` 核对包里带齐身份文件引用的文件（`dist/` 除外，项目里自己构建；种子模板原先漏了 `migration`），首发手工 `npm publish`，再在 npmjs 登记 Trusted Publisher（勾 `npm publish`，2 天内要再发一个新版本的 tag 完成首次自动发布，见 8b），之后 `release.yml` 会自动发。要付费分发就不走公开 npm：私有仓库 + 付费后加协作者，adopter 用 `GITHUB_TOKEN` 拉私有上游。（2026-09-22 记录。2026-10-27 Morganite 0.3.3 第一个上 npm：前两条已满足，第三条用户决定不等——要交给同事用，npm 装法和 Citrine 一致、少一步拷文件夹。）
 
 ## 9. 反馈回路
 

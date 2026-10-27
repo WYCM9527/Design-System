@@ -2,7 +2,7 @@
 
 **中后台 · Ant Design Pro v6 底座 · 玫瑰金 #B98D44 金底白字 + antd 纯灰骨架 · 亮 / 暗 · Element Plus / shadcn/ui / ECharts 桥接**
 
-版本 **0.3.2** · Core 359 个 token · dark 66 条 delta · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 [Pro 演示站](https://preview.pro.ant.design/dashboard/analysis)的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 变更见 [CHANGELOG](seeds/morganite/CHANGELOG.md)
+版本 **0.3.3** · Core 359 个 token · dark 66 条 delta · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 [Pro 演示站](https://preview.pro.ant.design/dashboard/analysis)的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 变更见 [CHANGELOG](seeds/morganite/CHANGELOG.md)
 
 一句话：保留 Ant Design 的交互结构、密度与纯灰骨架，把品牌色换成玫瑰金——金底放白字（主按钮、侧栏当前项；暗色侧栏当前项是金色暗底 + 亮金字），链接 / 选中 / 焦点取同色系深一档；输入框为填充式（Pro v6 原样）。圆角、0.6px 描边、卡片标题、图表配色（只用金 + 灰 + 绿、绿涨红跌）按一张预期预览图调整过；卡片不投影，只留一条很浅的边线。
 
@@ -45,7 +45,7 @@ morganite/
 
 ## 接入（交给 AI 做）
 
-Morganite 和 Citrine 用同一套接入工具 [design-system-adopter](../design-system-adopter/)，区别只有两点：**种子没有发布到 npm**，从本仓库拷文件夹进项目；验收工具与 Citrine 共用 npm 包 `@wycm9527/citrine-tools`（命令 `citrine-accept`）。数字字体 D-DIN 由桥接自带，不用另装。
+Morganite 和 Citrine 用同一套接入工具 [design-system-adopter](../design-system-adopter/)，装法也一样：种子是 npm 包 `@wycm9527/morganite`（0.3.3 起），验收工具与 Citrine 共用 npm 包 `@wycm9527/citrine-tools`（命令 `citrine-accept`）。连不上 npm 时可以把种子文件夹拷进项目（见下面「自己敲命令」的注释）。数字字体 D-DIN 由桥接自带，不用另装。
 
 **第一次接入**：用 Cursor（Agent 模式）、Claude Code 或 Codex 打开项目，把下面整段发出去，只改【】里的内容；技术信息不知道就写「不确定」。
 
@@ -59,7 +59,7 @@ Morganite 和 Citrine 用同一套接入工具 [design-system-adopter](../design
 来源：https://github.com/WYCM9527/Design-System（公开仓库，浅克隆到项目外的临时目录）。
 先只读识别项目目录、技术栈和接入状态，简要说明路线；旧项目写入前确认工作区已提交，并保存接入前的 git 存档点。
 1. 把仓库里的 design-system-adopter 装进项目的 skill 目录（Cursor 是 .cursor/skills/design-system-adopter，Claude Code 是 .claude/skills/），读它的 SKILL.md，之后按它的流程做，不自己发明步骤。
-2. Morganite 没有发布到 npm：把仓库里的 morganite/seeds/morganite 拷进项目（如 vendor/morganite），再 ds.mjs init --system morganite，--stack 按技术栈选 element-plus / shadcn / css；按 init 打印的步骤用 file: 链接快照，装 @wycm9527/citrine-tools 与 style-dictionary。不要把 /tmp 这类项目外路径写进 package.json。
+2. 装种子 npm 包 @wycm9527/morganite 和开发依赖 @wycm9527/citrine-tools、style-dictionary，再 ds.mjs init --system morganite，--stack 按技术栈选 element-plus / shadcn / css。npm 装不上先诊断（国内可换镜像 https://registry.npmmirror.com），仍不行就把仓库里的 morganite/seeds/morganite 拷进项目再 init，按 init 打印的步骤用 file: 链接快照。不要把 /tmp 这类项目外路径写进 package.json。
 3. 新项目先建一个能启动的应用再接入，没指定就用 Vue 3 + Element Plus；旧项目沿用原技术，只做指定范围的第一期换肤，完成后暂停。
 4. 接好样式入口和亮 / 暗主题，steward 构建后 guard 要是 current；AGENTS.md 写入前给我看；做一个最小示例页，建验收清单，跑 citrine-accept all。
 页面要和效果预览一致：https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/
@@ -79,12 +79,13 @@ Morganite 和 Citrine 用同一套接入工具 [design-system-adopter](../design
 ```bash
 git clone --depth 1 https://github.com/WYCM9527/Design-System.git /tmp/ds
 mkdir -p .cursor/skills && cp -R /tmp/ds/design-system-adopter .cursor/skills/
-mkdir -p vendor && cp -R /tmp/ds/morganite/seeds/morganite vendor/morganite
+npm i @wycm9527/morganite && npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2
+#   连不上 npm：mkdir -p vendor && cp -R /tmp/ds/morganite/seeds/morganite vendor/morganite（init 后按它打印的步骤 npm i file:./design-systems/morganite，vendor/morganite 可删）
 # --stack 按技术栈选：element-plus（Vue 3 + Element Plus）/ shadcn（React + Tailwind v4 + shadcn/ui）/ css（其他）
 node .cursor/skills/design-system-adopter/scripts/ds.mjs init --system morganite --stack element-plus
 ```
 
-init 把种子落成只读快照 `design-systems/morganite/`、生成工作副本 `design-system/`，并打印接下来的步骤（`npm i file:./design-systems/morganite`、装验收工具与 style-dictionary、Vite 配置、样式入口）；之后 `vendor/morganite` 可以删。然后 steward `build-tokens → guard`（应为 `current`）。升级走 `ds.mjs status / upgrade`（按 tag `morganite-vX.Y.Z` 找新版本）。
+init 把种子落成只读快照 `design-systems/morganite/`（升级时的比较基线）、生成工作副本 `design-system/`，并打印接下来的步骤（Vite 配置、样式入口、构建、验收、项目规则）。然后 steward `build-tokens → guard`（应为 `current`）。升级走 `ds.mjs status / upgrade`（按 tag `morganite-vX.Y.Z` 找新版本；npm 装的会多打印一条 `npm i --save-exact @wycm9527/morganite@<新版本>`，页面引用的桥接在 `node_modules` 里，要跑它才跟上）。
 
 **非 Node 项目**（Flask / Django / PHP / 静态页）：到 [Releases](https://github.com/WYCM9527/Design-System/releases?q=morganite&expanded=true) 下载最新的 `morganite-css-<版本>.tgz`，解压到静态目录，按顺序 `<link>` `index.css` → `base.css`（它会自己引入同目录的 `fonts.css`）→ `recipes.css` → 你自己的样式；自己的样式只引用变量。
 
@@ -92,4 +93,4 @@ init 把种子落成只读快照 `design-systems/morganite/`、生成工作副�
 
 ## 发版
 
-改 `seeds/morganite/design-system.json` 与 `package.json` 版本、写 CHANGELOG、更新本文件与仓库根 README 的版本行，`node scripts/check-versions.mjs --system morganite` 通过后打 tag `morganite-vX.Y.Z` 推送，`release.yml` 自动建 Release。
+改 `seeds/morganite/design-system.json` 与 `package.json` 版本、写 CHANGELOG、更新本文件与仓库根 README 的版本行，`node scripts/check-versions.mjs --system morganite` 通过后打 tag `morganite-vX.Y.Z` 推送，`release.yml` 自动建 Release 并把种子发到 npm（Trusted Publisher 的登记与 2 天时限见 [GUIDE 8b](../docs/GUIDE.md#8b-维护者发版与-ci)）。
