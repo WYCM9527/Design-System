@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/WYCM9527/Design-System/main/design-system-adopter/schema/palette.schema.json",
+  "title": "调色盘（一个颜色主题）",
+  "description": "放在种子的 palettes/<id>.json。只改已有 token 的值：primitives 给齐品牌色原语的每一档，semantic / dark 只写需要改指向的角色（必须在 design-system.json palettes.roles 里）。套用逻辑见 design-system-adopter/scripts/lib/palette.mjs。",
+  "type": "object",
+  "required": ["id", "name", "primitives"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$", "description": "与文件名一致" },
+    "name": { "type": "string", "description": "中文名，如「蓝」" },
+    "source": {
+      "type": "object",
+      "description": "颜色从哪来：来源文件与固定版本、许可、生成脚本",
+      "properties": {
+        "from": { "type": "string" },
+        "ref": { "type": "string" },
+        "scale": { "type": "string" },
+        "license": { "type": "string" },
+        "generator": { "type": "string" }
+      }
+    },
+    "primitives": {
+      "type": "object",
+      "description": "品牌色原语：键为 token 路径（如 color.brand.500），值为 #RRGGBB；种子里半透明的档可写 #RRGGBBAA，透明度必须与种子一致",
+      "additionalProperties": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$" }
+    },
+    "semantic": { "$ref": "#/$defs/roles", "description": "亮色（核心）里改指向的角色" },
+    "dark": { "$ref": "#/$defs/roles", "description": "暗色覆写里改指向的角色" },
+    "accept": {
+      "type": "object",
+      "description": "验收口径：判色范围（同 design-system.json accept.brand 的 hue / saturation / lightness）与已批准的对比度例外（同 accept.config.mjs APPROVED_CONTRAST 的写法）",
+      "properties": {
+        "brand": { "type": "object" },
+        "approvedContrast": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["fg", "why"],
+            "properties": {
+              "fg": { "type": "string" },
+              "bg": { "type": "string" },
+              "minRatio": { "type": "number" },
+              "why": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "notes": { "type": "array", "items": { "type": "string" }, "description": "给人看的说明：为什么这样改指向、体检里登记了什么" }
+  },
+  "$defs": {
+    "roles": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          { "type": "string", "pattern": "^\\{[a-z0-9][a-z0-9.-]*\\}$" },
+          {
+            "type": "object",
+            "required": ["value"],
+            "properties": {
+              "value": { "type": "string", "pattern": "^\\{[a-z0-9][a-z0-9.-]*\\}$" },
+              "why": { "type": "string" }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

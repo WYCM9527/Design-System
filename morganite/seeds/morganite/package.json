@@ -29,6 +29,7 @@
     "!design-system/preview/shots",
     "!design-system/preview/static",
     "design-system.json",
+    "palettes",
     "templates",
     "migration",
     "README.md",
@@ -37,6 +38,7 @@
   "exports": {
     "./package.json": "./package.json",
     "./design-system/*": "./design-system/*",
+    "./palettes/*": "./palettes/*",
     "./bridge/*": "./bridge/*",
     "./echarts": {
       "default": "./bridge/echarts.js",

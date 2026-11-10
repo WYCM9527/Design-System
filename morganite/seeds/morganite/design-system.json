@@ -94,6 +94,51 @@
     "tool": "style-dictionary@5.5.2",
     "steward": "design-system-steward"
   },
+  "palettes": {
+    "dir": "palettes",
+    "default": {
+      "id": "rose-gold",
+      "name": "玫瑰金"
+    },
+    "official": [
+      "rose-gold",
+      "blue",
+      "purple",
+      "cyan",
+      "green",
+      "orange",
+      "citrine"
+    ],
+    "theme": "dark",
+    "roles": [
+      "color.action.primary",
+      "color.action.primary-hover",
+      "color.action.primary-active",
+      "color.bg.brand",
+      "color.bg.chip",
+      "color.bg.selected-subtle",
+      "color.bg.sidebar-selected",
+      "color.text.on-primary",
+      "color.text.on-brand",
+      "color.text.sidebar-selected",
+      "color.text.link",
+      "color.text.link-hover",
+      "color.text.selected",
+      "color.text.brand",
+      "color.border.focus",
+      "color.border.current",
+      "color.focus.ring",
+      "color.brand.indicator",
+      "color.icon.brand",
+      "color.icon.two-tone",
+      "color.chart.1",
+      "color.chart.3",
+      "color.chart.area",
+      "color.chart.sequential.5",
+      "color.chart.gradient.start",
+      "color.chart.gradient.end"
+    ]
+  },
   "accept": {
     "npm": "@wycm9527/citrine-tools",
     "command": "citrine-accept all",

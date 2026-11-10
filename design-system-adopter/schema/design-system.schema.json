@@ -184,6 +184,35 @@
       },
       "description": "上游拥有、随版本升级的文件 glob（相对包根）；工作副本里其余文件（exemptions / MIGRATION / scopes / dist）归项目，升级永不触碰"
     },
+    "palettes": {
+      "type": "object",
+      "description": "颜色主题（调色盘）：结构只有一套，一个颜色一个文件（<dir>/<id>.json，格式见 palette.schema.json），只改已有 token 的值——品牌色原语整组换掉，加上 roles 里登记的角色改指向。默认颜色不建文件，种子现值就是它。ds.mjs init --palette / palette 读取。",
+      "required": ["default", "roles"],
+      "properties": {
+        "dir": { "type": "string", "description": "调色盘目录（相对包根），缺省 palettes" },
+        "group": { "type": "string", "description": "品牌色原语所在的组，缺省 color.brand；调色盘必须给齐这一组的每一档" },
+        "swatch": { "type": "string", "description": "代表色取哪一档（列表与面板里的色块），缺省 <group>.500" },
+        "default": {
+          "type": "object",
+          "required": ["id", "name"],
+          "properties": {
+            "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+            "name": { "type": "string" }
+          }
+        },
+        "official": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+          "description": "官方名单（含默认颜色，顺序即展示顺序）：ds.mjs palette 只接受名单里的；其余调色盘只在预览面板里试，用之前先提案"
+        },
+        "theme": { "type": "string", "description": "调色盘可以写暗色覆写的主题 id（theme-map.json 里的暗色主题）" },
+        "roles": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "调色盘可以改指向的语义角色（亮色核心与暗色覆写共用一份名单）。换色时这些键整体归调色盘管：先恢复成种子默认值，再写调色盘的值"
+        }
+      }
+    },
     "export": {
       "type": "object",
       "description": "纯 CSS 交付：core 是必带文件（相对包根，顺序即 link 顺序），optional 是按栈可选的桥接组，usage 是打印给用户的接线片段",
