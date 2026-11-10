@@ -38,6 +38,10 @@ export function tokenFiles(settings) {
 }
 
 const readTree = (file) => parseOrdered(readFileSync(file, 'utf8'));
+// token 文件可能是 CRLF（Windows 上 git 默认把检出文件转成 CRLF）：比对时不看换行，写回时沿用文件原来的换行。
+const toLf = (text) => text.replace(/\r\n/g, '\n');
+const eolOf = (text) => (text.includes('\r\n') ? '\r\n' : '\n');
+const withEol = (text, eol) => (eol === '\n' ? text : text.replace(/\n/g, eol));
 const isToken = (n) => n instanceof Map && n.has('$value');
 const clone = (n) => (n instanceof Map ? new Map([...n].map(([k, v]) => [k, clone(v)])) : Array.isArray(n) ? n.map(clone) : n);
 
@@ -100,12 +104,14 @@ export function paletteContext(root, identity) {
   const settings = paletteSettings(identity);
   if (!settings) return null;
   const files = tokenFiles(settings);
-  const defaults = {};
+  const defaults = {}, eol = {};
   for (const [kind, rel] of Object.entries(files)) {
     if (!existsSync(join(root, rel))) throw new Error(`${identity.id} 缺 ${rel}，套不了调色盘`);
-    defaults[kind] = readTree(join(root, rel));
+    const text = readFileSync(join(root, rel), 'utf8');
+    defaults[kind] = parseOrdered(text);
+    eol[kind] = eolOf(text);
   }
-  return { root, identity, settings, files, defaults, brand: brandKeys(defaults.primitives, settings.group) };
+  return { root, identity, settings, files, defaults, eol, brand: brandKeys(defaults.primitives, settings.group) };
 }
 
 const hexOf = (node) => node?.get('$value')?.get?.('hex');
@@ -210,23 +216,24 @@ export const cloneDefaults = (ctx) => Object.fromEntries(Object.entries(ctx.defa
  * 只碰品牌色原语和 palettes.roles 登记的角色；其他 token 原样保留。返回实际改动的文件。
  */
 export function applyPalette(ctx, targetRoot, palette, { write = true } = {}) {
-  const trees = {};
+  const trees = {}, texts = {};
   for (const [kind, rel] of Object.entries(ctx.files)) {
     if (!existsSync(join(targetRoot, rel))) throw new Error(`工作副本缺 ${rel}`);
-    trees[kind] = readTree(join(targetRoot, rel));
+    texts[kind] = readFileSync(join(targetRoot, rel), 'utf8');
+    trees[kind] = parseOrdered(texts[kind]);
   }
   applyToTrees(ctx, trees, palette);
   const changed = [];
   for (const [kind, rel] of Object.entries(ctx.files)) {
     const text = stringifyOrdered(trees[kind]) + '\n';
-    if (text === readFileSync(join(targetRoot, rel), 'utf8')) continue;
+    if (text === toLf(texts[kind])) continue;
     changed.push(rel);
-    if (write) writeFileSync(join(targetRoot, rel), text);
+    if (write) writeFileSync(join(targetRoot, rel), withEol(text, eolOf(texts[kind])));
   }
   return { changed };
 }
 
-/** 工作副本三个 token 文件在「调色盘管的键恢复成 ctx 默认值」之后的文本（相对路径 → 文本，不写盘）：看换色之外还有没有本地修改、升级前摘下调色盘用。 */
+/** 工作副本三个 token 文件在「调色盘管的键恢复成 ctx 默认值」之后的文本（相对路径 → 文本，不写盘）：看换色之外还有没有本地修改、升级前摘下调色盘用。换行跟 ctx 里的文件走，好和它的 hash 直接比。 */
 export function withoutPalette(ctx, targetRoot) {
   const trees = {};
   for (const [kind, rel] of Object.entries(ctx.files)) {
@@ -234,7 +241,7 @@ export function withoutPalette(ctx, targetRoot) {
     trees[kind] = readTree(join(targetRoot, rel));
   }
   applyToTrees(ctx, trees, defaultPalette(ctx));
-  return Object.fromEntries(Object.entries(ctx.files).map(([kind, rel]) => [rel, stringifyOrdered(trees[kind]) + '\n']));
+  return Object.fromEntries(Object.entries(ctx.files).map(([kind, rel]) => [rel, withEol(stringifyOrdered(trees[kind]) + '\n', ctx.eol[kind])]));
 }
 
 /** 同一个调色盘的两个版本差在哪（升级报告用）：{ primitives: 变了几档品牌色, roles: 变了几处指向 }。 */

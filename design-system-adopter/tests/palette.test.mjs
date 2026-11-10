@@ -18,10 +18,11 @@ const readJ = (f) => JSON.parse(readFileSync(f, 'utf8'));
 const writeJ = (f, v) => writeFileSync(f, JSON.stringify(v, null, 2) + '\n');
 const FILES = Object.values(tokenFiles({ theme: 'dark' }));
 
-function project({ palette, unofficial } = {}) {
+function project({ palette, unofficial, crlf } = {}) {
   const proj = tmp();
   execFileSync('git', ['init', '-q'], { cwd: proj });
   copySeed(join(proj, 'downloaded-seed'));
+  if (crlf) for (const f of FILES) { const p = join(proj, 'downloaded-seed', f); writeFileSync(p, readFileSync(p, 'utf8').replace(/\r?\n/g, '\r\n')); }
   const run = (a) => execFileSync('node', [DS, ...a, '--project', proj], { encoding: 'utf8', stdio: 'pipe' });
   const fails = (a) => { try { run(a); } catch (e) { return { code: e.status, out: `${e.stdout}${e.stderr}` }; } assert.fail(`应该失败：${a.join(' ')}`); };
   const init = ['init', '--system', 'downloaded-seed', '--stack', 'element-plus', ...(palette ? ['--palette', palette] : []), ...(unofficial ? ['--unofficial'] : [])];
@@ -80,6 +81,18 @@ test('palette：列表标出当前颜色；换色只动 token 源；换回默认
   run(['palette', 'rose-gold']);
   assert.ok(sameAsSnapshot(proj), '换回默认颜色后三个 token 文件与快照逐字相同');
   assert.equal(readJ(join(proj, 'design-system/.adopter.json')).palette, undefined);
+});
+
+test('palette：CRLF 换行的 token 文件（Windows 上 git 检出）没手改就不拦；换色写回仍是 CRLF；status 不把换行算成本地修改', () => {
+  const { proj, run } = project({ crlf: true });
+  const isCrlf = () => FILES.every((f) => readFileSync(join(proj, f), 'utf8').includes('\r\n'));
+  assert.ok(isCrlf());
+  assert.match(run(['palette', 'citrine']), /改 3 个 token 文件/);
+  assert.equal(brand500(proj), '#F9CF00');
+  assert.ok(isCrlf(), '写回沿用文件原来的换行');
+  assert.match(run(['status', '--offline']), /工作副本与快照一致（无本地修改，换颜色改的键不算）/);
+  run(['palette', 'rose-gold']);
+  assert.ok(sameAsSnapshot(proj), '换回默认颜色后与 CRLF 快照逐字相同');
 });
 
 test('palette：调色盘管的键被手改过就拦下（status 也报），--force 覆盖；adopt 能认出工作副本用的颜色', () => {
