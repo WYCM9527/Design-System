@@ -232,6 +232,25 @@ node .cursor/skills/design-system-adopter/scripts/ds.mjs ci             # 写 .g
 
 > 把设计系统验收接进 CI：按 design-system-adopter 用 `ds.mjs ci --dry-run` 把工作流给我看，我确认后写入并提交。
 
+## 5f. 场景 F：选颜色、换颜色（Morganite）
+
+Morganite 的结构只有一套，品牌色可以换：默认玫瑰金，另有蓝、紫、青、绿、黄晶黄（清单与说明见 [morganite/README.md「颜色」](../morganite/README.md#颜色)）。先在[效果预览](https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/?panel=open)右下角「规范调节」里切着看。
+
+```bash
+node $A palette --list                                               # 官方颜色和只在预览里试的颜色
+node $A init --system morganite --stack element-plus --palette blue  # 接入时选颜色（玫瑰金不用写）
+node $A palette blue --dry-run                                       # 已接入的项目：先看会改哪些键，去掉 --dry-run 执行（自动用 steward 重建 dist）
+node $A export --to static/morganite --palette blue                  # 纯 CSS 交付
+```
+
+- 换色只改品牌色原语和身份文件登记的角色指向，选择记在 `design-system/.adopter.json`；`upgrade` 取上游后自动重套，正常升级不出冲突。
+- 页面只用规范变量就不用改；换完 `npm run build` 跑验收，品牌色审计的判色范围和对比度例外自动跟着颜色走（citrine-tools ≥ 1.4.0）。
+- 不在官方名单的颜色会被拦下（只在本项目试加 `--unofficial`）；工作副本里调色盘管的键被手改过也会拦下——颜色上的差异先提案（`ds.mjs propose --layer palette`），确认覆盖才加 `--force`。
+
+对 Agent 说：
+
+> 把当前项目的颜色换成蓝：按 design-system-adopter 的换色流程先 dry-run 给我看，确认后再换，换完跑验收。
+
 ## 6. 日常做页面的三条纪律
 
 Agent 在已接入的项目里改 UI 时自动遵守，你验收产出时按这三条看：
@@ -248,7 +267,8 @@ Agent 在已接入的项目里改 UI 时自动遵守，你验收产出时按这�
 A=.cursor/skills/design-system-adopter/scripts/ds.mjs
 node $A detect                          # 项目里有哪些设计系统候选、工作副本状态
 node $A init --system citrine --stack element-plus   # 或 --stack shadcn；已有 design-system/ 时加 --legacy-rename
-node $A status [--offline]              # 快照完整性、本地修改、上游最新
+node $A status [--offline]              # 快照完整性、当前颜色、本地修改、上游最新
+node $A palette [<颜色>] [--list] [--dry-run]   # 换颜色（Morganite）：只换品牌色与登记的角色，结构不变；init / export / scope 也认 --palette
 node $A upgrade --dry-run               # 预览升级；去掉 --dry-run 执行；--resolve decisions.json 提交冲突决议
 node $A agents --stack element-plus     # 渲染 AGENTS.md；确认后加 --write
 node $A ci [--dry-run]                  # 写 GitHub Actions 门禁（status --strict → guard → 构建 → 验收）
@@ -266,7 +286,8 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 | `npm i @wycm9527/citrine`（或 `@wycm9527/morganite`）404 / 超时 | 多半是 registry 访问问题：换镜像 `npm config set registry https://registry.npmmirror.com`，或走第 2 节方式 B（文件夹渠道 + Release 直链）。Morganite 0.3.3 起才在 npm 上，要更早的版本走方式 B |
 | 队友 `npm install` 报找不到 `file:/tmp/...` 或 `file:../ds/...` | 有人用机器专属路径装了种子 / 工具。改成第 2 节的写法：种子走文件夹渠道（`file:./design-systems/citrine`），工具走 Release 直链 |
 | 验收报「暗色未生效」 | 页面没把 `?theme=dark` 落成 `<html class="dark">`（`index.html` 首屏先读 URL 再读 localStorage）；项目确实没有暗色就 `--modes light` |
-| 验收报「品牌黄出现在允许清单之外」 | 页面把黄色用成了强调 / 状态（如未读点、引用块边线）——换中性或状态色；确属合法位置（登录品牌区、数据卡骨架）写进 `accept.config.mjs` 的 `BRAND_ALLOW`（旧名 `YELLOW_ALLOW`）并写理由；别的设计系统报自己的品牌色（如 Morganite 的「品牌金」），判色范围与清单在它的身份文件 `accept.brand` |
+| 验收报「品牌黄出现在允许清单之外」 | 页面把黄色用成了强调 / 状态（如未读点、引用块边线）——换中性或状态色；确属合法位置（登录品牌区、数据卡骨架）写进 `accept.config.mjs` 的 `BRAND_ALLOW`（旧名 `YELLOW_ALLOW`）并写理由；别的设计系统报自己的品牌色（如 Morganite 的「品牌金」「品牌蓝」），判色范围与清单在它的身份文件 `accept.brand`，换了颜色的项目判色范围取调色盘的 `accept.brand`（citrine-tools ≥ 1.4.0） |
+| `ds.mjs palette` 说「不是官方颜色」或「被手改过」 | 前者是只放在效果预览里试的颜色：正式用先提案转正，只在本项目试加 `--unofficial`；后者是工作副本里品牌色或登记的角色被手改了：颜色差异先提案，确认覆盖加 `--force` |
 | 组件走查被跳过（KITCHEN 为 null） | Element 项目挂 `@wycm9527/citrine/vue/KitchenSink.vue` 到 `/kitchen`，shadcn 拷 `templates/KitchenSink.tsx`，`KITCHEN: '#/kitchen'` |
 | 只想覆盖部分板块 | 多应用各自 `init`；同一应用按路由用范围根（5c）；同屏混排不支持 |
 | 项目不是 Node 工程 / 装不了 npm | 走 5b：`ds.mjs export` 出纯 CSS，模板用配方类，验收加 `--url` 与 `--tokens`；不要手抄变量值 |
@@ -280,7 +301,7 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 
 - 改了 `recipes.css` / 桥接后，除 CI 外再跑一次级联审计：`node citrine/scripts/audit-cascade.mjs --dist citrine/testbed/golden-admin/app/dist --pages "?theme=light#/kitchen,?role=admin#/orders"`——找「位置更后却因特异性更低而输掉」的声明（2.11.7 汉堡按钮那类问题，pages / narrow / focus 看不出来）。输出需人判断，口径写在脚本末尾。
 - 仓库里「一个设计系统」= `<id>/seeds/<seed-name>/design-system.json`（目录名 `<id>` 与身份文件 id 一致）。`node scripts/systems.mjs` 列出全部系统；CI、版本检查、发版都从这份清单走，不写死某个系统。
-- 每次 push / PR 自动跑 CI：adopter 单测、Citrine 角色表与 token 源一致、**每个系统**六处版本号一致（`scripts/check-versions.mjs`）、**每个种子** `dist` 与源一致（循环 `build-tokens` 后 `git diff` 必须为空——所以 `dist/` 要随种子提交），以及三个实测项目的 guard / status / 全量验收（并行三个 job，失败会上传截图与报告为 artifact）。不绿不合。
+- 每次 push / PR 自动跑 CI：adopter 单测、Citrine 角色表与 token 源一致、**每个系统**六处版本号一致（`scripts/check-versions.mjs`）、**每个种子** `dist` 与源一致（循环 `build-tokens` 后 `git diff` 必须为空——所以 `dist/` 要随种子提交），调色盘体检（导入结果、`check-palettes --build`、预览面板数据都与源一致），实测项目的 guard / status / 全量验收（每个项目一个 job，失败会上传截图与报告为 artifact），以及 Morganite 换色矩阵（每个官方颜色 × 三个实测项目：先 `upgrade --from` 追上种子，再 `palette <颜色>`、构建、页面与组件走查）。不绿不合。
 - 发版（任意系统）：改种子 `design-system.json` 与 `package.json` 版本、写种子 CHANGELOG、更新种子 README 版本行（`版本 x.y.z · `）、`<id>/README.md` 版本行（`版本 **x.y.z**`）与仓库根 README 表格里该系统的行，`node scripts/check-versions.mjs --system <id>` 通过后打 tag `<id>-vX.Y.Z` 推送——`release.yml` 从 tag 解析出 `<id>` 与版本，自动建 GitHub Release（说明取该种子 CHANGELOG 段落，附件 = 种子 npm pack + `<id>/tools` 的 npm pack（有的话）+ 纯 CSS 包 `<id>-css-X.Y.Z.tgz`）。手动补历史版本：`node scripts/release.mjs --system <id> --version X.Y.Z --notes-only`；本地预演加 `--dry-run`。
 - 效果预览的在线版（GitHub Pages，仓库 Settings → Pages 的 Source 选 GitHub Actions）由 `.github/workflows/pages.yml` 发布：只打包 `morganite/previews/` 和它用相对路径引用的种子 `dist/`、`bridge/*.css`，目录层级与仓库相同；这些文件有改动推到 main 就自动重新发布，也可以在 Actions 里手动运行。不用「从分支发布」：`.cursor/skills/web-to-design-system` 链到单独克隆的 `skills/`，GitHub 的机器上是断链，打包整个仓库会失败。别的系统也要在线预览时，在工作流里加对应的复制行与 `paths`。
 - npm 发布是 `release.yml` 的第二个 job：同一个 tag 把该系统里 **`package.json` 带 `publishConfig` 的包**发到 registry（Citrine 的种子与工具、Morganite 的种子带；web-to-design-system 提炼出来的种子默认不带，只走文件夹 / Release 直链渠道——要上 npm 按 8c 第 9 步）。已存在的版本跳过，所以只升种子不升工具也没事；带 provenance。认证走 npm **Trusted Publishing**（零密钥）：在 npmjs.com 每个包的 Settings → Trusted Publisher 登记 GitHub `WYCM9527/Design-System` + 工作流 `release.yml`，Environment 留空，**Allowed actions 勾上 `npm publish`**（2026-09-03 之后新建的登记默认只允许 `npm stage publish`，直接发布会报 403 `OIDC permission denied for this action`；报 `ENEEDAUTH` 则是登记没对上——没登记、字段不符或已过期）。npm 只能给已存在的包登记，**新包首发手工**；**新登记 2 天内必须完成一次成功发布，否则作废、要删了重建**，所以登记要紧挨着一个真会发这个包的 tag（版本已在 registry、被跳过的不算）。现状：Citrine 种子 2.11.5 起、工具 1.2.0（随 2.12.1）起自动发布——工具在 2.11.5 登记后因版本没变被跳过、没完成首发，之后 1.1.2 / 1.1.3 自动发布都认证失败（1.1.3 手动补发，1.1.2 没上 npm），2026-10-15 重新登记才好。Morganite 种子 0.3.3 首发手工，2026-10-27 登记 Trusted Publisher，0.3.4 起自动发布。登记也可以用命令行（npm ≥ 12，账号要开 2FA）：`npx -y npm@latest trust github <包名> --file release.yml --repo WYCM9527/Design-System --allow-publish -y`，`--allow-publish` 就是网页上的「勾 npm publish」，不写 `--env` 即 Environment 留空，`-y` 跳过中途的确认；之后按提示回车、在网页上批准。**以终端打印出 `Trust configuration created successfully` 为准**——Morganite 第一次登记就没生效，0.3.4 的 publish job 报了 `ENEEDAUTH`。拿不准用 `npm trust list <包名>` 查（同样要网页验证，验证页勾「5 分钟内跳过两步验证」，紧接着登记就不用再验），显示 `No trust configurations found` 就是没有；一个包只能有一条登记，改字段先 `npm trust revoke --id <id> <包名>` 再重建。登记后没在 2 天内发出去、或忘了登记，publish job 会报 `ENEEDAUTH`，Release 不受影响，重新登记后在 Actions 页面点 Re-run failed jobs（或 `gh run rerun <run-id> --failed`）即可，不用重打 tag（只重跑 publish job，Release 附件不变；版本还不在 registry，不会被跳过）。手工首发有两处容易误判：本机 npm 令牌失效时 `npm publish` 报的是 `404 Not Found - PUT …`（不是 401），先 `npm whoami`，返回 401 就 `npm login`；新包上传成功时返回 202「being processed」，registry 先挂一个 npm 生成的占位版本 `0.0.0-stage`（不带脚本），约 3 分钟后正式版本出现、`latest` 切过去，占位版本留在版本列表里，不用管。换仓库或改工作流文件名要重新登记；也可退回仓库 Secret `NPM_TOKEN`（granular token，勾 publish + bypass 2FA；npm 正在限制这类 token 直接发布，不保证长期可用）。**工具有改动必升 `<id>/tools/package.json` 的版本号**，否则 registry 上已存在同版本会被跳过、Release 里同名 tgz 内容不同。

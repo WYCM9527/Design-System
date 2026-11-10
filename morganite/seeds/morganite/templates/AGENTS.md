@@ -10,4 +10,5 @@
 
 {{STACK_NOTES}}
 - **上游快照只读**：`design-systems/{{SYSTEM_ID}}/` 是设计系统的上游快照，永不手改（改了 `ds.mjs status` 会报警）；项目需要的差异写在自己的 `app.css` / 工作副本 `design-system/`（scope / 豁免），需要共享的向上游提提案。配方不够用时**不在页面上补样式**；效果预览里有、配方里没有的样式也先提案，不照着预览另写一套。
-- **验收**：改完 UI 运行 `npm run build` 与 `npx {{ACCEPT_COMMAND}}`（页面 / 组件 / 三端 / 焦点；清单 `accept.config.mjs` 按种子 `templates/accept.config.mjs` 建，已批准的对比度例外写在它的 `APPROVED_CONTRAST`，需要 `@wycm9527/citrine-tools` ≥ 1.2.0）；steward `guard.mjs --project $PWD` 应为 `current`，`status.mjs` 页面字面量清零；对比度基线用 `check-contrast.mjs --system design-system`。
+- **换颜色**：品牌色只用 `ds.mjs palette <颜色>` 换（`ds.mjs palette --list` 列出官方颜色与当前颜色）：它只改品牌色原语与少量角色指向，再重建 token。不手改 `color.brand.*` 和调色盘管的角色，不在页面或 `app.css` 里写品牌色值；官方清单外的颜色、调整某套颜色先提案（`ds.mjs propose --layer palette`）。
+- **验收**：改完 UI 运行 `npm run build` 与 `npx {{ACCEPT_COMMAND}}`（页面 / 组件 / 三端 / 焦点；清单 `accept.config.mjs` 按种子 `templates/accept.config.mjs` 建，与颜色无关的已批准对比度例外写在它的 `APPROVED_CONTRAST`，跟颜色走的由设计系统按当前颜色提供，需要 `@wycm9527/citrine-tools` ≥ 1.4.0）；steward `guard.mjs --project $PWD` 应为 `current`，`status.mjs` 页面字面量清零；对比度基线用 `check-contrast.mjs --system design-system`。
