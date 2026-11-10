@@ -1,6 +1,6 @@
 # shadcn 实验场 · Morganite 设计系统实测项目
 
-`seeds/morganite` 的第二条消费路径：Vite + React 19 + Tailwind v4 + Radix 上的 shadcn/ui（new-york 源码 21 个组件），骨架照 Citrine 的 shadcn 实验室（`citrine/testbed/shadcn-lab`），按 design-system-adopter 接入 Morganite。每一轮发现的问题记在 [FINDINGS.md](FINDINGS.md)。
+`seeds/morganite` 的第二条消费路径：Vite + React 19 + Tailwind v4 + Radix 上的 shadcn/ui（new-york 源码 21 个组件），骨架照原 Citrine 的 shadcn 实验室（Citrine 已并入 Morganite、目录已删，原样见 tag `citrine-v2.12.2` 的 `citrine/testbed/shadcn-lab`），按 design-system-adopter 接入 Morganite。每一轮发现的问题记在 [FINDINGS.md](FINDINGS.md)。
 
 ## 运行与验收
 
@@ -12,7 +12,7 @@ npm run accept         # 构建 + citrine-accept all：页面 × 亮暗、组件
 ```
 
 - `app/design-systems/morganite` 是指向 `seeds/morganite` 的符号链接，`@wycm9527/morganite` 依赖也是 `file:` 链接到种子——改了种子的桥接、配方、React 组件或走查页模板，重新构建就生效；`app/design-system/` 是 `ds.mjs init` 生成的工作副本，token 构建与守卫走 steward（`style-dictionary` 要锁 5.5.2，steward 只认这个版本）。
-- 验收清单 `app/accept.config.mjs`，已批准的对比度例外与种子 `templates/accept.config.mjs` 一致；工具以 `file:` 链接仓库里的 `citrine/tools`。
+- 验收清单 `app/accept.config.mjs`，已批准的对比度例外与种子 `templates/accept.config.mjs` 一致；工具以 `file:` 链接仓库里的 `morganite/tools`。
 
 ## 页面
 

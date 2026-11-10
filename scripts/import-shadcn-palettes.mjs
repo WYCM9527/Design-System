@@ -313,7 +313,7 @@ for (const t of themes) {
 
 const yellow = { ...scales.yellow, 400: rgbToOklch(parseHex(CITRINE)) };
 const citrinePrimitives = ladder(yellow, 400);
-const citrineSource = { from: `Citrine 黄晶 citrine/seeds/brand-yellow-e · color.brand.500 ${CITRINE}`, scale: `${scaleNote('yellow')}（400 档换成 ${CITRINE}）`, license: 'MIT（色阶）', generator: GENERATOR };
+const citrineSource = { from: `Citrine 黄晶 2.12.2 的品牌黄 color.brand.500 ${CITRINE}（黄晶已并入 Morganite，原种子见 tag）`, ref: "WYCM9527/Design-System@citrine-v2.12.2", scale: `${scaleNote('yellow')}（400 档换成 ${CITRINE}）`, license: 'MIT（色阶）', generator: GENERATOR };
 outputs.push(build({ id: 'citrine', name: '黄晶黄', source: citrineSource, primitives: citrinePrimitives, preset: INK, notes: [`主色是黄晶的品牌黄 ${CITRINE}；像黄晶那样，链接、选中、当前项、焦点用中性黑（暗色用浅灰），黄色只留给主按钮、品牌底、指示条和图表`] }, baseline));
 
 /** 重跑不丢人的决定：用户批过的例外（底线没降）保留批准与说明，验收跑出来登记的 approvedContrast 原样保留。 */

@@ -9,7 +9,7 @@
   "updatedAt": "2026-11-10",
   "snapshotHashes": {
     ".gitignore": "44657ed624e9bcff",
-    "CHANGELOG.md": "28869a305e77a6bb",
+    "CHANGELOG.md": "57922df73486a493",
     "LICENSE": "7231c8224081df54",
     "README.md": "03edaaf98750de23",
     "bridge/base.css": "fa712159985fad32",
@@ -85,7 +85,7 @@
     "package.json": "9c2f808bd26b47b5",
     "palettes/amber.json": "f735c3d0e0612861",
     "palettes/blue.json": "3ed8c663423d87ef",
-    "palettes/citrine.json": "e0f2f0b1bb198f02",
+    "palettes/citrine.json": "67acb9ac23871e24",
     "palettes/cyan.json": "c78ddf33f4df4c93",
     "palettes/emerald.json": "8a99094d298ad4cc",
     "palettes/fuchsia.json": "b109e950301520e7",

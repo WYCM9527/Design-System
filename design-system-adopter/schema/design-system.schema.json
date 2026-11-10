@@ -50,7 +50,7 @@
         },
         "tagPrefix": {
           "type": "string",
-          "description": "版本 tag 前缀，如 citrine-v"
+          "description": "版本 tag 前缀，如 morganite-v"
         },
         "npm": {
           "type": "string",
@@ -143,7 +143,7 @@
         },
         "brand": {
           "type": "object",
-          "description": "品牌色审计口径（citrine-tools ≥ 1.3.0 读取，见 citrine/tools/README「品牌色口径」）：判色范围 + 静息态允许出现品牌色的位置。缺省时 Citrine 用内置的品牌黄，别的系统不审计。换了颜色时判色范围（name / hue / saturation / lightness）取调色盘文件的 accept.brand（citrine-tools ≥ 1.4.0），允许位置照用这里的。",
+          "description": "品牌色审计口径（citrine-tools ≥ 1.3.0 读取，见 morganite/tools/README「品牌色口径」）：判色范围 + 静息态允许出现品牌色的位置。缺省时 Citrine 用内置的品牌黄，别的系统不审计。换了颜色时判色范围（name / hue / saturation / lightness）取调色盘文件的 accept.brand（citrine-tools ≥ 1.4.0），允许位置照用这里的。",
           "required": ["hue", "saturation", "lightness"],
           "properties": {
             "name": { "type": "string", "description": "报告里的称呼，如「品牌金」" },

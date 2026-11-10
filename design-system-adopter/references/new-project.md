@@ -6,7 +6,7 @@
 
 1. **应用骨架（不属于设计系统）**：项目还没有 `package.json` 时，先问用户选栈（看身份文件 `stacks` 的 label，如 Vue 3 + Element Plus / React + shadcn），把该栈 `scaffold` 字段的 create-vite 命令给用户看、同意后代为执行。已有工程就跳过。**目标就是当前目录**（里面已有 `.cursor/`、下载的种子等）时，create-vite 对非空目录会交互式询问、无人值守会卡住：先 scaffold 到临时子目录，再把生成物搬回根目录（不要覆盖已有文件），删掉临时目录。
 2. **拿到种子包**（两条渠道，装一个即可）：
-   - npm：`npm i --save-exact <身份文件 upstream.npm>`（如 `@wycm9527/citrine`；锁死版本，快照、工作副本与 node_modules 里的桥接才是同一版）；
+   - npm：`npm i --save-exact <身份文件 upstream.npm>`（如 `@wycm9527/morganite`；锁死版本，快照、工作副本与 node_modules 里的桥接才是同一版）；
    - 文件夹：用户把种子文件夹放进项目任意位置（`ds.mjs detect` 能认出来）。
    团队项目优先文件夹渠道：种子拷进项目 → `init` 落成 `design-systems/<id>/` 快照（随项目提交）→ `npm i file:./design-systems/<id>`（项目内相对路径，队友零配置）。**不要** `npm i file:<项目外路径>`——机器专属路径会让队友 `npm install` 失败。包在 npm registry 上时才用 `npm i --save-exact <包名>`；也可用上游 Releases 的 tgz 直链（`upgrade` 结束会打印同步 node_modules 的命令）。
 3. **接入**：`node <adopter>/scripts/ds.mjs init --system <id> --stack <栈> [--palette <颜色>]`。它会：落只读快照 `design-systems/<id>/` → 生成工作副本 `design-system/` → 写 `.adopter.json` → 打印接线步骤（folder 来源会多一行 `npm i file:./design-systems/<id>`，让 import 路径与 npm 一致）。用户点了颜色（「用蓝色」）就加 `--palette`；没说就用默认颜色，以后随时 `ds.mjs palette <颜色>` 换（见 [palette.md](palette.md)）。

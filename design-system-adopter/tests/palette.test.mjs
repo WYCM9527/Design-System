@@ -221,8 +221,8 @@ test('export --palette：调色盘覆盖接在 token 文件末尾、版本头写
 });
 
 test('验收工具按项目当前颜色取口径：判色范围与跟颜色走的对比度例外换成调色盘的，允许位置照旧；export 目录同样认', async () => {
-  const { brandFor } = await import('../../citrine/tools/lib/brand.mjs');
-  const { approvedFor } = await import('../../citrine/tools/lib/approved.mjs');
+  const { brandFor } = await import('../../morganite/tools/lib/brand.mjs');
+  const { approvedFor } = await import('../../morganite/tools/lib/approved.mjs');
   const identity = readJ(join(SEED, 'design-system.json')).accept;
   const blue = readJ(join(SEED, 'palettes/blue.json')).accept;
   const { proj, run } = project();

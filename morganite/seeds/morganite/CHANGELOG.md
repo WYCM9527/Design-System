@@ -20,6 +20,10 @@
 - 桥接（玫瑰金下也看得出来）：
   - shadcn 主按钮悬停改为加深一点、按下再深一档（DESIGN「按钮四层」）。原来是 shadcn 默认的主色 90% 透明，叠在白底上反而变浅，换成青、绿后白字对比度掉到 4.5 以下。
   - Element Plus 日历格悬停改用 `color.bg.hover`（同表格行悬停），原来是品牌色浅底；换成紫、青后，暗色下非当月日期的字压在品牌色暗底上不到 4.5。
+- 黄晶并入（用户决定：以玫瑰金的结构为准，黄晶变成一个颜色，删掉黄晶包）：
+  - 黄晶不再单独维护，成为本系统的颜色「黄晶黄」。仓库删掉 `citrine/` 目录和黄晶教程，旧版本留在 git 历史、`citrine-v*` 标签和 Releases 里；黄晶的 npm 包 `@wycm9527/citrine` 会下架，下架前先通知。用过黄晶的项目看仓库的 `docs/CITRINE-MIGRATION.md`：迁到 Morganite + 黄晶黄，或者把依赖改指向项目里的快照，继续用 2.12.2。
+  - 验收工具搬到 `morganite/tools/`，随 Morganite 的 tag 发版（Release 附带工具包，GitHub 的「最新」标记给 Morganite）；npm 包名 `@wycm9527/citrine-tools` 和命令 `citrine-accept` 不变，黄晶项目照常能用。
+  - 维护者工具：迁移角色表检查改为 `scripts/check-roles.mjs`，检查每个带 `migration/roles.json` 的系统；级联倒置审计搬到 `morganite/scripts/audit-cascade.mjs`。
 
 ## 0.3.4 — 2026-10-27
 

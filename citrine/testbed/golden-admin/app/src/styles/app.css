@@ -1,4 +1,0 @@
-/* 项目自己的补充样式：只放黄金后台特有的选择器；页面骨架公共类全部来自 src/styles/bridge/recipes.css（种子配方层，勿在此重写）。
-   全部引用 token；组件几何与演示尺寸登记在 design-system/exemptions.json */
-/* 提示条、活动卡页脚里的内容型链接不是句中链接：命中区不低于 control.hit-min（对应 recipes 里的 td .link 一组） */
-.tip .link, .camp-foot .link { display: inline-flex; align-items: center; min-height: var(--control-hit-min); }

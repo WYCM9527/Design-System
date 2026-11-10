@@ -11,8 +11,8 @@ body:
     id: system
     attributes:
       label: 设计系统与版本
-      description: 例如 citrine 2.10.0（`ds.mjs status` 第一行）
-      placeholder: citrine 2.10.0
+      description: 例如 morganite 0.4.0（`ds.mjs status` 第一行）；换过颜色的把颜色也写上（`ds.mjs status` 第三行），如 morganite 0.4.0 · 颜色 citrine
+      placeholder: morganite 0.4.0
     validations:
       required: true
   - type: dropdown

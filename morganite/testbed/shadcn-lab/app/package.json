@@ -42,7 +42,7 @@
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "@vitejs/plugin-react": "^5.0.0",
-    "@wycm9527/citrine-tools": "file:../../../../citrine/tools",
+    "@wycm9527/citrine-tools": "file:../../../tools",
     "style-dictionary": "5.5.2",
     "tailwindcss": "^4.1.0",
     "typescript": "^5.8.0",

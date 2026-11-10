@@ -537,7 +537,7 @@ const commands = {
 
   /** 纯 CSS 交付：给 Flask / Django / PHP 模板这类非 Node 项目。来源 = --system（路径 / id / npm 名）或本项目的快照；目标目录里的导出文件视为只读，改过要 --force。 */
   export() {
-    const to = args.to || fail('缺 --to <目录>（如 Flask 的 static/citrine）');
+    const to = args.to || fail('缺 --to <目录>（如 Flask 的 static/morganite）');
     // 来源
     let srcDir = null;
     if (args.system) {
@@ -595,7 +595,7 @@ const commands = {
   scope() {
     const m = readManifest();
     const root = args.root || m?.scopeRoot || m?.system || fail('缺 --root <class>（<html class="…">，通常用系统 id）');
-    const to = args.to || m?.scopeDir || fail('缺 --to <目录>（如 src/styles/citrine-scoped）');
+    const to = args.to || m?.scopeDir || fail('缺 --to <目录>（如 src/styles/morganite-scoped）');
     let srcDir = null;
     if (args.system) { const p = resolve(args.system); srcDir = existsSync(p) && readIdentity(p) ? p : null; if (!srcDir) { const hit = detect(project).systems.find((s) => s.identity.id === args.system || s.identity.upstream.npm === args.system); if (hit) srcDir = join(project, hit.dir); } }
     else if (m) srcDir = snapshotDirOf(m);

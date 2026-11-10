@@ -9,24 +9,24 @@ import { fileURLToPath } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const DS = join(HERE, '../scripts/ds.mjs');
-const SEED = resolve(HERE, '../../citrine/seeds/brand-yellow-e');
+const SEED = resolve(HERE, '../../morganite/seeds/morganite');
 const run = (a, opts = {}) => execFileSync('node', [DS, ...a], { encoding: 'utf8', ...opts });
 
-test('export：核心两文件 + 清单 + 版本头；重导出未变；手改拦截（退出 3）；--force 覆盖；--with 加桥接', () => {
-  const to = join(mkdtempSync(join(tmpdir(), 'ds-export-')), 'static/citrine');
+test('export：核心文件 + 清单 + 版本头；重导出未变；手改拦截（退出 3）；--force 覆盖；--with 加桥接', () => {
+  const to = join(mkdtempSync(join(tmpdir(), 'ds-export-')), 'static/morganite');
   const out = run(['export', '--system', SEED, '--to', to]);
-  assert.match(out, /新增：index\.css, recipes\.css/);
+  assert.match(out, /新增：index\.css, base\.css, fonts\.css, recipes\.css/);
   assert.match(out, /接线（按顺序 <link>）/);
-  for (const f of ['index.css', 'recipes.css', 'design-system.export.json']) assert.ok(existsSync(join(to, f)), f);
+  for (const f of ['index.css', 'base.css', 'fonts.css', 'recipes.css', 'design-system.export.json']) assert.ok(existsSync(join(to, f)), f);
   const head = readFileSync(join(to, 'index.css'), 'utf8').split('\n')[0];
-  assert.match(head, /Citrine 黄晶（citrine）\d+\.\d+\.\d+ · index\.css · design-system-adopter export/);
+  assert.match(head, /Morganite 玫瑰金（morganite）\d+\.\d+\.\d+ · index\.css · design-system-adopter export/);
   assert.match(readFileSync(join(to, 'index.css'), 'utf8'), /--color-action-primary/);
   const manifest = JSON.parse(readFileSync(join(to, 'design-system.export.json'), 'utf8'));
-  assert.equal(manifest.system, 'citrine');
-  assert.deepEqual(Object.keys(manifest.files).sort(), ['index.css', 'recipes.css']);
+  assert.equal(manifest.system, 'morganite');
+  assert.deepEqual(Object.keys(manifest.files).sort(), ['base.css', 'fonts.css', 'index.css', 'recipes.css']);
 
   // 重导出：未变
-  assert.match(run(['export', '--system', SEED, '--to', to]), /未变：index\.css, recipes\.css/);
+  assert.match(run(['export', '--system', SEED, '--to', to]), /未变：index\.css, base\.css, fonts\.css, recipes\.css/);
 
   // 手改导出文件 → 拦截
   appendFileSync(join(to, 'recipes.css'), '\n/* 手改 */\n');

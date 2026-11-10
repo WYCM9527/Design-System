@@ -10,7 +10,7 @@ import { planAgents } from '../scripts/lib/agents.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const DS = join(HERE, '../scripts/ds.mjs');
-const SEED = resolve(HERE, '../../citrine/seeds/brand-yellow-e');
+const SEED = resolve(HERE, '../../morganite/seeds/morganite');
 const tmp = () => mkdtempSync(join(tmpdir(), 'adopter-agents-'));
 
 const rendered = (notes) => `# demo · Agent 规则\n\n## 设计系统（三行规则）\n\n1. 读 DESIGN。\n\n## 项目接线（X · Vue）\n\n${notes.join('\n')}\n`;

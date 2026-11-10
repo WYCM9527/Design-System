@@ -10,7 +10,7 @@ import { mergeJson, classify, resolveJsonConflict } from '../scripts/lib/merge.m
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const DS = join(HERE, '../scripts/ds.mjs');
-const SEED = resolve(HERE, '../../citrine/seeds/brand-yellow-e');
+const SEED = resolve(HERE, '../../morganite/seeds/morganite');
 const tmp = () => mkdtempSync(join(tmpdir(), 'adopter-test-'));
 
 test('mergeJson：本地未改 → 取上游；上游未改 → 留本地；不同键各取各的', () => {
@@ -75,12 +75,12 @@ test('端到端：init（folder）→ 本地改 token + DESIGN → upgrade --fro
   const proj = tmp();
   execFileSync('git', ['init', '-q'], { cwd: proj });
   // 种子放进项目（模拟「下载文件夹」），init
-  cpSync(SEED, join(proj, 'downloaded-seed'), { recursive: true });
+  cpSync(SEED, join(proj, 'downloaded-seed'), { recursive: true, filter: (src) => !src.includes('node_modules') });
   const run = (cmdArgs, opts = {}) => execFileSync('node', [DS, ...cmdArgs, '--project', proj], { encoding: 'utf8', ...opts });
   const out = run(['init', '--system', 'downloaded-seed', '--stack', 'element-plus']);
-  assert.match(out, /已接入 Citrine/);
+  assert.match(out, /已接入 Morganite/);
   assert.match(out, /npm i -D --save-exact style-dictionary@\d/);
-  assert.ok(existsSync(join(proj, 'design-systems/citrine/design-system.json')));
+  assert.ok(existsSync(join(proj, 'design-systems/morganite/design-system.json')));
   assert.ok(existsSync(join(proj, 'design-system/.adopter.json')));
   // 本地改：semantic tokens 里加一个自有 token；DESIGN.md 追加一行
   const semPath = join(proj, 'design-system/tokens/semantic.tokens.json');
@@ -92,7 +92,7 @@ test('端到端：init（folder）→ 本地改 token + DESIGN → upgrade --fro
   const cur = JSON.parse(readFileSync(join(SEED, 'design-system.json'), 'utf8')).version;
   const next = cur.replace(/(\d+)$/, (m) => String(Number(m) + 1));
   const up = join(tmp(), 'seed-next');
-  cpSync(SEED, up, { recursive: true });
+  cpSync(SEED, up, { recursive: true, filter: (src) => !src.includes('node_modules') });
   const upId = JSON.parse(readFileSync(join(up, 'design-system.json'), 'utf8'));
   upId.version = next; writeFileSync(join(up, 'design-system.json'), JSON.stringify(upId, null, 2) + '\n');
   const upSem = JSON.parse(readFileSync(join(up, 'design-system/tokens/semantic.tokens.json'), 'utf8'));
@@ -122,8 +122,8 @@ test('端到端：init（folder）→ 本地改 token + DESIGN → upgrade --fro
   assert.equal(manifest.version, next);
   assert.match(readFileSync(join(proj, 'design-system/DESIGN.md'), 'utf8'), /本地补充的一行/);
   assert.ok(!existsSync(join(proj, '.adopter-conflicts.json')));
-  // 快照推进到 2.7.1
-  assert.equal(JSON.parse(readFileSync(join(proj, 'design-systems/citrine/design-system.json'), 'utf8')).version, next);
+  // 快照推进到新版本
+  assert.equal(JSON.parse(readFileSync(join(proj, 'design-systems/morganite/design-system.json'), 'utf8')).version, next);
 });
 
 test('upgrade：owned 含 bridge/** 时，桥接随快照替换，不当成「本地删除」的冲突', () => {
@@ -155,7 +155,7 @@ test('upgrade：owned 含 bridge/** 时，桥接随快照替换，不当成「�
   const done = run(['upgrade', '--from', up]);
   assert.match(done, /完成/);
   assert.ok(!existsSync(join(proj, 'bridge')), '桥接不该被写进项目根');
-  assert.match(readFileSync(join(proj, 'design-systems/citrine/bridge/recipes.css'), 'utf8'), new RegExp(`/\\* ${next.replaceAll('.', '\\.')} \\*/`));
+  assert.match(readFileSync(join(proj, 'design-systems/morganite/bridge/recipes.css'), 'utf8'), new RegExp(`/\\* ${next.replaceAll('.', '\\.')} \\*/`));
   assert.match(readFileSync(join(proj, 'design-system/DESIGN.md'), 'utf8'), new RegExp(`<!-- ${next.replaceAll('.', '\\.')} -->`));
 });
 
@@ -193,7 +193,7 @@ test('upgrade：快照是指向种子的符号链接，种子就地改了但版�
   cpSync(SEED, seed, { recursive: true, filter: (src) => !src.includes('node_modules') });
   const run = (cmdArgs) => execFileSync('node', [DS, ...cmdArgs, '--project', proj], { encoding: 'utf8' });
   run(['init', '--system', 'seed', '--stack', 'element-plus']);
-  const snap = join(proj, 'design-systems/citrine');
+  const snap = join(proj, 'design-systems/morganite');
   rmSync(snap, { recursive: true });
   symlinkSync(seed, snap, 'junction');
   writeFileSync(join(seed, 'design-system/DESIGN.md'), readFileSync(join(seed, 'design-system/DESIGN.md'), 'utf8') + '\n<!-- 就地更新 -->\n');

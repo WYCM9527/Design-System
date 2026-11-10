@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.9",
-    "@wycm9527/citrine-tools": "file:../../../../citrine/tools",
+    "@wycm9527/citrine-tools": "file:../../../tools",
     "style-dictionary": "^5.5.2",
     "vite": "^8.3.4"
   }

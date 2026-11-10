@@ -26,7 +26,7 @@ node $SKILL/guard.mjs --project "$PWD"           # 应为 current
 - 种子发了新版本，工作副本用 `ds.mjs status` 看差异、`ds.mjs upgrade --dry-run` 看分类，确认后再 `upgrade`。
 - `app/AGENTS.md` 由 `ds.mjs agents --write` 生成：设计系统规则与本项目的接线说明，给 Agent 读。
 
-验收清单在 `app/accept.config.mjs`（`PAGES` 列出全部页面状态），工具以 `file:` 链接仓库里的 `citrine/tools`。
+验收清单在 `app/accept.config.mjs`（`PAGES` 列出全部页面状态），工具以 `file:` 链接仓库里的 `morganite/tools`。
 
 ## 页面与参数
 

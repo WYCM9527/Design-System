@@ -46,10 +46,12 @@ morganite/
 ├── testbed/element-lab/         # 实测项目：Vue 3 + Element Plus 按 adopter 接入种子，走查页 + 业务页；问题记录在 FINDINGS.md
 ├── testbed/shadcn-lab/          # 实测项目：React 19 + Tailwind v4 + shadcn/ui，骨架照 Citrine 的 shadcn 实验室；问题记录在 FINDINGS.md
 ├── testbed/mall-ops/            # 完整业务项目「拾光商城 · 运营后台」：Vue 3 + Element Plus，14 页 × 4 角色 × 50 个页面状态；产品设定 PRD.md，实测报告 FINDINGS.md
+├── tools/                       # 验收工具（npm 包 @wycm9527/citrine-tools，命令 citrine-accept），随 Morganite 发版
+├── scripts/audit-cascade.mjs    # 维护者：级联倒置审计（改了桥接 / 配方后跑，见 docs/GUIDE 8b）
 └── seeds/morganite/             # 分发单元：design-system/（token · DESIGN · AUDIT · themes）· palettes/（可换的颜色）· bridge/ · templates/ · design-system.json
 ```
 
-以后可以像 Citrine 一样加 `tools/`（验收工具）；目前是一套 token + 规则 + 桥接，加一组效果预览页、Element Plus 与 shadcn/ui 两个实测项目和一个完整业务项目。
+验收工具原来在 Citrine 目录下，黄晶并入 Morganite 后搬到 `tools/`，包名 `@wycm9527/citrine-tools` 和命令 `citrine-accept` 沿用旧称；黄晶本身成了颜色「黄晶黄」，用过黄晶的项目见 [黄晶项目怎么办](../docs/CITRINE-MIGRATION.md)。
 
 ## 状态
 
@@ -61,7 +63,7 @@ morganite/
 
 ## 接入（交给 AI 做）
 
-Morganite 和 Citrine 用同一套接入工具 [design-system-adopter](../design-system-adopter/)，装法也一样：种子是 npm 包 `@wycm9527/morganite`（0.3.3 起），验收工具与 Citrine 共用 npm 包 `@wycm9527/citrine-tools`（命令 `citrine-accept`）。连不上 npm 时可以把种子文件夹拷进项目（见下面「自己敲命令」的注释）。数字字体 D-DIN 由桥接自带，不用另装。
+接入工具是 [design-system-adopter](../design-system-adopter/)：种子是 npm 包 `@wycm9527/morganite`（0.3.3 起），验收工具是 npm 包 `@wycm9527/citrine-tools`（命令 `citrine-accept`，源码在 `tools/`）。连不上 npm 时可以把种子文件夹拷进项目（见下面「自己敲命令」的注释）。数字字体 D-DIN 由桥接自带，不用另装。
 
 **第一次接入**：用 Cursor（Agent 模式）、Claude Code 或 Codex 打开项目，把下面整段发出去，只改【】里的内容；技术信息不知道就写「不确定」。
 

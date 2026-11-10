@@ -1,8 +1,8 @@
 # 设计系统工作流 · 上手教程
 
-给要把公司设计系统（**Citrine 黄晶**或 **Morganite 玫瑰金**）用进自己项目的同学。全程由 Agent（Cursor / Codex / Claude Code）执行，你只做三件事：装好、说一句话、在它停下来问你时拍板。读完约 10 分钟。
+给要把公司设计系统 **Morganite 玫瑰金**用进自己项目的同学。全程由 Agent（Cursor / Codex / Claude Code）执行，你只做三件事：装好、说一句话、在它停下来问你时拍板。读完约 10 分钟。
 
-两套系统接入方式相同，下文命令与提示词以 Citrine 为例，用 Morganite 时把名字换掉即可（种子包 `@wycm9527/morganite`，文件夹 `morganite/seeds/morganite`，见第 2 节末尾）；验收工具两套共用 `@wycm9527/citrine-tools`，不用换。Morganite 的效果先看[在线效果预览](https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/)，接入提示词见 [morganite/README.md](../morganite/README.md#接入交给-ai-做)。
+Morganite 的结构只有一套，品牌色可以选（默认玫瑰金，另有蓝 / 紫 / 青 / 绿 / 黄晶黄，见 [5f](#5f-场景-f选颜色换颜色)）。效果先看[在线效果预览](https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/)，接入提示词见 [morganite/README.md](../morganite/README.md#接入交给-ai-做)。验收工具的包名 `@wycm9527/citrine-tools`（命令 `citrine-accept`）是沿用的旧称，就是 Morganite 的验收工具。用过黄晶（Citrine）的项目见 [CITRINE-MIGRATION.md](CITRINE-MIGRATION.md)：黄晶已并入 Morganite，成为颜色「黄晶黄」。
 
 > 没有开发经验、只想照着粘提示词的同学，看 [TUTORIAL.md（零基础上手教程）](TUTORIAL.md)；本文是完整参考。
 
@@ -10,16 +10,16 @@
 
 | 东西 | 在哪 | 干什么 | 你需要碰吗 |
 | --- | --- | --- | --- |
-| **设计系统种子** | `citrine/seeds/brand-yellow-e/`（也是 npm 包 `@wycm9527/citrine`）；`morganite/seeds/morganite/`（npm 包 `@wycm9527/morganite`） | token、DESIGN 规范、Element Plus / shadcn 桥接、页面配方、Vue / React 配方组件，带身份文件 `design-system.json` | 只读。放进项目当快照 |
+| **设计系统种子** | `morganite/seeds/morganite/`（也是 npm 包 `@wycm9527/morganite`） | token、DESIGN 规范、Element Plus / shadcn 桥接、页面配方、Vue / React 配方组件，带身份文件 `design-system.json` | 只读。放进项目当快照 |
 | **design-system-adopter** | 仓库根 `design-system-adopter/` | 让 Agent 会「接入 / 换规范 / 更新」的 skill + 零依赖 CLI（`scripts/ds.mjs`） | 装一次进项目 |
 | **design-system-steward** | [WYCM9527/skills](https://github.com/WYCM9527/skills) | 构建 token、Guard 校验、存量迁移的治理工具 | adopter 找不到时会带你装 |
-| **验收工具** | `citrine/tools/`（npm 包 `@wycm9527/citrine-tools`，命令 `citrine-accept`） | 无头 Chrome 扫对比度、命名、品牌色泄漏、三端响应、Tab 焦点 | 装进项目 devDependencies |
+| **验收工具** | `morganite/tools/`（npm 包 `@wycm9527/citrine-tools`，命令 `citrine-accept`） | 无头 Chrome 扫对比度、命名、品牌色泄漏、三端响应、Tab 焦点 | 装进项目 devDependencies |
 
 项目里最终长这样：
 
 ```text
 your-project/
-├── design-systems/citrine/      # 上游只读快照（提交进 git，永不手改，是升级时的合并基线）
+├── design-systems/morganite/    # 上游只读快照（提交进 git，永不手改，是升级时的合并基线）
 ├── design-system/               # 工作副本：token 与规则，steward 在这里治理（可加 scope / 豁免）
 │   ├── dist/                    # 构建产物（build-tokens 生成，不手改）
 │   └── .adopter.json            # 接入清单（系统 id、版本、快照 hash）
@@ -46,22 +46,16 @@ cd your-project
 mkdir -p .cursor/skills && cp -R /tmp/ds/design-system-adopter .cursor/skills/
 
 # 3) 种子 + 验收工具 + token 构建器——方式 A：npm registry（步骤最少；两个包都在 npmjs.org 上）
-npm i @wycm9527/citrine && npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2
+npm i @wycm9527/morganite && npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2
 
 # 3') 方式 B：文件夹渠道（连不上 npm registry、或想把种子锁进项目 git 时）——种子拷进项目，工具用 Releases 直链
-cp -R /tmp/ds/citrine/seeds/brand-yellow-e vendor/citrine   # 放哪都行，init 会把它落成 design-systems/citrine/ 快照，之后 vendor/ 可删
+cp -R /tmp/ds/morganite/seeds/morganite vendor/morganite   # 放哪都行，init 会把它落成 design-systems/morganite/ 快照，之后 vendor/ 可删
 npm i -D https://github.com/WYCM9527/Design-System/releases/latest/download/wycm9527-citrine-tools-1.4.0.tgz style-dictionary@5.5.2
 ```
 
-两种方式 adopter 都认，队友都零配置（A 写进 `package.json` 的是版本号，B 是项目内相对路径 `file:./design-systems/citrine`），已接入的项目不必换。**唯独不要 `npm i file:/tmp/ds/...`**：那会把一条只在你电脑上存在的路径写进 `package.json`，队友 `npm install` 直接失败。国内访问 registry.npmjs.org 慢或不通时，`npm config set registry https://registry.npmmirror.com`（镜像同步公开包，通常十分钟内）或改用方式 B。
+两种方式 adopter 都认，队友都零配置（A 写进 `package.json` 的是版本号，B 是项目内相对路径 `file:./design-systems/morganite`），已接入的项目不必换。**唯独不要 `npm i file:/tmp/ds/...`**：那会把一条只在你电脑上存在的路径写进 `package.json`，队友 `npm install` 直接失败。国内访问 registry.npmjs.org 慢或不通时，`npm config set registry https://registry.npmmirror.com`（镜像同步公开包，通常十分钟内）或改用方式 B。
 
-**Morganite 玫瑰金**：换掉种子即可（0.3.3 起在 npm 上），验收工具与 token 构建器和 Citrine 是同一个工具包：
-
-```bash
-npm i @wycm9527/morganite && npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2
-#   方式 B：cp -R /tmp/ds/morganite/seeds/morganite vendor/morganite，工具同上面的 Releases 直链
-node .cursor/skills/design-system-adopter/scripts/ds.mjs init --system morganite --stack element-plus   # 或 shadcn / css
-```
+**颜色**：默认玫瑰金；要别的颜色，接入时 `init` 带上 `--palette <颜色>`（如 `ds.mjs init --system morganite --stack element-plus --palette blue`），接入后也能换，见 [5f](#5f-场景-f选颜色换颜色)。
 
 steward 不用手动装：Agent 走到需要构建时会先找（`~/.cursor/skills`、`~/.codex/skills`、项目 `.cursor/skills`），找不到会给你一行安装命令，你点头它就装（来源是公开仓库 [WYCM9527/skills](https://github.com/WYCM9527/skills)）。
 
@@ -71,9 +65,9 @@ steward 不用手动装：Agent 走到需要构建时会先找（`~/.cursor/skil
 
 不想碰命令行的同学，打开 Cursor（或 Codex / Claude Code）的 Agent，把下面整段原文粘贴发送即可。它会自己检查环境、下载、安装、自检，只在一处需要你开口（项目名），装好后问你一句「新项目还是旧项目换新」就接着走。
 
-用 Morganite 时改三处：开头的 **Citrine** 换成 **Morganite**；「三、安装」第 2 条里的种子包 `@wycm9527/citrine` 换成 `@wycm9527/morganite`，文件夹 `/tmp/ds/citrine/seeds/brand-yellow-e vendor/citrine` 换成 `/tmp/ds/morganite/seeds/morganite vendor/morganite`（验收工具 `@wycm9527/citrine-tools` 与 `wycm9527-citrine-tools-` 两套共用，不换）；「四、自检」第一条里的 `citrine` 换成 `morganite`。或者直接用 [morganite/README.md](../morganite/README.md#接入交给-ai-做) 里更短的那段。
+要玫瑰金以外的颜色，在整段末尾加一句「颜色用【蓝 / 紫 / 青 / 绿 / 黄晶黄】」。也可以直接用 [morganite/README.md](../morganite/README.md#接入交给-ai-做) 里更短的那段。
 
-> 你现在全权负责把公司设计系统 **Citrine** 的整套工作流装进这台电脑的项目里。我是小白，不要问我技术问题：能自动判断的全部自动做，只在标注【必须问我】的地方停下来问；每一步先用一句话说你在做什么，做完把结果给我看；任何一步失败就停下，用大白话告诉我原因和我该做什么，不要自己换别的办法绕过去。
+> 你现在全权负责把公司设计系统 **Morganite** 的整套工作流装进这台电脑的项目里。我是小白，不要问我技术问题：能自动判断的全部自动做，只在标注【必须问我】的地方停下来问；每一步先用一句话说你在做什么，做完把结果给我看；任何一步失败就停下，用大白话告诉我原因和我该做什么，不要自己换别的办法绕过去。
 >
 > **一、环境检查**（缺什么装什么；装系统软件前先告诉我一句再装）
 > 1. Node.js 版本 ≥ 22（`node -v`）。没有或太旧：macOS 用 `brew install node`（没有 brew 就去 nodejs.org 下载 LTS 安装包），Windows 用 `winget install OpenJS.NodeJS.LTS`。
@@ -87,11 +81,11 @@ steward 不用手动装：Agent 走到需要构建时会先找（`~/.cursor/skil
 >
 > **三、安装三件东西**（在项目目录里）
 > 1. skill：`mkdir -p .cursor/skills && cp -R /tmp/ds/design-system-adopter .cursor/skills/`。如果你不是在 Cursor 里运行，就装到你自己的 skill 目录（Codex 是 `~/.codex/skills/`，Claude Code 是项目 `.claude/skills/`）。
-> 2. 设计系统种子与验收工具，先试 npm：`npm i @wycm9527/citrine && npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2`。如果报 404 / 超时 / 连不上，改走文件夹渠道：`mkdir -p vendor && cp -R /tmp/ds/citrine/seeds/brand-yellow-e vendor/citrine`，然后访问 `https://api.github.com/repos/WYCM9527/Design-System/releases/latest`，在 `assets` 里找名字以 `wycm9527-citrine-tools-` 开头的 `browser_download_url`，`npm i -D <那个地址> style-dictionary@5.5.2`。两条路都不要用 `npm i file:/tmp/...`——那会把只在这台电脑上存在的路径写进 package.json。
+> 2. 设计系统种子与验收工具，先试 npm：`npm i @wycm9527/morganite && npm i -D @wycm9527/citrine-tools style-dictionary@5.5.2`。如果报 404 / 超时 / 连不上，改走文件夹渠道：`mkdir -p vendor && cp -R /tmp/ds/morganite/seeds/morganite vendor/morganite`，然后访问 `https://api.github.com/repos/WYCM9527/Design-System/releases/latest`，在 `assets` 里找名字以 `wycm9527-citrine-tools-` 开头的 `browser_download_url`，`npm i -D <那个地址> style-dictionary@5.5.2`。两条路都不要用 `npm i file:/tmp/...`——那会把只在这台电脑上存在的路径写进 package.json。
 > 3. 治理工具：`node .cursor/skills/design-system-adopter/scripts/ds.mjs steward locate`；如果输出「未找到」，就跑 `node .cursor/skills/design-system-adopter/scripts/ds.mjs steward install`。
 >
 > **四、自检**（四条都要通过才算装好，任何一条不过就回到对应步骤重做）
-> - `node .cursor/skills/design-system-adopter/scripts/ds.mjs detect` 的输出里有 `citrine`（npm 装的显示 `[npm]`，文件夹渠道显示 `[folder]`）
+> - `node .cursor/skills/design-system-adopter/scripts/ds.mjs detect` 的输出里有 `morganite`（npm 装的显示 `[npm]`，文件夹渠道显示 `[folder]`）
 > - `node .cursor/skills/design-system-adopter/scripts/ds.mjs steward locate` 输出一个路径
 > - 文件 `.cursor/skills/design-system-adopter/SKILL.md` 存在
 > - 文件 `node_modules/.bin/citrine-accept` 存在
@@ -105,7 +99,7 @@ steward 不用手动装：Agent 走到需要构建时会先找（`~/.cursor/skil
 
 对 Agent 说（可直接粘贴，改栈名即可）：
 
-> 用 Citrine 设计系统起一个 **Vue 3 + Element Plus**（或 **React + shadcn/ui**）的中后台，按 design-system-adopter 的「从 0 开始」把系统接好、验收跑绿之后再开始做页面。配方不够用时提提案，不要在页面上补样式。
+> 用 Morganite 设计系统（颜色：玫瑰金）起一个 **Vue 3 + Element Plus**（或 **React + shadcn/ui**）的中后台，按 design-system-adopter 的「从 0 开始」把系统接好、验收跑绿之后再开始做页面。配方不够用时提提案，不要在页面上补样式。
 
 Agent 会依次做：应用骨架（空目录时先问你选栈，给出 create-vite 命令）→ `ds.mjs init`（落快照 + 工作副本 + 清单，打印接线）→ steward `build-tokens` / `guard` → 写样式入口与 Vite 配置 → 渲染 `AGENTS.md` 给你看 → 做页面 → 建 `accept.config.mjs` → `npm run accept`。
 
@@ -127,7 +121,7 @@ Agent 会依次做：应用骨架（空目录时先问你选栈，给出 create-
 
 对 Agent 说：
 
-> 把这个项目换成 Citrine 设计规范，按 design-system-adopter 的「更换现有规范」先做第一期换肤，给我看验收报告和二期收编清单再继续。
+> 把这个项目换成 Morganite 设计规范（颜色：玫瑰金），按 design-system-adopter 的「更换现有规范」先做第一期换肤，给我看验收报告和二期收编清单再继续。
 
 三期，每期结束都能上线：
 
@@ -139,83 +133,83 @@ Agent 会依次做：应用骨架（空目录时先问你选栈，给出 create-
 
 **Agent 会在这四处停下问你**：工作区不干净要先提交；把原有的 `design-system/`（若有）改名为 `design-system.legacy/` 当迁移证据；写入 `AGENTS.md`；二期 `settle` 的决策文件（旧角色 → 新 token 的映射草稿）过目确认。其余步骤不需要你介入。
 
-关键原则（Agent 会遵守，你也要知道）：**按角色映射，不按色值找最接近的灰**——旧的深黄 hover、淡黄选中底、彩色链接在新系统里没有对应物，会换成反转块 / 无色系写法，不是"找个像的"。
+关键原则（Agent 会遵守，你也要知道）：**按角色映射，不按色值找最接近的灰**——旧系统独有、新系统没有对应物的写法（如 antd 菜单的主色浅底选中态、描边式输入框），按种子 `migration/roles.json` 里「无对应物」的替代写法改，不是"找个像的"。从黄晶换过来的项目见 [CITRINE-MIGRATION.md](CITRINE-MIGRATION.md)。
 
 ## 5. 场景 C：设计系统出新版了
 
 对 Agent 说：
 
-> 检查 Citrine 有没有新版本，按 design-system-adopter 的「更新」剧本先 dry-run 给我看差异（尤其是我本地改过的部分），确认后再升级并跑验收。
+> 检查 Morganite 有没有新版本，按 design-system-adopter 的「更新」剧本先 dry-run 给我看差异（尤其是我本地改过的部分），确认后再升级并跑验收。
 
 流程：`ds.mjs status`（快照是否完整、你本地改过哪些文件、上游最新 tag）→ `upgrade --dry-run`（分类：直接更新 / 上游新增 / 保留本地 / 自动合并 / 冲突）→ 你拍板 → `upgrade`。
 
-合并规则：token 等 JSON **键级**三方合并——你改的键和上游改的键各取各的，同一个键两边都改才问你；`DESIGN.md` 等文档是文件级，选「保留本地 / 取上游 / 写冲突标记手工合」。有冲突时 Agent 会拿着 `.adopter-conflicts.json` 逐条问你，然后 `--resolve`。升级后必跑 `build-tokens → guard → accept`；minor 版本像素会变属预期，对照种子 CHANGELOG。种子若是 npm 来源（`npm i @wycm9527/citrine` 或 Release 直链装的），页面 import 的桥接在 `node_modules` 里，`upgrade` 结束会打印一条 `npm i …` 让它跟上新版——不跑那条，样子不会变；文件夹渠道（`file:./design-systems/citrine`）无此步。范围根项目 `upgrade` 会自动重生成范围包。
+合并规则：token 等 JSON **键级**三方合并——你改的键和上游改的键各取各的，同一个键两边都改才问你；`DESIGN.md` 等文档是文件级，选「保留本地 / 取上游 / 写冲突标记手工合」。有冲突时 Agent 会拿着 `.adopter-conflicts.json` 逐条问你，然后 `--resolve`。升级后必跑 `build-tokens → guard → accept`；minor 版本像素会变属预期，对照种子 CHANGELOG。种子若是 npm 来源（`npm i @wycm9527/morganite` 或 Release 直链装的），页面 import 的桥接在 `node_modules` 里，`upgrade` 结束会打印一条 `npm i …` 让它跟上新版——不跑那条，样子不会变；文件夹渠道（`file:./design-systems/morganite`）无此步。换过颜色的项目，`upgrade` 取上游后自动重套颜色。范围根项目 `upgrade` 会自动重生成范围包。
 
 ## 5b. 场景 D：项目不是 Node 工程（Flask / Django / PHP 模板）
 
 装不了 npm 那四样东西没关系——设计系统的交付物本来就是纯 CSS，运行时不需要 Node。**别把变量值手抄进自己的 CSS**（等于 fork 了 token：上游改值你不知道、暗色没有、升级断掉）。
 
-最省事：到仓库 [Releases](https://github.com/WYCM9527/Design-System/releases) 下载最新的 `citrine-css-<版本>.tgz`（就是导出好的 `index.css` + `recipes.css` + Element 桥接），解压进 `static/citrine/`，不需要任何工具。或者在任何一台有 Node 的机器上（维护者或同事）导出一次：
+最省事：到仓库 [Releases](https://github.com/WYCM9527/Design-System/releases) 下载最新的 `morganite-css-<版本>.tgz`（就是导出好的 `index.css` + `base.css` + `fonts.css` + `recipes.css` + Element 桥接，颜色是玫瑰金），解压进 `static/morganite/`，不需要任何工具。要别的颜色，或者想自己导出，在任何一台有 Node 的机器上（维护者或同事）导出一次：
 
 ```bash
-node <adopter>/scripts/ds.mjs export --system /tmp/ds/citrine/seeds/brand-yellow-e --to <项目>/static/citrine
+node <adopter>/scripts/ds.mjs export --system /tmp/ds/morganite/seeds/morganite --to <项目>/static/morganite [--palette <颜色>]
 ```
 
-得到 `index.css`（token 亮 + 暗色）、`recipes.css`（页面骨架公共类）和一份清单，文件带版本头。模板 `<head>` 按顺序 `<link>` 这两个文件再接自己的样式；自己的样式只引用变量（`var(--color-text-primary)`），模板直接用配方类（`.page-head / .filter / .status / .act / .form-grid / .stats / .nav` …），三端与暗色（`<html class="dark">`）都内置。导出文件只读，再次 `export` 会拦截被手改的文件。
+得到 `index.css`（token 亮 + 暗色）、`base.css`（基础桥接：正文 / 标题 / 链接 / 表单 / 焦点，会引入同目录的数字字体 `fonts.css`）、`recipes.css`（页面骨架公共类）和一份清单，文件带版本头，几个文件放在同一目录。模板 `<head>` 按顺序 `<link>` `index.css` → `base.css` → `recipes.css` 再接自己的样式；自己的样式只引用变量（`var(--color-text-primary)`），模板直接用配方类（`.page-head / .filter / .status / .act / .form-grid / .stats / .nav` …），三端与暗色（`<html class="dark">`）都内置。导出文件只读，再次 `export` 会拦截被手改的文件。
 
-验收照样能跑：服务器起来后 `npx citrine-accept pages --url http://127.0.0.1:5000 --tokens <项目>/static/citrine`（`narrow` / `focus` 同理），页面清单写服务器路径。升级 = 再 `export` 一次，逐文件告诉你什么变了。对 Agent 说：
+验收照样能跑：服务器起来后 `npx citrine-accept pages --url http://127.0.0.1:5000 --tokens <项目>/static/morganite`（`narrow` / `focus` 同理），页面清单写服务器路径。升级 = 再 `export` 一次，逐文件告诉你什么变了。对 Agent 说：
 
-> 这个项目是 Flask 模板 + 一个 CSS 文件，不是 Node 项目。按 design-system-adopter 的「非 Node 项目」剧本：导出 Citrine 的纯 CSS 到 static/，把 admin.css 里的颜色 / 字号 / 间距改成引用变量，模板换用配方类，然后用 --url 跑验收给我看。
+> 这个项目是 Flask 模板 + 一个 CSS 文件，不是 Node 项目。按 design-system-adopter 的「非 Node 项目」剧本：导出 Morganite 的纯 CSS 到 static/，把 admin.css 里的颜色 / 字号 / 间距改成引用变量，模板换用配方类，然后用 --url 跑验收给我看。
 
 ## 5c. 场景 E：只想覆盖项目里的几个板块
 
 先分清「板块」是哪种：
 
 - **monorepo 里的多个应用**（各自有 `package.json`）→ 什么都不用做：只对要覆盖的应用 `init --project apps/admin`，其余应用天然不受影响；微前端 / iframe 子应用同理。
-- **同一个应用里按路由分的板块**（`/orders` 换、`/legacy-report` 不换）→ **范围根**：`ds.mjs scope --root citrine --to src/styles/citrine-scoped --with element-plus` 把整套 CSS 包进 `@scope (html.citrine)`，样式入口改引这些文件，路由守卫在未接入板块的路由上把 `<html>` 的 `citrine` 类去掉（Vue Router：`meta: { legacy: true }` + 一行 `beforeEach`，命令会打印片段）。未接入板块保留自己的旧布局与组件库默认外观——弹窗、下拉这类 teleport 到 body 的浮层也一起覆盖 / 一起不覆盖，因为都在 `html` 之下。
+- **同一个应用里按路由分的板块**（`/orders` 换、`/legacy-report` 不换）→ **范围根**：`ds.mjs scope --root morganite --to src/styles/morganite-scoped --with element-plus` 把整套 CSS 包进 `@scope (html.morganite)`，样式入口改引这些文件，路由守卫在未接入板块的路由上把 `<html>` 的 `morganite` 类去掉（Vue Router：`meta: { legacy: true }` + 一行 `beforeEach`，命令会打印片段）。未接入板块保留自己的旧布局与组件库默认外观——弹窗、下拉这类 teleport 到 body 的浮层也一起覆盖 / 一起不覆盖，因为都在 `html` 之下。
 - **同一屏上新旧组件混排** → 不支持，整页纳入或整页不纳入。
 
 范围根是**过渡态**：新板块先立住，再按 5 节的二期收编把旧板块逐个纳入，最后去掉范围根回到全局。浏览器下限 `@scope`：Chrome / Edge 118+、Safari 17.4+、Firefox 128+。对 Agent 说：
 
-> 这个项目里只有 /orders 和 /suppliers 两个板块要换成 Citrine，其余板块保持原样。按 design-system-adopter 的「只覆盖部分板块」剧本做范围根，做完打开一个未接入的页面证明它没被影响。
+> 这个项目里只有 /orders 和 /suppliers 两个板块要换成 Morganite，其余板块保持原样。按 design-system-adopter 的「只覆盖部分板块」剧本做范围根，做完打开一个未接入的页面证明它没被影响。
 
 ## 5d. 综合示例：旧项目 + 只覆盖部分板块 + 带一个 Flask 子系统
 
 真实项目往往同时命中 B、E、D 三个场景。下面是一段可整段粘贴、全权交给 Agent 的提示词（方括号处填你的信息）：
 
-> 你现在全权负责把项目 **【项目绝对路径】** 换成公司设计系统 **Citrine**，但只覆盖我指定的板块，其他板块一个字节不能受影响。我不懂技术细节：能自动判断的全部自动做，只在标注【必须问我】的地方停下来问；每一步先用一句话说你在做什么，做完把结果给我看；任何一步失败就停下，用大白话说原因和我该做什么，不要换别的办法绕过去。全程严格按项目里 `.cursor/skills/design-system-adopter/SKILL.md` 及其 references 剧本执行，不自己发明步骤。
+> 你现在全权负责把项目 **【项目绝对路径】** 换成公司设计系统 **Morganite**，但只覆盖我指定的板块，其他板块一个字节不能受影响。我不懂技术细节：能自动判断的全部自动做，只在标注【必须问我】的地方停下来问；每一步先用一句话说你在做什么，做完把结果给我看；任何一步失败就停下，用大白话说原因和我该做什么，不要换别的办法绕过去。全程严格按项目里 `.cursor/skills/design-system-adopter/SKILL.md` 及其 references 剧本执行，不自己发明步骤。
 >
 > **〇、准备**
-> 1. 如果 `.cursor/skills/design-system-adopter/` 不存在：`git clone --depth 1 https://github.com/WYCM9527/Design-System.git /tmp/ds`（连不上就停下告诉我网络问题），然后 `mkdir -p .cursor/skills && cp -R /tmp/ds/design-system-adopter .cursor/skills/`，种子走文件夹渠道 `mkdir -p vendor && cp -R /tmp/ds/citrine/seeds/brand-yellow-e vendor/citrine`，工具按 2b 节第三步用 Releases 最新的 `wycm9527-citrine-tools-*.tgz` 直链 `npm i -D <地址> style-dictionary@5.5.2`（不要用 `npm i file:/tmp/...`）。
+> 1. 如果 `.cursor/skills/design-system-adopter/` 不存在：`git clone --depth 1 https://github.com/WYCM9527/Design-System.git /tmp/ds`（连不上就停下告诉我网络问题），然后 `mkdir -p .cursor/skills && cp -R /tmp/ds/design-system-adopter .cursor/skills/`，种子走文件夹渠道 `mkdir -p vendor && cp -R /tmp/ds/morganite/seeds/morganite vendor/morganite`，工具按 2b 节第三步用 Releases 最新的 `wycm9527-citrine-tools-*.tgz` 直链 `npm i -D <地址> style-dictionary@5.5.2`（不要用 `npm i file:/tmp/...`）。
 > 2. 确认项目在 git 里且工作区干净（`git status`）。不干净就停下让我提交，不要替我提交。
 > 3. 通读 SKILL.md、`references/existing-project.md`、`references/scope-root.md`、`references/non-node.md`。
 >
 > **一、摸底（只读，不改任何文件）**
 > 1. `node .cursor/skills/design-system-adopter/scripts/ds.mjs detect`，告诉我识别到了什么。
 > 2. 找到 design-system-steward（`ds.mjs steward locate`；没有就 `steward install`），跑 `audit`，给我一份工程量报告：旧变量、硬编码字面量、内联样式各多少。
-> 3. 列出这个项目的结构：有哪些应用 / 路由板块 / 目录，用的组件库是什么，有没有非 Node 的子系统（例如 Flask 模板）。然后【必须问我】：这些板块里哪几个要换成 Citrine，哪几个保持原样。我的初步答案：覆盖 **【要覆盖的板块】**，保持原样的有 **【不动的板块】**，另外 **【Flask 子系统路径】** 是 Flask 模板 + 一个 CSS 文件、不是 Node 项目。
+> 3. 列出这个项目的结构：有哪些应用 / 路由板块 / 目录，用的组件库是什么，有没有非 Node 的子系统（例如 Flask 模板）。然后【必须问我】：这些板块里哪几个要换成 Morganite，哪几个保持原样。我的初步答案：覆盖 **【要覆盖的板块】**，保持原样的有 **【不动的板块】**，另外 **【Flask 子系统路径】** 是 Flask 模板 + 一个 CSS 文件、不是 Node 项目。
 > 4. 如果组件库不是 Element Plus 也不是 shadcn/ui：停下告诉我这是桥接缺口，第一期只能换骨架与 token、组件会保持旧样子，等我决定是否继续。
 >
 > **二、Node 应用的第一期换肤（只覆盖指定板块）**
-> 1. 如果项目已有 `design-system/` 目录，【必须问我】是否同意把它改名为 `design-system.legacy/` 当迁移证据；同意后 `ds.mjs init --system citrine --stack <栈> --legacy-rename`，否则去掉 `--legacy-rename`。
+> 1. 如果项目已有 `design-system/` 目录，【必须问我】是否同意把它改名为 `design-system.legacy/` 当迁移证据；同意后 `ds.mjs init --system morganite --stack <栈> --legacy-rename`（要玫瑰金以外的颜色再加 `--palette <颜色>`），否则去掉 `--legacy-rename`。
 > 2. steward `build-tokens` → `guard` 必须是 `current`。
-> 3. 因为只覆盖部分板块，用范围根：`ds.mjs scope --root citrine --to src/styles/citrine-scoped --with <桥接组>`；样式入口里把原来的 dist / 桥接 / recipes import 换成 `citrine-scoped/` 里的文件，组件库基础样式保持全局；`index.html` 的 `<html>` 默认带 `class="citrine"`；不覆盖的板块在路由 `meta` 上标 `legacy: true`，加 `router.beforeEach((to) => document.documentElement.classList.toggle('citrine', !to.meta.legacy))`（React 项目按命令打印的片段做）。
+> 3. 因为只覆盖部分板块，用范围根：`ds.mjs scope --root morganite --to src/styles/morganite-scoped --with <桥接组>`；样式入口里把原来的 dist / 桥接 / recipes import 换成 `morganite-scoped/` 里的文件，组件库基础样式保持全局；`index.html` 的 `<html>` 默认带 `class="morganite"`；不覆盖的板块在路由 `meta` 上标 `legacy: true`，加 `router.beforeEach((to) => document.documentElement.classList.toggle('morganite', !to.meta.legacy))`（React 项目按命令打印的片段做）。
 > 4. 旧变量做别名过渡：新建一个过渡样式文件，把旧变量名指向新 token（如 `--text: var(--color-text-primary)`），列出你映射了哪些，映射不了的告诉我。
-> 5. 把 `src/styles/citrine-scoped/**` 和你确认要保持原样的板块目录登记进 `design-system/exemptions.json`，每条写理由。
+> 5. 把 `src/styles/morganite-scoped/**` 和你确认要保持原样的板块目录登记进 `design-system/exemptions.json`，每条写理由。
 > 6. `ds.mjs agents --stack <栈>` 渲染 AGENTS.md 全文给我看，【必须问我】确认后再 `--write`；里面要写清哪些板块归新规范、哪些是旧板块不碰。
 > 7. 建 `accept.config.mjs`，只登记覆盖板块的页面；`npm run build && npx citrine-accept all` 跑到全绿。
-> 8. **自证旧板块没被波及**：打开一个未覆盖的路由，检查 `document.documentElement.classList` 不含 `citrine`、`getComputedStyle(document.documentElement).getPropertyValue('--color-action-primary')` 为空、组件仍是组件库默认外观；把这三项结果连同一张截图给我。
+> 8. **自证旧板块没被波及**：打开一个未覆盖的路由，检查 `document.documentElement.classList` 不含 `morganite`、`getComputedStyle(document.documentElement).getPropertyValue('--color-action-primary')` 为空、组件仍是组件库默认外观；把这三项结果连同一张截图给我。
 >
 > **三、Flask 子系统（非 Node，纯 CSS 交付）**
-> 1. `ds.mjs export --system citrine --to <Flask 子系统>/static/citrine`，得到 `index.css`、`recipes.css` 和清单。不要把变量值手抄进任何 CSS。
-> 2. 模板 `<head>` 按顺序 `<link>`：`index.css` → `recipes.css` → 原有的 `admin.css`；暗色靠 `<html class="dark">`。
+> 1. `ds.mjs export --system morganite --to <Flask 子系统>/static/morganite`，得到 `index.css`、`base.css`、`fonts.css`、`recipes.css` 和清单，放在同一目录。不要把变量值手抄进任何 CSS。
+> 2. 模板 `<head>` 按顺序 `<link>`：`index.css` → `base.css` → `recipes.css` → 原有的 `admin.css`；暗色靠 `<html class="dark">`。
 > 3. 把 `admin.css` 里的颜色 / 字号 / 间距 / 圆角 / 阴影改成引用变量（可用 steward `migrate --phase replace / settle` 辅助，settle 决策草稿给我确认）；表格列宽、筛选控件宽度这类「按内容定」的像素允许保留。模板的页头 / 筛选栏 / 状态胶囊 / 操作胶囊 / 表单 / 空态换用 recipes 的配方类；显隐切换用 `hidden` 属性。
-> 4. 把 Flask 服务跑起来，`npx citrine-accept pages --url http://127.0.0.1:<端口> --tokens <Flask 子系统>/static/citrine`（`narrow`、`focus` 同理），页面清单写服务器路径。跑到全绿。
+> 4. 把 Flask 服务跑起来，`npx citrine-accept pages --url http://127.0.0.1:<端口> --tokens <Flask 子系统>/static/morganite`（`narrow`、`focus` 同理），页面清单写服务器路径。跑到全绿。
 >
 > **四、汇报与交接**
 > 用大白话给我：摸底数字、第一期做了什么、两边验收结果、旧板块自证结果，以及**二期收编清单**——哪些板块还没纳入、待决字面量还有多少、建议的顺序。然后只问我一个问题：「现在开始二期收编，还是先上线看效果？」在我回答前不要动二期。
 >
-> **硬边界**：不改 `design-systems/citrine/` 快照和 `citrine-scoped/` 生成物；配方不够用就记下来作为提案告诉我，不在页面上补样式值，不用 `!important` 压验收；每一处写入前告诉我将发生什么。
+> **硬边界**：不改 `design-systems/morganite/` 快照和 `morganite-scoped/` 生成物；配方不够用就记下来作为提案告诉我，不在页面上补样式值，不用 `!important` 压验收；每一处写入前告诉我将发生什么。
 
 ## 5e. 验收进 CI（门禁）
 
@@ -232,7 +226,7 @@ node .cursor/skills/design-system-adopter/scripts/ds.mjs ci             # 写 .g
 
 > 把设计系统验收接进 CI：按 design-system-adopter 用 `ds.mjs ci --dry-run` 把工作流给我看，我确认后写入并提交。
 
-## 5f. 场景 F：选颜色、换颜色（Morganite）
+## 5f. 场景 F：选颜色、换颜色
 
 Morganite 的结构只有一套，品牌色可以换：默认玫瑰金，另有蓝、紫、青、绿、黄晶黄（清单与说明见 [morganite/README.md「颜色」](../morganite/README.md#颜色)）。先在[效果预览](https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/?panel=open)右下角「规范调节」里切着看。
 
@@ -257,7 +251,7 @@ Agent 在已接入的项目里改 UI 时自动遵守，你验收产出时按这�
 
 1. **结构用配方类**：页头 / 筛选栏 / 状态胶囊 / 操作胶囊 / 表单页 / 空态 / 统计卡 / 原位确认条都在 `recipes.css` 里，不自己写骨架。
 2. **颜色 / 间距 / 字号 / 圆角只写 token 变量**：页面里出现 `#hex`、裸像素（表格列宽、筛选控件宽度这类"按内容定"的宽度除外）就是错的。
-3. **配方不够用时提提案，不在页面上补样式**：Agent 会停下来告诉你缺什么、建议进哪一层；你决定向仓库提 issue / PR 还是先用最接近的配方顶住。快照 `design-systems/citrine/` 任何时候都不改。
+3. **配方不够用时提提案，不在页面上补样式**：Agent 会停下来告诉你缺什么、建议进哪一层；你决定向仓库提 issue / PR 还是先用最接近的配方顶住。快照 `design-systems/morganite/` 任何时候都不改。
 
 三端是内置的：桌面展开、窄屏（≤1366）侧栏折叠、手机（≤768）抽屉侧栏 + 表格内部滚动 + 浮层贴底全宽，页面不用自己写媒体查询。
 
@@ -266,9 +260,9 @@ Agent 在已接入的项目里改 UI 时自动遵守，你验收产出时按这�
 ```bash
 A=.cursor/skills/design-system-adopter/scripts/ds.mjs
 node $A detect                          # 项目里有哪些设计系统候选、工作副本状态
-node $A init --system citrine --stack element-plus   # 或 --stack shadcn；已有 design-system/ 时加 --legacy-rename
+node $A init --system morganite --stack element-plus   # 或 --stack shadcn；--palette <颜色> 选颜色；已有 design-system/ 时加 --legacy-rename
 node $A status [--offline]              # 快照完整性、当前颜色、本地修改、上游最新
-node $A palette [<颜色>] [--list] [--dry-run]   # 换颜色（Morganite）：只换品牌色与登记的角色，结构不变；init / export / scope 也认 --palette
+node $A palette [<颜色>] [--list] [--dry-run]   # 换颜色：只换品牌色与登记的角色，结构不变；init / export / scope 也认 --palette
 node $A upgrade --dry-run               # 预览升级；去掉 --dry-run 执行；--resolve decisions.json 提交冲突决议
 node $A agents --stack element-plus     # 渲染 AGENTS.md；确认后加 --write
 node $A ci [--dry-run]                  # 写 GitHub Actions 门禁（status --strict → guard → 构建 → 验收）
@@ -283,12 +277,12 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 | 现象 | 原因 / 处理 |
 | --- | --- |
 | `upgrade` / `steward install` 报下载失败 | 访问 GitHub 不通（仓库是公开的，不是权限问题）：换网络重试；完全离线用 `upgrade --from <种子目录或 tgz>`（tgz 到 Releases 页下载） |
-| `npm i @wycm9527/citrine`（或 `@wycm9527/morganite`）404 / 超时 | 多半是 registry 访问问题：换镜像 `npm config set registry https://registry.npmmirror.com`，或走第 2 节方式 B（文件夹渠道 + Release 直链）。Morganite 0.3.3 起才在 npm 上，要更早的版本走方式 B |
-| 队友 `npm install` 报找不到 `file:/tmp/...` 或 `file:../ds/...` | 有人用机器专属路径装了种子 / 工具。改成第 2 节的写法：种子走文件夹渠道（`file:./design-systems/citrine`），工具走 Release 直链 |
+| `npm i @wycm9527/morganite` 404 / 超时 | 多半是 registry 访问问题：换镜像 `npm config set registry https://registry.npmmirror.com`，或走第 2 节方式 B（文件夹渠道 + Release 直链）。Morganite 0.3.3 起才在 npm 上，要更早的版本走方式 B |
+| 队友 `npm install` 报找不到 `file:/tmp/...` 或 `file:../ds/...` | 有人用机器专属路径装了种子 / 工具。改成第 2 节的写法：种子走文件夹渠道（`file:./design-systems/morganite`），工具走 Release 直链 |
 | 验收报「暗色未生效」 | 页面没把 `?theme=dark` 落成 `<html class="dark">`（`index.html` 首屏先读 URL 再读 localStorage）；项目确实没有暗色就 `--modes light` |
-| 验收报「品牌黄出现在允许清单之外」 | 页面把黄色用成了强调 / 状态（如未读点、引用块边线）——换中性或状态色；确属合法位置（登录品牌区、数据卡骨架）写进 `accept.config.mjs` 的 `BRAND_ALLOW`（旧名 `YELLOW_ALLOW`）并写理由；别的设计系统报自己的品牌色（如 Morganite 的「品牌金」「品牌蓝」），判色范围与清单在它的身份文件 `accept.brand`，换了颜色的项目判色范围取调色盘的 `accept.brand`（citrine-tools ≥ 1.4.0） |
+| 验收报「品牌金出现在允许清单之外」（换了颜色的报「品牌蓝」等） | 页面把品牌色用成了强调 / 状态（如未读点、引用块边线）——换中性或状态色；确属合法位置写进 `accept.config.mjs` 的 `BRAND_ALLOW`（旧名 `YELLOW_ALLOW`）并写理由。判色范围与允许清单在身份文件的 `accept.brand`，换了颜色的项目判色范围取调色盘的 `accept.brand`（citrine-tools ≥ 1.4.0） |
 | `ds.mjs palette` 说「不是官方颜色」或「被手改过」 | 前者是只放在效果预览里试的颜色：正式用先提案转正，只在本项目试加 `--unofficial`；后者是工作副本里品牌色或登记的角色被手改了：颜色差异先提案，确认覆盖加 `--force` |
-| 组件走查被跳过（KITCHEN 为 null） | Element 项目挂 `@wycm9527/citrine/vue/KitchenSink.vue` 到 `/kitchen`，shadcn 拷 `templates/KitchenSink.tsx`，`KITCHEN: '#/kitchen'` |
+| 组件走查被跳过（KITCHEN 为 null） | Element 项目挂 `@wycm9527/morganite/vue/KitchenSink.vue` 到 `/kitchen`，shadcn 拷 `templates/KitchenSink.tsx`，`KITCHEN: '#/kitchen'` |
 | 只想覆盖部分板块 | 多应用各自 `init`；同一应用按路由用范围根（5c）；同屏混排不支持 |
 | 项目不是 Node 工程 / 装不了 npm | 走 5b：`ds.mjs export` 出纯 CSS，模板用配方类，验收加 `--url` 与 `--tokens`；不要手抄变量值 |
 | 验收「未找到 Chrome」 | 装 Google Chrome，或 `CHROME=/path/to/chrome npx citrine-accept all` |
@@ -299,12 +293,12 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 
 ## 8b. 维护者：发版与 CI
 
-- 改了 `recipes.css` / 桥接后，除 CI 外再跑一次级联审计：`node citrine/scripts/audit-cascade.mjs --dist citrine/testbed/golden-admin/app/dist --pages "?theme=light#/kitchen,?role=admin#/orders"`——找「位置更后却因特异性更低而输掉」的声明（2.11.7 汉堡按钮那类问题，pages / narrow / focus 看不出来）。输出需人判断，口径写在脚本末尾。
+- 改了 `recipes.css` / 桥接后，除 CI 外再跑一次级联审计：`node morganite/scripts/audit-cascade.mjs --dist morganite/testbed/element-lab/app/dist --pages "?theme=light#/kitchen,#/"`——找「位置更后却因特异性更低而输掉」的声明（Citrine 2.11.7 汉堡按钮那类问题，pages / narrow / focus 看不出来）。输出需人判断，口径写在脚本末尾。
 - 仓库里「一个设计系统」= `<id>/seeds/<seed-name>/design-system.json`（目录名 `<id>` 与身份文件 id 一致）。`node scripts/systems.mjs` 列出全部系统；CI、版本检查、发版都从这份清单走，不写死某个系统。
-- 每次 push / PR 自动跑 CI：adopter 单测、Citrine 角色表与 token 源一致、**每个系统**六处版本号一致（`scripts/check-versions.mjs`）、**每个种子** `dist` 与源一致（循环 `build-tokens` 后 `git diff` 必须为空——所以 `dist/` 要随种子提交），调色盘体检（导入结果、`check-palettes --build`、预览面板数据都与源一致），实测项目的 guard / status / 全量验收（每个项目一个 job，失败会上传截图与报告为 artifact），以及 Morganite 换色矩阵（每个官方颜色 × 三个实测项目：先 `upgrade --from` 追上种子，再 `palette <颜色>`、构建、页面与组件走查）。不绿不合。
+- 每次 push / PR 自动跑 CI：adopter 单测、迁移角色表与 token 源一致（`scripts/check-roles.mjs`）、**每个系统**六处版本号一致（`scripts/check-versions.mjs`）、**每个种子** `dist` 与源一致（循环 `build-tokens` 后 `git diff` 必须为空——所以 `dist/` 要随种子提交），调色盘体检（导入结果、`check-palettes --build`、预览面板数据都与源一致），实测项目的 guard / status / 全量验收（每个项目一个 job，失败会上传截图与报告为 artifact），以及 Morganite 换色矩阵（每个官方颜色 × 三个实测项目：先 `upgrade --from` 追上种子，再 `palette <颜色>`、构建、页面与组件走查）。不绿不合。
 - 发版（任意系统）：改种子 `design-system.json` 与 `package.json` 版本、写种子 CHANGELOG、更新种子 README 版本行（`版本 x.y.z · `）、`<id>/README.md` 版本行（`版本 **x.y.z**`）与仓库根 README 表格里该系统的行，`node scripts/check-versions.mjs --system <id>` 通过后打 tag `<id>-vX.Y.Z` 推送——`release.yml` 从 tag 解析出 `<id>` 与版本，自动建 GitHub Release（说明取该种子 CHANGELOG 段落，附件 = 种子 npm pack + `<id>/tools` 的 npm pack（有的话）+ 纯 CSS 包 `<id>-css-X.Y.Z.tgz`）。手动补历史版本：`node scripts/release.mjs --system <id> --version X.Y.Z --notes-only`；本地预演加 `--dry-run`。
 - 效果预览的在线版（GitHub Pages，仓库 Settings → Pages 的 Source 选 GitHub Actions）由 `.github/workflows/pages.yml` 发布：只打包 `morganite/previews/` 和它用相对路径引用的种子 `dist/`、`bridge/*.css`，目录层级与仓库相同；这些文件有改动推到 main 就自动重新发布，也可以在 Actions 里手动运行。不用「从分支发布」：`.cursor/skills/web-to-design-system` 链到单独克隆的 `skills/`，GitHub 的机器上是断链，打包整个仓库会失败。别的系统也要在线预览时，在工作流里加对应的复制行与 `paths`。
-- npm 发布是 `release.yml` 的第二个 job：同一个 tag 把该系统里 **`package.json` 带 `publishConfig` 的包**发到 registry（Citrine 的种子与工具、Morganite 的种子带；web-to-design-system 提炼出来的种子默认不带，只走文件夹 / Release 直链渠道——要上 npm 按 8c 第 9 步）。已存在的版本跳过，所以只升种子不升工具也没事；带 provenance。认证走 npm **Trusted Publishing**（零密钥）：在 npmjs.com 每个包的 Settings → Trusted Publisher 登记 GitHub `WYCM9527/Design-System` + 工作流 `release.yml`，Environment 留空，**Allowed actions 勾上 `npm publish`**（2026-09-03 之后新建的登记默认只允许 `npm stage publish`，直接发布会报 403 `OIDC permission denied for this action`；报 `ENEEDAUTH` 则是登记没对上——没登记、字段不符或已过期）。npm 只能给已存在的包登记，**新包首发手工**；**新登记 2 天内必须完成一次成功发布，否则作废、要删了重建**，所以登记要紧挨着一个真会发这个包的 tag（版本已在 registry、被跳过的不算）。现状：Citrine 种子 2.11.5 起、工具 1.2.0（随 2.12.1）起自动发布——工具在 2.11.5 登记后因版本没变被跳过、没完成首发，之后 1.1.2 / 1.1.3 自动发布都认证失败（1.1.3 手动补发，1.1.2 没上 npm），2026-10-15 重新登记才好。Morganite 种子 0.3.3 首发手工，2026-10-27 登记 Trusted Publisher，0.3.4 起自动发布。登记也可以用命令行（npm ≥ 12，账号要开 2FA）：`npx -y npm@latest trust github <包名> --file release.yml --repo WYCM9527/Design-System --allow-publish -y`，`--allow-publish` 就是网页上的「勾 npm publish」，不写 `--env` 即 Environment 留空，`-y` 跳过中途的确认；之后按提示回车、在网页上批准。**以终端打印出 `Trust configuration created successfully` 为准**——Morganite 第一次登记就没生效，0.3.4 的 publish job 报了 `ENEEDAUTH`。拿不准用 `npm trust list <包名>` 查（同样要网页验证，验证页勾「5 分钟内跳过两步验证」，紧接着登记就不用再验），显示 `No trust configurations found` 就是没有；一个包只能有一条登记，改字段先 `npm trust revoke --id <id> <包名>` 再重建。登记后没在 2 天内发出去、或忘了登记，publish job 会报 `ENEEDAUTH`，Release 不受影响，重新登记后在 Actions 页面点 Re-run failed jobs（或 `gh run rerun <run-id> --failed`）即可，不用重打 tag（只重跑 publish job，Release 附件不变；版本还不在 registry，不会被跳过）。手工首发有两处容易误判：本机 npm 令牌失效时 `npm publish` 报的是 `404 Not Found - PUT …`（不是 401），先 `npm whoami`，返回 401 就 `npm login`；新包上传成功时返回 202「being processed」，registry 先挂一个 npm 生成的占位版本 `0.0.0-stage`（不带脚本），约 3 分钟后正式版本出现、`latest` 切过去，占位版本留在版本列表里，不用管。换仓库或改工作流文件名要重新登记；也可退回仓库 Secret `NPM_TOKEN`（granular token，勾 publish + bypass 2FA；npm 正在限制这类 token 直接发布，不保证长期可用）。**工具有改动必升 `<id>/tools/package.json` 的版本号**，否则 registry 上已存在同版本会被跳过、Release 里同名 tgz 内容不同。
+- npm 发布是 `release.yml` 的第二个 job：同一个 tag 把该系统里 **`package.json` 带 `publishConfig` 的包**发到 registry（Morganite 的种子与工具带——工具在 `morganite/tools`，随 Morganite 的 tag 发；web-to-design-system 提炼出来的种子默认不带，只走文件夹 / Release 直链渠道——要上 npm 按 8c 第 9 步）。已存在的版本跳过，所以只升种子不升工具也没事；带 provenance。认证走 npm **Trusted Publishing**（零密钥）：在 npmjs.com 每个包的 Settings → Trusted Publisher 登记 GitHub `WYCM9527/Design-System` + 工作流 `release.yml`，Environment 留空，**Allowed actions 勾上 `npm publish`**（2026-09-03 之后新建的登记默认只允许 `npm stage publish`，直接发布会报 403 `OIDC permission denied for this action`；报 `ENEEDAUTH` 则是登记没对上——没登记、字段不符或已过期）。npm 只能给已存在的包登记，**新包首发手工**；**新登记 2 天内必须完成一次成功发布，否则作废、要删了重建**，所以登记要紧挨着一个真会发这个包的 tag（版本已在 registry、被跳过的不算）。现状：Citrine 种子 2.11.5 起、工具 1.2.0（随 2.12.1）起自动发布——工具在 2.11.5 登记后因版本没变被跳过、没完成首发，之后 1.1.2 / 1.1.3 自动发布都认证失败（1.1.3 手动补发，1.1.2 没上 npm），2026-10-15 重新登记才好。Morganite 种子 0.3.3 首发手工，2026-10-27 登记 Trusted Publisher，0.3.4 起自动发布。登记也可以用命令行（npm ≥ 12，账号要开 2FA）：`npx -y npm@latest trust github <包名> --file release.yml --repo WYCM9527/Design-System --allow-publish -y`，`--allow-publish` 就是网页上的「勾 npm publish」，不写 `--env` 即 Environment 留空，`-y` 跳过中途的确认；之后按提示回车、在网页上批准。**以终端打印出 `Trust configuration created successfully` 为准**——Morganite 第一次登记就没生效，0.3.4 的 publish job 报了 `ENEEDAUTH`。拿不准用 `npm trust list <包名>` 查（同样要网页验证，验证页勾「5 分钟内跳过两步验证」，紧接着登记就不用再验），显示 `No trust configurations found` 就是没有；一个包只能有一条登记，改字段先 `npm trust revoke --id <id> <包名>` 再重建。登记后没在 2 天内发出去、或忘了登记，publish job 会报 `ENEEDAUTH`，Release 不受影响，重新登记后在 Actions 页面点 Re-run failed jobs（或 `gh run rerun <run-id> --failed`）即可，不用重打 tag（只重跑 publish job，Release 附件不变；版本还不在 registry，不会被跳过）。手工首发有两处容易误判：本机 npm 令牌失效时 `npm publish` 报的是 `404 Not Found - PUT …`（不是 401），先 `npm whoami`，返回 401 就 `npm login`；新包上传成功时返回 202「being processed」，registry 先挂一个 npm 生成的占位版本 `0.0.0-stage`（不带脚本），约 3 分钟后正式版本出现、`latest` 切过去，占位版本留在版本列表里，不用管。换仓库或改工作流文件名要重新登记；也可退回仓库 Secret `NPM_TOKEN`（granular token，勾 publish + bypass 2FA；npm 正在限制这类 token 直接发布，不保证长期可用）。**工具有改动必升 `<id>/tools/package.json` 的版本号**，否则 registry 上已存在同版本会被跳过、Release 里同名 tgz 内容不同。
 
 ## 8c. 维护者：新增一个设计系统（从网站提炼）
 
@@ -313,7 +307,7 @@ steward（`<steward>` = `ds.mjs steward locate` 的输出）：`node <steward>/s
 1. **定类型**：先说清这套规范给什么用——内置 `website` 通用网站 / `product` 产品应用 / `admin` 中后台，公司自己的类型放本仓库根 `system-types/<id>/`（见那里的 README；`node skills/web-to-design-system/scripts/list-types.mjs` 列出全部）。类型决定哪些角色必须处理、允许推断哪些、DESIGN 用哪套配方词汇、要不要组件库桥接——不是所有系统都给中后台用，官网不会被写成中后台底座。
 2. **取证 + 起草**：对 Agent 说「把 https://… 按我们的规范提炼成 `<类型>` 设计系统 `<id>`」，它会用 agent-browser 取证（页面按类型定义里的 `pages` 建议给 2～4 个）、起草 token（`--type <id>`）、给你看 `audit-summary.md`（系统类型、品牌族判定、观察 / 推断 / 必须处理的缺口 / 可选未填）。
 3. **核对**：逐角色核对草稿——判错的观察改 alias、推断项确认或改值、「必须处理的缺口」三选一（补证据 / 按规则推断并标注 / 写明不需要）、「可选角色未填」不发明值；品牌决定（选中态用品牌色还是反转块、链接靠色相还是下划线、暗色是否纳管）由你拍板。
-4. **落进仓库**：`scaffold-system.mjs --into-repo <仓库根> --id <id> --name "<名称>" --description "<一句定位>" [--with-citrine-bridges citrine/seeds/brand-yellow-e] --build`——写到 `<id>/seeds/<id>/`，`upstream` 由仓库远端与实际路径推出，身份文件写 `type`，顺带写 `<id>/README.md` 与根 README 表格行，`dist/` 构建好。`--with-citrine-bridges` 只对类型定义 `bridges: true` 的（product / admin）有意义：把 Citrine 的 Element Plus / shadcn / recipes / ECharts 桥接拷来当起点，并在 AUDIT「桥接缺口」列出桥接引用但新系统没有的变量——每行决定「补 token」还是「删规则」，再挂走查页亮 / 暗过一遍；通用网站不拷，纯 CSS 栈接入。
+4. **落进仓库**：`scaffold-system.mjs --into-repo <仓库根> --id <id> --name "<名称>" --description "<一句定位>" [--with-citrine-bridges morganite/seeds/morganite] --build`——写到 `<id>/seeds/<id>/`，`upstream` 由仓库远端与实际路径推出，身份文件写 `type`，顺带写 `<id>/README.md` 与根 README 表格行，`dist/` 构建好。`--with-citrine-bridges` 只对类型定义 `bridges: true` 的（product / admin）有意义：把 Morganite 的 Element Plus / shadcn / recipes / ECharts 桥接拷来当起点（选项名沿用旧称），并在 AUDIT「桥接缺口」列出桥接引用但新系统没有的变量——每行决定「补 token」还是「删规则」，再挂走查页亮 / 暗过一遍；通用网站不拷，纯 CSS 栈接入。
 5. **写文档**：`DESIGN.md`「待填写 / 待确认」清零（只写角色名与规则，不写数值）；`AUDIT.md` 贴对比度报告、处理推断清单与缺口；`migration/roles.json` 的 `hints` 补旧系统独有的变量名 / 色值。
 6. **门禁**：`node skills/web-to-design-system/scripts/publish-check.mjs --seed <id>/seeds/<id>` 全 ✔（0.x 想带着 `[推断]` 先发就 `--allow-inferred`，CHANGELOG 写清）；`node scripts/check-versions.mjs --system <id>` 通过。
 7. **发版**：PR 合并 → 打 tag `<id>-v0.1.0` 推送 → Release 自动建。消费者按第 2 节的方式 B 接入（拷 `<id>/seeds/<id>` 进项目，`ds.mjs init --system <id> --stack css|element-plus|shadcn`），升级走 `ds.mjs status / upgrade`。

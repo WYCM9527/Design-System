@@ -3,7 +3,8 @@
   "id": "citrine",
   "name": "黄晶黄",
   "source": {
-    "from": "Citrine 黄晶 citrine/seeds/brand-yellow-e · color.brand.500 #F9CF00",
+    "from": "Citrine 黄晶 2.12.2 的品牌黄 color.brand.500 #F9CF00（黄晶已并入 Morganite，原种子见 tag）",
+    "ref": "WYCM9527/Design-System@citrine-v2.12.2",
     "scale": "tailwindcss@v4.3.5 packages/tailwindcss/theme.css · yellow（400 档换成 #F9CF00）",
     "license": "MIT（色阶）",
     "generator": "scripts/import-shadcn-palettes.mjs"

@@ -1,13 +1,13 @@
 ---
 name: design-system-adopter
-description: 把公司发布的设计系统（带 design-system.json 身份文件的种子包，如 Citrine）接入任意 Web 项目并保持更新。用户说「用 XX 设计系统起项目 / 接入设计系统 / 换成公司设计规范 / 更换现有规范 / 升级设计系统 / 设计系统有没有新版本 / update design system」，或项目里出现 design-systems/<id>/ 快照、design-system/.adopter.json 时使用。覆盖：从 0 接入、旧项目换规范（配合 design-system-steward 迁移）、按 tag 拉上游 + 三方合并更新、生成 AGENTS.md 项目规则、验收归因。不用于：治理 / 提炼项目自己的设计系统（那是 design-system-steward）、普通的孤立 UI 修改。
+description: 把公司发布的设计系统（带 design-system.json 身份文件的种子包，如 Morganite）接入任意 Web 项目并保持更新。用户说「用 XX 设计系统起项目 / 接入设计系统 / 换成公司设计规范 / 更换现有规范 / 升级设计系统 / 设计系统有没有新版本 / update design system」，或项目里出现 design-systems/<id>/ 快照、design-system/.adopter.json 时使用。覆盖：从 0 接入、旧项目换规范（配合 design-system-steward 迁移）、按 tag 拉上游 + 三方合并更新、生成 AGENTS.md 项目规则、验收归因。不用于：治理 / 提炼项目自己的设计系统（那是 design-system-steward）、普通的孤立 UI 修改。
 metadata:
   version: "0.4.0"
 ---
 
 # Design System Adopter
 
-把「我们的设计系统」落进项目、接好线、跟着上游版本走。机制全部在 `scripts/ds.mjs`（零依赖，Node ≥ 22），数据全部来自设计系统包根的 `design-system.json` 身份文件——本 skill 与具体设计系统无关，任何带身份文件的系统（Citrine 或以后的新系统）都适用。
+把「我们的设计系统」落进项目、接好线、跟着上游版本走。机制全部在 `scripts/ds.mjs`（零依赖，Node ≥ 22），数据全部来自设计系统包根的 `design-system.json` 身份文件——本 skill 与具体设计系统无关，任何带身份文件的系统（Morganite 或以后的新系统）都适用。
 
 ## 30 秒心智模型
 

@@ -12,10 +12,10 @@
 ## 步骤
 
 1. 先按「从 0 开始」或「更换现有规范」把项目接入（快照 + 工作副本 + build-tokens）——范围根只是改变**样式生效范围**，不改变接入方式。
-2. 生成范围包：`node <adopter>/scripts/ds.mjs scope --root <class> --to src/styles/citrine-scoped --with element-plus`（`--root` 通常用系统 id；`--with` 按栈选桥接组）。得到 `index.css`（token，优先项目工作副本的 dist）、`recipes.css`、桥接文件，各自包在 `@scope (html.<root>)` 里，`:root` / `html` 已改写为 `:scope`；`scope.manifest.json` 记账；`.adopter.json` 记 `scopeRoot / scopeDir / scopeWith`。颜色跟工作副本走（`ds.mjs palette <颜色>` 换色后会自动重生成范围包）；没有工作副本 dist 时才用 `--palette`。
+2. 生成范围包：`node <adopter>/scripts/ds.mjs scope --root <class> --to src/styles/morganite-scoped --with element-plus`（`--root` 通常用系统 id；`--with` 按栈选桥接组）。得到 `index.css`（token，优先项目工作副本的 dist）、`recipes.css`、桥接文件，各自包在 `@scope (html.<root>)` 里，`:root` / `html` 已改写为 `:scope`；`scope.manifest.json` 记账；`.adopter.json` 记 `scopeRoot / scopeDir / scopeWith`。颜色跟工作副本走（`ds.mjs palette <颜色>` 换色后会自动重生成范围包）；没有工作副本 dist 时才用 `--palette`。
 3. 样式入口：组件库基础样式保持全局；把原来的 dist / 桥接 / recipes import **换成**范围包里的文件。
 4. `<html>` 默认带 `class="<root>"`（多数路由覆盖时）；路由守卫：Vue Router 在未接入板块的路由 `meta` 上标 `legacy: true`，`router.beforeEach((to) => document.documentElement.classList.toggle('<root>', !to.meta.legacy))`；React 按路径前缀切（命令会打印片段）。
-5. `exemptions.json` 登记 `src/styles/citrine-scoped/**`（范围根生成物）；未接入板块的目录如需保留旧硬编码也登记并写明理由。
+5. `exemptions.json` 登记 `src/styles/morganite-scoped/**`（范围根生成物）；未接入板块的目录如需保留旧硬编码也登记并写明理由。
 6. 验收清单只登记覆盖板块的页面。另外**必须自证旧板块没被波及**：打开一个未接入路由，`document.documentElement.classList` 不含 root，`getComputedStyle(document.documentElement).getPropertyValue('--color-action-primary')` 为空，组件是组件库默认外观。
 7. 以后 token / 桥接变化：`upgrade` 完成时**自动**先用 steward 重建 token（dist），再用新快照与新 dist 重生成范围包——桥接 / recipes / token 一次到位。只有找不到 steward 时才需手工 `build-tokens → ds.mjs scope`；本地自己改 token 后也是这两步。不重生成的话桥接更新到不了应用——范围包是生成物快照，不是引用。
 

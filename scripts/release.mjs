@@ -4,7 +4,7 @@
 // 用法：node scripts/release.mjs --system <id> [--version x.y.z] [--notes-only] [--dry-run]
 //   默认版本 = 种子 design-system.json；tag <id>-v<version> 必须已存在（dry-run 只警告）；已有同名 Release 时更新 notes 与附件（--clobber）。
 //   --notes-only：只建 / 更新 Release 说明，不打包附件（给历史版本补 Release 用——附件只能从当前工作树打包，历史版本不该附）。
-//   「最新」标记只留给 Citrine：README 与 docs/GUIDE.md 用 releases/latest/download 直链装 citrine-tools，别的系统发版若成为「最新」，那条链接就会 404。
+//   「最新」标记只留给 Morganite（验收工具 citrine-tools 随它发版）：README 与 docs/GUIDE.md 用 releases/latest/download 直链装 citrine-tools，别的系统发版若成为「最新」，那条链接就会 404。
 // 依赖：gh 已登录；Node ≥ 22；tar。
 import { execFileSync, spawnSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
@@ -24,7 +24,7 @@ const tag = `${identity.upstream.tagPrefix}${version}`;
 const repo = identity.upstream.repo;
 const dry = !!opt('dry-run'), notesOnly = !!opt('notes-only');
 const sh = (cmd, args, o = {}) => execFileSync(cmd, args, { encoding: 'utf8', cwd: ROOT, ...o }).trim();
-const LATEST_SYSTEM = 'citrine';
+const LATEST_SYSTEM = 'morganite';
 const latestArgs = id === LATEST_SYSTEM ? [] : ['--latest=false'];
 const ADOPTER = join(ROOT, 'design-system-adopter/scripts/ds.mjs');
 

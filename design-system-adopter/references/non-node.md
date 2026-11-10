@@ -10,7 +10,7 @@
 ## 步骤
 
 1. **导出**（在有 Node 的机器上，来源是种子目录 / npm 包 / 已接入项目的快照）：
-   `node <adopter>/scripts/ds.mjs export --system <种子目录|id|npm包名> --to <项目>/static/citrine`
+   `node <adopter>/scripts/ds.mjs export --system <种子目录|id|npm包名> --to <项目>/static/morganite`
    得到 `index.css`（token 亮 + 暗色 delta）、`recipes.css`（页面骨架公共类，与组件库无关）和清单 `design-system.export.json`；每个文件带版本头。有组件库桥接可加 `--with element-plus`。要换颜色加 `--palette <颜色>`（官方颜色见 `ds.mjs palette --list` 或种子身份文件 `palettes.official`）：调色盘覆盖接在 `index.css` 末尾，以后重导出沿用。
 2. **接线**：模板 `<head>` 按顺序 `<link>`：`index.css` → `recipes.css` → 项目自己的样式。暗色：`<html class="dark">`（首屏脚本读 `?theme=` / localStorage）。
 3. **项目样式只引用变量**：`admin.css` 里把颜色 / 字号 / 间距 / 圆角 / 阴影改成 `var(--color-text-primary)` 这类引用，不写值（表格列宽、筛选控件宽度这类"按内容定"的宽度除外）。**导出文件只读**——再次 `export` 会拦截被手改的文件（`--force` 才覆盖）。

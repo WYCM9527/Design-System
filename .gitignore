@@ -3,14 +3,10 @@
 articles/
 # 依赖与构建产物（design-system/dist 是可交付的 token 构建物，保留）
 node_modules/
-citrine/testbed/golden-admin/app/dist/
-citrine/testbed/light-procure/app/dist/
-citrine/testbed/shadcn-lab/app/dist/
 morganite/testbed/element-lab/app/dist/
 morganite/testbed/shadcn-lab/app/dist/
 # 验收工具输出（citrine-accept 写到项目内 .accept/）、npm pack 产物、升级冲突清单（临时件）
 .accept/
-citrine/tools/out/
 *.tgz
 .adopter-conflicts.json
 # 系统文件

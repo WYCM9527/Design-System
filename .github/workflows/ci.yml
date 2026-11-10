@@ -1,8 +1,8 @@
-# CI：改种子 / 桥接 / 工具 / skill 的任何一处，都要过这四道门——
-#   checks：adopter 单测、Citrine 迁移角色表与 token 源一致、每个设计系统六处版本号一致、每个种子 dist 与 token 源一致（系统清单来自 scripts/systems.mjs）、调色盘与生成脚本一致并通过体检、效果预览的调色盘文件已重新生成
-#   accept：六个实测项目（Citrine 三个、Morganite 三个）各自 npm ci → guard current → status unified → 全量验收（页面 × 亮暗 / 组件走查 / 三端 / 焦点 / 黄金后台 E-S 像素对照）
+# CI：改种子 / 桥接 / 工具 / skill 的任何一处，都要过这几道门——
+#   checks（单测另在 Windows 上跑一遍）：adopter 单测、迁移角色表与 token 源一致、每个设计系统六处版本号一致、每个种子 dist 与 token 源一致（系统清单来自 scripts/systems.mjs）、调色盘与生成脚本一致并通过体检、效果预览的调色盘文件已重新生成
+#   accept：Morganite 三个实测项目各自 npm ci → guard current → status unified → 全量验收（页面 × 亮暗 / 组件走查 / 三端 / 焦点）
 #   accept-palettes：Morganite 每个官方颜色（默认颜色由 accept 覆盖）× 三个实测项目：先跟上种子再 ds.mjs palette → guard current → 页面与组件走查（亮 / 暗）
-# 验收在无头 Chrome 上跑（runner 自带 google-chrome），CJK 字体装 fonts-noto-cjk（Citrine 字体栈里有 Noto Sans CJK SC；Morganite 沿用 antd 字体栈，中文靠系统回退到它）。
+# 验收在无头 Chrome 上跑（runner 自带 google-chrome），CJK 字体装 fonts-noto-cjk（Morganite 沿用 antd 字体栈，中文靠系统回退到 Noto Sans CJK SC）。
 name: CI
 
 on:
@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   checks:
-    name: 单测 · 角色表 · 版本 · 种子 dist
+    name: 单测 · 角色表 · 版本 · 种子 dist · 调色盘
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -29,8 +29,8 @@ jobs:
         run: git clone --depth 1 https://github.com/WYCM9527/skills.git skills
       - name: adopter 单测
         run: node --test design-system-adopter/tests/merge.test.mjs design-system-adopter/tests/export.test.mjs design-system-adopter/tests/scope.test.mjs design-system-adopter/tests/ci.test.mjs design-system-adopter/tests/agents.test.mjs design-system-adopter/tests/palette.test.mjs
-      - name: Citrine 迁移角色表与 token 源一致
-        run: node citrine/seeds/brand-yellow-e/scripts/check-roles.mjs
+      - name: 迁移角色表与 token 源一致
+        run: node scripts/check-roles.mjs
       - name: 每个设计系统六处版本号一致
         run: node scripts/check-versions.mjs
       - name: 每个种子 dist 与 token 源一致（构建后无 diff）
@@ -59,8 +59,8 @@ jobs:
           node-version: 22
       - name: adopter 单测（路径分隔符 / 复制 / 三方合并 / 换色在 Windows 上的行为）
         run: node --test design-system-adopter/tests/merge.test.mjs design-system-adopter/tests/export.test.mjs design-system-adopter/tests/scope.test.mjs design-system-adopter/tests/ci.test.mjs design-system-adopter/tests/agents.test.mjs design-system-adopter/tests/palette.test.mjs
-      - name: Citrine 迁移角色表与 token 源一致
-        run: node citrine/seeds/brand-yellow-e/scripts/check-roles.mjs
+      - name: 迁移角色表与 token 源一致
+        run: node scripts/check-roles.mjs
       - name: 每个设计系统六处版本号一致
         run: node scripts/check-versions.mjs
 
@@ -72,9 +72,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { project: golden-admin, id: golden-admin, app: citrine/testbed/golden-admin/app }
-          - { project: light-procure, id: light-procure, app: citrine/testbed/light-procure/app }
-          - { project: shadcn-lab, id: shadcn-lab, app: citrine/testbed/shadcn-lab/app }
           - { project: Morganite · mall-ops, id: morganite-mall-ops, app: morganite/testbed/mall-ops/app }
           - { project: Morganite · element-lab, id: morganite-element-lab, app: morganite/testbed/element-lab/app }
           - { project: Morganite · shadcn-lab, id: morganite-shadcn-lab, app: morganite/testbed/shadcn-lab/app }

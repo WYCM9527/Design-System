@@ -1,7 +1,0 @@
-{
-  "version": 1,
-  "exemptions": [
-    { "path": "src/styles/app.css", "value": "6px", "reason": "状态徽标圆点直径（组件几何）" },
-    { "path": "src/styles/app.css", "value": "2px", "reason": "徽标上下 padding 微调（组件几何）" }
-  ]
-}
