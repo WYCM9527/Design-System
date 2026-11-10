@@ -69,7 +69,7 @@
       "mode": "dark",
       "min": 2.61,
       "why": "暗色主按钮填充对卡片 2.61:1，低于 UI 组件 3:1：Morganite 暗色不换品牌主色，按钮靠上面的字识别（shadcn 原版暗色主色还要更深）",
-      "approved": false
+      "approved": true
     }
   ],
   "accept": {

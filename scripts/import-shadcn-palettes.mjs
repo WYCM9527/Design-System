@@ -2,13 +2,14 @@
 // 把 shadcn/ui 的 17 个主题色搬成 Morganite 调色盘（morganite/seeds/morganite/palettes/<id>.json）。
 // 主色 = shadcn 亮色 primary；其余档按 Morganite 每一档的用途取 Tailwind v4 同色系色阶（见 LADDERS）；
 // 再按对比度改指向：浅色主色上的字改深色，亮色链接 / 焦点 / 当前项不够深就往深档挪，暗色不够亮就往浅档挪。
-// 挪完仍不达标的配对写进 contrastExceptions（approved: false，等用户拍板），体检脚本 check-palettes.mjs 认这份登记。
-// 另生成黄晶黄 #F9CF00 的两种写法给用户挑：citrine（链接与选中用加深的黄）、citrine-ink（像黄晶那样用黑）。
+// 挪完仍不达标的配对写进 contrastExceptions（用户批过的见 APPROVED，其余 approved: false），体检脚本 check-palettes.mjs 认这份登记。
+// 另生成黄晶黄 citrine：主色是黄晶的 #F9CF00，链接、选中、当前项、焦点像黄晶那样用中性黑（用户 2026-11-10 在「加深的黄」和「用黑」里选了用黑）。
 // 来源钉在固定版本（升级来源 = 改 SOURCES 后重跑，diff 里能看清颜色变了什么），两者都是 MIT：
 //   shadcn-ui/ui apps/v4/registry/themes.ts · tailwindlabs/tailwindcss packages/tailwindcss/theme.css
 // 调色盘文件是生成物：要改颜色或改指向，改这里的规则再重跑；用户批过的例外与验收登记的 approvedContrast 重跑时保留。
+// 目录里由本脚本生成、但规则里已经没有的调色盘文件会被删掉（--check 时算过期）；不是本脚本生成的文件不碰。
 // 用法：node scripts/import-shadcn-palettes.mjs [--cache <dir>] [--only blue,cyan] [--dry-run] [--check（与文件不一致退出 1，CI 用）]
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from '../design-system-adopter/scripts/lib/util.mjs';
@@ -93,7 +94,14 @@ const INK = {
 };
 // 用户拍板过的调整（预览面板「导出」给的清单写到这里）：primitives 覆盖色阶里的某几档，semantic / dark 直接定某个角色的指向（不再按对比度自动挪）
 const TWEAKS = {};
-// 挪不动、只能登记的配对，说明写清楚为什么能接受（仍要用户拍板：approved: false）
+// 用户批过的对比度例外（2026-11-10 定官方颜色时）：[调色盘, 前景, 背景, 模式]。只批这几条，以后新冒出来的例外照样待批
+const APPROVED = [
+  ['blue', 'color.action.primary', 'color.bg.surface', 'dark'],
+  ['purple', 'color.action.primary', 'color.bg.surface', 'dark'],
+  ['citrine', 'color.action.primary', 'color.bg.surface', 'light'],
+  ['citrine', 'color.brand.indicator', 'color.bg.surface', 'light']
+];
+// 挪不动、只能登记的配对，说明写清楚为什么能接受
 const WHY = {
   'color.action.primary|color.bg.surface|dark': (r) => `暗色主按钮填充对卡片 ${r.ratio}:1，低于 UI 组件 3:1：Morganite 暗色不换品牌主色，按钮靠上面的字识别（shadcn 原版暗色主色还要更深）`,
   'color.action.primary|color.bg.surface|light': (r) => `浅色主按钮对白卡片 ${r.ratio}:1，低于 UI 组件 3:1：按钮靠深色字识别（shadcn 原版同样如此）`,
@@ -238,7 +246,7 @@ function exceptionsFor(raw, baseline) {
     mode: r.mode,
     min: Math.floor(r.ratio * 100) / 100,
     why: (WHY[`${r.fg}|${r.bg}|${r.mode}`] || ((x) => `${x.label} ${x.ratio}:1，低于 ${x.min}:1`))(r),
-    approved: false
+    approved: APPROVED.some(([id, fg, bg, mode]) => id === raw.id && fg === r.fg && bg === r.bg && mode === r.mode)
   }));
 }
 
@@ -304,8 +312,7 @@ for (const t of themes) {
 const yellow = { ...scales.yellow, 400: rgbToOklch(parseHex(CITRINE)) };
 const citrinePrimitives = ladder(yellow, 400);
 const citrineSource = { from: `Citrine 黄晶 citrine/seeds/brand-yellow-e · color.brand.500 ${CITRINE}`, scale: `${scaleNote('yellow')}（400 档换成 ${CITRINE}）`, license: 'MIT（色阶）', generator: GENERATOR };
-outputs.push(build({ id: 'citrine', name: '黄晶黄', source: citrineSource, primitives: citrinePrimitives, notes: [`主色是黄晶的品牌黄 ${CITRINE}；链接、选中、当前项、焦点按对比度取加深的黄（与 citrine-ink 二选一）`] }, baseline));
-outputs.push(build({ id: 'citrine-ink', name: '黄晶黄（黑字版）', source: citrineSource, primitives: citrinePrimitives, preset: INK, notes: [`主色是黄晶的品牌黄 ${CITRINE}；链接、选中、当前项、焦点像黄晶那样用中性黑（与 citrine 二选一）`] }, baseline));
+outputs.push(build({ id: 'citrine', name: '黄晶黄', source: citrineSource, primitives: citrinePrimitives, preset: INK, notes: [`主色是黄晶的品牌黄 ${CITRINE}；像黄晶那样，链接、选中、当前项、焦点用中性黑（暗色用浅灰），黄色只留给主按钮、品牌底、指示条和图表`] }, baseline));
 
 /** 重跑不丢人的决定：用户批过的例外（底线没降）保留批准与说明，验收跑出来登记的 approvedContrast 原样保留。 */
 function keepDecisions(p, before) {
@@ -334,6 +341,18 @@ for (const generated of outputs) {
   const moved = Object.keys(p.semantic).length + Object.keys(p.dark).length;
   const pending = p.contrastExceptions.filter((x) => !x.approved).length;
   console.log(`${args['dry-run'] || args.check ? '[只看] ' : ''}${state} ${ctx.settings.dir}/${p.id}.json · ${p.name} ${p.primitives[`${group}.500`]} · 改指向 ${moved} 处 · 例外 ${p.contrastExceptions.length}（待批 ${pending}）`);
+}
+if (!only) {
+  const kept = new Set(outputs.map((o) => `${o.id}.json`));
+  for (const name of readdirSync(dir).filter((f) => f.endsWith('.json') && !kept.has(f))) {
+    const file = join(dir, name);
+    let generator = null;
+    try { generator = JSON.parse(readFileSync(file, 'utf8')).source?.generator; } catch { generator = null; }
+    if (generator !== GENERATOR) continue;
+    stale++;
+    if (!args['dry-run'] && !args.check) rmSync(file);
+    console.log(`${args['dry-run'] || args.check ? '[只看] ' : ''}删除 ${ctx.settings.dir}/${name} · 规则里已经没有这个调色盘`);
+  }
 }
 if (args.check && stale) {
   console.error(`\n${stale} 个调色盘文件和生成脚本的结果不一致：手改过的颜色要写回 ${GENERATOR}（调色盘文件是生成物），再重跑一次。`);

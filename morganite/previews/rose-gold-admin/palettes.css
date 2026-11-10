@@ -97,83 +97,7 @@
 :root.dark:where([data-palette="green"]) {
   --color-text-link: var(--color-brand-400);
 }
-:root:where([data-palette="orange"]) {
-  --color-brand-50: #FFF7ED;
-  --color-brand-100: #FFEDD4;
-  --color-brand-200: #FFB86A;
-  --color-brand-250: #FFAB53;
-  --color-brand-300: #FF8904;
-  --color-brand-400: #FF6900;
-  --color-brand-500: #CA3500;
-  --color-brand-550: #BB3200;
-  --color-brand-600: #9F2D00;
-  --color-brand-700: #7E2A0C;
-  --color-brand-800: #601E09;
-  --color-brand-900: #441306;
-  --color-brand-500-a16: #CA350029;
-  --color-brand-500-a24: #CA35003D;
-  --color-brand-600-a10: #9F2D001A;
-  --color-brand-300-a10: #FF89041A;
-}
-:root.dark:where([data-palette="orange"]) {
-  --color-text-link: var(--color-brand-400);
-}
 :root:where([data-palette="citrine"]) {
-  --color-brand-50: #FEFCE8;
-  --color-brand-100: #FEF9C2;
-  --color-brand-200: #FFF085;
-  --color-brand-250: #FFE85F;
-  --color-brand-300: #FFDF20;
-  --color-brand-400: #FDD713;
-  --color-brand-500: #F9CF00;
-  --color-brand-550: #F6C400;
-  --color-brand-600: #F0B100;
-  --color-brand-700: #A65F00;
-  --color-brand-800: #733E0A;
-  --color-brand-900: #432004;
-  --color-brand-500-a16: #F9CF0029;
-  --color-brand-500-a24: #F9CF003D;
-  --color-brand-600-a10: #F0B1001A;
-  --color-brand-300-a10: #FFDF201A;
-  --color-text-on-primary: var(--color-brand-800);
-  --color-text-on-brand: var(--color-brand-800);
-  --color-text-sidebar-selected: var(--color-brand-800);
-  --color-text-link: var(--color-brand-700);
-  --color-text-link-hover: var(--color-brand-800);
-  --color-text-selected: var(--color-brand-800);
-  --color-border-focus: var(--color-brand-700);
-  --color-focus-ring: var(--color-brand-700);
-  --color-text-brand: var(--color-brand-700);
-  --color-icon-brand: var(--color-brand-700);
-  --color-border-current: var(--color-brand-700);
-}
-:root.dark:where([data-palette="citrine"]) {
-  --color-text-brand: var(--color-brand-500);
-  --color-icon-brand: var(--color-brand-500);
-  --color-border-current: var(--color-brand-500);
-}
-:root:where([data-palette="amber"]) {
-  --color-brand-50: #FFFBEB;
-  --color-brand-100: #FEF3C6;
-  --color-brand-200: #FFD230;
-  --color-brand-250: #FFCB0D;
-  --color-brand-300: #FFB900;
-  --color-brand-400: #FE9A00;
-  --color-brand-500: #BB4D00;
-  --color-brand-550: #AE4700;
-  --color-brand-600: #973C00;
-  --color-brand-700: #7B3306;
-  --color-brand-800: #602603;
-  --color-brand-900: #461901;
-  --color-brand-500-a16: #BB4D0029;
-  --color-brand-500-a24: #BB4D003D;
-  --color-brand-600-a10: #973C001A;
-  --color-brand-300-a10: #FFB9001A;
-}
-:root.dark:where([data-palette="amber"]) {
-  --color-text-link: var(--color-brand-400);
-}
-:root:where([data-palette="citrine-ink"]) {
   --color-brand-50: #FEFCE8;
   --color-brand-100: #FEF9C2;
   --color-brand-200: #FFF085;
@@ -203,7 +127,7 @@
   --color-bg-selected-subtle: var(--color-neutral-100);
   --color-bg-sidebar-selected: var(--color-neutral-900);
 }
-:root.dark:where([data-palette="citrine-ink"]) {
+:root.dark:where([data-palette="citrine"]) {
   --color-text-link: var(--color-neutral-300);
   --color-text-link-hover: var(--color-neutral-100);
   --color-text-selected: var(--color-neutral-100);
@@ -215,6 +139,27 @@
   --color-bg-selected-subtle: var(--color-neutral-800);
   --color-bg-sidebar-selected: var(--color-neutral-700);
   --color-text-sidebar-selected: var(--color-neutral-100);
+}
+:root:where([data-palette="amber"]) {
+  --color-brand-50: #FFFBEB;
+  --color-brand-100: #FEF3C6;
+  --color-brand-200: #FFD230;
+  --color-brand-250: #FFCB0D;
+  --color-brand-300: #FFB900;
+  --color-brand-400: #FE9A00;
+  --color-brand-500: #BB4D00;
+  --color-brand-550: #AE4700;
+  --color-brand-600: #973C00;
+  --color-brand-700: #7B3306;
+  --color-brand-800: #602603;
+  --color-brand-900: #461901;
+  --color-brand-500-a16: #BB4D0029;
+  --color-brand-500-a24: #BB4D003D;
+  --color-brand-600-a10: #973C001A;
+  --color-brand-300-a10: #FFB9001A;
+}
+:root.dark:where([data-palette="amber"]) {
+  --color-text-link: var(--color-brand-400);
 }
 :root:where([data-palette="emerald"]) {
   --color-brand-50: #ECFDF5;
@@ -325,6 +270,27 @@
   --color-text-brand: var(--color-brand-500);
   --color-icon-brand: var(--color-brand-500);
   --color-border-current: var(--color-brand-500);
+}
+:root:where([data-palette="orange"]) {
+  --color-brand-50: #FFF7ED;
+  --color-brand-100: #FFEDD4;
+  --color-brand-200: #FFB86A;
+  --color-brand-250: #FFAB53;
+  --color-brand-300: #FF8904;
+  --color-brand-400: #FF6900;
+  --color-brand-500: #CA3500;
+  --color-brand-550: #BB3200;
+  --color-brand-600: #9F2D00;
+  --color-brand-700: #7E2A0C;
+  --color-brand-800: #601E09;
+  --color-brand-900: #441306;
+  --color-brand-500-a16: #CA350029;
+  --color-brand-500-a24: #CA35003D;
+  --color-brand-600-a10: #9F2D001A;
+  --color-brand-300-a10: #FF89041A;
+}
+:root.dark:where([data-palette="orange"]) {
+  --color-text-link: var(--color-brand-400);
 }
 :root:where([data-palette="pink"]) {
   --color-brand-50: #FDF2F8;

@@ -135,7 +135,7 @@ window.MorganitePanelData = {
      "mode": "dark",
      "label": "主按钮填充 / 卡片（UI 组件 3:1）",
      "min": 2.7,
-     "approved": false,
+     "approved": true,
      "why": "暗色主按钮填充对卡片 2.7:1，低于 UI 组件 3:1：Morganite 暗色不换品牌主色，按钮靠上面的字识别（shadcn 原版暗色主色还要更深）"
     }
    ],
@@ -194,7 +194,7 @@ window.MorganitePanelData = {
      "mode": "dark",
      "label": "主按钮填充 / 卡片（UI 组件 3:1）",
      "min": 2.61,
-     "approved": false,
+     "approved": true,
      "why": "暗色主按钮填充对卡片 2.61:1，低于 UI 组件 3:1：Morganite 暗色不换品牌主色，按钮靠上面的字识别（shadcn 原版暗色主色还要更深）"
     }
    ],
@@ -288,74 +288,6 @@ window.MorganitePanelData = {
    ]
   },
   {
-   "id": "orange",
-   "name": "橙",
-   "official": true,
-   "isDefault": false,
-   "swatch": "#CA3500",
-   "file": "palettes/orange.json",
-   "ladder": {
-    "color.brand.50": "#FFF7ED",
-    "color.brand.100": "#FFEDD4",
-    "color.brand.200": "#FFB86A",
-    "color.brand.250": "#FFAB53",
-    "color.brand.300": "#FF8904",
-    "color.brand.400": "#FF6900",
-    "color.brand.500": "#CA3500",
-    "color.brand.550": "#BB3200",
-    "color.brand.600": "#9F2D00",
-    "color.brand.700": "#7E2A0C",
-    "color.brand.800": "#601E09",
-    "color.brand.900": "#441306",
-    "color.brand.500-a16": "#CA350029",
-    "color.brand.500-a24": "#CA35003D",
-    "color.brand.600-a10": "#9F2D001A",
-    "color.brand.300-a10": "#FF89041A"
-   },
-   "semantic": {},
-   "dark": {
-    "color.text.link": "color.brand.400"
-   },
-   "notes": [
-    "主色 #CA3500 是 shadcn「orange」的亮色 primary（Tailwind orange-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
-    "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 orange-800）",
-    "白字对主色 5.22:1"
-   ],
-   "exceptions": [],
-   "collisions": [
-    {
-     "mode": "light",
-     "label": "错误红",
-     "delta": 0.041,
-     "severity": "severe"
-    },
-    {
-     "mode": "light",
-     "label": "危险按钮",
-     "delta": 0.041,
-     "severity": "severe"
-    },
-    {
-     "mode": "light",
-     "label": "警示橙",
-     "delta": 0.065,
-     "severity": "warn"
-    },
-    {
-     "mode": "light",
-     "label": "下跌",
-     "delta": 0.041,
-     "severity": "warn"
-    },
-    {
-     "mode": "dark",
-     "label": "危险按钮",
-     "delta": 0.041,
-     "severity": "severe"
-    }
-   ]
-  },
-  {
    "id": "citrine",
    "name": "黄晶黄",
    "official": true,
@@ -381,39 +313,48 @@ window.MorganitePanelData = {
     "color.brand.300-a10": "#FFDF201A"
    },
    "semantic": {
-    "color.text.on-primary": "color.brand.800",
-    "color.text.on-brand": "color.brand.800",
-    "color.text.sidebar-selected": "color.brand.800",
-    "color.text.link": "color.brand.700",
-    "color.text.link-hover": "color.brand.800",
-    "color.text.selected": "color.brand.800",
-    "color.border.focus": "color.brand.700",
-    "color.focus.ring": "color.brand.700",
-    "color.text.brand": "color.brand.700",
-    "color.icon.brand": "color.brand.700",
-    "color.border.current": "color.brand.700"
+    "color.text.on-primary": "color.neutral.900",
+    "color.text.on-brand": "color.neutral.900",
+    "color.text.link": "color.neutral.700",
+    "color.text.link-hover": "color.neutral.900",
+    "color.text.selected": "color.neutral.900",
+    "color.text.brand": "color.neutral.900",
+    "color.border.current": "color.neutral.900",
+    "color.border.focus": "color.neutral.900",
+    "color.focus.ring": "color.neutral.700",
+    "color.icon.brand": "color.neutral.900",
+    "color.bg.selected-subtle": "color.neutral.100",
+    "color.bg.sidebar-selected": "color.neutral.900"
    },
    "dark": {
+    "color.text.link": "color.neutral.300",
+    "color.text.link-hover": "color.neutral.100",
+    "color.text.selected": "color.neutral.100",
     "color.text.brand": "color.brand.500",
-    "color.icon.brand": "color.brand.500",
-    "color.border.current": "color.brand.500"
+    "color.border.current": "color.neutral.100",
+    "color.border.focus": "color.neutral.100",
+    "color.focus.ring": "color.neutral.300",
+    "color.icon.brand": "color.neutral.100",
+    "color.bg.selected-subtle": "color.neutral.800",
+    "color.bg.sidebar-selected": "color.neutral.700",
+    "color.text.sidebar-selected": "color.neutral.100"
    },
    "notes": [
-    "主色是黄晶的品牌黄 #F9CF00；链接、选中、当前项、焦点按对比度取加深的黄（与 citrine-ink 二选一）"
+    "主色是黄晶的品牌黄 #F9CF00；像黄晶那样，链接、选中、当前项、焦点用中性黑（暗色用浅灰），黄色只留给主按钮、品牌底、指示条和图表"
    ],
    "exceptions": [
     {
      "mode": "light",
      "label": "品牌指示条 / 卡片（图形 3:1）",
      "min": 1.51,
-     "approved": false,
+     "approved": true,
      "why": "品牌指示条对白卡片 1.51:1：指示条总和选中底 / 加粗一起出现，不单靠颜色区分"
     },
     {
      "mode": "light",
      "label": "主按钮填充 / 卡片（UI 组件 3:1）",
      "min": 1.51,
-     "approved": false,
+     "approved": true,
      "why": "浅色主按钮对白卡片 1.51:1，低于 UI 组件 3:1：按钮靠深色字识别（shadcn 原版同样如此）"
     }
    ],
@@ -491,86 +432,6 @@ window.MorganitePanelData = {
      "label": "危险按钮",
      "delta": 0.084,
      "severity": "severe"
-    }
-   ]
-  },
-  {
-   "id": "citrine-ink",
-   "name": "黄晶黄（黑字版）",
-   "official": false,
-   "isDefault": false,
-   "swatch": "#F9CF00",
-   "file": "palettes/citrine-ink.json",
-   "ladder": {
-    "color.brand.50": "#FEFCE8",
-    "color.brand.100": "#FEF9C2",
-    "color.brand.200": "#FFF085",
-    "color.brand.250": "#FFE85F",
-    "color.brand.300": "#FFDF20",
-    "color.brand.400": "#FDD713",
-    "color.brand.500": "#F9CF00",
-    "color.brand.550": "#F6C400",
-    "color.brand.600": "#F0B100",
-    "color.brand.700": "#A65F00",
-    "color.brand.800": "#733E0A",
-    "color.brand.900": "#432004",
-    "color.brand.500-a16": "#F9CF0029",
-    "color.brand.500-a24": "#F9CF003D",
-    "color.brand.600-a10": "#F0B1001A",
-    "color.brand.300-a10": "#FFDF201A"
-   },
-   "semantic": {
-    "color.text.on-primary": "color.neutral.900",
-    "color.text.on-brand": "color.neutral.900",
-    "color.text.link": "color.neutral.700",
-    "color.text.link-hover": "color.neutral.900",
-    "color.text.selected": "color.neutral.900",
-    "color.text.brand": "color.neutral.900",
-    "color.border.current": "color.neutral.900",
-    "color.border.focus": "color.neutral.900",
-    "color.focus.ring": "color.neutral.700",
-    "color.icon.brand": "color.neutral.900",
-    "color.bg.selected-subtle": "color.neutral.100",
-    "color.bg.sidebar-selected": "color.neutral.900"
-   },
-   "dark": {
-    "color.text.link": "color.neutral.300",
-    "color.text.link-hover": "color.neutral.100",
-    "color.text.selected": "color.neutral.100",
-    "color.text.brand": "color.brand.500",
-    "color.border.current": "color.neutral.100",
-    "color.border.focus": "color.neutral.100",
-    "color.focus.ring": "color.neutral.300",
-    "color.icon.brand": "color.neutral.100",
-    "color.bg.selected-subtle": "color.neutral.800",
-    "color.bg.sidebar-selected": "color.neutral.700",
-    "color.text.sidebar-selected": "color.neutral.100"
-   },
-   "notes": [
-    "主色是黄晶的品牌黄 #F9CF00；链接、选中、当前项、焦点像黄晶那样用中性黑（与 citrine 二选一）"
-   ],
-   "exceptions": [
-    {
-     "mode": "light",
-     "label": "品牌指示条 / 卡片（图形 3:1）",
-     "min": 1.51,
-     "approved": false,
-     "why": "品牌指示条对白卡片 1.51:1：指示条总和选中底 / 加粗一起出现，不单靠颜色区分"
-    },
-    {
-     "mode": "light",
-     "label": "主按钮填充 / 卡片（UI 组件 3:1）",
-     "min": 1.51,
-     "approved": false,
-     "why": "浅色主按钮对白卡片 1.51:1，低于 UI 组件 3:1：按钮靠深色字识别（shadcn 原版同样如此）"
-    }
-   ],
-   "collisions": [
-    {
-     "mode": "dark",
-     "label": "警示橙",
-     "delta": 0.076,
-     "severity": "warn"
     }
    ]
   },
@@ -798,6 +659,74 @@ window.MorganitePanelData = {
     }
    ],
    "collisions": []
+  },
+  {
+   "id": "orange",
+   "name": "橙",
+   "official": false,
+   "isDefault": false,
+   "swatch": "#CA3500",
+   "file": "palettes/orange.json",
+   "ladder": {
+    "color.brand.50": "#FFF7ED",
+    "color.brand.100": "#FFEDD4",
+    "color.brand.200": "#FFB86A",
+    "color.brand.250": "#FFAB53",
+    "color.brand.300": "#FF8904",
+    "color.brand.400": "#FF6900",
+    "color.brand.500": "#CA3500",
+    "color.brand.550": "#BB3200",
+    "color.brand.600": "#9F2D00",
+    "color.brand.700": "#7E2A0C",
+    "color.brand.800": "#601E09",
+    "color.brand.900": "#441306",
+    "color.brand.500-a16": "#CA350029",
+    "color.brand.500-a24": "#CA35003D",
+    "color.brand.600-a10": "#9F2D001A",
+    "color.brand.300-a10": "#FF89041A"
+   },
+   "semantic": {},
+   "dark": {
+    "color.text.link": "color.brand.400"
+   },
+   "notes": [
+    "主色 #CA3500 是 shadcn「orange」的亮色 primary（Tailwind orange-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
+    "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 orange-800）",
+    "白字对主色 5.22:1"
+   ],
+   "exceptions": [],
+   "collisions": [
+    {
+     "mode": "light",
+     "label": "错误红",
+     "delta": 0.041,
+     "severity": "severe"
+    },
+    {
+     "mode": "light",
+     "label": "危险按钮",
+     "delta": 0.041,
+     "severity": "severe"
+    },
+    {
+     "mode": "light",
+     "label": "警示橙",
+     "delta": 0.065,
+     "severity": "warn"
+    },
+    {
+     "mode": "light",
+     "label": "下跌",
+     "delta": 0.041,
+     "severity": "warn"
+    },
+    {
+     "mode": "dark",
+     "label": "危险按钮",
+     "delta": 0.041,
+     "severity": "severe"
+    }
+   ]
   },
   {
    "id": "pink",

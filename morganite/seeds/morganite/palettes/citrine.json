@@ -28,62 +28,98 @@
   },
   "semantic": {
     "color.text.on-primary": {
-      "value": "{color.brand.800}",
-      "why": "白字对主色只有 1.51:1，品牌色上的字改深色 800（对主色 5.76:1）"
+      "value": "{color.neutral.900}",
+      "why": "黄晶的写法：链接、选中、当前项、焦点用中性黑，黄色只留给主按钮、品牌底、指示条和图表"
     },
     "color.text.on-brand": {
-      "value": "{color.brand.800}",
-      "why": "白字对主色只有 1.51:1，品牌色上的字改深色 800（对主色 5.76:1）"
-    },
-    "color.text.sidebar-selected": {
-      "value": "{color.brand.800}",
-      "why": "白字对主色只有 1.51:1，品牌色上的字改深色 800（对主色 5.76:1）"
+      "value": "{color.neutral.900}",
+      "why": "黄晶的写法：链接、选中、当前项、焦点用中性黑，黄色只留给主按钮、品牌底、指示条和图表"
     },
     "color.text.link": {
-      "value": "{color.brand.700}",
-      "why": "亮色原来的 600 只有 1.75:1（要 4.5），改用 700（4.52:1）"
+      "value": "{color.neutral.700}",
+      "why": "黄晶的写法：链接、选中、当前项、焦点用中性黑，黄色只留给主按钮、品牌底、指示条和图表"
     },
     "color.text.link-hover": {
-      "value": "{color.brand.800}",
-      "why": "亮色要比链接更深一档，改用 800（7.95:1）"
+      "value": "{color.neutral.900}",
+      "why": "黄晶的写法：链接、选中、当前项、焦点用中性黑，黄色只留给主按钮、品牌底、指示条和图表"
     },
     "color.text.selected": {
-      "value": "{color.brand.800}",
-      "why": "亮色原来的 600 只有 1.65:1（要 4.5），改用 800（7.49:1）"
-    },
-    "color.border.focus": {
-      "value": "{color.brand.700}",
-      "why": "亮色原来的 600 只有 1.91:1（要 3），改用 700（4.93:1）"
-    },
-    "color.focus.ring": {
-      "value": "{color.brand.700}",
-      "why": "亮色原来的 600 只有 1.91:1（要 3），改用 700（4.93:1）"
+      "value": "{color.neutral.900}",
+      "why": "黄晶的写法：链接、选中、当前项、焦点用中性黑，黄色只留给主按钮、品牌底、指示条和图表"
     },
     "color.text.brand": {
-      "value": "{color.brand.700}",
-      "why": "亮色原来的 500 只有 1.51:1（要 3），改用 700（4.93:1）"
-    },
-    "color.icon.brand": {
-      "value": "{color.brand.700}",
-      "why": "亮色原来的 500 只有 1.51:1（要 3），改用 700（4.93:1）"
+      "value": "{color.neutral.900}",
+      "why": "黄晶的写法：链接、选中、当前项、焦点用中性黑，黄色只留给主按钮、品牌底、指示条和图表"
     },
     "color.border.current": {
-      "value": "{color.brand.700}",
-      "why": "亮色原来的 500 只有 1.51:1（要 3），改用 700（4.93:1）"
+      "value": "{color.neutral.900}",
+      "why": "黄晶的写法：链接、选中、当前项、焦点用中性黑，黄色只留给主按钮、品牌底、指示条和图表"
+    },
+    "color.border.focus": {
+      "value": "{color.neutral.900}",
+      "why": "黄晶的写法：链接、选中、当前项、焦点用中性黑，黄色只留给主按钮、品牌底、指示条和图表"
+    },
+    "color.focus.ring": {
+      "value": "{color.neutral.700}",
+      "why": "黄晶的写法：链接、选中、当前项、焦点用中性黑，黄色只留给主按钮、品牌底、指示条和图表"
+    },
+    "color.icon.brand": {
+      "value": "{color.neutral.900}",
+      "why": "黄晶的写法：链接、选中、当前项、焦点用中性黑，黄色只留给主按钮、品牌底、指示条和图表"
+    },
+    "color.bg.selected-subtle": {
+      "value": "{color.neutral.100}",
+      "why": "黄晶的写法：链接、选中、当前项、焦点用中性黑，黄色只留给主按钮、品牌底、指示条和图表"
+    },
+    "color.bg.sidebar-selected": {
+      "value": "{color.neutral.900}",
+      "why": "黄晶的写法：链接、选中、当前项、焦点用中性黑，黄色只留给主按钮、品牌底、指示条和图表"
     }
   },
   "dark": {
+    "color.text.link": {
+      "value": "{color.neutral.300}",
+      "why": "黄晶的暗色写法：链接与选中用浅灰，品牌大字用黄"
+    },
+    "color.text.link-hover": {
+      "value": "{color.neutral.100}",
+      "why": "黄晶的暗色写法：链接与选中用浅灰，品牌大字用黄"
+    },
+    "color.text.selected": {
+      "value": "{color.neutral.100}",
+      "why": "黄晶的暗色写法：链接与选中用浅灰，品牌大字用黄"
+    },
     "color.text.brand": {
       "value": "{color.brand.500}",
-      "why": "亮色改到 700 是为了压白底；暗底上种子原来的 500 就够（12.24:1），暗色改回去"
-    },
-    "color.icon.brand": {
-      "value": "{color.brand.500}",
-      "why": "亮色改到 700 是为了压白底；暗底上种子原来的 500 就够（12.24:1），暗色改回去"
+      "why": "黄晶的暗色写法：链接与选中用浅灰，品牌大字用黄"
     },
     "color.border.current": {
-      "value": "{color.brand.500}",
-      "why": "亮色改到 700 是为了压白底；暗底上种子原来的 500 就够（12.24:1），暗色改回去"
+      "value": "{color.neutral.100}",
+      "why": "黄晶的暗色写法：链接与选中用浅灰，品牌大字用黄"
+    },
+    "color.border.focus": {
+      "value": "{color.neutral.100}",
+      "why": "黄晶的暗色写法：链接与选中用浅灰，品牌大字用黄"
+    },
+    "color.focus.ring": {
+      "value": "{color.neutral.300}",
+      "why": "黄晶的暗色写法：链接与选中用浅灰，品牌大字用黄"
+    },
+    "color.icon.brand": {
+      "value": "{color.neutral.100}",
+      "why": "黄晶的暗色写法：链接与选中用浅灰，品牌大字用黄"
+    },
+    "color.bg.selected-subtle": {
+      "value": "{color.neutral.800}",
+      "why": "黄晶的暗色写法：链接与选中用浅灰，品牌大字用黄"
+    },
+    "color.bg.sidebar-selected": {
+      "value": "{color.neutral.700}",
+      "why": "黄晶的暗色写法：链接与选中用浅灰，品牌大字用黄"
+    },
+    "color.text.sidebar-selected": {
+      "value": "{color.neutral.100}",
+      "why": "黄晶的暗色写法：链接与选中用浅灰，品牌大字用黄"
     }
   },
   "contrastExceptions": [
@@ -93,7 +129,7 @@
       "mode": "light",
       "min": 1.51,
       "why": "品牌指示条对白卡片 1.51:1：指示条总和选中底 / 加粗一起出现，不单靠颜色区分",
-      "approved": false
+      "approved": true
     },
     {
       "fg": "color.action.primary",
@@ -101,7 +137,7 @@
       "mode": "light",
       "min": 1.51,
       "why": "浅色主按钮对白卡片 1.51:1，低于 UI 组件 3:1：按钮靠深色字识别（shadcn 原版同样如此）",
-      "approved": false
+      "approved": true
     }
   ],
   "accept": {
@@ -123,6 +159,6 @@
     "approvedContrast": []
   },
   "notes": [
-    "主色是黄晶的品牌黄 #F9CF00；链接、选中、当前项、焦点按对比度取加深的黄（与 citrine-ink 二选一）"
+    "主色是黄晶的品牌黄 #F9CF00；像黄晶那样，链接、选中、当前项、焦点用中性黑（暗色用浅灰），黄色只留给主按钮、品牌底、指示条和图表"
   ]
 }
