@@ -143,6 +143,10 @@
     "npm": "@wycm9527/citrine-tools",
     "command": "citrine-accept all",
     "configTemplate": "templates/accept.config.mjs",
+    "approvedContrast": [
+      { "fg": "#FFFFFF", "bg": "#B98D44", "why": "金底白字 3.02:1：主按钮、分页当前页、侧栏当前项、选中日、主色徽标、深色 / 勾选标签、当前步骤" },
+      { "fg": "#B98D44", "minRatio": 4.2, "why": "暗色链接 / 文字按钮压在悬停行、气泡上约 4.3:1" }
+    ],
     "brand": {
       "name": "品牌金",
       "note": "主按钮 / 勾选开关选中 / 进度滑杆评分 / 页签 / 侧栏当前项 / 当前页码 / 选中日与选中项 / 步骤与时间线 / 主色徽标与深色标签 / 筹码 / 链接 / 头像 / 图表 / 登录品牌区 / 优惠券券面",
@@ -150,6 +154,10 @@
       "saturation": [0.35, 0.8],
       "lightness": [0.25, 0.75],
       "focusRing": true,
+      "notBrand": [
+        "color.status",
+        "color.data"
+      ],
       "hoverAllow": [
         ".el-link",
         ".crumbs a",

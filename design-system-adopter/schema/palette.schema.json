@@ -45,9 +45,17 @@
     },
     "accept": {
       "type": "object",
-      "description": "验收口径：判色范围（同 design-system.json accept.brand 的 hue / saturation / lightness）与已批准的对比度例外（同 accept.config.mjs APPROVED_CONTRAST 的写法）",
+      "description": "验收口径（citrine-tools ≥ 1.4.0 按项目当前颜色读取）：判色范围（同 design-system.json accept.brand 的 name / hue / saturation / lightness，色相最小大于最大表示跨 0°）与这套颜色已批准的对比度例外（同 accept.config.mjs APPROVED_CONTRAST 的写法，代替身份文件里默认颜色的那份）",
       "properties": {
-        "brand": { "type": "object" },
+        "brand": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "hue": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2 },
+            "saturation": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2 },
+            "lightness": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2 }
+          }
+        },
         "approvedContrast": {
           "type": "array",
           "items": {

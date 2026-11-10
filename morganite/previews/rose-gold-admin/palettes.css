@@ -19,7 +19,8 @@
   --color-brand-300-a10: #51A2FF1A;
 }
 :root.dark:where([data-palette="blue"]) {
-  --color-text-link: var(--color-brand-400);
+  --color-text-link: var(--color-brand-300);
+  --color-text-link-hover: var(--color-brand-250);
   --color-border-focus: var(--color-brand-400);
   --color-focus-ring: var(--color-brand-400);
   --color-text-brand: var(--color-brand-400);
@@ -201,7 +202,8 @@
   --color-brand-300-a10: #ED6AFF1A;
 }
 :root.dark:where([data-palette="fuchsia"]) {
-  --color-text-link: var(--color-brand-400);
+  --color-text-link: var(--color-brand-300);
+  --color-text-link-hover: var(--color-brand-250);
   --color-border-focus: var(--color-brand-400);
   --color-focus-ring: var(--color-brand-400);
   --color-text-brand: var(--color-brand-400);
@@ -311,7 +313,8 @@
   --color-brand-300-a10: #FB64B61A;
 }
 :root.dark:where([data-palette="pink"]) {
-  --color-text-link: var(--color-brand-400);
+  --color-text-link: var(--color-brand-300);
+  --color-text-link-hover: var(--color-brand-250);
 }
 :root:where([data-palette="red"]) {
   --color-brand-50: #FEF2F2;
@@ -332,7 +335,8 @@
   --color-brand-300-a10: #FF64671A;
 }
 :root.dark:where([data-palette="red"]) {
-  --color-text-link: var(--color-brand-400);
+  --color-text-link: var(--color-brand-300);
+  --color-text-link-hover: var(--color-brand-250);
   --color-border-focus: var(--color-brand-400);
   --color-focus-ring: var(--color-brand-400);
   --color-text-brand: var(--color-brand-400);
@@ -359,7 +363,8 @@
   --color-brand-300-a10: #FF637E1A;
 }
 :root.dark:where([data-palette="rose"]) {
-  --color-text-link: var(--color-brand-400);
+  --color-text-link: var(--color-brand-300);
+  --color-text-link-hover: var(--color-brand-250);
 }
 :root:where([data-palette="sky"]) {
   --color-brand-50: #F0F9FF;

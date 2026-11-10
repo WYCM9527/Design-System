@@ -659,7 +659,9 @@ code, kbd, pre, samp { font-family: var(--font-family-code); }
 .el-select-dropdown.is-multiple .el-select-dropdown__item.is-selected::after { background-color: var(--color-text-selected); }
 .el-tree__drop-indicator, .el-input-tag__drop-indicator { background-color: var(--color-border-focus); }
 .el-tree-node.is-drop-inner > .el-tree-node__content .el-tree-node__label { background-color: var(--color-bg-selected-subtle); color: var(--color-text-primary); }
-/* 日历：今天与选中日同日期面板的规则 */
+/* 日历：今天与选中日同日期面板的规则；格子悬停同表格行悬停 bg.hover（DESIGN：悬停不引入新的颜色）——Element 默认取主色浅底，
+   暗色下非当月日期的弱化字压在品牌色暗底上不到 4.5（紫、青实测 4.46） */
+.el-calendar { --el-calendar-selected-bg-color: var(--color-bg-hover); }
 .el-calendar-table td.is-today { color: var(--color-text-primary); font-weight: var(--font-weight-medium); }
 .el-calendar-table td.is-selected { background-color: var(--color-bg-selected); }
 /* 表格：筛选面板选中项、表头高亮 */

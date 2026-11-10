@@ -176,6 +176,17 @@ function rebuildAfterTokens(m) {
   return built;
 }
 
+/** 纯 CSS 交付的验收口径（citrine-accept --tokens 读 design-system.export.json）：身份文件的 accept.brand 叠上调色盘的判色范围，对比度例外按颜色取。 */
+function exportAccept(identity, palette) {
+  const a = identity.accept || {};
+  if (!a.brand && !a.approvedContrast && !palette?.accept) return undefined;
+  return {
+    brand: a.brand ? { ...a.brand, ...(palette?.accept?.brand || {}) } : undefined,
+    approvedContrast: (palette ? palette.accept?.approvedContrast : a.approvedContrast) || [],
+    paletteName: palette?.name
+  };
+}
+
 // ---------- 命令 ----------
 /** 按身份文件 stacks.<id>.detect（{ deps: [...], files: [...] }）推断项目用的栈：任一依赖或标志文件命中即候选 */
 const readPkg = (dir) => (existsSync(join(dir, 'package.json')) ? readJson(join(dir, 'package.json')) : {});
@@ -569,7 +580,7 @@ const commands = {
       if (!prev?.files?.[name]) report.added.push(name); else if (prev.files[name] !== h) report.updated.push(name); else report.unchanged.push(name);
       if (!dry) writeFileSync(join(dest, name), text);
     }
-    if (!dry) writeFileSync(manifestFile, JSON.stringify({ system: identity.id, name: identity.name, version: identity.version, palette: palette?.id, exportedAt: today(), source: relative(process.cwd(), srcDir) || '.', groups: withGroups, files: outFiles }, null, 2) + '\n');
+    if (!dry) writeFileSync(manifestFile, JSON.stringify({ system: identity.id, name: identity.name, version: identity.version, palette: palette?.id, exportedAt: today(), source: relative(process.cwd(), srcDir) || '.', groups: withGroups, files: outFiles, accept: exportAccept(identity, palette) }, null, 2) + '\n');
     console.log(`${dry ? '[dry-run] ' : ''}${identity.name} ${prev ? `${prev.version} → ` : ''}${identity.version} 导出到 ${dest}${picked ? ` · 颜色${paletteLabel(picked)}` : ''}`);
     for (const k of ['added', 'updated', 'unchanged']) if (report[k].length) console.log(`  ${{ added: '新增', updated: '更新', unchanged: '未变' }[k]}：${report[k].join(', ')}`);
     if (prev) { const gone = Object.keys(prev.files).filter((n) => !outFiles[n]); if (gone.length) console.log(`  上次导出有、这次没选：${gone.join(', ')}（未删除，确认无引用后手工删）`); }

@@ -1,8 +1,9 @@
 // 已批准的对比度例外。项目登记的在 accept.config.mjs 的 APPROVED_CONTRAST：[{ fg, bg?, minRatio?, why }]，颜色写 #RGB / #RRGGBB / #RRGGBBAA / rgb() / rgba()。
 // 不写 bg 表示这个前景色在任何底上都算批准（如占位符）；写 minRatio 表示只放行实测不低于它的情况（如叠加悬停底后略低于 4.5 的文字），再低照样报。比较按通道 ±1、透明度 ±0.02，计算值里的空格与写法差异不影响匹配。
 // 它是系统 DESIGN「验收基线 / 已批准的例外」的镜像：先在设计系统里登记例外，再写到这里。
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+// 跟颜色走的例外（如主色底白字）不写在项目里：设计系统身份文件 accept.approvedContrast 登记默认颜色的，调色盘文件 accept.approvedContrast 登记那套颜色的，
+// 按项目当前颜色自动带上（lib/system.mjs），换了颜色项目配置不用改。
+import { systemOf, colorApproved } from './system.mjs';
 
 export function parseColor(s) {
   if (!s || typeof s !== 'string') return null;
@@ -50,15 +51,16 @@ const CITRINE = {
 };
 
 /**
- * 内置例外只对 Citrine 项目生效：accept.config.mjs 写了 CITRINE_APPROVED = true / false 就照它；否则看项目 design-system/.adopter.json 的 system，
- * 不是 citrine 就不带（别的系统的颜色不该被 Citrine 的例外放行）；读不到清单的老项目照旧带上。
+ * 内置例外只对 Citrine 项目生效：accept.config.mjs 写了 CITRINE_APPROVED = true / false 就照它；否则看项目所用的设计系统（接入清单，或 export 目录里的
+ * design-system.export.json），不是 citrine 就不带（别的系统的颜色不该被 Citrine 的例外放行）；都读不到的老项目照旧带上。
  */
-export function citrineApprovedOn(cfg, appDir) {
+export function citrineApprovedOn(cfg, appDir, tokensDir) {
   if (typeof cfg?.CITRINE_APPROVED === 'boolean') return cfg.CITRINE_APPROVED;
-  try { const system = JSON.parse(readFileSync(join(appDir, 'design-system/.adopter.json'), 'utf8')).system; return !system || system === 'citrine'; } catch { return true; }
+  const id = systemOf(appDir, tokensDir)?.id;
+  return !id || id === 'citrine';
 }
 
-/** 某一步（pages | components）实际生效的例外：Citrine 内置（按上面的开关）+ 项目登记的 APPROVED_CONTRAST。 */
-export function approvedFor(kind, cfg, appDir) {
-  return normalizeApproved([...(citrineApprovedOn(cfg, appDir) ? CITRINE[kind] : []), ...(cfg?.APPROVED_CONTRAST || [])]);
+/** 某一步（pages | components）实际生效的例外：Citrine 内置（按上面的开关）+ 设计系统按当前颜色登记的 + 项目登记的 APPROVED_CONTRAST。 */
+export function approvedFor(kind, cfg, appDir, tokensDir) {
+  return normalizeApproved([...(citrineApprovedOn(cfg, appDir, tokensDir) ? CITRINE[kind] : []), ...colorApproved(systemOf(appDir, tokensDir)), ...(cfg?.APPROVED_CONTRAST || [])]);
 }

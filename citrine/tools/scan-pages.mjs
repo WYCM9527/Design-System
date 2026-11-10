@@ -5,7 +5,7 @@
 import { writeFileSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { launch, sleep } from './lib/cdp.mjs';
-import { APP, PROJECT, requireDist, outDir, args, parseModes, modeQuery, loadConfig, pageUrl, startServer, READY, resetUrl } from './lib/paths.mjs';
+import { APP, PROJECT, TOKENS_DIST, requireDist, outDir, args, parseModes, modeQuery, loadConfig, pageUrl, startServer, READY, resetUrl } from './lib/paths.mjs';
 import { brandFor, brandJs, describeBrand } from './lib/brand.mjs';
 import { approvedFor } from './lib/approved.mjs';
 
@@ -20,10 +20,10 @@ const pages = PAGES.filter(([n]) => match(n));
 const OUT = outDir('pages');
 const audit = readFileSync(resolve(import.meta.dirname, 'lib/page-audit.js'), 'utf8');
 const PROBE = readFileSync(resolve(import.meta.dirname, 'lib/component-probe.js'), 'utf8');
-const BRAND = brandFor(cfg, APP);   // 品牌色口径：判色范围 + 静息态允许清单（设计系统身份文件的 accept.brand，Citrine 用内置的黄；项目 BRAND / BRAND_ALLOW 覆盖与追加）
+const BRAND = brandFor(cfg, APP, TOKENS_DIST);   // 品牌色口径：判色范围 + 静息态允许清单（身份文件的 accept.brand，换过颜色时判色范围取调色盘的；Citrine 用内置的黄；项目 BRAND / BRAND_ALLOW 覆盖与追加）
 const allowSel = BRAND ? BRAND.allow.join(', ') : '';
 const probeJs = `${brandJs(BRAND)}\n${PROBE}; 'ok'`;
-const approvedJs = `window.__ACCEPT_APPROVED__ = ${JSON.stringify(approvedFor('pages', cfg, APP))}; 1`;   // 已批准的对比度例外（Citrine 内置按项目所用系统开关 + 项目 APPROVED_CONTRAST），页面审计据此把对应低对比计入 approved
+const approvedJs = `window.__ACCEPT_APPROVED__ = ${JSON.stringify(approvedFor('pages', cfg, APP, TOKENS_DIST))}; 1`;   // 已批准的对比度例外（Citrine 内置按项目所用系统开关 + 设计系统按当前颜色登记的 + 项目 APPROVED_CONTRAST），页面审计据此把对应低对比计入 approved
 
 console.log(describeBrand(BRAND));
 const server = await startServer();

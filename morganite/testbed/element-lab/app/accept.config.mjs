@@ -14,13 +14,12 @@ export const NARROW = {
   pages: [['dashboard', '#/'], ['kitchen', '#/kitchen']]
 };
 export const FOCUS = { pages: { dashboard: '#/' }, steps: 80, inputBorder: true };   // 输入类控件只换边线（DESIGN），按边线认焦点
-// 品牌金审计：判色范围与允许出现金色的位置登记在设计系统身份文件 design-system.json 的 accept.brand（依据 DESIGN；要 citrine-tools ≥ 1.3.0）；
+// 品牌色审计：允许出现品牌色的位置登记在设计系统身份文件 design-system.json 的 accept.brand（依据 DESIGN），判色范围跟着项目当前颜色；
 // 本项目另有合法位置时追加在这里并写明理由，如 ['.welcome-banner']
 export const BRAND_ALLOW = [];
-// 已批准的对比度例外：设计系统 AUDIT「对比度基线」已登记的例外的镜像，先在系统里登记，再写到这里
+// 已批准的对比度例外：设计系统 AUDIT「对比度基线」已登记的例外的镜像，先在系统里登记，再写到这里。
+// 跟颜色走的例外（主色底白字、暗色链接压在悬停行上）登记在设计系统里，验收工具按当前颜色自动带上（citrine-tools ≥ 1.4.0）
 export const APPROVED_CONTRAST = [
-  { fg: '#FFFFFF', bg: '#B98D44', why: '金底白字 3.02:1：主按钮、分页当前页、侧栏当前项、选中日、主色徽标、深色 / 勾选标签、当前步骤（用户指定金底放白字）' },
   { fg: 'rgba(0, 0, 0, 0.45)', why: '亮色占位符（占位符底线 3:1）' },
-  { fg: 'rgba(255, 255, 255, 0.45)', why: '暗色占位符（占位符底线 3:1）' },
-  { fg: '#B98D44', minRatio: 4.2, why: '暗色链接 / 文字按钮压在悬停行、气泡上约 4.3:1（用户 2026-10-09 决定保持暗色链接色）' }
+  { fg: 'rgba(255, 255, 255, 0.45)', why: '暗色占位符（占位符底线 3:1）' }
 ];

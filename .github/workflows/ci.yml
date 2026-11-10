@@ -1,6 +1,7 @@
 # CI：改种子 / 桥接 / 工具 / skill 的任何一处，都要过这四道门——
 #   checks：adopter 单测、Citrine 迁移角色表与 token 源一致、每个设计系统六处版本号一致、每个种子 dist 与 token 源一致（系统清单来自 scripts/systems.mjs）、调色盘与生成脚本一致并通过体检、效果预览的调色盘文件已重新生成
 #   accept：六个实测项目（Citrine 三个、Morganite 三个）各自 npm ci → guard current → status unified → 全量验收（页面 × 亮暗 / 组件走查 / 三端 / 焦点 / 黄金后台 E-S 像素对照）
+#   accept-palettes：Morganite 每个官方颜色（默认颜色由 accept 覆盖）× 三个实测项目：先跟上种子再 ds.mjs palette → guard current → 页面与组件走查（亮 / 暗）
 # 验收在无头 Chrome 上跑（runner 自带 google-chrome），CJK 字体装 fonts-noto-cjk（Citrine 字体栈里有 Noto Sans CJK SC；Morganite 沿用 antd 字体栈，中文靠系统回退到它）。
 name: CI
 
@@ -105,4 +106,61 @@ jobs:
         with:
           name: accept-${{ matrix.id }}
           path: ${{ matrix.app }}/.accept
+          retention-days: 7
+
+  palette-list:
+    name: 官方颜色清单
+    runs-on: ubuntu-latest
+    outputs:
+      list: ${{ steps.list.outputs.list }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: list
+        run: echo "list=$(node -p "const p = require('./morganite/seeds/morganite/design-system.json').palettes; JSON.stringify(p.official.filter((id) => id !== p.default.id))")" | tee -a "$GITHUB_OUTPUT"
+
+  accept-palettes:
+    name: 换色验收 · ${{ matrix.palette }} · ${{ matrix.project }}
+    needs: palette-list
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        palette: ${{ fromJSON(needs.palette-list.outputs.list) }}
+        project: [mall-ops, element-lab, shadcn-lab]
+    env:
+      CHROME_FLAGS: --no-sandbox --disable-dev-shm-usage --disable-gpu
+      APP: morganite/testbed/${{ matrix.project }}/app
+      DESIGN_SYSTEM_STEWARD: ${{ github.workspace }}/skills/design-system-steward
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: CJK 字体（字体栈的 Noto Sans CJK SC，否则中文测宽失真）
+        run: sudo apt-get update -q && sudo apt-get install -y -q fonts-noto-cjk >/dev/null
+      - name: steward（换色后重建 token、guard）
+        run: git clone --depth 1 https://github.com/WYCM9527/skills.git skills
+      - name: "依赖（file: 链接到种子与工具）"
+        working-directory: ${{ env.APP }}
+        run: npm ci --no-audit --no-fund
+      - name: 换色（示例项目先跟上种子，再 ds.mjs palette）· guard current
+        run: |
+          node design-system-adopter/scripts/ds.mjs upgrade --from morganite/seeds/morganite --project "$APP"
+          node design-system-adopter/scripts/ds.mjs palette ${{ matrix.palette }} --project "$APP"
+          node skills/design-system-steward/scripts/guard.mjs --project "$PWD/$APP" | tee /tmp/guard.json | grep -q '"status": "current"'
+      - name: 页面与组件走查（亮 / 暗）
+        working-directory: ${{ env.APP }}
+        run: |
+          npm run build
+          set +e
+          npx citrine-accept pages; pages=$?
+          npx citrine-accept components; components=$?
+          exit $(( pages || components ))
+      - name: 失败留证（截图与报告）
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: accept-palette-${{ matrix.palette }}-${{ matrix.project }}
+          path: ${{ env.APP }}/.accept
           retention-days: 7

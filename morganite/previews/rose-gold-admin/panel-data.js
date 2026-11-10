@@ -117,7 +117,8 @@ window.MorganitePanelData = {
    },
    "semantic": {},
    "dark": {
-    "color.text.link": "color.brand.400",
+    "color.text.link": "color.brand.300",
+    "color.text.link-hover": "color.brand.250",
     "color.border.focus": "color.brand.400",
     "color.focus.ring": "color.brand.400",
     "color.text.brand": "color.brand.400",
@@ -512,7 +513,8 @@ window.MorganitePanelData = {
    },
    "semantic": {},
    "dark": {
-    "color.text.link": "color.brand.400",
+    "color.text.link": "color.brand.300",
+    "color.text.link-hover": "color.brand.250",
     "color.border.focus": "color.brand.400",
     "color.focus.ring": "color.brand.400",
     "color.text.brand": "color.brand.400",
@@ -755,7 +757,8 @@ window.MorganitePanelData = {
    },
    "semantic": {},
    "dark": {
-    "color.text.link": "color.brand.400"
+    "color.text.link": "color.brand.300",
+    "color.text.link-hover": "color.brand.250"
    },
    "notes": [
     "主色 #C6005C 是 shadcn「pink」的亮色 primary（Tailwind pink-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
@@ -817,7 +820,8 @@ window.MorganitePanelData = {
    },
    "semantic": {},
    "dark": {
-    "color.text.link": "color.brand.400",
+    "color.text.link": "color.brand.300",
+    "color.text.link-hover": "color.brand.250",
     "color.border.focus": "color.brand.400",
     "color.focus.ring": "color.brand.400",
     "color.text.brand": "color.brand.400",
@@ -899,7 +903,8 @@ window.MorganitePanelData = {
    },
    "semantic": {},
    "dark": {
-    "color.text.link": "color.brand.400"
+    "color.text.link": "color.brand.300",
+    "color.text.link-hover": "color.brand.250"
    },
    "notes": [
     "主色 #C70036 是 shadcn「rose」的亮色 primary（Tailwind rose-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",

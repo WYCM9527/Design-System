@@ -201,7 +201,13 @@ test('export --palette：调色盘覆盖接在 token 文件末尾、版本头写
   const css = readFileSync(join(to, 'index.css'), 'utf8');
   assert.match(css.split('\n')[0], /index\.css · 颜色 青（cyan）/);
   assert.match(css, /\/\* 调色盘「青」（cyan）[^\n]*\*\/\n:root \{\n[^}]*--color-brand-500: #007595;/);
-  assert.equal(readJ(join(to, 'design-system.export.json')).palette, 'cyan');
+  const exported = readJ(join(to, 'design-system.export.json'));
+  assert.equal(exported.palette, 'cyan');
+  const cyan = readJ(join(SEED, 'palettes/cyan.json')).accept;
+  assert.deepEqual(exported.accept.brand.hue, cyan.brand.hue, '验收口径的判色范围换成这套颜色的');
+  assert.deepEqual(exported.accept.brand.allow, readJ(join(SEED, 'design-system.json')).accept.brand.allow, '允许位置照用身份文件的');
+  assert.deepEqual(exported.accept.approvedContrast, cyan.approvedContrast);
+  assert.equal(exported.accept.paletteName, '青');
   assert.doesNotMatch(readFileSync(join(to, 'recipes.css'), 'utf8'), /调色盘/);
   assert.match(run(['export', '--system', SEED, '--to', to]), /未变：index\.css/);
   let code = 0;
@@ -209,7 +215,35 @@ test('export --palette：调色盘覆盖接在 token 文件末尾、版本头写
   assert.equal(code, 2, '清单外的颜色要 --unofficial');
   assert.match(run(['export', '--system', SEED, '--to', to, '--palette', 'rose-gold']), /更新：index\.css/);
   assert.doesNotMatch(readFileSync(join(to, 'index.css'), 'utf8'), /调色盘「/);
-  assert.equal(readJ(join(to, 'design-system.export.json')).palette, undefined);
+  const back = readJ(join(to, 'design-system.export.json'));
+  assert.equal(back.palette, undefined);
+  assert.deepEqual(back.accept.approvedContrast, readJ(join(SEED, 'design-system.json')).accept.approvedContrast, '默认颜色用身份文件登记的例外');
+});
+
+test('验收工具按项目当前颜色取口径：判色范围与跟颜色走的对比度例外换成调色盘的，允许位置照旧；export 目录同样认', async () => {
+  const { brandFor } = await import('../../citrine/tools/lib/brand.mjs');
+  const { approvedFor } = await import('../../citrine/tools/lib/approved.mjs');
+  const identity = readJ(join(SEED, 'design-system.json')).accept;
+  const blue = readJ(join(SEED, 'palettes/blue.json')).accept;
+  const { proj, run } = project();
+  const whys = (list) => list.map((x) => x.why);
+  const before = brandFor({}, proj);
+  assert.deepEqual(before.hue, identity.brand.hue);
+  assert.deepEqual(whys(approvedFor('pages', {}, proj)), whys(identity.approvedContrast));
+  run(['palette', 'blue']);
+  const b = brandFor({}, proj);
+  assert.deepEqual([b.hue, b.saturation, b.lightness], [blue.brand.hue, blue.brand.saturation, blue.brand.lightness]);
+  assert.deepEqual(b.allow, before.allow, '允许位置照用身份文件的');
+  assert.match(b.palette, /「蓝」/);
+  assert.deepEqual(whys(approvedFor('components', { APPROVED_CONTRAST: [{ fg: '#000', why: '项目的' }] }, proj)), [...whys(blue.approvedContrast), '项目的']);
+  assert.equal(brandFor({ BRAND: { hue: [351, 4] } }, proj).hue[0], 351, '色相可以跨 0°');
+  const notBrand = brandFor({}, proj, join(SEED, 'design-system/dist')).notBrand.map((c) => c.join());
+  assert.ok(notBrand.includes('9,88,217') && notBrand.includes('105,177,255'), '亮暗两种模式的信息蓝都不算品牌色');
+  const to = join(tmp(), 'static');
+  execFileSync('node', [DS, 'export', '--system', SEED, '--to', to, '--palette', 'blue'], { stdio: 'pipe' });
+  const plain = tmp();
+  assert.deepEqual(brandFor({}, plain, to).hue, blue.brand.hue, '非 Node 项目读 export 目录里的口径');
+  assert.equal(approvedFor('pages', {}, plain, to).length, blue.approvedContrast.length, 'Morganite 的 export 项目不带 Citrine 内置例外');
 });
 
 test('scope --palette：没有工作副本 dist 时把调色盘覆盖一起包进 @scope；有工作副本 dist 时颜色跟工作副本，要换就拦下指向 ds.mjs palette', () => {

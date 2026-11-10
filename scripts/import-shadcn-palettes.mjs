@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url';
 import { parseArgs } from '../design-system-adopter/scripts/lib/util.mjs';
 import { applyToTrees, cloneDefaults, getNode, normalizePalette, paletteContext, resolveColor } from '../design-system-adopter/scripts/lib/palette.mjs';
 import { contrast, mixOklch, oklchToRgb, parseHex, rgbToHsl, rgbToOklch, round, toHex } from './lib/color.mjs';
-import { classify, evaluatePalette } from './lib/palette-checks.mjs';
+import { classify, colorOf, evaluatePalette } from './lib/palette-checks.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SEED = join(ROOT, 'morganite/seeds/morganite');
@@ -39,11 +39,13 @@ const ALPHAS = { '500-a16': ['500', 0.16], '500-a24': ['500', 0.24], '600-a10': 
 const ORDER = ['50', '100', '200', '250', '300', '400', '500', '550', '600', '700', '800', '900'];
 
 const ON_ROLES = ['color.text.on-primary', 'color.text.on-brand', 'color.text.sidebar-selected'];
-// [角色, 底线, 压在哪些底上]：亮色往深档挪，暗色往浅档挪
+// [角色, 底线, 压在哪些底上]：亮色往深档挪，暗色往浅档挪。「上层@下层」是叠出来的底（卡片上的悬停行），口径同 lib/palette-checks.mjs
+const LINK_BGS = ['color.bg.surface', 'color.bg.page', 'color.bg.elevated', 'color.bg.hover@color.bg.surface'];
+const SELECTED_BGS = ['color.bg.surface', 'color.bg.elevated', 'color.bg.selected-subtle', 'color.bg.chip'];
 const LIGHT_RULES = [
-  ['color.text.link', 4.5, ['color.bg.surface', 'color.bg.page']],
+  ['color.text.link', 4.5, LINK_BGS],
   ['color.text.link-hover', 4.5, ['color.bg.surface', 'color.bg.page']],
-  ['color.text.selected', 4.5, ['color.bg.surface', 'color.bg.selected-subtle', 'color.bg.chip']],
+  ['color.text.selected', 4.5, SELECTED_BGS],
   ['color.border.focus', 3, ['color.bg.surface']],
   ['color.focus.ring', 3, ['color.bg.surface']],
   ['color.text.brand', 3, ['color.bg.surface']],
@@ -51,9 +53,9 @@ const LIGHT_RULES = [
   ['color.border.current', 3, ['color.bg.surface']]
 ];
 const DARK_RULES = [
-  ['color.text.link', 4.5, ['color.bg.surface', 'color.bg.page']],
+  ['color.text.link', 4.5, LINK_BGS],
   ['color.text.link-hover', 4.5, ['color.bg.surface', 'color.bg.page']],
-  ['color.text.selected', 4.5, ['color.bg.surface', 'color.bg.selected-subtle', 'color.bg.chip']],
+  ['color.text.selected', 4.5, SELECTED_BGS],
   ['color.text.sidebar-selected', 4.5, ['color.bg.sidebar-selected']],
   ['color.border.focus', 3, ['color.bg.surface']],
   ['color.focus.ring', 3, ['color.bg.surface']],
@@ -178,7 +180,7 @@ function measure(raw, mode, role, bgs, slot) {
   const trial = { ...raw, semantic: { ...raw.semantic }, dark: { ...raw.dark } };
   if (slot) (mode === 'dark' ? trial.dark : trial.semantic)[role] = { value: ref(slot), why: '' };
   const trees = applyToTrees(ctx, cloneDefaults(ctx), normalizePalette(ctx, trial));
-  const color = (p) => parseHex(resolveColor(trees, p, mode));
+  const color = (p) => colorOf(trees, p, mode);
   const page = color('color.bg.page');
   return Math.min(...bgs.map((bg) => contrast(color(role), color(bg), page)));
 }

@@ -30,8 +30,12 @@
   "semantic": {},
   "dark": {
     "color.text.link": {
-      "value": "{color.brand.400}",
-      "why": "暗色原来的 500 只有 2.7:1（要 4.5），改用 400（4.9:1）"
+      "value": "{color.brand.300}",
+      "why": "暗色原来的 500 只有 2.2:1（要 4.5），改用 300（5.71:1）"
+    },
+    "color.text.link-hover": {
+      "value": "{color.brand.250}",
+      "why": "暗色要比链接更浅一档，改用 250（9.13:1）"
     },
     "color.border.focus": {
       "value": "{color.brand.400}",

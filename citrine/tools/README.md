@@ -12,8 +12,8 @@ DESIGN.md「验收基线」的执行者，对任意项目运行。发布为 npm 
    export const KITCHEN = '#/kitchen'                     // 全组件走查页；没有就 null，scan:components 会跳过
    export const NARROW = { width: 1366, pages: [['orders', '#/orders'], …] }
    export const FOCUS = { pages: { orders: '#/orders' }, steps: 80 }   // inputBorder: true：输入类控件按边线变成 --color-border-focus 认焦点（设计系统规定输入框不加外环时打开）
-   // 可选：本项目所用设计系统的已批准对比度例外（不是 Citrine 的系统需要；Citrine 的例外已内置，只对 Citrine 项目生效）
-   export const APPROVED_CONTRAST = [{ fg: '#FFFFFF', bg: '#B98D44', why: '金底白字' }, { fg: 'rgba(0, 0, 0, 0.45)', why: '占位符' }, { fg: '#8A6530', minRatio: 4.2, why: '叠加悬停底' }]
+   // 可选：本项目所用设计系统里与颜色无关的已批准对比度例外（如占位符）；跟颜色走的（如主色底白字）登记在设计系统里，工具按当前颜色自动带上
+   export const APPROVED_CONTRAST = [{ fg: 'rgba(0, 0, 0, 0.45)', why: '占位符' }, { fg: '#8A6530', minRatio: 4.2, why: '叠加悬停底' }]
    // 可选：本项目另外允许出现品牌色的位置（要有理由，如营销页 hero）；旧名 YELLOW_ALLOW 照认
    export const BRAND_ALLOW = ['.welcome-banner']
    ```
@@ -64,24 +64,34 @@ Citrine 的内置例外只对 Citrine 项目生效：项目 `design-system/.adop
 
 `APPROVED_CONTRAST`、逐层合成与内置例外的开关都从 1.2.0 起；1.1.x 不认 `APPROVED_CONTRAST`，别的设计系统的项目要装 ≥ 1.2.0。
 
+跟颜色走的例外（主色底白字、暗色链接压在悬停行上这类，色值随颜色变）不写在项目里，登记在设计系统中，工具按项目当前颜色自动带上（1.4.0 起，实现见 `lib/system.mjs`）：
+
+- 默认颜色：身份文件 `design-system.json` 的 `accept.approvedContrast`；
+- 用 `ds.mjs palette` 换过颜色（项目 `design-system/.adopter.json` 记着 `palette`）：快照里调色盘文件 `palettes/<id>.json` 的 `accept.approvedContrast`，代替默认颜色那份；
+- 非 Node 项目：`--tokens` 目录里 `ds.mjs export` 写的 `design-system.export.json`，导出时已按颜色取好。
+
+写法同 `APPROVED_CONTRAST`。换颜色后项目的 `accept.config.mjs` 不用改。
+
 阈值、已批准的例外（三对状态色、危险按钮白字、占位符）与"静息态允许出现黄色的六类元素"都写在 `design-system/DESIGN.md`「验收基线」；脚本里的常量是它的镜像（`lib/approved.mjs` 的 Citrine 内置例外、`lib/brand.mjs` 的判黄范围、`lib/yellow-allow.mjs` 的允许清单）。改了基线先改文档，再改这里。
 
 ## 品牌色口径
 
 页面扫描的「允许清单之外的品牌色」和组件走查的「状态切换新引入的品牌色」查的是同一种颜色，口径按项目所用的设计系统取（实现见 `lib/brand.mjs`，扫描开头会打印一行当前口径）：
 
-1. 项目 `accept.config.mjs` 的 `BRAND`：逐字段覆盖下面两种来源；写 `BRAND = false` 关闭审计。
-2. 设计系统身份文件 `design-system.json` 的 `accept.brand`（经项目 `design-system/.adopter.json` 的 `snapshot` 找到快照里的身份文件）。
-3. 都没有时：Citrine 项目、读不到 `.adopter.json` 的老项目用内置的品牌黄（色相 40–64°、饱和度 0.55–1、明度 0.28–0.78）和 `lib/yellow-allow.mjs`；别的设计系统不审计（Citrine 的黄和选择器不适用），扫描开头会写明「未配置」。
+1. 项目 `accept.config.mjs` 的 `BRAND`：逐字段覆盖下面的来源；写 `BRAND = false` 关闭审计。
+2. 项目当前颜色的调色盘：`design-system/.adopter.json` 记着 `palette` 时，快照里 `palettes/<id>.json` 的 `accept.brand`，只覆盖判色范围与称呼（`name` / `hue` / `saturation` / `lightness`），允许位置照用身份文件的（1.4.0 起）。
+3. 设计系统身份文件 `design-system.json` 的 `accept.brand`（经项目 `design-system/.adopter.json` 的 `snapshot` 找到快照里的身份文件）。非 Node 项目读 `--tokens` 目录里 `ds.mjs export` 写的 `design-system.export.json`，导出时已按颜色合并好。
+4. 都没有时：Citrine 项目、读不到 `.adopter.json` 的老项目用内置的品牌黄（色相 40–64°、饱和度 0.55–1、明度 0.28–0.78）和 `lib/yellow-allow.mjs`；别的设计系统不审计（Citrine 的黄和选择器不适用），扫描开头会写明「未配置」。
 
 `accept.brand` 的字段：
 
 | 字段 | 含义 |
 | --- | --- |
 | `name` / `note` | 报告里的称呼（如「品牌金」）与允许位置的一句话概括 |
-| `hue` / `saturation` / `lightness` | 判色范围，HSL，都写 `[最小, 最大]`；色相单位度，其余 0–1。透明度低于 0.15 的颜色不算 |
+| `hue` / `saturation` / `lightness` | 判色范围，HSL，都写 `[最小, 最大]`；色相单位度，其余 0–1。色相可以跨 0°：最小大于最大表示绕一圈（如红色 `[351, 4]`，1.4.0 起）。透明度低于 0.15 的颜色不算 |
 | `allow` | 静息态允许出现品牌色的位置：CSS 选择器，元素在其内即放行；数组，或按技术栈分组的对象 `{ "element-plus": [...], "recipes": [...] }` |
 | `focusRing` | 焦点指示本身是品牌色时写 `true`：组件走查不把聚焦时出现在外环 / 环形阴影 / 边线上的品牌色算作泄漏 |
+| `notBrand` | 不算品牌色的 token，写路径前缀（如 `["color.status", "color.data"]`）：工具从 token 产物读它们亮暗两种模式的不透明色值，和这些色值一样的颜色不判成品牌色。换颜色后状态色可能落进品牌色范围（蓝的信息色、黄晶黄的暗色警示色），1.4.0 起 |
 | `hoverAllow` | 悬停时允许新出现品牌色的元素（选择器，元素自身或祖先匹配即放行），如静息是正文色、悬停显出链接色的链接 |
 
 项目追加的合法位置写在 `accept.config.mjs` 的 `BRAND_ALLOW`（旧名 `YELLOW_ALLOW` 照认），要有理由。品牌色口径、`BRAND_ALLOW` 与报告字段改名（`yellow` → `brand`，`hover-yellow` / `focus-yellow` → `hover-brand` / `focus-brand`）都从 1.3.0 起；1.2.x 只认 Citrine 的黄，别的设计系统的项目要装 ≥ 1.3.0 才查得到自己的品牌色。

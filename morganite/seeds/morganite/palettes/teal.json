@@ -31,7 +31,7 @@
   "dark": {
     "color.text.link": {
       "value": "{color.brand.400}",
-      "why": "暗色原来的 500 只有 3.44:1（要 4.5），改用 400（7.6:1）"
+      "why": "暗色原来的 500 只有 2.81:1（要 4.5），改用 400（6.21:1）"
     }
   },
   "contrastExceptions": [],

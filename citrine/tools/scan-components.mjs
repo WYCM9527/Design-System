@@ -17,8 +17,8 @@ const OUT = outDir('components');
 const PROBE = readFileSync(resolve(import.meta.dirname, 'lib/component-probe.js'), 'utf8');
 // 已批准的对比度例外，悬停对比检查对它们放行：Citrine 内置（验收基线里亮 / 暗的状态色文字、危险按钮白字压 action.danger——plain / text 危险按钮 hover 变实心时命中；只对 Citrine 项目生效）
 // + 项目 accept.config.mjs 的 APPROVED_CONTRAST（见 lib/approved.mjs）
-const APPROVED = approvedFor('components', cfg, APP);
-const BRAND = brandFor(cfg, APP);
+const APPROVED = approvedFor('components', cfg, APP, TOKENS_DIST);
+const BRAND = brandFor(cfg, APP, TOKENS_DIST);
 // 焦点指示本身是品牌色的系统（BRAND.focusRing），聚焦时出现在这几项上的品牌色是设计好的焦点环 / 聚焦边线，不算泄漏
 const FOCUS_RING_PROPS = new Set(['outline-color', 'box-shadow', 'border-color']);
 console.log(describeBrand(BRAND));

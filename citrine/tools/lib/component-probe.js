@@ -9,7 +9,9 @@ window.__ks = (() => {
   const hsl = (c) => { const r = c.r / 255, g = c.g / 255, b = c.b / 255, max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2; if (max === min) return { h: 0, s: 0, l }; const d = max - min; const s = l > 0.5 ? d / (2 - max - min) : d / (max + min); let h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4; return { h: h * 60, s, l }; };
   const BRAND = window.__ksBrand === undefined ? { hue: [40, 64], saturation: [0.55, 1], lightness: [0.28, 0.78] } : window.__ksBrand;
   const within = (v, [lo, hi]) => v >= lo && v <= hi;
-  const isBrand = (c) => { if (!BRAND || !c || c.a < 0.15) return false; const { h, s, l } = hsl(c); return within(h, BRAND.hue) && within(s, BRAND.saturation) && within(l, BRAND.lightness); };
+  const inHue = (h, [lo, hi]) => (lo <= hi ? h >= lo && h <= hi : h >= lo || h <= hi);   // 最小大于最大 = 跨 0°（如红色 351–4°）
+  const notBrand = (c) => (BRAND?.notBrand || []).some(([r, g, b]) => Math.abs(c.r - r) <= 2 && Math.abs(c.g - g) <= 2 && Math.abs(c.b - b) <= 2);   // 状态色这类登记过不算品牌色的 token 值
+  const isBrand = (c) => { if (!BRAND || !c || c.a < 0.15 || notBrand(c)) return false; const { h, s, l } = hsl(c); return inHue(h, BRAND.hue) && within(s, BRAND.saturation) && within(l, BRAND.lightness); };
   const lum = (c) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }; return 0.2126 * f(c.r) + 0.7152 * f(c.g) + 0.0722 * f(c.b); };
   const contrast = (a, b) => { const l1 = lum(a), l2 = lum(b); return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05); };
   const blend = (fg, bg) => ({ r: fg.r * fg.a + bg.r * (1 - fg.a), g: fg.g * fg.a + bg.g * (1 - fg.a), b: fg.b * fg.a + bg.b * (1 - fg.a), a: 1 });

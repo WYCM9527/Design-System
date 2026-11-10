@@ -194,6 +194,10 @@ svg.lucide[data-icon-merged] > :not([data-icon-merge], defs, mask, clipPath, pat
 [data-slot="button"] { font-weight: var(--text-weight-label); gap: var(--spacing-1-5); }
 [data-slot="button"].h-9:has(> svg):not(.size-9) { padding-inline: var(--spacing-4); }   /* 带图标的按钮不收窄（shadcn has-[>svg]:px-3），与无图标按钮同宽留白 */
 [data-slot="button"].h-8:has(> svg) { padding-inline: var(--spacing-3); }
+/* 主按钮悬停加深一点、按下再深一档（DESIGN「按钮四层」）：shadcn 悬停是主色 90% 透明，叠在白底上变浅，主色上的白字随之掉到 4.5 以下（青实测 5.28 → 4.36，绿 4.95 → 4.18）。
+   不限 data-slot="button"，理由同上面的描边按钮 */
+[class*="hover:bg-primary/90"]:hover { background-color: var(--color-action-primary-hover); }
+[class*="hover:bg-primary/90"]:active { background-color: var(--color-action-primary-active); }
 /* 表格正文是小号字（DESIGN「表格」）；按钮、输入框、菜单是正文字号 */
 [data-slot="table"] { font-size: var(--text-body-sm-size); }
 /* 输入类控件：填充式（bg.input，静息边线透明，悬停 border.strong，聚焦 border.focus，正文字号）。shadcn 是透明底 + --input 描边，本系统 --input 透明，框会完全看不出 */

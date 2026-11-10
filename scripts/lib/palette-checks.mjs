@@ -1,7 +1,18 @@
 // 调色盘体检口径：导入脚本按它决定改指向，体检脚本按它判定通过。
 // 只看跟品牌色有关的配对（通用配对由 check-contrast.mjs 查）；和默认颜色同样不达标、颜色也一样的算「继承」，不归调色盘管。
 import { applyToTrees, cloneDefaults, resolveColor } from '../../design-system-adopter/scripts/lib/palette.mjs';
-import { contrast, deltaE, parseHex, round } from './color.mjs';
+import { composite, contrast, deltaE, parseHex, round, toHex } from './color.mjs';
+
+/** 角色在某个模式下的颜色；写成「上层@下层」表示半透明的上层叠在下层上（如卡片上的悬停行 color.bg.hover@color.bg.surface），最底下垫页面底。 */
+export function colorOf(trees, path, mode) {
+  const [top, under] = path.split('@');
+  const hex = resolveColor(trees, top, mode);
+  if (!hex) return null;
+  if (!under) return parseHex(hex);
+  const base = colorOf(trees, under, mode);
+  return base ? composite(parseHex(hex), composite(base, parseHex(resolveColor(trees, 'color.bg.page', mode)))) : null;
+}
+const hexOf = (trees, path, mode) => (path.includes('@') ? toHex(colorOf(trees, path, mode)) : resolveColor(trees, path, mode));
 
 /** [前景, 底色, 底线, 说明]，亮暗两种模式都查。 */
 export const BRAND_PAIRS = [
@@ -12,8 +23,11 @@ export const BRAND_PAIRS = [
   ['color.text.sidebar-selected', 'color.bg.sidebar-selected', 4.5, '侧栏当前项文字 / 底'],
   ['color.text.link', 'color.bg.surface', 4.5, '链接 / 卡片'],
   ['color.text.link', 'color.bg.page', 4.5, '链接 / 页面底'],
+  ['color.text.link', 'color.bg.elevated', 4.5, '链接 / 浮层（弹窗、抽屉、下拉）'],
+  ['color.text.link', 'color.bg.hover@color.bg.surface', 4.5, '链接 / 卡片上的悬停行'],
   ['color.text.link-hover', 'color.bg.surface', 4.5, '链接悬停 / 卡片'],
   ['color.text.selected', 'color.bg.surface', 4.5, '选中文字 / 卡片'],
+  ['color.text.selected', 'color.bg.elevated', 4.5, '选中文字 / 浮层（下拉当前项）'],
   ['color.text.selected', 'color.bg.selected-subtle', 4.5, '选中文字 / 选中浅底'],
   ['color.text.selected', 'color.bg.chip', 4.5, '筹码文字 / 筹码底'],
   ['color.text.brand', 'color.bg.surface', 3, '品牌大字 / 卡片'],
@@ -44,10 +58,7 @@ export const MODES = ['light', 'dark'];
 /** 在内存里套上调色盘，算全部品牌配对与撞色。 */
 export function evaluatePalette(ctx, palette) {
   const trees = applyToTrees(ctx, cloneDefaults(ctx), palette);
-  const color = (path, mode) => {
-    const hex = resolveColor(trees, path, mode);
-    return hex ? parseHex(hex) : null;
-  };
+  const color = (path, mode) => colorOf(trees, path, mode);
   const rows = [];
   for (const mode of MODES) {
     if (mode === 'dark' && !trees.dark) continue;
@@ -57,7 +68,7 @@ export function evaluatePalette(ctx, palette) {
       const b = color(bg, mode);
       if (!f || !b) continue;
       const ratio = round(contrast(f, b, page));
-      rows.push({ mode, fg, bg, min, label, fgHex: resolveColor(trees, fg, mode), bgHex: resolveColor(trees, bg, mode), ratio, pass: ratio >= min });
+      rows.push({ mode, fg, bg, min, label, fgHex: resolveColor(trees, fg, mode), bgHex: hexOf(trees, bg, mode), ratio, pass: ratio >= min });
     }
   }
   const collisions = [];
