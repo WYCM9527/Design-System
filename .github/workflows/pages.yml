@@ -1,5 +1,5 @@
 # 效果预览上 GitHub Pages：https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/
-# 只发布预览和它用相对路径引用的种子文件（dist、bridge 的 CSS），目录层级必须与仓库一致。
+# 只发布预览和它用相对路径引用的种子文件（dist、bridge 的 CSS、调色盘文件），目录层级必须与仓库一致。
 # 不用「从分支发布」：.cursor/skills/web-to-design-system 链到单独克隆的 skills/，runner 上是断链，Pages 打包整个仓库会失败。
 # 仓库 Settings → Pages 的 Source 要选 GitHub Actions。
 name: Pages
@@ -11,6 +11,7 @@ on:
       - 'morganite/previews/**'
       - 'morganite/seeds/morganite/design-system/dist/**'
       - 'morganite/seeds/morganite/bridge/*.css'
+      - 'morganite/seeds/morganite/palettes/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -40,6 +41,7 @@ jobs:
           cp -R morganite/previews _site/morganite/
           cp -R "$S/design-system/dist" "_site/$S/design-system/"
           cp "$S"/bridge/*.css "_site/$S/bridge/"
+          cp -R "$S/palettes" "_site/$S/"
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:

@@ -1,0 +1,52 @@
+/* 规范调节面板（效果预览专用，不属于设计系统，不进 dist）：换色、调值、点组件看角色、导出改动清单。
+   这里只给面板自己排版，取值全部引用 token；面板调的是 CSS 变量（panel.js 写进 <style id="dsp-overrides">），不改页面上的样式规则。 */
+.dsp-fab { position: fixed; right: var(--spacing-6); bottom: var(--spacing-6); z-index: calc(var(--layer-toast) - 1); box-shadow: 0 var(--elevation-popover-y) var(--elevation-popover-blur) var(--elevation-popover-color); }
+.dsp-fab .count { min-width: var(--size-icon-md); height: var(--size-icon-md); padding: 0 var(--spacing-1); border-radius: var(--radius-full); background: var(--color-bg-chip); color: var(--color-text-selected); font-size: var(--text-caption-size); line-height: var(--size-icon-md); text-align: center; }
+.dsp { position: fixed; top: 0; right: 0; bottom: 0; z-index: calc(var(--layer-toast) - 1); display: flex; flex-direction: column; width: min(100vw, var(--layout-modal-width-sm)); background: var(--color-bg-elevated); color: var(--color-text-primary); border-left: var(--border-width-default) solid var(--color-border-default); box-shadow: 0 var(--elevation-modal-y) var(--elevation-modal-blur) var(--elevation-modal-color); font-size: var(--text-body-sm-size); line-height: var(--text-paragraph-line-height); }
+.dsp[hidden] { display: none; }
+.dsp-head { display: flex; align-items: center; gap: var(--spacing-2); padding: var(--spacing-4) var(--spacing-5) var(--spacing-1); }
+.dsp-head h2 { flex: 1; margin: 0; font-size: var(--text-title-sm-size); font-weight: var(--text-weight-strong); }
+.dsp .tabs { flex: none; gap: var(--spacing-5); padding: 0 var(--spacing-5); }
+.dsp .tab { font-size: var(--text-body-sm-size); }
+.dsp-body { flex: 1; overflow: auto; padding: var(--spacing-4) var(--spacing-5) var(--spacing-8); }
+.dsp-section + .dsp-section { margin-top: var(--spacing-6); }
+.dsp-section > h3 { display: flex; align-items: center; gap: var(--spacing-2); margin: 0 0 var(--spacing-2); font-size: var(--text-body-sm-size); font-weight: var(--text-weight-strong); }
+.dsp-section > h3 .btn { margin-left: auto; }
+.dsp-hint { margin: 0 0 var(--spacing-3); color: var(--color-text-muted); font-size: var(--text-small-size); }
+.dsp-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--spacing-2); }
+.dsp-swatch { display: flex; align-items: center; gap: var(--spacing-2); min-width: 0; height: var(--control-height-md); padding: 0 var(--spacing-2); border: var(--border-width-control) solid var(--color-border-default); border-radius: var(--radius-md); background: var(--color-bg-surface); color: var(--color-text-primary); font-size: var(--text-small-size); white-space: nowrap; cursor: pointer; }
+.dsp-swatch:hover { border-color: var(--color-border-strong); }
+.dsp-swatch[aria-pressed="true"] { border-color: var(--color-border-current); box-shadow: inset 0 0 0 var(--border-width-default) var(--color-border-current); }
+.dsp-swatch span:last-child { overflow: hidden; text-overflow: ellipsis; }
+.dsp-dot { flex: none; width: var(--size-icon-md); height: var(--size-icon-md); border-radius: var(--radius-full); background: var(--dsp-c); box-shadow: inset 0 0 0 var(--border-width-default) var(--color-border-default); }
+.dsp-card { display: grid; gap: var(--spacing-1-5); padding: var(--spacing-3); border-radius: var(--radius-md); background: var(--color-bg-subtle); }
+.dsp-card .title { display: flex; align-items: center; gap: var(--spacing-2); font-weight: var(--text-weight-strong); }
+.dsp-card .title a { margin-left: auto; color: var(--color-text-link); font-size: var(--text-small-size); font-weight: var(--text-weight-label); text-decoration: none; }
+.dsp-card .title a:hover { color: var(--color-text-link-hover); }
+.dsp-card ul { display: grid; gap: var(--spacing-1); margin: 0; padding-left: var(--spacing-4); color: var(--color-text-secondary); font-size: var(--text-small-size); }
+.dsp-tag { display: inline-flex; align-items: center; height: var(--control-height-xs); padding: 0 var(--spacing-2); border-radius: var(--radius-full); background: var(--color-bg-chip); color: var(--color-text-selected); font-size: var(--text-caption-size); font-weight: var(--text-weight-label); white-space: nowrap; }
+.dsp-tag.is-muted { background: var(--color-status-neutral-bg); color: var(--color-status-neutral); }
+.dsp-tag.is-warn { background: var(--color-status-warning-bg); color: var(--color-status-warning); }
+.dsp-rows { display: grid; }
+.dsp-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--spacing-1) var(--spacing-3); padding: var(--spacing-2) 0; border-bottom: var(--border-width-default) solid var(--color-border-default); }
+.dsp-row:last-child { border-bottom: 0; }
+.dsp-row .name { font-family: var(--font-family-code); font-size: var(--text-small-size); overflow-wrap: anywhere; }
+.dsp-row .desc { display: block; color: var(--color-text-muted); font-family: var(--font-family-body); font-size: var(--text-caption-size); }
+.dsp-row .edit { display: inline-flex; align-items: center; gap: var(--spacing-1-5); }
+.dsp-row .edit .input { width: calc(var(--control-height-md) * 2.5); height: var(--control-height-sm); padding: 0 var(--spacing-2); font-family: var(--font-family-code); font-size: var(--text-small-size); text-align: right; }
+.dsp-row .edit .unit { color: var(--color-text-muted); font-size: var(--text-caption-size); }
+.dsp-row .edit .iconbtn { width: var(--control-height-sm); height: var(--control-height-sm); }
+.dsp-row .edit .iconbtn[hidden] { display: none; }
+.dsp-row.is-changed .name { color: var(--color-text-selected); }
+.dsp-color { width: var(--control-height-sm); height: var(--control-height-sm); padding: 0; border: var(--border-width-control) solid var(--color-border-input); border-radius: var(--radius-sm); background: var(--color-bg-input); cursor: pointer; }
+.dsp-color::-webkit-color-swatch-wrapper { padding: var(--spacing-0-5); }
+.dsp-color::-webkit-color-swatch { border: 0; border-radius: var(--radius-xs); }
+.dsp-value { display: inline-flex; align-items: center; gap: var(--spacing-1-5); color: var(--color-text-secondary); font-family: var(--font-family-code); font-size: var(--text-small-size); }
+.dsp-value .dsp-dot { width: var(--size-icon-sm); height: var(--size-icon-sm); }
+.dsp-prop { margin: var(--spacing-3) 0 0; color: var(--color-text-muted); font-family: var(--font-family-code); font-size: var(--text-caption-size); }
+.dsp-target { padding: var(--spacing-2) var(--spacing-3); border-radius: var(--radius-md); background: var(--color-bg-subtle); font-family: var(--font-family-code); font-size: var(--text-small-size); overflow-wrap: anywhere; }
+.dsp-out { width: 100%; min-height: calc(var(--control-height-md) * 7); height: auto; padding: var(--spacing-2) var(--spacing-3); font-family: var(--font-family-code); font-size: var(--text-small-size); line-height: var(--text-paragraph-line-height); resize: vertical; }
+.dsp-actions { display: flex; flex-wrap: wrap; gap: var(--spacing-2); margin-top: var(--spacing-2); }
+.dsp-hl { position: fixed; z-index: calc(var(--layer-toast) - 2); pointer-events: none; border-radius: var(--radius-xs); outline: var(--focus-ring-width) solid var(--color-focus-ring); }
+.dsp-hl[hidden] { display: none; }
+html.dsp-picking body * { cursor: crosshair; }

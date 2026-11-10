@@ -9,7 +9,8 @@
   <link rel="stylesheet" href="../../seeds/morganite/bridge/recipes.css">
   <link rel="stylesheet" href="admin.css">
   <link rel="stylesheet" href="components.css">
-  <script>(function () { var q = new URLSearchParams(location.search).get("theme"), t = q; try { if (q) localStorage.setItem("morganite-theme", q); else t = localStorage.getItem("morganite-theme"); } catch (e) {} if (t === "dark") document.documentElement.classList.add("dark"); })();</script>
+  <link rel="stylesheet" href="palettes.css">
+  <script>(function () { var r = document.documentElement, q = new URLSearchParams(location.search), t = q.get("theme"), p = q.get("palette"), o = null; try { if (t) localStorage.setItem("morganite-theme", t); else t = localStorage.getItem("morganite-theme"); if (p) localStorage.setItem("morganite-palette", p); else p = localStorage.getItem("morganite-palette"); if (q.get("panel") !== "0") o = JSON.parse(localStorage.getItem("morganite-panel") || "null"); } catch (e) {} if (t === "dark") r.classList.add("dark"); if (p) r.setAttribute("data-palette", p); if (o && o.css) { var s = document.createElement("style"); s.id = "dsp-overrides"; s.textContent = o.css; document.head.appendChild(s); } })();</script>
 </head>
 <body>
   <div class="app">

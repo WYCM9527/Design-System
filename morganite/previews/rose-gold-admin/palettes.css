@@ -1,0 +1,501 @@
+/* Morganite 玫瑰金 · 调色盘覆盖（效果预览用；生成物：node scripts/build-palette-preview.mjs）。
+   <html data-palette="<id>"> 切换；默认颜色不写，种子 dist 就是它。每段只换品牌色原语与少量角色指向，规则与 ds.mjs palette 套到项目里的一致。 */
+:root:where([data-palette="blue"]) {
+  --color-brand-50: #EFF6FF;
+  --color-brand-100: #DBEAFE;
+  --color-brand-200: #8EC5FF;
+  --color-brand-250: #7CBBFF;
+  --color-brand-300: #51A2FF;
+  --color-brand-400: #2B7FFF;
+  --color-brand-500: #1447E6;
+  --color-brand-550: #1743D6;
+  --color-brand-600: #193CB8;
+  --color-brand-700: #1C398E;
+  --color-brand-800: #1A2E71;
+  --color-brand-900: #162456;
+  --color-brand-500-a16: #1447E629;
+  --color-brand-500-a24: #1447E63D;
+  --color-brand-600-a10: #193CB81A;
+  --color-brand-300-a10: #51A2FF1A;
+}
+:root.dark:where([data-palette="blue"]) {
+  --color-text-link: var(--color-brand-400);
+  --color-border-focus: var(--color-brand-400);
+  --color-focus-ring: var(--color-brand-400);
+  --color-text-brand: var(--color-brand-400);
+  --color-icon-brand: var(--color-brand-400);
+  --color-border-current: var(--color-brand-400);
+  --color-brand-indicator: var(--color-brand-400);
+}
+:root:where([data-palette="purple"]) {
+  --color-brand-50: #FAF5FF;
+  --color-brand-100: #F3E8FF;
+  --color-brand-200: #DAB2FF;
+  --color-brand-250: #D3A2FF;
+  --color-brand-300: #C27AFF;
+  --color-brand-400: #AD46FF;
+  --color-brand-500: #8200DB;
+  --color-brand-550: #7B04CB;
+  --color-brand-600: #6E11B0;
+  --color-brand-700: #59168B;
+  --color-brand-800: #4A0D79;
+  --color-brand-900: #3C0366;
+  --color-brand-500-a16: #8200DB29;
+  --color-brand-500-a24: #8200DB3D;
+  --color-brand-600-a10: #6E11B01A;
+  --color-brand-300-a10: #C27AFF1A;
+}
+:root.dark:where([data-palette="purple"]) {
+  --color-text-link: var(--color-brand-300);
+  --color-text-link-hover: var(--color-brand-250);
+  --color-border-focus: var(--color-brand-400);
+  --color-focus-ring: var(--color-brand-400);
+  --color-text-brand: var(--color-brand-400);
+  --color-icon-brand: var(--color-brand-400);
+  --color-border-current: var(--color-brand-400);
+  --color-brand-indicator: var(--color-brand-400);
+}
+:root:where([data-palette="cyan"]) {
+  --color-brand-50: #ECFEFF;
+  --color-brand-100: #CEFAFE;
+  --color-brand-200: #53EAFD;
+  --color-brand-250: #37E3FA;
+  --color-brand-300: #00D3F2;
+  --color-brand-400: #00B8DB;
+  --color-brand-500: #007595;
+  --color-brand-550: #006D8B;
+  --color-brand-600: #005F78;
+  --color-brand-700: #104E64;
+  --color-brand-800: #0A4054;
+  --color-brand-900: #053345;
+  --color-brand-500-a16: #00759529;
+  --color-brand-500-a24: #0075953D;
+  --color-brand-600-a10: #005F781A;
+  --color-brand-300-a10: #00D3F21A;
+}
+:root.dark:where([data-palette="cyan"]) {
+  --color-text-link: var(--color-brand-400);
+}
+:root:where([data-palette="green"]) {
+  --color-brand-50: #F0FDF4;
+  --color-brand-100: #DCFCE7;
+  --color-brand-200: #7BF1A8;
+  --color-brand-250: #64EC98;
+  --color-brand-300: #05DF72;
+  --color-brand-400: #00C950;
+  --color-brand-500: #008236;
+  --color-brand-550: #007834;
+  --color-brand-600: #016630;
+  --color-brand-700: #0D542B;
+  --color-brand-800: #074120;
+  --color-brand-900: #032E15;
+  --color-brand-500-a16: #00823629;
+  --color-brand-500-a24: #0082363D;
+  --color-brand-600-a10: #0166301A;
+  --color-brand-300-a10: #05DF721A;
+}
+:root.dark:where([data-palette="green"]) {
+  --color-text-link: var(--color-brand-400);
+}
+:root:where([data-palette="orange"]) {
+  --color-brand-50: #FFF7ED;
+  --color-brand-100: #FFEDD4;
+  --color-brand-200: #FFB86A;
+  --color-brand-250: #FFAB53;
+  --color-brand-300: #FF8904;
+  --color-brand-400: #FF6900;
+  --color-brand-500: #CA3500;
+  --color-brand-550: #BB3200;
+  --color-brand-600: #9F2D00;
+  --color-brand-700: #7E2A0C;
+  --color-brand-800: #601E09;
+  --color-brand-900: #441306;
+  --color-brand-500-a16: #CA350029;
+  --color-brand-500-a24: #CA35003D;
+  --color-brand-600-a10: #9F2D001A;
+  --color-brand-300-a10: #FF89041A;
+}
+:root.dark:where([data-palette="orange"]) {
+  --color-text-link: var(--color-brand-400);
+}
+:root:where([data-palette="citrine"]) {
+  --color-brand-50: #FEFCE8;
+  --color-brand-100: #FEF9C2;
+  --color-brand-200: #FFF085;
+  --color-brand-250: #FFE85F;
+  --color-brand-300: #FFDF20;
+  --color-brand-400: #FDD713;
+  --color-brand-500: #F9CF00;
+  --color-brand-550: #F6C400;
+  --color-brand-600: #F0B100;
+  --color-brand-700: #A65F00;
+  --color-brand-800: #733E0A;
+  --color-brand-900: #432004;
+  --color-brand-500-a16: #F9CF0029;
+  --color-brand-500-a24: #F9CF003D;
+  --color-brand-600-a10: #F0B1001A;
+  --color-brand-300-a10: #FFDF201A;
+  --color-text-on-primary: var(--color-brand-800);
+  --color-text-on-brand: var(--color-brand-800);
+  --color-text-sidebar-selected: var(--color-brand-800);
+  --color-text-link: var(--color-brand-700);
+  --color-text-link-hover: var(--color-brand-800);
+  --color-text-selected: var(--color-brand-800);
+  --color-border-focus: var(--color-brand-700);
+  --color-focus-ring: var(--color-brand-700);
+  --color-text-brand: var(--color-brand-700);
+  --color-icon-brand: var(--color-brand-700);
+  --color-border-current: var(--color-brand-700);
+}
+:root.dark:where([data-palette="citrine"]) {
+  --color-text-brand: var(--color-brand-500);
+  --color-icon-brand: var(--color-brand-500);
+  --color-border-current: var(--color-brand-500);
+}
+:root:where([data-palette="amber"]) {
+  --color-brand-50: #FFFBEB;
+  --color-brand-100: #FEF3C6;
+  --color-brand-200: #FFD230;
+  --color-brand-250: #FFCB0D;
+  --color-brand-300: #FFB900;
+  --color-brand-400: #FE9A00;
+  --color-brand-500: #BB4D00;
+  --color-brand-550: #AE4700;
+  --color-brand-600: #973C00;
+  --color-brand-700: #7B3306;
+  --color-brand-800: #602603;
+  --color-brand-900: #461901;
+  --color-brand-500-a16: #BB4D0029;
+  --color-brand-500-a24: #BB4D003D;
+  --color-brand-600-a10: #973C001A;
+  --color-brand-300-a10: #FFB9001A;
+}
+:root.dark:where([data-palette="amber"]) {
+  --color-text-link: var(--color-brand-400);
+}
+:root:where([data-palette="citrine-ink"]) {
+  --color-brand-50: #FEFCE8;
+  --color-brand-100: #FEF9C2;
+  --color-brand-200: #FFF085;
+  --color-brand-250: #FFE85F;
+  --color-brand-300: #FFDF20;
+  --color-brand-400: #FDD713;
+  --color-brand-500: #F9CF00;
+  --color-brand-550: #F6C400;
+  --color-brand-600: #F0B100;
+  --color-brand-700: #A65F00;
+  --color-brand-800: #733E0A;
+  --color-brand-900: #432004;
+  --color-brand-500-a16: #F9CF0029;
+  --color-brand-500-a24: #F9CF003D;
+  --color-brand-600-a10: #F0B1001A;
+  --color-brand-300-a10: #FFDF201A;
+  --color-text-on-primary: var(--color-neutral-900);
+  --color-text-on-brand: var(--color-neutral-900);
+  --color-text-link: var(--color-neutral-700);
+  --color-text-link-hover: var(--color-neutral-900);
+  --color-text-selected: var(--color-neutral-900);
+  --color-text-brand: var(--color-neutral-900);
+  --color-border-current: var(--color-neutral-900);
+  --color-border-focus: var(--color-neutral-900);
+  --color-focus-ring: var(--color-neutral-700);
+  --color-icon-brand: var(--color-neutral-900);
+  --color-bg-selected-subtle: var(--color-neutral-100);
+  --color-bg-sidebar-selected: var(--color-neutral-900);
+}
+:root.dark:where([data-palette="citrine-ink"]) {
+  --color-text-link: var(--color-neutral-300);
+  --color-text-link-hover: var(--color-neutral-100);
+  --color-text-selected: var(--color-neutral-100);
+  --color-text-brand: var(--color-brand-500);
+  --color-border-current: var(--color-neutral-100);
+  --color-border-focus: var(--color-neutral-100);
+  --color-focus-ring: var(--color-neutral-300);
+  --color-icon-brand: var(--color-neutral-100);
+  --color-bg-selected-subtle: var(--color-neutral-800);
+  --color-bg-sidebar-selected: var(--color-neutral-700);
+  --color-text-sidebar-selected: var(--color-neutral-100);
+}
+:root:where([data-palette="emerald"]) {
+  --color-brand-50: #ECFDF5;
+  --color-brand-100: #D0FAE5;
+  --color-brand-200: #5EE9B5;
+  --color-brand-250: #47E3AA;
+  --color-brand-300: #00D492;
+  --color-brand-400: #00BC7D;
+  --color-brand-500: #007A55;
+  --color-brand-550: #00714F;
+  --color-brand-600: #006045;
+  --color-brand-700: #004F3B;
+  --color-brand-800: #003D2E;
+  --color-brand-900: #002C22;
+  --color-brand-500-a16: #007A5529;
+  --color-brand-500-a24: #007A553D;
+  --color-brand-600-a10: #0060451A;
+  --color-brand-300-a10: #00D4921A;
+}
+:root.dark:where([data-palette="emerald"]) {
+  --color-text-link: var(--color-brand-400);
+}
+:root:where([data-palette="fuchsia"]) {
+  --color-brand-50: #FDF4FF;
+  --color-brand-100: #FAE8FF;
+  --color-brand-200: #F4A8FF;
+  --color-brand-250: #F297FF;
+  --color-brand-300: #ED6AFF;
+  --color-brand-400: #E12AFB;
+  --color-brand-500: #A800B7;
+  --color-brand-550: #9D00AB;
+  --color-brand-600: #8A0194;
+  --color-brand-700: #721378;
+  --color-brand-800: #5E0863;
+  --color-brand-900: #4B004F;
+  --color-brand-500-a16: #A800B729;
+  --color-brand-500-a24: #A800B73D;
+  --color-brand-600-a10: #8A01941A;
+  --color-brand-300-a10: #ED6AFF1A;
+}
+:root.dark:where([data-palette="fuchsia"]) {
+  --color-text-link: var(--color-brand-400);
+  --color-border-focus: var(--color-brand-400);
+  --color-focus-ring: var(--color-brand-400);
+  --color-text-brand: var(--color-brand-400);
+  --color-icon-brand: var(--color-brand-400);
+  --color-border-current: var(--color-brand-400);
+  --color-brand-indicator: var(--color-brand-400);
+}
+:root:where([data-palette="indigo"]) {
+  --color-brand-50: #EEF2FF;
+  --color-brand-100: #E0E7FF;
+  --color-brand-200: #A3B3FF;
+  --color-brand-250: #96A6FF;
+  --color-brand-300: #7C86FF;
+  --color-brand-400: #615FFF;
+  --color-brand-500: #432DD7;
+  --color-brand-550: #3F2CC8;
+  --color-brand-600: #372AAC;
+  --color-brand-700: #312C85;
+  --color-brand-800: #282368;
+  --color-brand-900: #1E1A4D;
+  --color-brand-500-a16: #432DD729;
+  --color-brand-500-a24: #432DD73D;
+  --color-brand-600-a10: #372AAC1A;
+  --color-brand-300-a10: #7C86FF1A;
+}
+:root.dark:where([data-palette="indigo"]) {
+  --color-text-link: var(--color-brand-300);
+  --color-text-link-hover: var(--color-brand-250);
+  --color-border-focus: var(--color-brand-400);
+  --color-focus-ring: var(--color-brand-400);
+  --color-text-brand: var(--color-brand-400);
+  --color-icon-brand: var(--color-brand-400);
+  --color-border-current: var(--color-brand-400);
+  --color-brand-indicator: var(--color-brand-400);
+}
+:root:where([data-palette="lime"]) {
+  --color-brand-50: #F7FEE7;
+  --color-brand-100: #ECFCCA;
+  --color-brand-200: #D8F999;
+  --color-brand-250: #CAF778;
+  --color-brand-300: #BBF451;
+  --color-brand-400: #ABED27;
+  --color-brand-500: #9AE600;
+  --color-brand-550: #8FDE00;
+  --color-brand-600: #7CCF00;
+  --color-brand-700: #497D00;
+  --color-brand-800: #35530E;
+  --color-brand-900: #192E03;
+  --color-brand-500-a16: #9AE60029;
+  --color-brand-500-a24: #9AE6003D;
+  --color-brand-600-a10: #7CCF001A;
+  --color-brand-300-a10: #BBF4511A;
+  --color-text-on-primary: var(--color-brand-800);
+  --color-text-on-brand: var(--color-brand-800);
+  --color-text-sidebar-selected: var(--color-brand-800);
+  --color-text-link: var(--color-brand-700);
+  --color-text-link-hover: var(--color-brand-800);
+  --color-text-selected: var(--color-brand-800);
+  --color-border-focus: var(--color-brand-700);
+  --color-focus-ring: var(--color-brand-700);
+  --color-text-brand: var(--color-brand-700);
+  --color-icon-brand: var(--color-brand-700);
+  --color-border-current: var(--color-brand-700);
+}
+:root.dark:where([data-palette="lime"]) {
+  --color-text-brand: var(--color-brand-500);
+  --color-icon-brand: var(--color-brand-500);
+  --color-border-current: var(--color-brand-500);
+}
+:root:where([data-palette="pink"]) {
+  --color-brand-50: #FDF2F8;
+  --color-brand-100: #FCE7F3;
+  --color-brand-200: #FDA5D5;
+  --color-brand-250: #FD93CD;
+  --color-brand-300: #FB64B6;
+  --color-brand-400: #F6339A;
+  --color-brand-500: #C6005C;
+  --color-brand-550: #BA0056;
+  --color-brand-600: #A3004C;
+  --color-brand-700: #861043;
+  --color-brand-800: #6B0933;
+  --color-brand-900: #510424;
+  --color-brand-500-a16: #C6005C29;
+  --color-brand-500-a24: #C6005C3D;
+  --color-brand-600-a10: #A3004C1A;
+  --color-brand-300-a10: #FB64B61A;
+}
+:root.dark:where([data-palette="pink"]) {
+  --color-text-link: var(--color-brand-400);
+}
+:root:where([data-palette="red"]) {
+  --color-brand-50: #FEF2F2;
+  --color-brand-100: #FFE2E2;
+  --color-brand-200: #FFA2A2;
+  --color-brand-250: #FF9091;
+  --color-brand-300: #FF6467;
+  --color-brand-400: #FB2C36;
+  --color-brand-500: #C10007;
+  --color-brand-550: #B5000C;
+  --color-brand-600: #9F0712;
+  --color-brand-700: #82181A;
+  --color-brand-800: #631011;
+  --color-brand-900: #460809;
+  --color-brand-500-a16: #C1000729;
+  --color-brand-500-a24: #C100073D;
+  --color-brand-600-a10: #9F07121A;
+  --color-brand-300-a10: #FF64671A;
+}
+:root.dark:where([data-palette="red"]) {
+  --color-text-link: var(--color-brand-400);
+  --color-border-focus: var(--color-brand-400);
+  --color-focus-ring: var(--color-brand-400);
+  --color-text-brand: var(--color-brand-400);
+  --color-icon-brand: var(--color-brand-400);
+  --color-border-current: var(--color-brand-400);
+  --color-brand-indicator: var(--color-brand-400);
+}
+:root:where([data-palette="rose"]) {
+  --color-brand-50: #FFF1F2;
+  --color-brand-100: #FFE4E6;
+  --color-brand-200: #FFA1AD;
+  --color-brand-250: #FF909F;
+  --color-brand-300: #FF637E;
+  --color-brand-400: #FF2056;
+  --color-brand-500: #C70036;
+  --color-brand-550: #BB0036;
+  --color-brand-600: #A50036;
+  --color-brand-700: #8B0836;
+  --color-brand-800: #6B0426;
+  --color-brand-900: #4D0218;
+  --color-brand-500-a16: #C7003629;
+  --color-brand-500-a24: #C700363D;
+  --color-brand-600-a10: #A500361A;
+  --color-brand-300-a10: #FF637E1A;
+}
+:root.dark:where([data-palette="rose"]) {
+  --color-text-link: var(--color-brand-400);
+}
+:root:where([data-palette="sky"]) {
+  --color-brand-50: #F0F9FF;
+  --color-brand-100: #DFF2FE;
+  --color-brand-200: #74D4FF;
+  --color-brand-250: #5CCDFF;
+  --color-brand-300: #00BCFF;
+  --color-brand-400: #00A6F4;
+  --color-brand-500: #0069A8;
+  --color-brand-550: #00639D;
+  --color-brand-600: #00598A;
+  --color-brand-700: #024A70;
+  --color-brand-800: #043C5D;
+  --color-brand-900: #052F4A;
+  --color-brand-500-a16: #0069A829;
+  --color-brand-500-a24: #0069A83D;
+  --color-brand-600-a10: #00598A1A;
+  --color-brand-300-a10: #00BCFF1A;
+}
+:root.dark:where([data-palette="sky"]) {
+  --color-text-link: var(--color-brand-400);
+}
+:root:where([data-palette="teal"]) {
+  --color-brand-50: #F0FDFA;
+  --color-brand-100: #CBFBF1;
+  --color-brand-200: #46ECD5;
+  --color-brand-250: #2EE5CE;
+  --color-brand-300: #00D5BE;
+  --color-brand-400: #00BBA7;
+  --color-brand-500: #00786F;
+  --color-brand-550: #006F68;
+  --color-brand-600: #005F5A;
+  --color-brand-700: #0B4F4A;
+  --color-brand-800: #053F3C;
+  --color-brand-900: #022F2E;
+  --color-brand-500-a16: #00786F29;
+  --color-brand-500-a24: #00786F3D;
+  --color-brand-600-a10: #005F5A1A;
+  --color-brand-300-a10: #00D5BE1A;
+}
+:root.dark:where([data-palette="teal"]) {
+  --color-text-link: var(--color-brand-400);
+}
+:root:where([data-palette="violet"]) {
+  --color-brand-50: #F5F3FF;
+  --color-brand-100: #EDE9FE;
+  --color-brand-200: #C4B4FF;
+  --color-brand-250: #BBA6FF;
+  --color-brand-300: #A684FF;
+  --color-brand-400: #8E51FF;
+  --color-brand-500: #7008E7;
+  --color-brand-550: #690BD9;
+  --color-brand-600: #5D0EC0;
+  --color-brand-700: #4D179A;
+  --color-brand-800: #3D1280;
+  --color-brand-900: #2F0D68;
+  --color-brand-500-a16: #7008E729;
+  --color-brand-500-a24: #7008E73D;
+  --color-brand-600-a10: #5D0EC01A;
+  --color-brand-300-a10: #A684FF1A;
+}
+:root.dark:where([data-palette="violet"]) {
+  --color-text-link: var(--color-brand-300);
+  --color-text-link-hover: var(--color-brand-250);
+  --color-border-focus: var(--color-brand-400);
+  --color-focus-ring: var(--color-brand-400);
+  --color-text-brand: var(--color-brand-400);
+  --color-icon-brand: var(--color-brand-400);
+  --color-border-current: var(--color-brand-400);
+  --color-brand-indicator: var(--color-brand-400);
+}
+:root:where([data-palette="yellow"]) {
+  --color-brand-50: #FEFCE8;
+  --color-brand-100: #FEF9C2;
+  --color-brand-200: #FFF085;
+  --color-brand-250: #FFE85F;
+  --color-brand-300: #FFDF20;
+  --color-brand-400: #FFD400;
+  --color-brand-500: #FDC700;
+  --color-brand-550: #F9BF00;
+  --color-brand-600: #F0B100;
+  --color-brand-700: #A65F00;
+  --color-brand-800: #733E0A;
+  --color-brand-900: #432004;
+  --color-brand-500-a16: #FDC70029;
+  --color-brand-500-a24: #FDC7003D;
+  --color-brand-600-a10: #F0B1001A;
+  --color-brand-300-a10: #FFDF201A;
+  --color-text-on-primary: var(--color-brand-800);
+  --color-text-on-brand: var(--color-brand-800);
+  --color-text-sidebar-selected: var(--color-brand-800);
+  --color-text-link: var(--color-brand-700);
+  --color-text-link-hover: var(--color-brand-800);
+  --color-text-selected: var(--color-brand-800);
+  --color-border-focus: var(--color-brand-700);
+  --color-focus-ring: var(--color-brand-700);
+  --color-text-brand: var(--color-brand-700);
+  --color-icon-brand: var(--color-brand-700);
+  --color-border-current: var(--color-brand-700);
+}
+:root.dark:where([data-palette="yellow"]) {
+  --color-text-brand: var(--color-brand-500);
+  --color-icon-brand: var(--color-brand-500);
+  --color-border-current: var(--color-brand-500);
+}

@@ -91,6 +91,8 @@ const INK = {
     'color.text.sidebar-selected': '{color.neutral.100}'
   }
 };
+// 用户拍板过的调整（预览面板「导出」给的清单写到这里）：primitives 覆盖色阶里的某几档，semantic / dark 直接定某个角色的指向（不再按对比度自动挪）
+const TWEAKS = {};
 // 挪不动、只能登记的配对，说明写清楚为什么能接受（仍要用户拍板：approved: false）
 const WHY = {
   'color.action.primary|color.bg.surface|dark': (r) => `暗色主按钮填充对卡片 ${r.ratio}:1，低于 UI 组件 3:1：Morganite 暗色不换品牌主色，按钮靠上面的字识别（shadcn 原版暗色主色还要更深）`,
@@ -174,6 +176,7 @@ function measure(raw, mode, role, bgs, slot) {
 }
 
 function settle(raw, mode, role, min, bgs, notes) {
+  if (raw.fixed.has(`${mode}:${role}`)) return;
   const slot = slotOf(pointer(raw, role, mode));
   if (!slot) return;
   const layer = mode === 'dark' ? raw.dark : raw.semantic;
@@ -203,7 +206,7 @@ function decideRoles(raw, notes) {
   if (onWhite < 3) {
     const pick = ['800', '900', '700'].find((s) => ['500', '550', '600'].every((f) => contrast(fill(s), fill(f)) >= 4.5));
     if (!pick) fail(`${raw.id}：品牌色上找不到对主色 / 悬停 / 按下都 ≥ 4.5 的深字`);
-    for (const role of ON_ROLES) raw.semantic[role] = { value: ref(pick), why: `白字对主色只有 ${round(onWhite)}:1，品牌色上的字改深色 ${pick}（对主色 ${round(contrast(fill(pick), fill('500')))}:1）` };
+    for (const role of ON_ROLES) if (!raw.fixed.has(`light:${role}`)) raw.semantic[role] = { value: ref(pick), why: `白字对主色只有 ${round(onWhite)}:1，品牌色上的字改深色 ${pick}（对主色 ${round(contrast(fill(pick), fill('500')))}:1）` };
   } else notes.push(`白字对主色 ${round(onWhite)}:1${onWhite < 4.5 ? '（低于 4.5，见 contrastExceptions）' : ''}`);
   for (const [role, min, bgs] of LIGHT_RULES) settle(raw, 'light', role, min, bgs, notes);
   for (const [role, min, bgs] of DARK_RULES) settle(raw, 'dark', role, min, bgs, notes);
@@ -240,10 +243,22 @@ function exceptionsFor(raw, baseline) {
 }
 
 function build({ id, name, source, primitives, notes, preset }, baseline) {
-  const raw = { id, name, primitives, semantic: {}, dark: {} };
+  const tweak = TWEAKS[id] || {};
+  const raw = { id, name, primitives: { ...primitives, ...tweak.primitives }, semantic: {}, dark: {}, fixed: new Set() };
+  for (const [slot, [from, alpha]] of Object.entries(ALPHAS)) {
+    const key = `${group}.${slot}`;
+    if (tweak.primitives?.[`${group}.${from}`] && !tweak.primitives[key]) raw.primitives[key] = toHex({ ...parseHex(raw.primitives[`${group}.${from}`]), a: alpha });
+  }
+  for (const [kind, mode] of [['semantic', 'light'], ['dark', 'dark']]) {
+    for (const [k, v] of Object.entries(tweak[kind] || {})) {
+      raw[kind][k] = typeof v === 'string' ? { value: v, why: '用户指定' } : v;
+      raw.fixed.add(`${mode}:${k}`);
+    }
+  }
+  if (tweak.primitives) notes.push(`用户调过的档：${Object.keys(tweak.primitives).join('、')}`);
   if (preset) {
-    for (const [k, v] of Object.entries(preset.semantic)) raw.semantic[k] = { value: v, why: '黄晶的写法：链接、选中、当前项、焦点用中性黑，黄色只留给主按钮、品牌底、指示条和图表' };
-    for (const [k, v] of Object.entries(preset.dark)) raw.dark[k] = { value: v, why: '黄晶的暗色写法：链接与选中用浅灰，品牌大字用黄' };
+    for (const [k, v] of Object.entries(preset.semantic)) raw.semantic[k] ??= { value: v, why: '黄晶的写法：链接、选中、当前项、焦点用中性黑，黄色只留给主按钮、品牌底、指示条和图表' };
+    for (const [k, v] of Object.entries(preset.dark)) raw.dark[k] ??= { value: v, why: '黄晶的暗色写法：链接与选中用浅灰，品牌大字用黄' };
   } else decideRoles(raw, notes);
   const contrastExceptions = exceptionsFor(raw, baseline);
   return {
@@ -251,7 +266,7 @@ function build({ id, name, source, primitives, notes, preset }, baseline) {
     id,
     name,
     source,
-    primitives,
+    primitives: raw.primitives,
     semantic: raw.semantic,
     dark: raw.dark,
     contrastExceptions,

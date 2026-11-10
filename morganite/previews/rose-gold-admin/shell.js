@@ -1,6 +1,7 @@
 /* 玫瑰金后台 · 效果预览的壳层与路由：所有页面都在 index.html 里，按 #/路由 切换视图（浏览器前进 / 后退可用）。
    视图是带 data-route 的元素；壳层负责图标表、侧栏、顶栏（工作台显示问候语，其余显示面包屑）、导航高亮与页面标题，以及各页共用的小交互。
-   主题跟随 ?theme=light|dark，切换后存进 localStorage（<head> 里的内联脚本负责首屏不闪）；?open=<id> 打开指定弹层，便于截图。 */
+   主题跟随 ?theme=light|dark、颜色主题跟随 ?palette=<id>，切换后存进 localStorage（<head> 里的内联脚本负责首屏不闪）；?open=<id> 打开指定弹层，便于截图。
+   最后挂上规范调节面板（panel.js：换色、调值、点组件看角色、导出）；?panel=0 不挂，截图用。 */
 (function () {
   "use strict";
   const root = document.documentElement;
@@ -330,4 +331,18 @@
   render();
   const auto = params.get("open");
   if (auto) openLayer(auto);
+
+  if (params.get("panel") !== "0") {
+    const css = document.createElement("link");
+    css.rel = "stylesheet";
+    css.href = "panel.css";
+    document.head.appendChild(css);
+    const load = (src, next) => {
+      const s = document.createElement("script");
+      s.src = src;
+      if (next) s.onload = next;
+      body.appendChild(s);
+    };
+    load("panel-data.js", () => load("panel.js"));
+  }
 })();
