@@ -1,0 +1,98 @@
+{
+  "$schema": "https://raw.githubusercontent.com/WYCM9527/Design-System/main/design-system-adopter/schema/palette.schema.json",
+  "id": "violet",
+  "name": "紫罗兰",
+  "source": {
+    "from": "shadcn/ui apps/v4/registry/themes.ts · violet（亮色 primary = violet-700）",
+    "ref": "shadcn-ui/ui@4101ec98af37e2d812f859e3f540bceafbbc5200",
+    "scale": "tailwindcss@v4.3.5 packages/tailwindcss/theme.css · violet",
+    "license": "MIT",
+    "generator": "scripts/import-shadcn-palettes.mjs"
+  },
+  "primitives": {
+    "color.brand.50": "#F5F3FF",
+    "color.brand.100": "#EDE9FE",
+    "color.brand.200": "#C4B4FF",
+    "color.brand.250": "#BBA6FF",
+    "color.brand.300": "#A684FF",
+    "color.brand.400": "#8E51FF",
+    "color.brand.500": "#7008E7",
+    "color.brand.550": "#690BD9",
+    "color.brand.600": "#5D0EC0",
+    "color.brand.700": "#4D179A",
+    "color.brand.800": "#3D1280",
+    "color.brand.900": "#2F0D68",
+    "color.brand.500-a16": "#7008E729",
+    "color.brand.500-a24": "#7008E73D",
+    "color.brand.600-a10": "#5D0EC01A",
+    "color.brand.300-a10": "#A684FF1A"
+  },
+  "semantic": {},
+  "dark": {
+    "color.text.link": {
+      "value": "{color.brand.300}",
+      "why": "暗色原来的 500 只有 2.52:1（要 4.5），改用 300（6.46:1）"
+    },
+    "color.text.link-hover": {
+      "value": "{color.brand.250}",
+      "why": "暗色要比链接更浅一档，改用 250（8.78:1）"
+    },
+    "color.border.focus": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 2.52:1（要 3），改用 400（4.19:1）"
+    },
+    "color.focus.ring": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 2.52:1（要 3），改用 400（4.19:1）"
+    },
+    "color.text.brand": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 2.52:1（要 3），改用 400（4.19:1）"
+    },
+    "color.icon.brand": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 2.52:1（要 3），改用 400（4.19:1）"
+    },
+    "color.border.current": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 2.52:1（要 3），改用 400（4.19:1）"
+    },
+    "color.brand.indicator": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 2.52:1（要 3），改用 400（4.19:1）"
+    }
+  },
+  "contrastExceptions": [
+    {
+      "fg": "color.action.primary",
+      "bg": "color.bg.surface",
+      "mode": "dark",
+      "min": 2.52,
+      "why": "暗色主按钮填充对卡片 2.52:1，低于 UI 组件 3:1：Morganite 暗色不换品牌主色，按钮靠上面的字识别（shadcn 原版暗色主色还要更深）",
+      "approved": false
+    }
+  ],
+  "accept": {
+    "brand": {
+      "name": "品牌紫罗兰",
+      "hue": [
+        248,
+        272
+      ],
+      "saturation": [
+        0.64,
+        1
+      ],
+      "lightness": [
+        0.3,
+        0.93
+      ]
+    },
+    "approvedContrast": []
+  },
+  "notes": [
+    "主色 #7008E7 是 shadcn「violet」的亮色 primary（Tailwind violet-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
+    "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 violet-800）",
+    "白字对主色 7.3:1"
+  ]
+}

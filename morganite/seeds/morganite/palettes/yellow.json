@@ -1,0 +1,130 @@
+{
+  "$schema": "https://raw.githubusercontent.com/WYCM9527/Design-System/main/design-system-adopter/schema/palette.schema.json",
+  "id": "yellow",
+  "name": "黄",
+  "source": {
+    "from": "shadcn/ui apps/v4/registry/themes.ts · yellow（亮色 primary = yellow-400）",
+    "ref": "shadcn-ui/ui@4101ec98af37e2d812f859e3f540bceafbbc5200",
+    "scale": "tailwindcss@v4.3.5 packages/tailwindcss/theme.css · yellow",
+    "license": "MIT",
+    "generator": "scripts/import-shadcn-palettes.mjs"
+  },
+  "primitives": {
+    "color.brand.50": "#FEFCE8",
+    "color.brand.100": "#FEF9C2",
+    "color.brand.200": "#FFF085",
+    "color.brand.250": "#FFE85F",
+    "color.brand.300": "#FFDF20",
+    "color.brand.400": "#FFD400",
+    "color.brand.500": "#FDC700",
+    "color.brand.550": "#F9BF00",
+    "color.brand.600": "#F0B100",
+    "color.brand.700": "#A65F00",
+    "color.brand.800": "#733E0A",
+    "color.brand.900": "#432004",
+    "color.brand.500-a16": "#FDC70029",
+    "color.brand.500-a24": "#FDC7003D",
+    "color.brand.600-a10": "#F0B1001A",
+    "color.brand.300-a10": "#FFDF201A"
+  },
+  "semantic": {
+    "color.text.on-primary": {
+      "value": "{color.brand.800}",
+      "why": "白字对主色只有 1.57:1，品牌色上的字改深色 800（对主色 5.51:1）"
+    },
+    "color.text.on-brand": {
+      "value": "{color.brand.800}",
+      "why": "白字对主色只有 1.57:1，品牌色上的字改深色 800（对主色 5.51:1）"
+    },
+    "color.text.sidebar-selected": {
+      "value": "{color.brand.800}",
+      "why": "白字对主色只有 1.57:1，品牌色上的字改深色 800（对主色 5.51:1）"
+    },
+    "color.text.link": {
+      "value": "{color.brand.700}",
+      "why": "亮色原来的 600 只有 1.75:1（要 4.5），改用 700（4.52:1）"
+    },
+    "color.text.link-hover": {
+      "value": "{color.brand.800}",
+      "why": "亮色要比链接更深一档，改用 800（7.95:1）"
+    },
+    "color.text.selected": {
+      "value": "{color.brand.800}",
+      "why": "亮色原来的 600 只有 1.65:1（要 4.5），改用 800（7.49:1）"
+    },
+    "color.border.focus": {
+      "value": "{color.brand.700}",
+      "why": "亮色原来的 600 只有 1.91:1（要 3），改用 700（4.93:1）"
+    },
+    "color.focus.ring": {
+      "value": "{color.brand.700}",
+      "why": "亮色原来的 600 只有 1.91:1（要 3），改用 700（4.93:1）"
+    },
+    "color.text.brand": {
+      "value": "{color.brand.700}",
+      "why": "亮色原来的 500 只有 1.57:1（要 3），改用 700（4.93:1）"
+    },
+    "color.icon.brand": {
+      "value": "{color.brand.700}",
+      "why": "亮色原来的 500 只有 1.57:1（要 3），改用 700（4.93:1）"
+    },
+    "color.border.current": {
+      "value": "{color.brand.700}",
+      "why": "亮色原来的 500 只有 1.57:1（要 3），改用 700（4.93:1）"
+    }
+  },
+  "dark": {
+    "color.text.brand": {
+      "value": "{color.brand.500}",
+      "why": "亮色改到 700 是为了压白底；暗底上种子原来的 500 就够（11.71:1），暗色改回去"
+    },
+    "color.icon.brand": {
+      "value": "{color.brand.500}",
+      "why": "亮色改到 700 是为了压白底；暗底上种子原来的 500 就够（11.71:1），暗色改回去"
+    },
+    "color.border.current": {
+      "value": "{color.brand.500}",
+      "why": "亮色改到 700 是为了压白底；暗底上种子原来的 500 就够（11.71:1），暗色改回去"
+    }
+  },
+  "contrastExceptions": [
+    {
+      "fg": "color.brand.indicator",
+      "bg": "color.bg.surface",
+      "mode": "light",
+      "min": 1.57,
+      "why": "品牌指示条对白卡片 1.57:1：指示条总和选中底 / 加粗一起出现，不单靠颜色区分",
+      "approved": false
+    },
+    {
+      "fg": "color.action.primary",
+      "bg": "color.bg.surface",
+      "mode": "light",
+      "min": 1.57,
+      "why": "浅色主按钮对白卡片 1.57:1，低于 UI 组件 3:1：按钮靠深色字识别（shadcn 原版同样如此）",
+      "approved": false
+    }
+  ],
+  "accept": {
+    "brand": {
+      "name": "品牌黄",
+      "hue": [
+        30,
+        57
+      ],
+      "saturation": [
+        0.9,
+        1
+      ],
+      "lightness": [
+        0.28,
+        0.84
+      ]
+    },
+    "approvedContrast": []
+  },
+  "notes": [
+    "主色 #FDC700 是 shadcn「yellow」的亮色 primary（Tailwind yellow-400）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
+    "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 yellow-500）"
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "$schema": "https://raw.githubusercontent.com/WYCM9527/Design-System/main/design-system-adopter/schema/palette.schema.json",
+  "id": "emerald",
+  "name": "翡翠绿",
+  "source": {
+    "from": "shadcn/ui apps/v4/registry/themes.ts · emerald（亮色 primary = emerald-700）",
+    "ref": "shadcn-ui/ui@4101ec98af37e2d812f859e3f540bceafbbc5200",
+    "scale": "tailwindcss@v4.3.5 packages/tailwindcss/theme.css · emerald",
+    "license": "MIT",
+    "generator": "scripts/import-shadcn-palettes.mjs"
+  },
+  "primitives": {
+    "color.brand.50": "#ECFDF5",
+    "color.brand.100": "#D0FAE5",
+    "color.brand.200": "#5EE9B5",
+    "color.brand.250": "#47E3AA",
+    "color.brand.300": "#00D492",
+    "color.brand.400": "#00BC7D",
+    "color.brand.500": "#007A55",
+    "color.brand.550": "#00714F",
+    "color.brand.600": "#006045",
+    "color.brand.700": "#004F3B",
+    "color.brand.800": "#003D2E",
+    "color.brand.900": "#002C22",
+    "color.brand.500-a16": "#007A5529",
+    "color.brand.500-a24": "#007A553D",
+    "color.brand.600-a10": "#0060451A",
+    "color.brand.300-a10": "#00D4921A"
+  },
+  "semantic": {},
+  "dark": {
+    "color.text.link": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 3.43:1（要 4.5），改用 400（7.45:1）"
+    }
+  },
+  "contrastExceptions": [],
+  "accept": {
+    "brand": {
+      "name": "品牌翡翠绿",
+      "hue": [
+        153,
+        169
+      ],
+      "saturation": [
+        0.64,
+        1
+      ],
+      "lightness": [
+        0.1,
+        0.72
+      ]
+    },
+    "approvedContrast": []
+  },
+  "notes": [
+    "主色 #007A55 是 shadcn「emerald」的亮色 primary（Tailwind emerald-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
+    "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 emerald-800）",
+    "白字对主色 5.36:1"
+  ]
+}

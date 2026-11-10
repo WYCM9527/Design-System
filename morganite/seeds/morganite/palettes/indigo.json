@@ -1,0 +1,98 @@
+{
+  "$schema": "https://raw.githubusercontent.com/WYCM9527/Design-System/main/design-system-adopter/schema/palette.schema.json",
+  "id": "indigo",
+  "name": "靛蓝",
+  "source": {
+    "from": "shadcn/ui apps/v4/registry/themes.ts · indigo（亮色 primary = indigo-700）",
+    "ref": "shadcn-ui/ui@4101ec98af37e2d812f859e3f540bceafbbc5200",
+    "scale": "tailwindcss@v4.3.5 packages/tailwindcss/theme.css · indigo",
+    "license": "MIT",
+    "generator": "scripts/import-shadcn-palettes.mjs"
+  },
+  "primitives": {
+    "color.brand.50": "#EEF2FF",
+    "color.brand.100": "#E0E7FF",
+    "color.brand.200": "#A3B3FF",
+    "color.brand.250": "#96A6FF",
+    "color.brand.300": "#7C86FF",
+    "color.brand.400": "#615FFF",
+    "color.brand.500": "#432DD7",
+    "color.brand.550": "#3F2CC8",
+    "color.brand.600": "#372AAC",
+    "color.brand.700": "#312C85",
+    "color.brand.800": "#282368",
+    "color.brand.900": "#1E1A4D",
+    "color.brand.500-a16": "#432DD729",
+    "color.brand.500-a24": "#432DD73D",
+    "color.brand.600-a10": "#372AAC1A",
+    "color.brand.300-a10": "#7C86FF1A"
+  },
+  "semantic": {},
+  "dark": {
+    "color.text.link": {
+      "value": "{color.brand.300}",
+      "why": "暗色原来的 500 只有 2.28:1（要 4.5），改用 300（5.89:1）"
+    },
+    "color.text.link-hover": {
+      "value": "{color.brand.250}",
+      "why": "暗色要比链接更浅一档，改用 250（8.07:1）"
+    },
+    "color.border.focus": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 2.28:1（要 3），改用 400（4.03:1）"
+    },
+    "color.focus.ring": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 2.28:1（要 3），改用 400（4.03:1）"
+    },
+    "color.text.brand": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 2.28:1（要 3），改用 400（4.03:1）"
+    },
+    "color.icon.brand": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 2.28:1（要 3），改用 400（4.03:1）"
+    },
+    "color.border.current": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 2.28:1（要 3），改用 400（4.03:1）"
+    },
+    "color.brand.indicator": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 2.28:1（要 3），改用 400（4.03:1）"
+    }
+  },
+  "contrastExceptions": [
+    {
+      "fg": "color.action.primary",
+      "bg": "color.bg.surface",
+      "mode": "dark",
+      "min": 2.27,
+      "why": "暗色主按钮填充对卡片 2.28:1，低于 UI 组件 3:1：Morganite 暗色不换品牌主色，按钮靠上面的字识别（shadcn 原版暗色主色还要更深）",
+      "approved": false
+    }
+  ],
+  "accept": {
+    "brand": {
+      "name": "品牌靛蓝",
+      "hue": [
+        225,
+        252
+      ],
+      "saturation": [
+        0.4,
+        1
+      ],
+      "lightness": [
+        0.3,
+        0.9
+      ]
+    },
+    "approvedContrast": []
+  },
+  "notes": [
+    "主色 #432DD7 是 shadcn「indigo」的亮色 primary（Tailwind indigo-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
+    "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 indigo-800）",
+    "白字对主色 8.09:1"
+  ]
+}

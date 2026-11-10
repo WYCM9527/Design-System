@@ -27,6 +27,22 @@
     },
     "semantic": { "$ref": "#/$defs/roles", "description": "亮色（核心）里改指向的角色" },
     "dark": { "$ref": "#/$defs/roles", "description": "暗色覆写里改指向的角色" },
+    "contrastExceptions": {
+      "type": "array",
+      "description": "改指向之后仍不达标、登记下来的 token 配对（scripts/check-palettes.mjs 认这份登记）。approved 为 true 才算用户批过；官方颜色不能有没批的",
+      "items": {
+        "type": "object",
+        "required": ["fg", "bg", "min", "why"],
+        "properties": {
+          "fg": { "type": "string" },
+          "bg": { "type": "string" },
+          "mode": { "enum": ["light", "dark"], "description": "缺省 light" },
+          "min": { "type": "number", "description": "接受的最低对比度；颜色再变暗到它以下就不通过" },
+          "why": { "type": "string" },
+          "approved": { "type": "boolean" }
+        }
+      }
+    },
     "accept": {
       "type": "object",
       "description": "验收口径：判色范围（同 design-system.json accept.brand 的 hue / saturation / lightness）与已批准的对比度例外（同 accept.config.mjs APPROVED_CONTRAST 的写法）",

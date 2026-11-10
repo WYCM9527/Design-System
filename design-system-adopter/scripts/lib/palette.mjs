@@ -119,6 +119,7 @@ function defaultPalette(ctx) {
     primitives: new Map(),
     semantic: new Map(),
     dark: new Map(),
+    contrastExceptions: [],
     accept: null
   };
 }
@@ -135,21 +136,30 @@ export function loadPalette(ctx, id) {
     throw new Error(`没有调色盘 ${id}（${ctx.settings.dir}/${id}.json）；可选：${known}`);
   }
   const raw = JSON.parse(readFileSync(file, 'utf8'));
+  if (raw.id !== id) throw new Error(`调色盘文件名是 ${id}.json，里面的 id 却是 ${raw.id}`);
+  return normalizePalette(ctx, raw);
+}
+
+/** 调色盘原始对象（文件内容）→ 归一化对象：primitives 为 路径 → #hex，semantic / dark 为 角色 → { value, why }。 */
+export function normalizePalette(ctx, raw) {
+  const id = raw.id;
   const palette = {
-    id: raw.id,
-    name: raw.name || raw.id,
+    id,
+    name: raw.name || id,
     isDefault: false,
-    official: ctx.settings.official.includes(raw.id),
+    official: ctx.settings.official.includes(id),
     source: raw.source || null,
     notes: raw.notes || [],
     file: `${ctx.settings.dir}/${id}.json`,
     primitives: new Map(),
     semantic: new Map(Object.entries(raw.semantic || {}).map(([k, v]) => [k, roleEntry(v)])),
     dark: new Map(Object.entries(raw.dark || {}).map(([k, v]) => [k, roleEntry(v)])),
+    contrastExceptions: raw.contrastExceptions || [],
     accept: raw.accept || null
   };
   const issues = [];
-  if (raw.id !== id) issues.push(`文件名是 ${id}.json，里面的 id 却是 ${raw.id}`);
+  if (!PALETTE_ID.test(id || '')) issues.push(`id 只能是小写字母、数字和连字符：${id}`);
+  if (id === ctx.settings.defaultId) issues.push(`${id} 是默认颜色，不建调色盘文件`);
   const given = raw.primitives || {};
   for (const key of ctx.brand) {
     const hex = given[key];
@@ -191,17 +201,33 @@ function describe(palette, why) {
   return `${tag} 调色盘「${palette.name}」（${palette.id}，见 ${palette.file}）${why ? `：${why}` : ''}`;
 }
 
+/** 三个 token 文件的默认值深拷贝（在内存里试套调色盘用）。 */
+export const cloneDefaults = (ctx) => Object.fromEntries(Object.entries(ctx.defaults).map(([k, v]) => [k, clone(v)]));
+
 /**
  * 把调色盘套到 targetRoot 的工作副本：先把调色盘管的键恢复成 ctx 里的默认值，再写入调色盘的值。
  * 只碰品牌色原语和 palettes.roles 登记的角色；其他 token 原样保留。返回实际改动的文件。
  */
 export function applyPalette(ctx, targetRoot, palette, { write = true } = {}) {
-  palette ??= defaultPalette(ctx);
   const trees = {};
   for (const [kind, rel] of Object.entries(ctx.files)) {
     if (!existsSync(join(targetRoot, rel))) throw new Error(`工作副本缺 ${rel}`);
     trees[kind] = readTree(join(targetRoot, rel));
   }
+  applyToTrees(ctx, trees, palette);
+  const changed = [];
+  for (const [kind, rel] of Object.entries(ctx.files)) {
+    const text = stringifyOrdered(trees[kind]) + '\n';
+    if (text === readFileSync(join(targetRoot, rel), 'utf8')) continue;
+    changed.push(rel);
+    if (write) writeFileSync(join(targetRoot, rel), text);
+  }
+  return { changed };
+}
+
+/** applyPalette 的内存版：直接改 trees（{ primitives, semantic, dark } 三棵 Map 树）。 */
+export function applyToTrees(ctx, trees, palette) {
+  palette ??= defaultPalette(ctx);
   for (const key of ctx.brand) {
     const node = clone(getNode(ctx.defaults.primitives, key));
     const hex = palette.primitives.get(key);
@@ -226,14 +252,19 @@ export function applyPalette(ctx, targetRoot, palette, { write = true } = {}) {
       else deleteNode(trees[kind], role);
     }
   }
-  const changed = [];
-  for (const [kind, rel] of Object.entries(ctx.files)) {
-    const text = stringifyOrdered(trees[kind]) + '\n';
-    if (text === readFileSync(join(targetRoot, rel), 'utf8')) continue;
-    changed.push(rel);
-    if (write) writeFileSync(join(targetRoot, rel), text);
-  }
-  return { changed };
+  return trees;
+}
+
+/** 在 trees 上解析某个 token 的最终颜色（#hex；不是颜色返回 null）。mode 为 'dark' 时暗色覆写优先，引用也在暗色里解析。 */
+export function resolveColor(trees, path, mode = 'light', seen = new Set()) {
+  if (seen.has(path)) throw new Error(`循环引用：${[...seen, path].join(' → ')}`);
+  seen.add(path);
+  const pick = (tree) => (tree && isToken(getNode(tree, path)) ? getNode(tree, path) : undefined);
+  const node = (mode === 'dark' ? pick(trees.dark) : undefined) ?? pick(trees.semantic) ?? pick(trees.primitives);
+  if (!node) return null;
+  const v = node.get('$value');
+  if (typeof v === 'string' && REF.test(v)) return resolveColor(trees, v.slice(1, -1), mode, seen);
+  return v instanceof Map ? v.get('hex') || null : null;
 }
 
 export const cssVar = (path) => `--${path.split('.').join('-')}`;

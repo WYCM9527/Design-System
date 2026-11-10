@@ -1,0 +1,94 @@
+{
+  "$schema": "https://raw.githubusercontent.com/WYCM9527/Design-System/main/design-system-adopter/schema/palette.schema.json",
+  "id": "red",
+  "name": "红",
+  "source": {
+    "from": "shadcn/ui apps/v4/registry/themes.ts · red（亮色 primary = red-700）",
+    "ref": "shadcn-ui/ui@4101ec98af37e2d812f859e3f540bceafbbc5200",
+    "scale": "tailwindcss@v4.3.5 packages/tailwindcss/theme.css · red",
+    "license": "MIT",
+    "generator": "scripts/import-shadcn-palettes.mjs"
+  },
+  "primitives": {
+    "color.brand.50": "#FEF2F2",
+    "color.brand.100": "#FFE2E2",
+    "color.brand.200": "#FFA2A2",
+    "color.brand.250": "#FF9091",
+    "color.brand.300": "#FF6467",
+    "color.brand.400": "#FB2C36",
+    "color.brand.500": "#C10007",
+    "color.brand.550": "#B5000C",
+    "color.brand.600": "#9F0712",
+    "color.brand.700": "#82181A",
+    "color.brand.800": "#631011",
+    "color.brand.900": "#460809",
+    "color.brand.500-a16": "#C1000729",
+    "color.brand.500-a24": "#C100073D",
+    "color.brand.600-a10": "#9F07121A",
+    "color.brand.300-a10": "#FF64671A"
+  },
+  "semantic": {},
+  "dark": {
+    "color.text.link": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 2.87:1（要 4.5），改用 400（4.84:1）"
+    },
+    "color.border.focus": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 2.87:1（要 3），改用 400（4.84:1）"
+    },
+    "color.focus.ring": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 2.87:1（要 3），改用 400（4.84:1）"
+    },
+    "color.text.brand": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 2.87:1（要 3），改用 400（4.84:1）"
+    },
+    "color.icon.brand": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 2.87:1（要 3），改用 400（4.84:1）"
+    },
+    "color.border.current": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 2.87:1（要 3），改用 400（4.84:1）"
+    },
+    "color.brand.indicator": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 2.87:1（要 3），改用 400（4.84:1）"
+    }
+  },
+  "contrastExceptions": [
+    {
+      "fg": "color.action.primary",
+      "bg": "color.bg.surface",
+      "mode": "dark",
+      "min": 2.87,
+      "why": "暗色主按钮填充对卡片 2.87:1，低于 UI 组件 3:1：Morganite 暗色不换品牌主色，按钮靠上面的字识别（shadcn 原版暗色主色还要更深）",
+      "approved": false
+    }
+  ],
+  "accept": {
+    "brand": {
+      "name": "品牌红",
+      "hue": [
+        351,
+        4
+      ],
+      "saturation": [
+        0.59,
+        1
+      ],
+      "lightness": [
+        0.25,
+        0.9
+      ]
+    },
+    "approvedContrast": []
+  },
+  "notes": [
+    "主色 #C10007 是 shadcn「red」的亮色 primary（Tailwind red-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
+    "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 red-800）",
+    "白字对主色 6.42:1"
+  ]
+}

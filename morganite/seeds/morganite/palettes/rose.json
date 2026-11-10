@@ -1,0 +1,61 @@
+{
+  "$schema": "https://raw.githubusercontent.com/WYCM9527/Design-System/main/design-system-adopter/schema/palette.schema.json",
+  "id": "rose",
+  "name": "玫红",
+  "source": {
+    "from": "shadcn/ui apps/v4/registry/themes.ts · rose（亮色 primary = rose-700）",
+    "ref": "shadcn-ui/ui@4101ec98af37e2d812f859e3f540bceafbbc5200",
+    "scale": "tailwindcss@v4.3.5 packages/tailwindcss/theme.css · rose",
+    "license": "MIT",
+    "generator": "scripts/import-shadcn-palettes.mjs"
+  },
+  "primitives": {
+    "color.brand.50": "#FFF1F2",
+    "color.brand.100": "#FFE4E6",
+    "color.brand.200": "#FFA1AD",
+    "color.brand.250": "#FF909F",
+    "color.brand.300": "#FF637E",
+    "color.brand.400": "#FF2056",
+    "color.brand.500": "#C70036",
+    "color.brand.550": "#BB0036",
+    "color.brand.600": "#A50036",
+    "color.brand.700": "#8B0836",
+    "color.brand.800": "#6B0426",
+    "color.brand.900": "#4D0218",
+    "color.brand.500-a16": "#C7003629",
+    "color.brand.500-a24": "#C700363D",
+    "color.brand.600-a10": "#A500361A",
+    "color.brand.300-a10": "#FF637E1A"
+  },
+  "semantic": {},
+  "dark": {
+    "color.text.link": {
+      "value": "{color.brand.400}",
+      "why": "暗色原来的 500 只有 3.05:1（要 4.5），改用 400（4.91:1）"
+    }
+  },
+  "contrastExceptions": [],
+  "accept": {
+    "brand": {
+      "name": "品牌玫红",
+      "hue": [
+        334,
+        357
+      ],
+      "saturation": [
+        0.79,
+        1
+      ],
+      "lightness": [
+        0.24,
+        0.9
+      ]
+    },
+    "approvedContrast": []
+  },
+  "notes": [
+    "主色 #C70036 是 shadcn「rose」的亮色 primary（Tailwind rose-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
+    "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 rose-800）",
+    "白字对主色 6.03:1"
+  ]
+}

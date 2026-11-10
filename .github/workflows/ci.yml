@@ -1,5 +1,5 @@
 # CI：改种子 / 桥接 / 工具 / skill 的任何一处，都要过这四道门——
-#   checks：adopter 单测、Citrine 迁移角色表与 token 源一致、每个设计系统六处版本号一致、每个种子 dist 与 token 源一致（系统清单来自 scripts/systems.mjs）
+#   checks：adopter 单测、Citrine 迁移角色表与 token 源一致、每个设计系统六处版本号一致、每个种子 dist 与 token 源一致（系统清单来自 scripts/systems.mjs）、调色盘与生成脚本一致并通过体检
 #   accept：六个实测项目（Citrine 三个、Morganite 三个）各自 npm ci → guard current → status unified → 全量验收（页面 × 亮暗 / 组件走查 / 三端 / 焦点 / 黄金后台 E-S 像素对照）
 # 验收在无头 Chrome 上跑（runner 自带 google-chrome），CJK 字体装 fonts-noto-cjk（Citrine 字体栈里有 Noto Sans CJK SC；Morganite 沿用 antd 字体栈，中文靠系统回退到它）。
 name: CI
@@ -40,6 +40,10 @@ jobs:
             node skills/design-system-steward/scripts/build-tokens.mjs --project "$PWD/$SEED" | tee /tmp/build.json | grep -q '"valid": true'
           done
           git diff --exit-code -- $(node scripts/systems.mjs --dist-paths)
+      - name: 调色盘与生成脚本一致（来源钉在固定版本）
+        run: node scripts/import-shadcn-palettes.mjs --check
+      - name: 调色盘体检（套到种子副本：steward 校验、对比度亮暗、品牌配对、撞色、真构建对照）
+        run: node scripts/check-palettes.mjs --build
 
   checks-windows:
     name: Windows · adopter 单测 · 角色表 · 版本
