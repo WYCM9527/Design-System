@@ -9,7 +9,7 @@
    - npm：`npm i --save-exact <身份文件 upstream.npm>`（如 `@wycm9527/citrine`；锁死版本，快照、工作副本与 node_modules 里的桥接才是同一版）；
    - 文件夹：用户把种子文件夹放进项目任意位置（`ds.mjs detect` 能认出来）。
    团队项目优先文件夹渠道：种子拷进项目 → `init` 落成 `design-systems/<id>/` 快照（随项目提交）→ `npm i file:./design-systems/<id>`（项目内相对路径，队友零配置）。**不要** `npm i file:<项目外路径>`——机器专属路径会让队友 `npm install` 失败。包在 npm registry 上时才用 `npm i --save-exact <包名>`；也可用上游 Releases 的 tgz 直链（`upgrade` 结束会打印同步 node_modules 的命令）。
-3. **接入**：`node <adopter>/scripts/ds.mjs init --system <id> --stack <栈>`。它会：落只读快照 `design-systems/<id>/` → 生成工作副本 `design-system/` → 写 `.adopter.json` → 打印接线步骤（folder 来源会多一行 `npm i file:./design-systems/<id>`，让 import 路径与 npm 一致）。
+3. **接入**：`node <adopter>/scripts/ds.mjs init --system <id> --stack <栈> [--palette <颜色>]`。它会：落只读快照 `design-systems/<id>/` → 生成工作副本 `design-system/` → 写 `.adopter.json` → 打印接线步骤（folder 来源会多一行 `npm i file:./design-systems/<id>`，让 import 路径与 npm 一致）。用户点了颜色（「用蓝色」）就加 `--palette`；没说就用默认颜色，以后随时 `ds.mjs palette <颜色>` 换（见 [palette.md](palette.md)）。
 4. **构建与校验**（steward）：`npm i -D --save-exact <身份文件 build.tool>`（身份文件钉了版本，`^` 范围会让队友装到别的版本） → `node <steward>/scripts/build-tokens.mjs --project $PWD`（生成 `design-system/dist/`）→ `guard.mjs` 应为 `current`。steward 找不到就 `ds.mjs steward locate`，没有则征得同意后 `ds.mjs steward install`。
 5. **样式入口**：按 init 打印的片段建（通常 `src/styles/globals.css`），同时建一个空的 `app.css`（项目补充，只引用 token）。Vite 配置按 init 打印的注意项（`optimizeDeps.exclude`；`file:` 链接再加 `resolve.preserveSymlinks: true`）。
 6. **项目规则**：`ds.mjs agents --stack <栈>` 渲染 AGENTS.md 全文给用户看，确认后 `--write`。

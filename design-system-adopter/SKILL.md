@@ -27,6 +27,8 @@ metadata:
 
 项目**不是 Node 工程**（Flask / Django / PHP / 静态模板，没有 `package.json`）→ 不走上面三条，按 [references/non-node.md](references/non-node.md)：`ds.mjs export` 出纯 CSS 放进 static，模板用配方类，验收用 `--url`。
 
+用户说**换个颜色 / 换主题色 / 品牌色换成蓝**（或接入时就点名颜色）→ [references/palette.md](references/palette.md)：`ds.mjs palette`，结构不动，只换颜色。
+
 用户说**只想覆盖其中几个板块 / 不影响其他板块** → 先分清是 monorepo 多应用（各自 `init --project`，天然隔离）还是同一应用内的路由板块（按 [references/scope-root.md](references/scope-root.md)：`ds.mjs scope` 生成 `@scope (html.<root>)` 范围包 + 路由守卫切类）。
 
 日常做页面（已接入项目里的普通 UI 需求）不用问，直接按 [references/page-work.md](references/page-work.md)；验收失败按 [references/troubleshooting.md](references/troubleshooting.md) 归因。
@@ -36,14 +38,15 @@ metadata:
 | 命令 | 干什么 |
 | --- | --- |
 | `ds.mjs detect [--json]` | 列出项目里的设计系统候选（快照 / npm 包 / 散落文件夹）、工作副本状态、是否有 legacy |
-| `ds.mjs init [--system <id\|路径\|npm包名>] [--stack <栈>] [--legacy-rename]` | 落快照 + 生成工作副本 + 写清单 + 打印该栈接线。`--system` 缺省时项目里只检测到一个系统就自动选用；`--stack` 缺省时按 package.json 依赖 / 标志文件推断（身份文件 `stacks.<id>.detect`），唯一命中才自动选，否则报错列出可选；已有 `design-system/` 时需用户确认后加 `--legacy-rename` |
-| `ds.mjs adopt [--system <id>] [--stack <栈>]` | 已有快照 + 工作副本的项目补 `.adopter.json` 清单 |
-| `ds.mjs status [--offline]` | 快照完整性（hash）、工作副本本地修改、上游最新 tag |
-| `ds.mjs upgrade [--dry-run] [--ref <tag>] [--from <dir\|tgz>] [--resolve <decisions.json>]` | 三方合并升级：JSON 键级自动并（同键冲突才问），markdown 文件级选 local / upstream / markers；冲突写 `.adopter-conflicts.json` 并退出码 3 |
+| `ds.mjs init [--system <id\|路径\|npm包名>] [--stack <栈>] [--palette <颜色>] [--legacy-rename]` | 落快照 + 生成工作副本 + 写清单 + 打印该栈接线。`--system` 缺省时项目里只检测到一个系统就自动选用；`--stack` 缺省时按 package.json 依赖 / 标志文件推断（身份文件 `stacks.<id>.detect`），唯一命中才自动选，否则报错列出可选；`--palette` 接入时直接套一套官方颜色；已有 `design-system/` 时需用户确认后加 `--legacy-rename` |
+| `ds.mjs adopt [--system <id>] [--stack <栈>]` | 已有快照 + 工作副本的项目补 `.adopter.json` 清单（工作副本正好是某套颜色时一并记下） |
+| `ds.mjs palette [<颜色>] [--list] [--dry-run] [--unofficial] [--force]` | 换颜色主题：只换品牌色原语与身份文件登记的角色指向，结构不变；记进 `.adopter.json`，自动用 steward 重建 token（范围根再生成范围包）。不带颜色 = 列出官方 / 只在预览里试的颜色和效果预览链接；清单外的颜色要 `--unofficial`（正式用先提案）；调色盘管的键被手改过要 `--force` |
+| `ds.mjs status [--offline]` | 快照完整性（hash）、当前颜色（它管的键有没有被手改）、工作副本本地修改（换色改的键不算）、上游最新 tag |
+| `ds.mjs upgrade [--dry-run] [--ref <tag>] [--from <dir\|tgz>] [--resolve <decisions.json>]` | 三方合并升级：JSON 键级自动并（同键冲突才问），markdown 文件级选 local / upstream / markers；冲突写 `.adopter-conflicts.json` 并退出码 3。换过颜色的项目：调色盘管的键不进合并，先摘下再比，合并完按新版本重套 |
 | `ds.mjs restore [--files a,b\|--all] [--from <dir>]` | 快照被改时从上游 / node_modules 恢复 |
-| `ds.mjs export --to <dir> [--system <id\|路径\|npm包名>] [--with element-plus,shadcn] [--dry-run] [--force]` | 纯 CSS 交付（非 Node 项目）：写 `index.css` + `recipes.css`（+ 可选桥接）带版本头与清单；重导出逐文件列未变 / 更新 / 新增，被手改的导出文件拦截（`--force` 覆盖） |
-| `ds.mjs scope --root <class> --to <dir> [--with element-plus] [--system …]` | 范围根：token（优先项目 dist）+ recipes + 桥接各自包进 `@scope (html.<root>)`（`:root` / `html` 改写为 `:scope`，`@import / @theme / @keyframes` 提升顶层），打印路由守卫片段；`.adopter.json` 记账，`upgrade` 后提醒再生成 |
-| `ds.mjs propose --title "…" [--layer token\|bridge\|recipes\|component\|docs\|tools] [--scene …] [--expect …] [--tokens a,b] [--write]` | 提案回流：生成格式统一的提案草稿（自动带系统版本与栈）并打印**预填好的 GitHub issue 链接**；`--write` 存到 `design-system/proposals/`。配方不够用 / 桥接漏了 / 文档说不清时用它，不在页面上先糊样式 |
+| `ds.mjs export --to <dir> [--system <id\|路径\|npm包名>] [--with element-plus,shadcn] [--palette <颜色>] [--dry-run] [--force]` | 纯 CSS 交付（非 Node 项目）：写 `index.css` + `recipes.css`（+ 可选桥接）带版本头与清单；`--palette` 把调色盘覆盖接在 `index.css` 末尾，重导出沿用；重导出逐文件列未变 / 更新 / 新增，被手改的导出文件拦截（`--force` 覆盖） |
+| `ds.mjs scope --root <class> --to <dir> [--with element-plus] [--palette <颜色>] [--system …]` | 范围根：token（优先项目 dist）+ recipes + 桥接各自包进 `@scope (html.<root>)`（`:root` / `html` 改写为 `:scope`，`@import / @theme / @keyframes` 提升顶层），打印路由守卫片段；`.adopter.json` 记账，`upgrade` 后提醒再生成。token 取自工作副本 dist 时颜色跟工作副本（用 `palette` 换），否则 `--palette` 生效 |
+| `ds.mjs propose --title "…" [--layer token\|palette\|bridge\|recipes\|component\|docs\|tools] [--scene …] [--expect …] [--tokens a,b] [--write]` | 提案回流：生成格式统一的提案草稿（自动带系统版本与栈）并打印**预填好的 GitHub issue 链接**；`--write` 存到 `design-system/proposals/`。配方不够用 / 桥接漏了 / 文档说不清时用它，不在页面上先糊样式 |
 | `ds.mjs agents [--stack <栈>] [--name <项目名>] [--write]` | 渲染 AGENTS.md（模板 + 栈要点）；标题默认取 `package.json` 的 name、再退回目录名，`--name` 可写中文项目名；默认只打印，并说明 `--write` 会怎么改（新建 / 替换既有设计系统区块 / 追加，列出区块里增删的行）；用户确认后再 `--write`。替换只动从「## 设计系统」起、与模板同名的连续章节，标题与项目自己的章节不动；模板更新后重跑即可原地刷新 |
 | `ds.mjs ci [--to <path>] [--no-accept] [--dry-run] [--force]` | 写 GitHub Actions 门禁 `.github/workflows/design-system.yml`：PR / 推 main 时跑「`status --strict`（快照未被手改）→ steward 就位 → `build-tokens` → `guard` current → 项目构建 → 验收全绿」，失败上传 `.accept/`。**这是唯一不依赖 Agent 是否照 AGENTS.md 做事的机制**，新项目接入完成、旧项目三期收尾时都要做；adopter 须在仓库里（全局装的会拒绝并给拷贝命令）；没有 `accept.config.mjs` 先建（或 `--no-accept` 只做 guard） |
 | `ds.mjs status --strict` | 供 CI：快照被手改 / steward 过旧 → 退出 1 |
@@ -54,7 +57,8 @@ metadata:
 
 ## 硬边界（违反即错）
 
-- **写入前确认**：`init --legacy-rename`、`agents --write`、`upgrade`（非 dry-run）、`steward install` 都要先把将发生的事告诉用户、拿到同意；`--dry-run` / 不带 `--write` 的形态随时可跑。
+- **写入前确认**：`init --legacy-rename`、`agents --write`、`upgrade`（非 dry-run）、`palette <颜色>`（非 dry-run）、`steward install` 都要先把将发生的事告诉用户、拿到同意；`--dry-run` / 不带 `--write` 的形态随时可跑。
+- **换色只用 `ds.mjs palette`**：品牌色原语和登记的角色归调色盘管，不手改；官方名单外的颜色先提案（`propose --layer palette`），用户明确只在本项目试才 `--unofficial`。
 - **快照只读**：任何「桥接不合适、配方不够用」都不改 `design-systems/<id>/`——项目差异写自己的 `app.css` / 工作副本，公共诉求向上游仓库提提案。**绝不在页面上就地补样式值。**
 - **分工**：构建 token（`build-tokens.mjs`）、一致性校验（`guard.mjs`）、存量迁移（`audit / migrate / settle`）是 steward 的；批量改写存量样式只允许走 steward `migrate --apply` 的闸门。本 skill 不自己实现这些。
 - 升级后必跑：`build-tokens → guard → 验收命令`（身份文件 `accept.command`）；minor 版本像素会变属预期，对照种子 CHANGELOG。

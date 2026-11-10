@@ -1,24 +1,26 @@
 #!/usr/bin/env node
-// design-system-adopter 的通用 CLI（零依赖，Node ≥ 22）：识别 / 接入 / 状态 / 升级（三方合并）/ 恢复 / 项目规则 / steward 查装 / 自更新。
-// 与具体设计系统无关：一切信息来自设计系统包根的 design-system.json（id、upstream、栈、模板、验收、迁移对照、owned 清单）。
+// design-system-adopter 的通用 CLI（零依赖，Node ≥ 22）：识别 / 接入 / 换色 / 状态 / 升级（三方合并）/ 恢复 / 项目规则 / steward 查装 / 自更新。
+// 与具体设计系统无关：一切信息来自设计系统包根的 design-system.json（id、upstream、栈、模板、验收、迁移对照、owned 清单、调色盘）。
 //
 //   node ds.mjs detect   [--project <dir>] [--json]
-//   node ds.mjs init     --system <id|路径|npm包名> --stack <栈> [--project <dir>] [--legacy-rename]
+//   node ds.mjs init     --system <id|路径|npm包名> --stack <栈> [--palette <颜色>] [--project <dir>] [--legacy-rename]
 //   node ds.mjs adopt    [--system <id>] [--stack <栈>] [--project <dir>]        # 已有快照 + 工作副本的项目补 .adopter.json
+//   node ds.mjs palette  [<颜色>] [--list] [--dry-run] [--unofficial] [--force] [--project <dir>]   # 换颜色主题：只换品牌色与登记的角色指向，结构不变；不带颜色 = 列出可选
 //   node ds.mjs status   [--project <dir>] [--offline] [--strict]   # --strict：快照被手改 / steward 过旧 → 退出 1（CI 用）
 //   node ds.mjs upgrade  [--project <dir>] [--dry-run] [--ref <tag>] [--from <dir|tgz>]
 //                        [--resolve <decisions.json>] [--keep-local-all] [--take-upstream-all] [--json]
 //   node ds.mjs restore  [--project <dir>] [--files a,b] [--all] [--from <dir>]  # 快照被改时恢复
-//   node ds.mjs export   --to <dir> [--system <id|路径|npm包名>] [--with element-plus,shadcn] [--dry-run] [--force]   # 纯 CSS 交付（非 Node 项目）
-//   node ds.mjs scope    --root <class> --to <dir> [--with element-plus] [--system …]                             # 范围根：只覆盖部分路由板块（@scope 包裹）
-//   node ds.mjs propose  --title "…" [--layer token|bridge|recipes|component|docs|tools] [--scene …] [--expect …] [--tokens a,b] [--write]   # 提案草稿 + 预填 issue 链接
+//   node ds.mjs export   --to <dir> [--system <id|路径|npm包名>] [--with element-plus,shadcn] [--palette <颜色>] [--dry-run] [--force]   # 纯 CSS 交付（非 Node 项目）
+//   node ds.mjs scope    --root <class> --to <dir> [--with element-plus] [--palette <颜色>] [--system …]                             # 范围根：只覆盖部分路由板块（@scope 包裹）
+//   node ds.mjs propose  --title "…" [--layer token|palette|bridge|recipes|component|docs|tools] [--scene …] [--expect …] [--tokens a,b] [--write]   # 提案草稿 + 预填 issue 链接
 //   node ds.mjs agents   [--project <dir>] [--stack <栈>] [--name <项目名>] [--write]   # 默认只打印并说明 --write 会怎么改；--write 新建、替换既有设计系统区块或追加；标题默认取 package.json 的 name
 //   node ds.mjs ci       [--project <dir>] [--to <path>] [--no-accept] [--dry-run] [--force]   # 写 GitHub Actions 门禁：快照完整 → guard current → 构建 → 验收全绿
 //   node ds.mjs steward  locate|install [--project <dir>]
 //   node ds.mjs self-update
 //
 // 布局：design-systems/<id>/ = 上游只读快照（三方合并的 base；npm 只是下载渠道）；design-system/ = 工作副本（steward 治理）。
-// 状态文件 design-system/.adopter.json；冲突清单 .adopter-conflicts.json（项目根）。退出码：0 成功 · 1 失败 · 2 用法/前置 · 3 有待决冲突。
+// 状态文件 design-system/.adopter.json（换过颜色时记 palette）；冲突清单 .adopter-conflicts.json（项目根）。退出码：0 成功 · 1 失败 · 2 用法/前置 · 3 有待决冲突。
+// 调色盘管的键（品牌色原语 + 身份文件 palettes.roles）不进三方合并：升级时先摘下再比，合并完按新版本重套。
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, realpathSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, dirname, isAbsolute, join, relative, resolve } from 'node:path';
@@ -32,6 +34,7 @@ import { shaText } from './lib/util.mjs';
 import { locateSteward, installSteward, stewardInstallHint, stewardInfo, MIN_STEWARD } from './lib/steward.mjs';
 import { planAgents, renderAgents, resolvePlaceholders, writeAgents } from './lib/agents.mjs';
 import { scopeWrap, guardSnippet } from './lib/scope.mjs';
+import { applyPalette, listPalettes, loadPalette, paletteContext, paletteCss, paletteDiff, withoutPalette } from './lib/palette.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const args = parseArgs();
@@ -100,6 +103,79 @@ function printWiring(identity, stackId, source) {
   console.log(lines.join('\n'));
 }
 
+// ---------- 调色盘（颜色主题） ----------
+/** 种子 / 快照目录的调色盘上下文；身份文件没有 palettes 段（这个系统不支持换色）时报错退出。 */
+function paletteCtxOf(dir, identity) {
+  const ctx = paletteContext(dir, identity);
+  if (!ctx) fail(`${identity.name}（${identity.id}）的 design-system.json 没有 palettes 段：这个设计系统不支持换色。`);
+  return ctx;
+}
+const officialNames = (ctx) => listPalettes(ctx).filter((p) => p.official).map((p) => `${p.name} ${p.id}`).join('、');
+const paletteLabel = (p) => `「${p.name}」（${p.id}${p.isDefault ? '，默认' : ''}）`;
+/** 取调色盘。官方名单外的只在效果预览里试，项目要用先提案；--unofficial = 用户明确只在本项目试。remembered = 沿用清单 / 导出记录里的选择，不再拦。 */
+function pickPalette(ctx, id, { remembered = false } = {}) {
+  let p;
+  try { p = loadPalette(ctx, String(id)); } catch (e) { fail(e.message); }
+  if (!p.official && !args.unofficial && !remembered) fail(`${paletteLabel(p)}不是 ${ctx.identity.name} 的官方颜色，只放在效果预览里试。官方颜色：${officialNames(ctx)}。\n要正式用：先提案（ds.mjs propose --layer palette --title "把${p.name}转成官方颜色" --scene "…"），上游转正后再换；只想在本项目先试，加 --unofficial。`);
+  if (!p.official) console.log(`注意：${paletteLabel(p)}不是官方颜色（${remembered ? '沿用之前的选择' : '--unofficial'}），升级时上游可能调整或删掉它。`);
+  return p;
+}
+/** 工作副本里调色盘管的键是不是正好等于「palette 套在 ctx 默认值上」；读不了（如有冲突标记）当作被改过。返回被改过的文件。 */
+function paletteEdits(ctx, palette) {
+  try { return applyPalette(ctx, project, palette, { write: false }).changed; } catch (e) { return [`（${e.message.split('\n')[0]}）`]; }
+}
+
+/**
+ * 升级时的调色盘处理：项目用的颜色在新版本里要还在；工作副本里它管的键没被手改过（等于旧颜色套在旧默认值上，或上次升级没走完、已是新颜色套在新默认值上），
+ * 就复制一份工作副本到临时目录，把这些键恢复成默认值（有旧快照用旧的，没有用新版本的）给三方合并比较，合并完再用新版本重套。
+ * 返回 { next, ctxRemote, view }；view 为 null = 手改过，这次照普通三方合并、不自动重套。
+ */
+function palettePlan(m, base, remoteDir, remoteIdentity) {
+  const ctxRemote = paletteContext(remoteDir, remoteIdentity);
+  if (!ctxRemote) fail(`新版本 ${remoteIdentity.version} 不再支持换色（身份文件没有 palettes 段），本项目用的颜色是 ${m.palette}：先向上游确认，或 ds.mjs palette 换回默认颜色再升级。`);
+  let next;
+  try { next = loadPalette(ctxRemote, m.palette); } catch (e) { fail(`新版本 ${remoteIdentity.version} 里没有本项目用的颜色 ${m.palette}：先 ds.mjs palette <新版本里还有的颜色> 换掉再升级（新版本的官方颜色：${officialNames(ctxRemote)}）。\n${e.message}`); }
+  const ctxBase = base ? paletteContext(base) : null;
+  let before = null;
+  try { before = ctxBase ? loadPalette(ctxBase, m.palette) : null; } catch { before = null; }
+  const edits = ctxBase ? (before ? paletteEdits(ctxBase, before) : ['（旧快照里读不到这个颜色）']) : [];
+  if (edits.length && paletteEdits(ctxRemote, next).length) {
+    console.log(`注意：工作副本里${paletteLabel(next)}管的品牌色 / 角色指向被手改过（${edits.join('、')}）：这次按普通三方合并处理，升级完不自动重套；要恢复成调色盘的值，升级后跑 ds.mjs palette ${m.palette} --force。`);
+    return { next, ctxRemote, view: null };
+  }
+  const view = mkdtempSync(join(tmpdir(), 'ds-palette-'));
+  copyDir(join(project, 'design-system'), join(view, 'design-system'), { exclude: ['dist'] });
+  for (const [rel, text] of Object.entries(withoutPalette(ctxBase || ctxRemote, view))) writeFileSync(join(view, rel), text);
+  const diff = before ? paletteDiff(before, next) : null;
+  console.log(`颜色${paletteLabel(next)}：它管的品牌色与角色指向不进合并——先摘下再比较${ctxBase ? '' : `（没有旧快照内容，按新版本的默认值摘；tokens 文件若仍报冲突，选 upstream，升级完跑 ds.mjs palette ${m.palette} 重套）`}，合并完按新版本重套${diff && (diff.primitives || diff.roles) ? `；上游调整了这套颜色（${diff.primitives} 档品牌色、${diff.roles} 处指向）` : ''}。`);
+  return { next, ctxRemote, view };
+}
+function reapplyPalette(pal) {
+  try {
+    const { changed } = applyPalette(pal.ctxRemote, project, pal.next);
+    console.log(`已按新版本重套颜色${paletteLabel(pal.next)}${changed.length ? `（${changed.length} 个 token 文件）` : ''}。`);
+  } catch (e) { console.log(`⚠ 重套颜色${paletteLabel(pal.next)}失败（${e.message.split('\n')[0]}）——tokens 文件里有冲突标记？解决后跑 ds.mjs palette ${pal.next.id}。`); }
+}
+
+/** 工作副本的 token 源变了（升级合并、换色）之后：steward 在就重建 dist；范围根项目再用新 dist 重生成范围包。返回 dist 是否重建成功。 */
+function rebuildAfterTokens(m) {
+  let built = false;
+  const sw = stewardInfo(project);
+  if (sw.dir && sw.ok) {
+    const r = spawnSync(process.execPath, [join(sw.dir, 'scripts/build-tokens.mjs'), '--project', project], { encoding: 'utf8' });
+    built = r.status === 0 && /"valid":\s*true/.test(r.stdout || '');
+    console.log(built ? `\n已用 steward 重建 token（design-system/dist）。` : `\n⚠ steward build-tokens 未成功（${(r.stderr || r.stdout || '').trim().split('\n').pop() || '未知'}）——手工跑后再 guard。`);
+  } else console.log(`\n未找到可用 steward，跳过 build-tokens：请手工 build-tokens → guard${m.scopeRoot ? ' → ds.mjs scope' : ''}。`);
+  if (m.scopeRoot && m.scopeDir) {
+    // 范围根项目消费的是 @scope 包裹的生成物，不重生成的话桥接 / recipes 的更新到不了应用（2.11.1 轻采：桥接修了、走查仍复现旧 bug）。
+    // 顺序：先 build-tokens 再 scope——范围包的 token 部分取自 dist（2.12.0 轻采：先 scope 后 build-tokens，新 token 在范围包里是 undefined）。
+    console.log(`范围根模式（html.${m.scopeRoot} → ${m.scopeDir}）：用新快照${built ? '与新 dist ' : ''}重生成范围包…`);
+    try { commands.scope(); } catch (e) { console.log(`  重生成失败（${e.message}）——手工跑 ds.mjs scope。`); }
+    if (!built) console.log(`  dist 未重建：build-tokens 之后必须再跑一次 ds.mjs scope，否则范围包里的新 token 是 undefined。`);
+  }
+  return built;
+}
+
 // ---------- 命令 ----------
 /** 按身份文件 stacks.<id>.detect（{ deps: [...], files: [...] }）推断项目用的栈：任一依赖或标志文件命中即候选 */
 const readPkg = (dir) => (existsSync(join(dir, 'package.json')) ? readJson(join(dir, 'package.json')) : {});
@@ -140,7 +216,7 @@ const commands = {
     if (!d.systems.length) console.log('  未发现带 design-system.json 身份文件的设计系统（node_modules 与浅层目录都扫过）。');
     for (const s of d.systems) console.log(`  [${s.source}] ${s.identity.id}@${s.identity.version} · ${s.identity.name} · ${s.dir}`);
     if (d.working.exists) {
-      if (d.working.adopter) console.log(`  工作副本 design-system/ ← ${d.working.adopter.system}@${d.working.adopter.version}（.adopter.json）`);
+      if (d.working.adopter) console.log(`  工作副本 design-system/ ← ${d.working.adopter.system}@${d.working.adopter.version}${d.working.adopter.palette ? ` · 颜色 ${d.working.adopter.palette}` : ''}（.adopter.json）`);
       else console.log(`  工作副本 design-system/ 存在但无 .adopter.json：${d.working.stewardLayout ? '像是 steward 布局（用户自建或旧接法）——接我们的系统走「换规范」，已是我们的用 adopt 补清单' : '布局未知'}`);
     } else console.log('  没有 design-system/ 工作副本（可从 0 接入）。');
     if (d.legacy) console.log('  存在 design-system.legacy/（迁移证据）。');
@@ -155,11 +231,7 @@ const commands = {
       else fail(d.systems.length ? `检测到多个系统（${d.systems.map((x) => x.identity.id).join(' / ')}），用 --system 指定` : '缺 --system，且项目里没检测到任何设计系统：先 npm i 它的包，或把种子文件夹放进项目（任意位置）');
     }
     const wc = join(project, 'design-system');
-    if (existsSync(wc)) {
-      if (!args['legacy-rename']) fail(`已存在 ${wc}：这是「更换现有规范」场景——经用户确认后加 --legacy-rename（会把它改名为 design-system.legacy/ 当迁移证据），或先手工处理。`);
-      renameSync(wc, join(project, 'design-system.legacy'));
-      console.log('已把原 design-system/ 改名为 design-system.legacy/（迁移证据，audit 时会用到）。');
-    }
+    if (existsSync(wc) && !args['legacy-rename']) fail(`已存在 ${wc}：这是「更换现有规范」场景——经用户确认后加 --legacy-rename（会把它改名为 design-system.legacy/ 当迁移证据），或先手工处理。`);
     // 解析来源
     let srcDir = null, source = 'folder';
     const asPath = resolve(project, sysArg);
@@ -181,6 +253,12 @@ const commands = {
       else fail(`缺 --stack，且无法从依赖推断（${hits.length ? `命中多个：${hits.join(' / ')}` : '一个都没命中'}）；可用：${Object.keys(identity.stacks).join(' / ')}`);
     }
     if (!identity.stacks[stackId]) fail(`${identity.id} 没有栈 ${stackId}；可用：${Object.keys(identity.stacks).join(' / ')}`);
+    // 颜色：落盘前先校验（官方名单外的要 --unofficial）
+    const palette = args.palette ? pickPalette(paletteCtxOf(srcDir, identity), args.palette) : null;
+    if (existsSync(wc)) {
+      renameSync(wc, join(project, 'design-system.legacy'));
+      console.log('已把原 design-system/ 改名为 design-system.legacy/（迁移证据，audit 时会用到）。');
+    }
     // 快照落位
     const snapRel = `design-systems/${identity.id}`;
     const snapDir = join(project, snapRel);
@@ -193,8 +271,12 @@ const commands = {
     mkdirSync(wc, { recursive: true });
     copyDir(join(snapDir, 'design-system'), wc, { exclude: ['dist'] });
     mkdirSync(join(wc, 'dist'), { recursive: true });
-    writeManifest({ system: identity.id, name: identity.name, version: identity.version, source, snapshot: snapRel, npm: identity.upstream.npm, stack: stackId, updatedAt: today(), snapshotHashes: hashDir(snapDir) });
+    const paletteId = palette && !palette.isDefault ? palette.id : undefined;
+    if (paletteId) applyPalette(paletteCtxOf(snapDir, identity), project, palette);
+    writeManifest({ system: identity.id, name: identity.name, version: identity.version, source, snapshot: snapRel, npm: identity.upstream.npm, stack: stackId, palette: paletteId, updatedAt: today(), snapshotHashes: hashDir(snapDir) });
     console.log(`已接入 ${identity.name}（${identity.id}@${identity.version}，来源 ${source}）：工作副本 design-system/ + 清单 ${MANIFEST}`);
+    const ctx = paletteContext(snapDir, identity);
+    if (ctx) console.log(`颜色：${paletteLabel(palette || loadPalette(ctx, ctx.settings.defaultId))}${paletteId ? '——已套进工作副本的 token，构建后生效' : ''}。换色：ds.mjs palette --list 看可选，ds.mjs palette <颜色> 换。`);
     printWiring(identity, stackId, source);
   },
 
@@ -212,13 +294,56 @@ const commands = {
       if (!existsSync(dest)) { copyDir(snapDir, dest); console.log(`已从 ${hit.dir} 建快照 ${snapRel}/`); }
     }
     const stackId = args.stack || readManifest()?.stack || Object.keys(identity.stacks)[0];
-    writeManifest({ system: identity.id, name: identity.name, version: identity.version, source: hit.source, snapshot: snapRel, npm: identity.upstream.npm, stack: stackId, updatedAt: today(), snapshotHashes: hashDir(join(project, snapRel)) });
+    // 颜色：工作副本里调色盘管的键正好等于哪一套（套在快照默认值上），就记哪一套；都不等（手改过）就不记，按默认颜色算
+    const ctx = paletteContext(join(project, snapRel), identity);
+    const applied = ctx ? listPalettes(ctx).find((p) => !paletteEdits(ctx, loadPalette(ctx, p.id)).length) : null;
+    writeManifest({ system: identity.id, name: identity.name, version: identity.version, source: hit.source, snapshot: snapRel, npm: identity.upstream.npm, stack: stackId, palette: applied && !applied.isDefault ? applied.id : undefined, updatedAt: today(), snapshotHashes: hashDir(join(project, snapRel)) });
+    if (ctx) console.log(applied ? `颜色：工作副本用的是${paletteLabel(applied)}。` : '颜色：工作副本的品牌色 / 角色指向和哪套调色盘都对不上（手改过），按默认颜色记；要换成某一套用 ds.mjs palette <颜色> --force。');
     const diff = ownedFiles(identity, [join(project, snapRel)]).filter((f) => {
       const l = join(project, f), s = join(project, snapRel, f);
       return existsSync(l) && existsSync(s) && sha(l) !== sha(s);
     });
     console.log(`已写 ${MANIFEST}：${identity.id}@${identity.version} · 快照 ${snapRel} · 栈 ${stackId}`);
     if (diff.length) console.log(`工作副本与快照有差异（本地改过，upgrade 时会做三方合并）：\n  ${diff.join('\n  ')}`);
+  },
+
+  /** 换颜色主题：只换品牌色原语与身份文件登记的角色指向，结构（间距 / 字号 / 圆角 / 组件）不变；换完用 steward 重建 token。 */
+  palette() {
+    const m = readManifest() || fail(`没有 ${MANIFEST}；先 init（新项目可直接 init --palette <颜色>）`);
+    const snapDir = snapshotDirOf(m);
+    const identity = readIdentity(snapDir) || fail(`快照缺 design-system.json：${m.snapshot}`);
+    const ctx = paletteCtxOf(snapDir, identity);
+    const currentId = m.palette || ctx.settings.defaultId;
+    const id = args.list ? null : args._[1];
+    if (!id) {
+      const all = listPalettes(ctx);
+      const row = (p) => `  ${p.id === currentId ? '●' : ' '} ${p.id.padEnd(10)} ${p.name}${p.swatch ? `  ${p.swatch}` : ''}${p.isDefault ? '（默认）' : ''}`;
+      console.log(`${identity.name} ${identity.version} 的颜色（● = 本项目现在用的）`);
+      console.log(`官方：\n${all.filter((p) => p.official).map(row).join('\n')}`);
+      const rest = all.filter((p) => !p.official);
+      if (rest.length) console.log(`只在效果预览里试（项目要用先提案转正）：\n${rest.map(row).join('\n')}`);
+      console.log(`\n换色：ds.mjs palette <颜色>——只换品牌色和少量角色指向，间距 / 字号 / 圆角 / 组件都不变，换完自动重建 token。${ctx.settings.preview ? `\n先看效果：${ctx.settings.preview}?palette=<颜色>（右下角「规范调节」还能调值、导出给 AI）` : ''}`);
+      return;
+    }
+    if (identity.version !== m.version || snapshotDrift(m).length) fail(`快照和清单记账对不上（${identity.version !== m.version ? `快照 ${identity.version}、清单 ${m.version}` : '快照文件变了'}）：先 ds.mjs status 看原因（多半要先 upgrade，或 restore 被手改的快照），再换颜色。`);
+    const next = pickPalette(ctx, id, { remembered: id === m.palette });
+    let current = null;
+    try { current = loadPalette(ctx, currentId); } catch { /* 记的颜色在快照里没了：没法判断有没有手改 */ }
+    const edited = current ? paletteEdits(ctx, current) : [];
+    if (edited.length && !args.force) fail(`工作副本里${paletteLabel(current)}管的品牌色 / 角色指向被手改过（${edited.join('、')}）：换色会把它们改成${paletteLabel(next)}的值。要的颜色差异先提案（ds.mjs propose --layer palette）；确认覆盖就加 --force。`);
+    const dry = !!args['dry-run'];
+    const { changed } = applyPalette(ctx, project, next, { write: !dry });
+    if (next.id === currentId && !changed.length) { console.log(`已经是${paletteLabel(next)}，不用换。`); return; }
+    const what = next.isDefault ? '品牌色与角色指向恢复成种子默认值' : `品牌色 ${next.primitives.size} 档 + 角色改指向 ${next.semantic.size + next.dark.size} 处（亮 ${next.semantic.size} · 暗 ${next.dark.size}）`;
+    console.log(`${dry ? '[dry-run] ' : ''}${current ? paletteLabel(current) : currentId} → ${paletteLabel(next)}：${what}；${changed.length ? `改 ${changed.length} 个 token 文件：\n  ${changed.join('\n  ')}` : 'token 文件不用改'}`);
+    const approved = next.contrastExceptions.filter((x) => x.approved), pending = next.contrastExceptions.filter((x) => !x.approved);
+    const exLine = (x) => `${x.mode === 'dark' ? '暗' : '亮'} ${x.fg} 对 ${x.bg} ${x.min}:1 · ${x.why}`;
+    if (approved.length) console.log(`这套颜色有 ${approved.length} 条登记过、已批准的对比度例外（验收按登记放行）：\n  ${approved.map(exLine).join('\n  ')}`);
+    if (pending.length) console.log(`⚠ 还有 ${pending.length} 条对比度不达标、没批准（验收会报低对比）：\n  ${pending.map(exLine).join('\n  ')}`);
+    if (dry) { console.log('\n[dry-run] 未写任何文件。'); return; }
+    writeManifest({ ...m, palette: next.isDefault ? undefined : next.id });
+    const built = rebuildAfterTokens(m);
+    console.log(`\n完成。接下来：${built ? '' : 'build-tokens → '}guard → ${identity.accept?.command || '验收'}（品牌色变了，截图基线跟着变，属预期）。`);
   },
 
   async status() {
@@ -239,10 +364,22 @@ const commands = {
         console.log(`  ⚠ 快照被本地改动（快照应只读，改动会让三方合并失去基线）：${list}\n    用 restore 恢复，需要的差异改在工作副本 / app.css，公共诉求向上游提。`);
       } else console.log('  快照完整（hash 与清单一致）。');
     }
-    // 工作副本 vs 基线：比清单记的快照 hash——快照被就地更新过时，当前快照已是新上游，拿它比会把上游改动算成本地修改
+    // 颜色：清单记的调色盘；快照与清单对得上时顺便查它管的键有没有被手改
+    const ctx = paletteContext(snapDir, identity);
+    let palette = null;
+    if (ctx) {
+      try { palette = loadPalette(ctx, m.palette || ctx.settings.defaultId); } catch (e) { console.log(`  ⚠ 清单记的颜色 ${m.palette} 在快照里找不到（${e.message.split('\n')[0]}）：ds.mjs palette --list 选一套还在的。`); }
+      const comparable = identity.version === m.version && !snapshotDrift(m).length;
+      const edited = palette && comparable ? paletteEdits(ctx, palette) : [];
+      if (palette) console.log(edited.length ? `  ⚠ 颜色记的是${paletteLabel(palette)}，但工作副本里它管的品牌色 / 角色指向被手改过（${edited.join('、')}）：要的颜色差异先提案；恢复用 ds.mjs palette ${palette.id} --force。` : `  颜色：${paletteLabel(palette)}${palette.official ? '' : ' · 不是官方颜色'}。换色：ds.mjs palette --list`);
+    }
+    // 工作副本 vs 基线：比清单记的快照 hash——快照被就地更新过时，当前快照已是新上游，拿它比会把上游改动算成本地修改。换过颜色的 token 文件先摘下调色盘再比（换色不算本地修改）
+    let plain = {};
+    if (ctx && palette && !palette.isDefault) { try { plain = withoutPalette(ctx, project); } catch { plain = {}; } }
+    const localSha = (f) => (plain[f] !== undefined ? shaText(plain[f]) : sha(join(project, f)));
     const baseSha = (f) => m.snapshotHashes?.[f] ?? (existsSync(join(snapDir, f)) ? sha(join(snapDir, f)) : null);
-    const modified = ownedFiles(identity, [snapDir]).filter((f) => existsSync(join(project, f)) && baseSha(f) && sha(join(project, f)) !== baseSha(f));
-    console.log(modified.length ? `  工作副本相对快照的本地修改（升级时三方合并保留）：\n    ${modified.join('\n    ')}` : '  工作副本与快照一致（无本地修改）。');
+    const modified = ownedFiles(identity, [snapDir]).filter((f) => existsSync(join(project, f)) && baseSha(f) && localSha(f) !== baseSha(f));
+    console.log(modified.length ? `  工作副本相对快照的本地修改（升级时三方合并保留${palette && !palette.isDefault ? '；换颜色改的键不算' : ''}）：\n    ${modified.join('\n    ')}` : `  工作副本与快照一致（无本地修改${palette && !palette.isDefault ? '，换颜色改的键不算' : ''}）。`);
     { const sw = stewardInfo(project); console.log(sw.dir ? `  steward：${sw.version || '版本未知'}${sw.ok ? '' : `（过旧，需 ≥ ${MIN_STEWARD}）`} · ${sw.dir}` : `  steward：未找到（${sw.hint.split('：')[0]}）`); if (sw.dir && !sw.ok) strictFail.push(`steward 过旧（需 ≥ ${MIN_STEWARD}）`); }
     if (m.source === 'npm') {
       const ns = nodeModulesSync(m, identity, m.version);
@@ -288,7 +425,9 @@ const commands = {
     const owned = ownedFiles(remoteIdentity, [snapDir, remoteDir]).concat(localOwned(remoteIdentity)).filter((v, i, a) => a.indexOf(v) === i).sort();
     // 只有 design-system/ 有工作副本；owned 里的 bridge / templates / migration 只活在快照里，随下面的快照替换整体更新，不进三方合并
     const files = owned.filter((f) => f.startsWith('design-system/'));
-    const report = base ? classify(base, project, remoteDir, files) : classifyByHash(m.snapshotHashes, project, remoteDir, files, shaText);
+    const pal = m.palette ? palettePlan(m, base, remoteDir, remoteIdentity) : null;
+    const localRoot = pal?.view || project;   // 换过颜色：拿摘下调色盘的副本比较，写入仍落到项目
+    const report = base ? classify(base, localRoot, remoteDir, files) : classifyByHash(m.snapshotHashes, localRoot, remoteDir, files, shaText);
     const dry = !!args['dry-run'];
     const label = `${m.version} → ${remoteIdentity.version}`;
     console.log(`${dry ? '[dry-run] ' : ''}${m.name} 升级 ${label}`);
@@ -309,7 +448,7 @@ const commands = {
         else console.log(`    ${c.file} · 文件级${c.note ? `（${c.note}）` : ''}：选 local / upstream / markers`);
       }
     }
-    if (dry) { console.log('\n[dry-run] 未写任何文件。'); return; }
+    if (dry) { if (pal?.view) rmSync(pal.view, { recursive: true, force: true }); console.log('\n[dry-run] 未写任何文件。'); return; }
 
     // 写入自动部分
     const writeLocal = (f, text) => { const p = join(project, f); mkdirSync(dirname(p), { recursive: true }); writeFileSync(p, text); };
@@ -318,7 +457,7 @@ const commands = {
     // 冲突
     const unresolved = [];
     for (const c of report.conflicts) {
-      const localText = existsSync(join(project, c.file)) ? readFileSync(join(project, c.file), 'utf8') : '';
+      const localText = existsSync(join(localRoot, c.file)) ? readFileSync(join(localRoot, c.file), 'utf8') : '';
       const remoteText = existsSync(join(remoteDir, c.file)) ? readFileSync(join(remoteDir, c.file), 'utf8') : '';
       let d = decisions === '__upstream__' ? 'upstream' : decisions === '__local__' ? 'local' : decisions?.[c.file];
       if (c.kind === 'json-keys') {
@@ -338,6 +477,8 @@ const commands = {
         else { unresolved.push(c); continue; }
       }
     }
+    // 重套颜色：冲突待决时也先套上，工作副本保持「新默认值 + 调色盘」的一致状态（重跑 --resolve 时照样能摘下）
+    if (pal?.view) { reapplyPalette(pal); rmSync(pal.view, { recursive: true, force: true }); }
     if (unresolved.length) {
       writeFileSync(join(project, CONFLICTS), JSON.stringify({ system: m.system, from: m.version, to: remoteIdentity.version, generatedAt: today(), howTo: '逐项决定后写 decisions.json（file → "local"|"upstream"|"markers"，JSON 键级冲突 file → { keyPath: "local"|"upstream"|字面值 }），重跑 upgrade --resolve decisions.json；或用 --keep-local-all / --take-upstream-all', conflicts: unresolved }, null, 2) + '\n');
       console.log(`\n${unresolved.length} 处冲突待决 → 已写 ${CONFLICTS}。自动可并的部分已写入工作副本；解决冲突后重跑 upgrade --resolve <decisions.json>（升级尚未记账，快照未动）。`);
@@ -357,21 +498,7 @@ const commands = {
       if (delta.length) console.log(`\n${m.version} 以来的版本：\n  ` + delta.map((h) => h.replace(/^## /, '')).join('\n  '));
     }
     // 升级后先构建 token（steward 在的话）：工作副本的 token 源刚被合并，dist 不重建就是旧值；范围根项目更依赖它——范围包里的 token 部分取自 dist。
-    let built = false;
-    { const sw = stewardInfo(project);
-      if (sw.dir && sw.ok) {
-        const r = spawnSync(process.execPath, [join(sw.dir, 'scripts/build-tokens.mjs'), '--project', project], { encoding: 'utf8' });
-        built = r.status === 0 && /"valid":\s*true/.test(r.stdout || '');
-        console.log(built ? `\n已用 steward 重建 token（design-system/dist）。` : `\n⚠ steward build-tokens 未成功（${(r.stderr || r.stdout || '').trim().split('\n').pop() || '未知'}）——手工跑后再 guard。`);
-      } else console.log(`\n未找到可用 steward，跳过 build-tokens：请手工 build-tokens → guard${m.scopeRoot ? ' → ds.mjs scope' : ''}。`);
-    }
-    if (m.scopeRoot && m.scopeDir) {
-      // 范围根项目消费的是 @scope 包裹的生成物，不重生成的话桥接 / recipes 的更新到不了应用（2.11.1 轻采：桥接修了、走查仍复现旧 bug）。
-      // 顺序：先 build-tokens 再 scope——范围包的 token 部分取自 dist（2.12.0 轻采：先 scope 后 build-tokens，新 token 在范围包里是 undefined）。
-      console.log(`范围根模式（html.${m.scopeRoot} → ${m.scopeDir}）：用新快照${built ? '与新 dist ' : ''}重生成范围包…`);
-      try { commands.scope(); } catch (e) { console.log(`  重生成失败（${e.message}）——手工跑 ds.mjs scope。`); }
-      if (!built) console.log(`  dist 未重建：build-tokens 之后必须再跑一次 ds.mjs scope，否则范围包里的新 token 是 undefined。`);
-    }
+    const built = rebuildAfterTokens(m);
     if (m.source === 'npm') {
       const ns = nodeModulesSync(m, remoteIdentity, remoteIdentity.version);
       if (ns?.cmd && ns.current !== remoteIdentity.version) console.log(`\n⚠ 页面 import 的桥接来自 node_modules/${m.npm}（现在是 ${ns.current || '未安装'}），必须同步到 ${remoteIdentity.version}：\n  ${ns.cmd}`);
@@ -423,21 +550,27 @@ const commands = {
       const edited = Object.entries(prev.files).filter(([name, h]) => existsSync(join(dest, name)) && sha(join(dest, name)) !== h).map(([n]) => n);
       if (edited.length) fail(`目标里的导出文件被本地改过：${edited.join(', ')}。导出文件是只读的——项目差异请写在自己的样式文件里；确认要覆盖就加 --force。`, 3);
     }
+    // 颜色：--palette 指定，否则沿用上次导出的；调色盘覆盖接在 token 文件末尾（与整套重建等价）
+    const paletteId = args.palette ?? prev?.palette ?? null;
+    const picked = paletteId ? pickPalette(paletteCtxOf(srcDir, identity), paletteId, { remembered: !args.palette || String(args.palette) === prev?.palette }) : null;
+    const palette = picked && !picked.isDefault ? picked : null;
+    const tokenFile = files.find((f) => f.endsWith('/dist/index.css'));
+    if (palette && !tokenFile) fail(`${identity.id} 的 export.core 里没有 token 文件（*/dist/index.css），套不了颜色`);
     // 写入（带版本头）
     const dry = !!args['dry-run'];
-    const header = (name) => `/* ${identity.name}（${identity.id}）${identity.version} · ${name} · design-system-adopter export ${today()}\n   只读：升级用 ds.mjs export 再导出一次覆盖；项目差异写在自己的样式文件里，只引用这里的变量。 */\n`;
+    const header = (name, f) => `/* ${identity.name}（${identity.id}）${identity.version} · ${name}${palette && f === tokenFile ? ` · 颜色 ${palette.name}（${palette.id}）` : ''} · design-system-adopter export ${today()}\n   只读：升级用 ds.mjs export 再导出一次覆盖；项目差异写在自己的样式文件里，只引用这里的变量。 */\n`;
     const outFiles = {}; const report = { added: [], updated: [], unchanged: [] };
     if (!dry) mkdirSync(dest, { recursive: true });
     for (const f of files) {
       const name = basename(f);
-      const text = header(name) + readFileSync(join(srcDir, f), 'utf8');
+      const text = header(name, f) + readFileSync(join(srcDir, f), 'utf8') + (palette && f === tokenFile ? '\n' + paletteCss(palette) : '');
       const h = shaText(text);
       outFiles[name] = h;
       if (!prev?.files?.[name]) report.added.push(name); else if (prev.files[name] !== h) report.updated.push(name); else report.unchanged.push(name);
       if (!dry) writeFileSync(join(dest, name), text);
     }
-    if (!dry) writeFileSync(manifestFile, JSON.stringify({ system: identity.id, name: identity.name, version: identity.version, exportedAt: today(), source: relative(process.cwd(), srcDir) || '.', groups: withGroups, files: outFiles }, null, 2) + '\n');
-    console.log(`${dry ? '[dry-run] ' : ''}${identity.name} ${prev ? `${prev.version} → ` : ''}${identity.version} 导出到 ${dest}`);
+    if (!dry) writeFileSync(manifestFile, JSON.stringify({ system: identity.id, name: identity.name, version: identity.version, palette: palette?.id, exportedAt: today(), source: relative(process.cwd(), srcDir) || '.', groups: withGroups, files: outFiles }, null, 2) + '\n');
+    console.log(`${dry ? '[dry-run] ' : ''}${identity.name} ${prev ? `${prev.version} → ` : ''}${identity.version} 导出到 ${dest}${picked ? ` · 颜色${paletteLabel(picked)}` : ''}`);
     for (const k of ['added', 'updated', 'unchanged']) if (report[k].length) console.log(`  ${{ added: '新增', updated: '更新', unchanged: '未变' }[k]}：${report[k].join(', ')}`);
     if (prev) { const gone = Object.keys(prev.files).filter((n) => !outFiles[n]); if (gone.length) console.log(`  上次导出有、这次没选：${gone.join(', ')}（未删除，确认无引用后手工删）`); }
     if (spec.usage && !prev) console.log(`\n接线（按顺序 <link>）：\n${spec.usage.split('\n').map((l) => '  ' + l).join('\n')}`);
@@ -462,22 +595,33 @@ const commands = {
     for (const g of withGroups) if (!spec.optional?.[g]) fail(`--with ${g} 不在可选组里；可用：${Object.keys(spec.optional || {}).join(' / ')}`);
     // token：优先项目工作副本的构建产物（含 scope / 本地 token），否则来源 dist
     const localDist = join(project, 'design-system/dist/index.css');
-    const files = [...spec.core, ...withGroups.flatMap((g) => spec.optional[g])].map((f) => ({ rel: f, from: f.endsWith('/dist/index.css') && existsSync(localDist) ? localDist : join(srcDir, f) }));
+    const usesLocalDist = existsSync(localDist);
+    const files = [...spec.core, ...withGroups.flatMap((g) => spec.optional[g])].map((f) => ({ rel: f, from: f.endsWith('/dist/index.css') && usesLocalDist ? localDist : join(srcDir, f) }));
     for (const f of files) if (!existsSync(f.from)) fail(`来源缺 ${f.rel}（token 产物需先 build-tokens）`);
+    // 颜色：token 取自工作副本的 dist 时跟着工作副本（ds.mjs palette 换，会重生成范围包）；取自来源 dist 时按 --palette / 清单记的颜色把调色盘覆盖接在 token 后面
+    let palette = null;
+    if (args.palette) {
+      const ctx = paletteCtxOf(srcDir, identity);
+      const want = pickPalette(ctx, args.palette, { remembered: String(args.palette) === m?.palette });
+      const current = m?.palette || ctx.settings.defaultId;
+      if (usesLocalDist && want.id !== current) fail(`范围包的 token 取自工作副本的 dist，颜色跟着工作副本（现在是 ${current}）：换色用 ds.mjs palette ${want.id}，它会重建 dist 并重生成范围包。`);
+      if (!usesLocalDist && !want.isDefault) palette = want;
+    } else if (!usesLocalDist && m?.palette) palette = pickPalette(paletteCtxOf(srcDir, identity), m.palette, { remembered: true });
     const dest = resolve(project, to);
     const dry = !!args['dry-run'];
     if (!dry) mkdirSync(dest, { recursive: true });
     const outFiles = {}; const hoistedAll = new Set();
     for (const f of files) {
       const name = basename(f.rel);
-      const { text, hoisted } = scopeWrap(readFileSync(f.from, 'utf8'), root);
+      const css = readFileSync(f.from, 'utf8') + (palette && f.rel.endsWith('/dist/index.css') ? '\n' + paletteCss(palette) : '');
+      const { text, hoisted } = scopeWrap(css, root);
       hoisted.forEach((h) => hoistedAll.add(h));
       const out = `/* ${identity.name}（${identity.id}）${identity.version} · ${name} · 范围根 html.${root} · design-system-adopter scope ${today()}\n   生成物，只读：token / 桥接变化后重跑 ds.mjs scope 再生成；项目差异写在自己的样式文件里。 */\n` + text;
       outFiles[name] = shaText(out);
       if (!dry) writeFileSync(join(dest, name), out);
     }
     if (!dry) {
-      writeFileSync(join(dest, 'scope.manifest.json'), JSON.stringify({ system: identity.id, version: identity.version, root, generatedAt: today(), groups: withGroups, tokensFrom: files[0].from === localDist ? 'design-system/dist（项目工作副本）' : '来源 dist', files: outFiles }, null, 2) + '\n');
+      writeFileSync(join(dest, 'scope.manifest.json'), JSON.stringify({ system: identity.id, version: identity.version, root, palette: palette?.id || (usesLocalDist && m?.palette) || undefined, generatedAt: today(), groups: withGroups, tokensFrom: files.some((f) => f.from === localDist) ? 'design-system/dist（项目工作副本）' : '来源 dist', files: outFiles }, null, 2) + '\n');
       if (m) writeManifest({ ...m, scopeRoot: root, scopeDir: relative(project, dest).split('\\').join('/'), scopeWith: withGroups });
     }
     console.log(`${dry ? '[dry-run] ' : ''}范围包 @scope (html.${root}) → ${dest}：${Object.keys(outFiles).join(', ')}${hoistedAll.size ? `（提升到顶层的 at-rule：${[...hoistedAll].join(' / ')}）` : ''}`);
@@ -493,7 +637,7 @@ const commands = {
     const m = readManifest();
     const snapId = m ? readIdentity(snapshotDirOf(m)) : null;
     const title = args.title || fail('缺 --title "一句话标题"');
-    const LAYERS = { token: 'token（新增 / 修改设计决定）', bridge: '桥接（组件库某状态没接管）', recipes: '配方 recipes.css（页面骨架公共类）', component: '配方组件（bridge/vue、bridge/react）', docs: 'DESIGN 文档（规则说不清 / 缺对照）', tools: '验收工具 / adopter skill', unknown: '不确定' };
+    const LAYERS = { token: 'token（新增 / 修改设计决定）', palette: '调色盘（新颜色 / 预览颜色转正 / 调整某套颜色）', bridge: '桥接（组件库某状态没接管）', recipes: '配方 recipes.css（页面骨架公共类）', component: '配方组件（bridge/vue、bridge/react）', docs: 'DESIGN 文档（规则说不清 / 缺对照）', tools: '验收工具 / adopter skill', unknown: '不确定' };
     const STACKS = { 'element-plus': 'Vue 3 + Element Plus', shadcn: 'React + shadcn/ui', css: '纯 CSS（非 Node 项目）' };
     const layer = LAYERS[args.layer || 'unknown'] || fail(`--layer 取值：${Object.keys(LAYERS).join(' / ')}`);
     const stack = STACKS[args.stack || m?.stack] || '其他（在场景里说明）';
@@ -638,7 +782,9 @@ ${withAccept ? `      - name: 验收（清单在 accept.config.mjs）
   },
 
   help() {
-    console.log(readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').filter((l) => l.startsWith('//')).slice(1, 24).map((l) => l.replace(/^\/\/ ?/, '')).join('\n'));
+    const lines = readFileSync(fileURLToPath(import.meta.url), 'utf8').split('\n').slice(1);
+    const head = lines.slice(0, lines.findIndex((l) => !l.startsWith('//')));
+    console.log(head.map((l) => l.replace(/^\/\/ ?/, '')).join('\n'));
   }
 };
 

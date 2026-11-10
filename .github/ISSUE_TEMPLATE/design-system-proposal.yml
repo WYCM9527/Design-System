@@ -48,6 +48,7 @@ body:
       label: 建议进哪一层
       options:
         - token（新增 / 修改设计决定）
+        - 调色盘（新颜色 / 预览颜色转正 / 调整某套颜色）
         - 桥接（组件库某状态没接管）
         - 配方 recipes.css（页面骨架公共类）
         - 配方组件（bridge/vue、bridge/react）

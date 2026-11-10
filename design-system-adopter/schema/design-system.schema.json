@@ -206,6 +206,7 @@
           "description": "官方名单（含默认颜色，顺序即展示顺序）：ds.mjs palette 只接受名单里的；其余调色盘只在预览面板里试，用之前先提案"
         },
         "theme": { "type": "string", "description": "调色盘可以写暗色覆写的主题 id（theme-map.json 里的暗色主题）" },
+        "preview": { "type": "string", "description": "在线效果预览网址（支持 ?palette=<id> 直接换色）：ds.mjs palette --list 打印「先看效果」的链接" },
         "roles": {
           "type": "array",
           "items": { "type": "string" },

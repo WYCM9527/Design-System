@@ -109,6 +109,7 @@
       "citrine"
     ],
     "theme": "dark",
+    "preview": "https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/",
     "roles": [
       "color.action.primary",
       "color.action.primary-hover",

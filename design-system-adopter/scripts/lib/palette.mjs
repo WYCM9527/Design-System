@@ -22,6 +22,7 @@ export function paletteSettings(identity) {
     defaultId: p.default?.id || 'default',
     defaultName: p.default?.name || identity.name,
     official: p.official || [],
+    preview: p.preview || null,
     theme: p.theme || null,
     roles: p.roles || []
   };
@@ -225,6 +226,26 @@ export function applyPalette(ctx, targetRoot, palette, { write = true } = {}) {
   return { changed };
 }
 
+/** 工作副本三个 token 文件在「调色盘管的键恢复成 ctx 默认值」之后的文本（相对路径 → 文本，不写盘）：看换色之外还有没有本地修改、升级前摘下调色盘用。 */
+export function withoutPalette(ctx, targetRoot) {
+  const trees = {};
+  for (const [kind, rel] of Object.entries(ctx.files)) {
+    if (!existsSync(join(targetRoot, rel))) throw new Error(`工作副本缺 ${rel}`);
+    trees[kind] = readTree(join(targetRoot, rel));
+  }
+  applyToTrees(ctx, trees, defaultPalette(ctx));
+  return Object.fromEntries(Object.entries(ctx.files).map(([kind, rel]) => [rel, stringifyOrdered(trees[kind]) + '\n']));
+}
+
+/** 同一个调色盘的两个版本差在哪（升级报告用）：{ primitives: 变了几档品牌色, roles: 变了几处指向 }。 */
+export function paletteDiff(a, b) {
+  const keys = (x, y) => new Set([...x.keys(), ...y.keys()]);
+  let primitives = 0, roles = 0;
+  for (const k of keys(a.primitives, b.primitives)) if (a.primitives.get(k) !== b.primitives.get(k)) primitives++;
+  for (const kind of ['semantic', 'dark']) for (const k of keys(a[kind], b[kind])) if (a[kind].get(k)?.value !== b[kind].get(k)?.value) roles++;
+  return { primitives, roles };
+}
+
 /** applyPalette 的内存版：直接改 trees（{ primitives, semantic, dark } 三棵 Map 树）。 */
 export function applyToTrees(ctx, trees, palette) {
   palette ??= defaultPalette(ctx);
@@ -276,7 +297,7 @@ const refVar = (ref) => `var(${cssVar(ref.slice(1, -1))})`;
  */
 export function paletteCss(palette, { root = ':root', dark = ':root.dark', comment = true } = {}) {
   if (!palette || palette.isDefault) return '';
-  const lines = comment ? [`/* 调色盘「${palette.name}」（${palette.id}）：换品牌色原语与少量角色指向；生成物，换色用 ds.mjs palette。 */`] : [];
+  const lines = comment ? [`/* 调色盘「${palette.name}」（${palette.id}）：只换品牌色原语与少量角色指向。生成物，别手改——换色用 ds.mjs palette（纯 CSS 交付用 export / scope --palette）。 */`] : [];
   lines.push(`${root} {`);
   for (const [key, hex] of palette.primitives) lines.push(`  ${cssVar(key)}: ${hex};`);
   for (const [key, { value }] of palette.semantic) lines.push(`  ${cssVar(key)}: ${refVar(value)};`);
