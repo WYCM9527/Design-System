@@ -6,7 +6,7 @@ Morganite 是一套后台界面规范，统一按钮、表格、颜色和布局�
 
 可以先看一眼[在线效果预览](https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/)：工作台、交易记录、新建交易、交易详情、系统设置、组件走查、登录、空状态 8 个页面，顶栏右侧切亮 / 暗，右下角「规范调节」换颜色，接入后的页面应该和它一致。第一次使用，按第一部分的五步做；升级、换颜色、团队协作等内容遇到时再看第二部分。完整参考（原理、命令、维护者事项）在 [GUIDE.md](GUIDE.md)，Morganite 自己的说明在 [Morganite README](../morganite/README.md)。
 
-**用过黄晶（Citrine）的同事**：黄晶已并入 Morganite，成为颜色「黄晶黄」，它的 npm 包会下架。项目怎么处理（迁过来，或先继续用），看 [黄晶项目怎么办](CITRINE-MIGRATION.md)。
+**用过黄晶（Citrine）的同事**：黄晶已并入 Morganite，成为颜色「黄晶黄」，它的 npm 包已下架。项目怎么处理（迁过来，或先继续用），看 [黄晶项目怎么办](CITRINE-MIGRATION.md)。
 
 **注意：代码框里的内容是发给 AI 的提示词。** 只替换 `【】` 里的内容；技术信息不知道就写"不确定"，让 AI 检查。每次复制当前需要的一段，不必一次贴完全文。
 

@@ -1,6 +1,6 @@
 # 黄晶（Citrine）项目怎么办
 
-黄晶不再单独维护，并进了 Morganite，成为它的一个颜色「黄晶黄」：一套结构，颜色可选。黄晶的 npm 包 `@wycm9527/citrine` 会下架，下架前维护者会通知。下架后，没处理的项目在新电脑或 CI 上重新安装依赖会失败。
+黄晶不再单独维护，并进了 Morganite，成为它的一个颜色「黄晶黄」：一套结构，颜色可选。黄晶的 npm 包 `@wycm9527/citrine` 已于 2026-11-11 下架：还没处理的项目，在新电脑或 CI 上重新安装依赖会失败（报 404 Not Found）。
 
 用过黄晶的项目，二选一：
 
@@ -52,7 +52,8 @@
 把依赖从 npm 改成指向项目里已有的快照 `design-systems/citrine/`，包名不变，页面代码不用改。发给 AI：
 
 ```text
-当前项目先继续用 Citrine（黄晶），不迁移。黄晶的 npm 包要下架了，请把项目对 @wycm9527/citrine 的依赖改成指向项目里已有的快照 design-systems/citrine/（npm 的写法是 npm i file:./design-systems/citrine，用 pnpm 或 yarn 的按对应写法），保证以后重新安装依赖不再从 npm 下载它。
+当前项目先继续用 Citrine（黄晶），不迁移。黄晶的 npm 包已经下架，请把项目对 @wycm9527/citrine 的依赖改成指向项目里已有的快照 design-systems/citrine/（npm 的写法是 npm i file:./design-systems/citrine，用 pnpm 或 yarn 的按对应写法），保证以后重新安装依赖不再从 npm 下载它。
+项目里没有 design-systems/citrine/ 的，改用 GitHub Releases 里同版本的安装包：https://github.com/WYCM9527/Design-System/releases/download/citrine-v<版本>/wycm9527-citrine-<版本>.tgz（2.10.0 起每个版本都有；更早的版本先告诉我，不要自己升级）。
 依赖原本就是 file: 链接或 GitHub 下载地址的，不受下架影响，告诉我不用改即可。
 不要改快照里的文件，也不要升级其他依赖。
 改完删掉 node_modules 重新安装一次，再构建、跑 guard 和验收，确认页面和改之前一样；结束时告诉我改了哪些文件和检查结果。
@@ -66,6 +67,7 @@
 
 | 问题 | 回答 |
 | --- | --- |
+| 重新安装依赖报 404（`@wycm9527/citrine` Not found）？ | 项目还在从 npm 装黄晶。按上面任一条路处理，最快是「先继续用黄晶」那段，只改一处依赖。 |
 | 迁移要多久？ | AI 第一步会先报要改的文件和工作量，你再决定现在迁还是排期。大部分改动是换包名和入口，花时间的是项目自己写的样式里用到黄晶特有变量的地方。 |
 | 只想先看看效果？ | 在第一段提示词里加一句「这次只做到预览，不提交」，看完再决定。 |
 | 黄晶的源文件和旧版本还在吗？ | 在。仓库的 git 历史、`citrine-v*` 标签和 GitHub Releases 里的旧版本下载都保留，只是不再更新。 |
