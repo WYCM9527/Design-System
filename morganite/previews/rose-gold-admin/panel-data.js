@@ -3,7 +3,7 @@ window.MorganitePanelData = {
  "generatedBy": "scripts/build-palette-preview.mjs",
  "system": "morganite",
  "name": "Morganite 玫瑰金",
- "version": "0.4.0",
+ "version": "0.5.0",
  "defaultId": "rose-gold",
  "brand": [
   "--color-brand-50",

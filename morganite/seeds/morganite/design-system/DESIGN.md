@@ -22,7 +22,7 @@
 8. 禁用 = `opacity.disabled`；只读 = `color.bg.readonly`；加载 = 骨架屏 `color.bg.skeleton*`，不用禁用态假装。加载 / 空 / 出错三态与按角色隐藏、禁用的规则见「页面状态与权限」。
 9. 图标类控件必须有 `aria-label`、命中区 ≥ `control.hit-min`；所有颜色和尺寸都必须能在 `dist/tokens.css` 里找到名字。
 10. 壳层尺寸只从 token 拿：侧栏 `layout.sidebar.width` / `-collapsed-width`，侧栏菜单项高 `layout.sidebar.item-height`、同组项间距 `layout.sidebar.item-gap`，顶栏 `layout.topbar.height`，弹窗 `layout.modal.width.*`，抽屉 `layout.drawer.width`，表单标签列 `layout.form.label-width`；表格单元格内边距 `table.cell.padding-*`。
-11. 图表只用 `color.chart.1…6`（品牌色、深灰、浅品牌色、中灰、浅灰、绿）、顺序色 `color.chart.sequential.*` 与面积 `color.chart.area`，提示气泡用白底浮层 `color.chart.tooltip`（大投影 `elevation.tooltip.*`）；涨跌用 `color.data.increase / decrease`（绿涨红跌，公司约定变了只改这两个别名），不在图表里直接写状态色。
+11. 图表只用 `color.chart.1…6`（品牌色、深灰、浅品牌色、中灰、浅灰、绿；浅品牌色是品牌色同色相的浅一档，品牌色本身很浅时取深一档）、顺序色 `color.chart.sequential.*` 与面积 `color.chart.area`，提示气泡用白底浮层 `color.chart.tooltip`（大投影 `elevation.tooltip.*`）；涨跌用 `color.data.increase / decrease`（绿涨红跌，公司约定变了只改这两个别名），不在图表里直接写状态色。
 12. 改完跑 steward `guard`（构建与登记一致）和 `status`（页面字面量清零）。
 13. 不在页面或项目样式里写品牌色值：换颜色只用 `ds.mjs palette <颜色>`，清单外的颜色先提案（见「颜色」）。
 
@@ -68,7 +68,8 @@
 - 结构（尺寸、间距、圆角、字重、阴影、交互）只有一套，颜色可以整套换。默认是玫瑰金；可选的颜色是种子 `palettes/` 里的调色盘，官方清单见 `design-system.json` 的 `palettes.official`（玫瑰金、蓝、紫、青、绿、黄晶黄），清单外的只在效果预览里试。
 - 一套颜色只改两样：品牌色原语 `color.brand.*` 的全部档位，和 `palettes.roles` 登记的少量角色指向（链接、选中、焦点、主色底上的字色这类，按那套颜色的明度改指向，保证对比度）。别的 token 和本文的规则都不变，页面照旧只引用用途名。
 - 换色只用 `ds.mjs palette <颜色>`（新项目 `init --palette <颜色>`，纯 CSS 项目 `export --palette <颜色>`）；不手改调色盘管的 token，也不在项目样式里覆盖品牌色。效果预览的面板可以换色、调值、点组件看用了哪个角色，调好的值导出成提案。
-- 新颜色、清单外的颜色转正、调整某套颜色都走提案（`ds.mjs propose --layer palette`）；进官方清单前要过体检：亮 / 暗两种模式的对比度，以及和状态色撞不撞色。
+- 同一处出现的两个品牌色（主按钮的字和底、选中的字和浅底、侧栏当前项、双色图标、图表品牌色和浅品牌色、渐变两端）要是同一个色相，相差不超过 20°（很淡的不算）。照搬来的色阶两头偏色时（黄的深端发红棕、琥珀和橙的浅端发黄），把偏的那头转回主色的色相，亮度不变；图表浅品牌色照默认颜色的关系算：比主色浅一档、不比主色鲜艳，主色本身很浅就深一档。
+- 新颜色、清单外的颜色转正、调整某套颜色都走提案（`ds.mjs propose --layer palette`）；进官方清单前要过体检：亮 / 暗两种模式的对比度、和状态色撞不撞色，以及上一条的协调（只在预览里试的颜色也要过协调）。
 - token 描述里写的色值和「金」记录的是默认颜色的决定；换过颜色的项目，品牌色各档与改过指向的角色的描述会写明来自哪个调色盘，以调色盘文件为准。
 
 ## 布局与响应式

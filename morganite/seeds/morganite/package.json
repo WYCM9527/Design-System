@@ -1,6 +1,6 @@
 {
   "name": "@wycm9527/morganite",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Morganite 玫瑰金 · 中后台设计系统种子：Ant Design Pro v6 底座，antd 纯灰骨架 + 可换品牌色（默认玫瑰金 #B98D44 金底白字，另有蓝、紫、青、绿、黄晶黄），DTCG token（亮 / 暗）、DESIGN 规范、Element Plus / shadcn/ui / ECharts / IconPark 桥接、页面骨架配方与 Vue / React 配方组件，自带数字字体 D-DIN。纯数据包：接入 / 更新由 design-system-adopter skill 驱动（识别 design-system.json）。",
   "license": "(MIT AND OFL-1.1)",
   "type": "module",

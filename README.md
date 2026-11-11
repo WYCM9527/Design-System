@@ -4,7 +4,7 @@
 
 | 设计系统 | 定位 | 版本 |
 | --- | --- | --- |
-| [**Morganite 玫瑰金**](morganite/) | 中后台 · Ant Design Pro v6 底座 · antd 纯灰骨架 + 可换品牌色（默认玫瑰金 #B98D44，另有蓝 / 紫 / 青 / 绿 / 黄晶黄） · 亮 / 暗 · Element Plus / shadcn/ui / ECharts 桥接 · [在线效果预览](https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/) | 0.4.0 |
+| [**Morganite 玫瑰金**](morganite/) | 中后台 · Ant Design Pro v6 底座 · antd 纯灰骨架 + 可换品牌色（默认玫瑰金 #B98D44，另有蓝 / 紫 / 青 / 绿 / 黄晶黄） · 亮 / 暗 · Element Plus / shadcn/ui / ECharts 桥接 · [在线效果预览](https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/) | 0.5.0 |
 
 一行一个系统，目录 `<id>/seeds/<seed-name>/` 带身份文件就算一个（`node scripts/systems.mjs` 列清单）；从网站提炼新系统的流程见 [docs/GUIDE.md §8c](docs/GUIDE.md#8c-维护者新增一个设计系统从网站提炼)。
 

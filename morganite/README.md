@@ -2,7 +2,7 @@
 
 **中后台 · Ant Design Pro v6 底座 · antd 纯灰骨架 + 可换品牌色（默认玫瑰金 #B98D44 金底白字） · 亮 / 暗 · Element Plus / shadcn/ui / ECharts 桥接**
 
-版本 **0.4.0** · Core 359 个 token · dark 66 条 delta · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 [Pro 演示站](https://preview.pro.ant.design/dashboard/analysis)的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 变更见 [CHANGELOG](seeds/morganite/CHANGELOG.md)
+版本 **0.5.0** · Core 359 个 token · dark 66 条 delta · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 [Pro 演示站](https://preview.pro.ant.design/dashboard/analysis)的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 变更见 [CHANGELOG](seeds/morganite/CHANGELOG.md)
 
 一句话：保留 Ant Design 的交互结构、密度与纯灰骨架，把品牌色换成玫瑰金——金底放白字（主按钮、侧栏当前项；暗色侧栏当前项是金色暗底 + 亮金字），链接 / 选中 / 焦点取同色系深一档；输入框为填充式（Pro v6 原样）。圆角、0.6px 描边、卡片标题、图表配色（只用金 + 灰 + 绿、绿涨红跌）按一张预期预览图调整过；卡片不投影，只留一条很浅的边线。品牌色可以换：另有蓝、紫、青、绿、黄晶黄 5 个官方颜色，结构和规则不变，见下面「颜色」。
 
@@ -35,7 +35,7 @@
 
 - **项目里**：接入时 `ds.mjs init --palette <id>`，已接入的项目 `ds.mjs palette <id>`（`--list` 看清单），选择记在 `design-system/.adopter.json`，升级时自动重套；纯 CSS 交付 `ds.mjs export --palette <id>`。页面只用规范变量的，换颜色不用改页面代码。
 - **验收**：品牌色审计的判色范围和跟颜色走的对比度例外取项目当前的颜色（citrine-tools ≥ 1.4.0）；玫瑰金的登记在身份文件 `accept`，其他颜色的在调色盘文件 `accept`。仓库 CI 对每个官方颜色在三个实测项目上跑页面与组件走查（亮、暗）。
-- **加一个官方颜色**：提案（`ds.mjs propose --layer palette`）→ 改调色盘文件（shadcn 来源的用 `node scripts/import-shadcn-palettes.mjs` 重新生成）→ `node scripts/check-palettes.mjs --build` 体检通过（亮暗对比度、和状态色撞色）→ 加进身份文件 `palettes.official` → 发版。
+- **加一个官方颜色**：提案（`ds.mjs propose --layer palette`）→ 改调色盘文件（shadcn 来源的用 `node scripts/import-shadcn-palettes.mjs` 重新生成）→ `node scripts/check-palettes.mjs --build` 体检通过（亮暗对比度、和状态色撞色、同一处两个品牌色的色相协调）→ 加进身份文件 `palettes.official` → 发版。
 
 ## 目录
 

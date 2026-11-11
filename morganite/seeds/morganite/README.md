@@ -1,6 +1,6 @@
 # Morganite 玫瑰金 种子
 
-版本 0.4.0 · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 Pro 演示站的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 纯数据包：本目录即分发单元（npm 包 `@wycm9527/morganite`，也可以整个文件夹拷进项目；许可 MIT，内嵌的 D-DIN 字体按 SIL OFL 1.1，见 [LICENSE](https://github.com/WYCM9527/Design-System/blob/main/morganite/seeds/morganite/LICENSE)），身份文件 `design-system.json`，接入 / 更新由 [design-system-adopter](https://github.com/WYCM9527/Design-System/tree/main/design-system-adopter) skill 驱动 · 变更见 [CHANGELOG.md](https://github.com/WYCM9527/Design-System/blob/main/morganite/seeds/morganite/CHANGELOG.md)
+版本 0.5.0 · 以 Ant Design Pro v6 为视觉底座，由 [web-to-design-system](https://github.com/WYCM9527/skills/tree/main/web-to-design-system) 从 Pro 演示站的工作台、查询表格、基础表单、新建弹窗与详情抽屉实测提炼（2026-09-28），品牌色按用户决定换成玫瑰金 `#B98D44`（初定 `#AE8A50`，2026-10-09 提高饱和度与明度） · 纯数据包：本目录即分发单元（npm 包 `@wycm9527/morganite`，也可以整个文件夹拷进项目；许可 MIT，内嵌的 D-DIN 字体按 SIL OFL 1.1，见 [LICENSE](https://github.com/WYCM9527/Design-System/blob/main/morganite/seeds/morganite/LICENSE)），身份文件 `design-system.json`，接入 / 更新由 [design-system-adopter](https://github.com/WYCM9527/Design-System/tree/main/design-system-adopter) skill 驱动 · 变更见 [CHANGELOG.md](https://github.com/WYCM9527/Design-System/blob/main/morganite/seeds/morganite/CHANGELOG.md)
 
 **看效果**：[在线效果预览](https://wycm9527.github.io/Design-System/morganite/previews/rose-gold-admin/)——工作台、交易记录、新建交易、交易详情、系统设置、组件走查、登录、空状态 8 个页面，顶栏右侧切亮 / 暗，右下角「规范调节」换颜色。
 
