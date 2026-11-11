@@ -12,7 +12,7 @@
   "primitives": {
     "color.brand.50": "#FDF2F8",
     "color.brand.100": "#FCE7F3",
-    "color.brand.200": "#FDA5D5",
+    "color.brand.200": "#E15A99",
     "color.brand.250": "#FD93CD",
     "color.brand.300": "#FB64B6",
     "color.brand.400": "#F6339A",
@@ -47,12 +47,12 @@
         339
       ],
       "saturation": [
-        0.69,
+        0.59,
         1
       ],
       "lightness": [
         0.24,
-        0.9
+        0.86
       ]
     },
     "approvedContrast": []
@@ -60,6 +60,7 @@
   "notes": [
     "主色 #C6005C 是 shadcn「pink」的亮色 primary（Tailwind pink-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
     "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 pink-800）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，比主色浅一档（明度高 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
     "白字对主色 5.91:1"
   ]
 }

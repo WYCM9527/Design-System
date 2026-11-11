@@ -11,11 +11,11 @@
   },
   "primitives": {
     "color.brand.50": "#FFFBEB",
-    "color.brand.100": "#FEF3C6",
-    "color.brand.200": "#FFD230",
-    "color.brand.250": "#FFCB0D",
-    "color.brand.300": "#FFB900",
-    "color.brand.400": "#FE9A00",
+    "color.brand.100": "#FFF0E4",
+    "color.brand.200": "#D7813E",
+    "color.brand.250": "#FEC794",
+    "color.brand.300": "#FFB672",
+    "color.brand.400": "#FF9917",
     "color.brand.500": "#BB4D00",
     "color.brand.550": "#AE4700",
     "color.brand.600": "#973C00",
@@ -25,13 +25,13 @@
     "color.brand.500-a16": "#BB4D0029",
     "color.brand.500-a24": "#BB4D003D",
     "color.brand.600-a10": "#973C001A",
-    "color.brand.300-a10": "#FFB9001A"
+    "color.brand.300-a10": "#FFB6721A"
   },
   "semantic": {},
   "dark": {
     "color.text.link": {
       "value": "{color.brand.400}",
-      "why": "暗色原来的 500 只有 2.99:1（要 4.5），改用 400（7.05:1）"
+      "why": "暗色原来的 500 只有 2.99:1（要 4.5），改用 400（7.04:1）"
     }
   },
   "contrastExceptions": [],
@@ -40,15 +40,15 @@
       "name": "品牌琥珀",
       "hue": [
         19,
-        52
+        38
       ],
       "saturation": [
-        0.81,
+        0.56,
         1
       ],
       "lightness": [
         0.2,
-        0.67
+        0.87
       ]
     },
     "approvedContrast": []
@@ -56,6 +56,8 @@
   "notes": [
     "主色 #BB4D00 是 shadcn「amber」的亮色 primary（Tailwind amber-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
     "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 amber-800）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，比主色浅一档（明度高 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
+    "协调：同一处的两个品牌色色相差超过 20°，把离主色超过 20° 的档转到离主色 18°，亮度不变（对比度跟着不变）：100 #FEF3C6 → #FFF0E4；250 #FFCB0D → #FEC794；300 #FFB900 → #FFB672；400 #FE9A00 → #FF9917",
     "白字对主色 5.03:1"
   ]
 }

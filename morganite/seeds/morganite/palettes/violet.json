@@ -12,7 +12,7 @@
   "primitives": {
     "color.brand.50": "#F5F3FF",
     "color.brand.100": "#EDE9FE",
-    "color.brand.200": "#C4B4FF",
+    "color.brand.200": "#915CFD",
     "color.brand.250": "#BBA6FF",
     "color.brand.300": "#A684FF",
     "color.brand.400": "#8E51FF",
@@ -76,7 +76,7 @@
     "brand": {
       "name": "品牌紫罗兰",
       "hue": [
-        248,
+        250,
         272
       ],
       "saturation": [
@@ -85,7 +85,7 @@
       ],
       "lightness": [
         0.3,
-        0.93
+        0.91
       ]
     },
     "approvedContrast": []
@@ -93,6 +93,7 @@
   "notes": [
     "主色 #7008E7 是 shadcn「violet」的亮色 primary（Tailwind violet-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
     "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 violet-800）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，比主色浅一档（明度高 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
     "白字对主色 7.3:1"
   ]
 }

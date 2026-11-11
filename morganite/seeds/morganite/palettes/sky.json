@@ -12,7 +12,7 @@
   "primitives": {
     "color.brand.50": "#F0F9FF",
     "color.brand.100": "#DFF2FE",
-    "color.brand.200": "#74D4FF",
+    "color.brand.200": "#4791C5",
     "color.brand.250": "#5CCDFF",
     "color.brand.300": "#00BCFF",
     "color.brand.400": "#00A6F4",
@@ -40,15 +40,15 @@
       "name": "品牌天蓝",
       "hue": [
         191,
-        207
+        209
       ],
       "saturation": [
-        0.86,
+        0.42,
         1
       ],
       "lightness": [
         0.17,
-        0.81
+        0.76
       ]
     },
     "approvedContrast": []
@@ -56,6 +56,7 @@
   "notes": [
     "主色 #0069A8 是 shadcn「sky」的亮色 primary（Tailwind sky-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
     "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 sky-800）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，比主色浅一档（明度高 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
     "白字对主色 5.86:1"
   ]
 }

@@ -3,6 +3,8 @@
 // 主色 = shadcn 亮色 primary；其余档按 Morganite 每一档的用途取 Tailwind v4 同色系色阶（见 LADDERS）；
 // 再按对比度改指向：浅色主色上的字改深色，亮色链接 / 焦点 / 当前项不够深就往深档挪，暗色不够亮就往浅档挪。
 // 挪完仍不达标的配对写进 contrastExceptions（用户批过的见 APPROVED，其余 approved: false），体检脚本 check-palettes.mjs 认这份登记。
+// 200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算（lib/palette-checks.mjs 的 chartTint）。
+// 定完指向再查「协调」（同一处的两个品牌色色相差不超过 HARMONY_HUE，口径同上）：不过就把离主色超过 HARMONY_HUE 的档转回主色的色相，亮度不变（PULL），重新定指向再查。
 // 另生成黄晶黄 citrine：主色是黄晶的 #F9CF00，链接、选中、当前项、焦点像黄晶那样用中性黑（用户 2026-11-10 在「加深的黄」和「用黑」里选了用黑）。
 // 来源钉在固定版本（升级来源 = 改 SOURCES 后重跑，diff 里能看清颜色变了什么），两者都是 MIT：
 //   shadcn-ui/ui apps/v4/registry/themes.ts · tailwindlabs/tailwindcss packages/tailwindcss/theme.css
@@ -14,8 +16,8 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from '../design-system-adopter/scripts/lib/util.mjs';
 import { applyToTrees, cloneDefaults, getNode, normalizePalette, paletteContext, resolveColor } from '../design-system-adopter/scripts/lib/palette.mjs';
-import { contrast, mixOklch, oklchToRgb, parseHex, rgbToHsl, rgbToOklch, round, toHex } from './lib/color.mjs';
-import { classify, colorOf, evaluatePalette } from './lib/palette-checks.mjs';
+import { contrast, mixOklch, oklchToRgb, parseHex, rgbToHsl, rgbToOklch, rotateHue, round, toHex } from './lib/color.mjs';
+import { chartTint, classify, colorOf, evaluatePalette, HARMONY_CHROMA, HARMONY_HUE, harmonyFailures, tintRelation, tintSlot } from './lib/palette-checks.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SEED = join(ROOT, 'morganite/seeds/morganite');
@@ -29,14 +31,17 @@ const NAMES = { amber: '琥珀', blue: '蓝', cyan: '青', emerald: '翡翠绿',
 const CITRINE = '#F9CF00';
 
 // 槽位 → Tailwind 的某一档，或两档之间按 OKLCH 插值 [从, 到, 比例]。按 shadcn 主色落在哪一档分两套：
-// 主色在 700（深主色放白字）：200 / 250 给图表浅色，300 / 400 给暗色下的文字，550 / 600 / 700 是悬停 / 按下与链接（Morganite 悬停是加深），900 是暗色选中底。
+// 主色在 700（深主色放白字）：250 给渐变浅端，300 / 400 给暗色下的文字，550 / 600 / 700 是悬停 / 按下与链接（Morganite 悬停是加深），900 是暗色选中底。
 // 主色在 400（浅主色放深字）：深档跳着取，留出链接能用的 700（对白 ≥ 4.5）和品牌色上的深字 800。
+// 200 档不在这里：它是图表浅品牌色，按 chartTint 从其余各档算。
 const LADDERS = {
-  700: { 50: ['50'], 100: ['100'], 200: ['300'], 250: ['300', '400', 0.3], 300: ['400'], 400: ['500'], 500: ['700'], 550: ['700', '800', 0.35], 600: ['800'], 700: ['900'], 800: ['900', '950', 0.5], 900: ['950'] },
-  400: { 50: ['50'], 100: ['100'], 200: ['200'], 250: ['200', '300', 0.5], 300: ['300'], 400: ['300', '400', 0.5], 500: ['400'], 550: ['400', '500', 0.35], 600: ['500'], 700: ['700'], 800: ['900'], 900: ['950'] }
+  700: { 50: ['50'], 100: ['100'], 250: ['300', '400', 0.3], 300: ['400'], 400: ['500'], 500: ['700'], 550: ['700', '800', 0.35], 600: ['800'], 700: ['900'], 800: ['900', '950', 0.5], 900: ['950'] },
+  400: { 50: ['50'], 100: ['100'], 250: ['200', '300', 0.5], 300: ['300'], 400: ['300', '400', 0.5], 500: ['400'], 550: ['400', '500', 0.35], 600: ['500'], 700: ['700'], 800: ['900'], 900: ['950'] }
 };
 const ALPHAS = { '500-a16': ['500', 0.16], '500-a24': ['500', 0.24], '600-a10': ['600', 0.1], '300-a10': ['300', 0.1] };
 const ORDER = ['50', '100', '200', '250', '300', '400', '500', '550', '600', '700', '800', '900'];
+// 「协调」不过时，偏色的档先转到离主色 18°，还不过就每次再收 4°
+const PULL = [18, 14, 10, 6, 2, 0];
 
 const ON_ROLES = ['color.text.on-primary', 'color.text.on-brand', 'color.text.sidebar-selected'];
 // [角色, 底线, 压在哪些底上]：亮色往深档挪，暗色往浅档挪。「上层@下层」是叠出来的底（卡片上的悬停行），口径同 lib/palette-checks.mjs
@@ -116,6 +121,10 @@ const ctx = paletteContext(SEED);
 const group = ctx.settings.group;
 const ref = (slot) => `{${group}.${slot}}`;
 const slotOf = (value) => (typeof value === 'string' && value.startsWith(`{${group}.`) ? value.slice(group.length + 2, -1) : null);
+const TINT = tintSlot(ctx);
+const RELATION = tintRelation(ctx);
+// 角色按对比度挪档时走的深浅顺序：200 档是图表浅品牌色，深浅不跟着色阶排，不参与
+const SHADES = ORDER.filter((s) => `${group}.${s}` !== TINT);
 
 async function source(key) {
   const s = SOURCES[key];
@@ -157,12 +166,33 @@ function stepOf(scale, oklch) {
   return Object.keys(scale).find((s) => scale[s].every((v, i) => Math.abs(v - oklch[i]) < (i === 2 ? 0.01 : 0.002)));
 }
 
+/** 按 LADDERS 取色阶：不透明的各档（不含 200 档与半透明档，见 complete）。 */
 function ladder(scale, at) {
   const rules = LADDERS[at] || fail(`主色落在 Tailwind ${at} 档，没有对应的取色规则（LADDERS 只写了 700 与 400）`);
-  const slots = {};
-  for (const [slot, [from, to, t]] of Object.entries(rules)) slots[slot] = toHex(to ? mixOklch(scale[from], scale[to], t) : oklchToRgb(scale[from]));
-  for (const [slot, [from, alpha]] of Object.entries(ALPHAS)) slots[slot] = toHex({ ...parseHex(slots[from]), a: alpha });
-  return Object.fromEntries([...ORDER, ...Object.keys(ALPHAS)].map((s) => [`${group}.${s}`, slots[s]]));
+  return Object.fromEntries(Object.entries(rules).map(([slot, [from, to, t]]) => [`${group}.${slot}`, toHex(to ? mixOklch(scale[from], scale[to], t) : oklchToRgb(scale[from]))]));
+}
+
+/** 色阶 → 全部品牌色原语：补上 200 档（图表浅品牌色）和半透明档，按档位顺序排好。 */
+function complete(shades) {
+  const out = { ...shades, [TINT]: chartTint(ctx, shades, RELATION) };
+  for (const [slot, [from, alpha]] of Object.entries(ALPHAS)) out[`${group}.${slot}`] = toHex({ ...parseHex(out[`${group}.${from}`]), a: alpha });
+  return Object.fromEntries([...ORDER, ...Object.keys(ALPHAS)].map((s) => [`${group}.${s}`, out[`${group}.${s}`]]));
+}
+
+/** 离主色超过 HARMONY_HUE 的档（很淡的不算）转到离主色 keep 度，亮度不变。 */
+function pullHue(shades, keep) {
+  const lch = (hex) => rgbToOklch(parseHex(hex));
+  const h0 = lch(shades[`${group}.500`])[2];
+  const out = { ...shades };
+  const moved = [];
+  for (const [key, hex] of Object.entries(shades)) {
+    const [, c, h] = lch(hex);
+    const d = ((h - h0 + 540) % 360) - 180;
+    if (c <= HARMONY_CHROMA || Math.abs(d) <= HARMONY_HUE) continue;
+    out[key] = rotateHue(hex, (h0 + Math.sign(d) * keep + 360) % 360);
+    moved.push(`${key.slice(group.length + 1)} ${hex} → ${out[key]}`);
+  }
+  return { shades: out, moved };
 }
 
 /** 角色在某个模式下当前指向什么（调色盘的改指向优先，暗色先看暗色覆写）。 */
@@ -188,7 +218,7 @@ function measure(raw, mode, role, bgs, slot) {
 function settle(raw, mode, role, min, bgs, notes) {
   if (raw.fixed.has(`${mode}:${role}`)) return;
   const slot = slotOf(pointer(raw, role, mode));
-  if (!slot) return;
+  if (!SHADES.includes(slot)) return;
   const layer = mode === 'dark' ? raw.dark : raw.semantic;
   const label = mode === 'dark' ? '暗色' : '亮色';
   // 暗色：亮色为了对比挪走了、种子暗色又没有覆写的角色，先试回到种子原来的档（暗底上原来那档往往就够）
@@ -199,11 +229,11 @@ function settle(raw, mode, role, min, bgs, notes) {
   }
   // 链接悬停要比链接更进一档（亮色更深、暗色更浅）
   const link = role === 'color.text.link-hover' ? slotOf(pointer(raw, 'color.text.link', mode)) : null;
-  const beyond = (s) => !link || (mode === 'dark' ? ORDER.indexOf(s) < ORDER.indexOf(link) : ORDER.indexOf(s) > ORDER.indexOf(link));
+  const beyond = (s) => !link || (mode === 'dark' ? SHADES.indexOf(s) < SHADES.indexOf(link) : SHADES.indexOf(s) > SHADES.indexOf(link));
   const now = measure(raw, mode, role, bgs, null);
   if (now >= min && beyond(slot)) return;
-  const idx = ORDER.indexOf(slot);
-  const candidates = (mode === 'dark' ? ORDER.slice(0, idx).reverse() : ORDER.slice(idx + 1)).filter(beyond);
+  const idx = SHADES.indexOf(slot);
+  const candidates = (mode === 'dark' ? SHADES.slice(0, idx).reverse() : SHADES.slice(idx + 1)).filter(beyond);
   const pick = candidates.find((s) => measure(raw, mode, role, bgs, s) >= min);
   if (!pick) { notes.push(`${label} ${role} 往${mode === 'dark' ? '浅' : '深'}挪到头也不到 ${min}:1，保持 ${slot}，见 contrastExceptions`); return; }
   layer[role] = { value: ref(pick), why: now >= min ? `${label}要比链接${mode === 'dark' ? '更浅' : '更深'}一档，改用 ${pick}（${round(measure(raw, mode, role, bgs, pick))}:1）` : `${label}原来的 ${slot} 只有 ${round(now)}:1（要 ${min}），改用 ${pick}（${round(measure(raw, mode, role, bgs, pick))}:1）` };
@@ -252,8 +282,9 @@ function exceptionsFor(raw, baseline) {
   }));
 }
 
-function build({ id, name, source, primitives, notes, preset }, baseline) {
-  const tweak = TWEAKS[id] || {};
+/** 色阶定了以后：套上用户调过的值，再定角色指向（黄晶黄用固定写法，其余按对比度）。 */
+function decide({ id, name, preset }, primitives, tweak) {
+  const notes = [];
   const raw = { id, name, primitives: { ...primitives, ...tweak.primitives }, semantic: {}, dark: {}, fixed: new Set() };
   for (const [slot, [from, alpha]] of Object.entries(ALPHAS)) {
     const key = `${group}.${slot}`;
@@ -270,6 +301,26 @@ function build({ id, name, source, primitives, notes, preset }, baseline) {
     for (const [k, v] of Object.entries(preset.semantic)) raw.semantic[k] ??= { value: v, why: '黄晶的写法：链接、选中、当前项、焦点用中性黑，黄色只留给主按钮、品牌底、指示条和图表' };
     for (const [k, v] of Object.entries(preset.dark)) raw.dark[k] ??= { value: v, why: '黄晶的暗色写法：链接与选中用浅灰，品牌大字用黄' };
   } else decideRoles(raw, notes);
+  return { raw, notes };
+}
+
+function build(spec, baseline) {
+  const { id, name, source, primitives, notes } = spec;
+  const tweak = TWEAKS[id] || {};
+  let made;
+  for (const keep of [null, ...PULL]) {
+    const { shades, moved } = keep === null ? { shades: primitives, moved: [] } : pullHue(primitives, keep);
+    made = { ...decide(spec, complete(shades), tweak), moved, keep };
+    made.failures = harmonyFailures(evaluatePalette(ctx, normalizePalette(ctx, made.raw)).harmony);
+    if (!made.failures.length) break;
+  }
+  const { raw, moved, keep, failures } = made;
+  const lightness = (key) => rgbToOklch(parseHex(raw.primitives[key]))[0];
+  const deeper = lightness(TINT) < lightness(`${group}.500`);
+  notes.push(`${TINT.slice(group.length + 1)} 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，${deeper ? '主色本身很浅、再浅就贴近白底，改成比主色深一档（明度低' : '比主色浅一档（明度高'} ${round(Math.abs(RELATION.lightness))}）、鲜艳度至多主色的 ${round(RELATION.chroma)} 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint`);
+  if (moved.length) notes.push(`协调：同一处的两个品牌色色相差超过 ${HARMONY_HUE}°，把离主色超过 ${HARMONY_HUE}° 的档转到离主色 ${keep}°，亮度不变（对比度跟着不变）：${moved.join('；')}`);
+  if (failures.length) notes.push(`还有 ${failures.length} 处过不了协调，见 check-palettes.mjs 的报告`);
+  notes.push(...made.notes);
   const contrastExceptions = exceptionsFor(raw, baseline);
   return {
     $schema: SCHEMA,

@@ -5,7 +5,9 @@
 //   3. 品牌配对（scripts/lib/palette-checks.mjs BRAND_PAIRS，亮、暗）
 //   4. 撞色：主色与错误 / 危险、警示、成功、信息、涨跌、图表第 6 色的 ΔE_OK
 //   5. --build：用 style-dictionary 真构建一次，逐变量对比「种子 dist + 调色盘 CSS 覆盖」（预览面板与 ds.mjs export 用的就是这段覆盖）
+//   6. 协调（scripts/lib/palette-checks.mjs HARMONY_PAIRS，亮、暗）：同一处的两个品牌色色相差不超过 HARMONY_HUE；图表浅品牌色和品牌色的明度差、鲜艳度在默认颜色那样的范围里
 // 判定：和默认颜色同样不达标、颜色也相同 → 继承（不归调色盘管）；调色盘 contrastExceptions 登记过 → 例外（approved 区分已批 / 待批）；其余 → 不通过。
+// 协调不过的，官方和仅预览的颜色都不通过；图表浅品牌色和别的图表色太近只提示。
 // 官方名单里的调色盘更严：撞错误红 / 危险按钮不通过；有待批例外也不通过（用户拍板前加 --allow-pending 放行）。
 // 用法：node scripts/check-palettes.mjs [--only a,b] [--build] [--json] [--allow-pending] [--steward <steward 目录>] [--contrast <check-contrast.mjs>]
 import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync, symlinkSync } from 'node:fs';
@@ -15,7 +17,7 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from '../design-system-adopter/scripts/lib/util.mjs';
 import { applyPalette, listPalettes, loadPalette, paletteContext, paletteCss } from '../design-system-adopter/scripts/lib/palette.mjs';
-import { classify, evaluatePalette } from './lib/palette-checks.mjs';
+import { classify, evaluatePalette, HARMONY_HUE, harmonyFailures, TINT_CHROMA, TINT_LIGHTNESS } from './lib/palette-checks.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SEED = join(ROOT, 'morganite/seeds/morganite');
@@ -73,12 +75,25 @@ function buildMatches(root, palette) {
   return diffs;
 }
 
+const modeTag = (mode) => (mode === 'dark' ? '暗' : '亮');
+/** 协调不过的话，亮暗说的是同一句就并成一条：[[话, '亮' | '暗' | '亮暗'], …]。 */
+function harmonyMessages(harmony) {
+  const out = new Map();
+  for (const h of harmonyFailures(harmony)) {
+    const text = 'hue' in h
+      ? `${h.label}：${h.fgHex} 和 ${h.bgHex} 色相差 ${h.hue}°（不超过 ${HARMONY_HUE}°），同一处的两个品牌色要是同一个色相`
+      : `图表浅品牌色 ${h.hex} 和品牌色 ${h.baseHex} 明度差 ${h.lightness}（要 ${TINT_LIGHTNESS.join('–')}）、鲜艳度是品牌色的 ${h.chroma} 倍（不超过 ${TINT_CHROMA}），不像同一种颜色的深浅两档`;
+    out.set(text, (out.get(text) || '') + modeTag(h.mode));
+  }
+  return [...out];
+}
+
 const baseline = { brand: evaluatePalette(ctx, null).rows, contrast: contrastRows(freshCopy('_baseline')) };
 const results = [];
 try {
   for (const entry of listPalettes(ctx)) {
     if (only && !only.includes(entry.id)) continue;
-    const r = { id: entry.id, name: entry.name, official: entry.official, isDefault: entry.isDefault, swatch: entry.swatch, problems: [], exceptions: [], inherited: 0, collisions: [] };
+    const r = { id: entry.id, name: entry.name, official: entry.official, isDefault: entry.isDefault, swatch: entry.swatch, problems: [], exceptions: [], inherited: 0, collisions: [], chartNear: [] };
     results.push(r);
     let palette;
     try { palette = loadPalette(ctx, entry.id); } catch (e) { r.problems.push(e.message); continue; }
@@ -87,7 +102,7 @@ try {
     applyPalette(ctx, root, palette);
     const valid = runJson(join(STEWARD, 'scripts/validate-system.mjs'), ['--project', root]);
     if (!valid.valid) r.problems.push(`steward 校验不过：${(valid.issues || []).filter((i) => i.severity !== 'warning').map((i) => i.message || i.code).join('；').slice(0, 400)}`);
-    const { rows, collisions } = evaluatePalette(ctx, palette);
+    const { rows, collisions, harmony } = evaluatePalette(ctx, palette);
     const verdicts = [...classify(rows, baseline.brand, palette.contrastExceptions), ...classify(contrastRows(root), baseline.contrast, palette.contrastExceptions)];
     const seen = new Set();
     for (const v of verdicts) {
@@ -102,6 +117,8 @@ try {
       if (!verdicts.some((v) => v.fg === ex.fg && v.bg === ex.bg && v.mode === (ex.mode || 'light'))) r.problems.push(`contrastExceptions 里 ${ex.fg} / ${ex.bg}（${ex.mode || 'light'}）已经达标，删掉这条登记`);
     }
     r.collisions = collisions;
+    for (const [text, modes] of harmonyMessages(harmony)) r.problems.push(`[${modes}] 协调 · ${text}`);
+    r.chartNear = harmony.near;
     if (entry.official) {
       for (const c of collisions.filter((x) => x.severity === 'severe')) r.problems.push(`[${c.mode === 'dark' ? '暗' : '亮'}] 主色 ${c.brandHex} 和${c.label} ${c.hex} 撞色（ΔE ${c.delta}）：红色系只放预览面板`);
       const pending = r.exceptions.filter((x) => !x.approved);
@@ -120,7 +137,8 @@ else {
   for (const r of results) {
     const tags = [r.isDefault ? '默认' : r.official ? '官方' : '仅预览', r.moved ? `改指向 ${r.moved}` : null, r.exceptions.length ? `例外 ${r.exceptions.length}（待批 ${r.exceptions.filter((x) => !x.approved).length}）` : null, r.inherited ? `继承 ${r.inherited}` : null].filter(Boolean).join(' · ');
     console.log(`${r.problems.length ? '✘' : '✔'} ${r.id.padEnd(12)} ${r.name} ${r.swatch || ''}  ${tags}`);
-    for (const c of r.collisions) console.log(`    ${c.severity === 'severe' ? '撞色' : '提示'} [${c.mode === 'dark' ? '暗' : '亮'}] 主色和${c.label} ${c.hex} 很近（ΔE ${c.delta}）`);
+    for (const c of r.collisions) console.log(`    ${c.severity === 'severe' ? '撞色' : '提示'} [${modeTag(c.mode)}] 主色和${c.label} ${c.hex} 很近（ΔE ${c.delta}）`);
+    for (const n of r.chartNear) console.log(`    提示 [${modeTag(n.mode)}] 图表浅品牌色 ${n.hex} 和${n.label} ${n.otherHex} 很近（ΔE ${n.delta}），环形图里挨着放会分不太清`);
     for (const p of r.problems) console.log(`    ✘ ${p}`);
   }
   console.log(failed.length ? `\n${failed.length} 个不通过。` : '\n全部通过。');

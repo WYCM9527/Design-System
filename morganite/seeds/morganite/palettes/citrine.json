@@ -12,7 +12,7 @@
   "primitives": {
     "color.brand.50": "#FEFCE8",
     "color.brand.100": "#FEF9C2",
-    "color.brand.200": "#FFF085",
+    "color.brand.200": "#DE9C17",
     "color.brand.250": "#FFE85F",
     "color.brand.300": "#FFDF20",
     "color.brand.400": "#FDD713",
@@ -146,20 +146,21 @@
       "name": "品牌黄晶黄",
       "hue": [
         30,
-        57
+        56
       ],
       "saturation": [
-        0.88,
+        0.71,
         1
       ],
       "lightness": [
         0.28,
-        0.84
+        0.77
       ]
     },
     "approvedContrast": []
   },
   "notes": [
-    "主色是黄晶的品牌黄 #F9CF00；像黄晶那样，链接、选中、当前项、焦点用中性黑（暗色用浅灰），黄色只留给主按钮、品牌底、指示条和图表"
+    "主色是黄晶的品牌黄 #F9CF00；像黄晶那样，链接、选中、当前项、焦点用中性黑（暗色用浅灰），黄色只留给主按钮、品牌底、指示条和图表",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，主色本身很浅、再浅就贴近白底，改成比主色深一档（明度低 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint"
   ]
 }

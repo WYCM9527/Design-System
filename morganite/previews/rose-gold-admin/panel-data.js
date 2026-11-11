@@ -100,7 +100,7 @@ window.MorganitePanelData = {
    "ladder": {
     "color.brand.50": "#EFF6FF",
     "color.brand.100": "#DBEAFE",
-    "color.brand.200": "#8EC5FF",
+    "color.brand.200": "#2C7EFC",
     "color.brand.250": "#7CBBFF",
     "color.brand.300": "#51A2FF",
     "color.brand.400": "#2B7FFF",
@@ -129,6 +129,7 @@ window.MorganitePanelData = {
    "notes": [
     "主色 #1447E6 是 shadcn「blue」的亮色 primary（Tailwind blue-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
     "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 blue-800）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，比主色浅一档（明度高 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
     "白字对主色 6.83:1"
    ],
    "exceptions": [
@@ -159,7 +160,7 @@ window.MorganitePanelData = {
    "ladder": {
     "color.brand.50": "#FAF5FF",
     "color.brand.100": "#F3E8FF",
-    "color.brand.200": "#DAB2FF",
+    "color.brand.200": "#A857EF",
     "color.brand.250": "#D3A2FF",
     "color.brand.300": "#C27AFF",
     "color.brand.400": "#AD46FF",
@@ -188,6 +189,7 @@ window.MorganitePanelData = {
    "notes": [
     "主色 #8200DB 是 shadcn「purple」的亮色 primary（Tailwind purple-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
     "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 purple-800）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，比主色浅一档（明度高 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
     "白字对主色 7.07:1"
    ],
    "exceptions": [
@@ -211,7 +213,7 @@ window.MorganitePanelData = {
    "ladder": {
     "color.brand.50": "#ECFEFF",
     "color.brand.100": "#CEFAFE",
-    "color.brand.200": "#53EAFD",
+    "color.brand.200": "#4E9BB3",
     "color.brand.250": "#37E3FA",
     "color.brand.300": "#00D3F2",
     "color.brand.400": "#00B8DB",
@@ -233,6 +235,7 @@ window.MorganitePanelData = {
    "notes": [
     "主色 #007595 是 shadcn「cyan」的亮色 primary（Tailwind cyan-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
     "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 cyan-800）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，比主色浅一档（明度高 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
     "白字对主色 5.28:1"
    ],
    "exceptions": [],
@@ -248,7 +251,7 @@ window.MorganitePanelData = {
    "ladder": {
     "color.brand.50": "#F0FDF4",
     "color.brand.100": "#DCFCE7",
-    "color.brand.200": "#7BF1A8",
+    "color.brand.200": "#55A664",
     "color.brand.250": "#64EC98",
     "color.brand.300": "#05DF72",
     "color.brand.400": "#00C950",
@@ -270,6 +273,7 @@ window.MorganitePanelData = {
    "notes": [
     "主色 #008236 是 shadcn「green」的亮色 primary（Tailwind green-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
     "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 green-800）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，比主色浅一档（明度高 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
     "白字对主色 4.95:1"
    ],
    "exceptions": [],
@@ -298,7 +302,7 @@ window.MorganitePanelData = {
    "ladder": {
     "color.brand.50": "#FEFCE8",
     "color.brand.100": "#FEF9C2",
-    "color.brand.200": "#FFF085",
+    "color.brand.200": "#DE9C17",
     "color.brand.250": "#FFE85F",
     "color.brand.300": "#FFDF20",
     "color.brand.400": "#FDD713",
@@ -341,7 +345,8 @@ window.MorganitePanelData = {
     "color.text.sidebar-selected": "color.neutral.100"
    },
    "notes": [
-    "主色是黄晶的品牌黄 #F9CF00；像黄晶那样，链接、选中、当前项、焦点用中性黑（暗色用浅灰），黄色只留给主按钮、品牌底、指示条和图表"
+    "主色是黄晶的品牌黄 #F9CF00；像黄晶那样，链接、选中、当前项、焦点用中性黑（暗色用浅灰），黄色只留给主按钮、品牌底、指示条和图表",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，主色本身很浅、再浅就贴近白底，改成比主色深一档（明度低 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint"
    ],
    "exceptions": [
     {
@@ -377,11 +382,11 @@ window.MorganitePanelData = {
    "file": "palettes/amber.json",
    "ladder": {
     "color.brand.50": "#FFFBEB",
-    "color.brand.100": "#FEF3C6",
-    "color.brand.200": "#FFD230",
-    "color.brand.250": "#FFCB0D",
-    "color.brand.300": "#FFB900",
-    "color.brand.400": "#FE9A00",
+    "color.brand.100": "#FFF0E4",
+    "color.brand.200": "#D7813E",
+    "color.brand.250": "#FEC794",
+    "color.brand.300": "#FFB672",
+    "color.brand.400": "#FF9917",
     "color.brand.500": "#BB4D00",
     "color.brand.550": "#AE4700",
     "color.brand.600": "#973C00",
@@ -391,7 +396,7 @@ window.MorganitePanelData = {
     "color.brand.500-a16": "#BB4D0029",
     "color.brand.500-a24": "#BB4D003D",
     "color.brand.600-a10": "#973C001A",
-    "color.brand.300-a10": "#FFB9001A"
+    "color.brand.300-a10": "#FFB6721A"
    },
    "semantic": {},
    "dark": {
@@ -400,6 +405,8 @@ window.MorganitePanelData = {
    "notes": [
     "主色 #BB4D00 是 shadcn「amber」的亮色 primary（Tailwind amber-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
     "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 amber-800）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，比主色浅一档（明度高 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
+    "协调：同一处的两个品牌色色相差超过 20°，把离主色超过 20° 的档转到离主色 18°，亮度不变（对比度跟着不变）：100 #FEF3C6 → #FFF0E4；250 #FFCB0D → #FEC794；300 #FFB900 → #FFB672；400 #FE9A00 → #FF9917",
     "白字对主色 5.03:1"
    ],
    "exceptions": [],
@@ -446,7 +453,7 @@ window.MorganitePanelData = {
    "ladder": {
     "color.brand.50": "#ECFDF5",
     "color.brand.100": "#D0FAE5",
-    "color.brand.200": "#5EE9B5",
+    "color.brand.200": "#539E7A",
     "color.brand.250": "#47E3AA",
     "color.brand.300": "#00D492",
     "color.brand.400": "#00BC7D",
@@ -468,6 +475,7 @@ window.MorganitePanelData = {
    "notes": [
     "主色 #007A55 是 shadcn「emerald」的亮色 primary（Tailwind emerald-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
     "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 emerald-800）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，比主色浅一档（明度高 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
     "白字对主色 5.36:1"
    ],
    "exceptions": [],
@@ -496,7 +504,7 @@ window.MorganitePanelData = {
    "ladder": {
     "color.brand.50": "#FDF4FF",
     "color.brand.100": "#FAE8FF",
-    "color.brand.200": "#F4A8FF",
+    "color.brand.200": "#C759D8",
     "color.brand.250": "#F297FF",
     "color.brand.300": "#ED6AFF",
     "color.brand.400": "#E12AFB",
@@ -525,6 +533,7 @@ window.MorganitePanelData = {
    "notes": [
     "主色 #A800B7 是 shadcn「fuchsia」的亮色 primary（Tailwind fuchsia-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
     "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 fuchsia-800）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，比主色浅一档（明度高 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
     "白字对主色 6.27:1"
    ],
    "exceptions": [
@@ -548,7 +557,7 @@ window.MorganitePanelData = {
    "ladder": {
     "color.brand.50": "#EEF2FF",
     "color.brand.100": "#E0E7FF",
-    "color.brand.200": "#A3B3FF",
+    "color.brand.200": "#6266EF",
     "color.brand.250": "#96A6FF",
     "color.brand.300": "#7C86FF",
     "color.brand.400": "#615FFF",
@@ -577,6 +586,7 @@ window.MorganitePanelData = {
    "notes": [
     "主色 #432DD7 是 shadcn「indigo」的亮色 primary（Tailwind indigo-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
     "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 indigo-800）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，比主色浅一档（明度高 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
     "白字对主色 8.09:1"
    ],
    "exceptions": [
@@ -607,7 +617,7 @@ window.MorganitePanelData = {
    "ladder": {
     "color.brand.50": "#F7FEE7",
     "color.brand.100": "#ECFCCA",
-    "color.brand.200": "#D8F999",
+    "color.brand.200": "#73BB1F",
     "color.brand.250": "#CAF778",
     "color.brand.300": "#BBF451",
     "color.brand.400": "#ABED27",
@@ -642,7 +652,8 @@ window.MorganitePanelData = {
    },
    "notes": [
     "主色 #9AE600 是 shadcn「lime」的亮色 primary（Tailwind lime-400）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
-    "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 lime-500）"
+    "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 lime-500）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，主色本身很浅、再浅就贴近白底，改成比主色深一档（明度低 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint"
    ],
    "exceptions": [
     {
@@ -672,9 +683,9 @@ window.MorganitePanelData = {
    "ladder": {
     "color.brand.50": "#FFF7ED",
     "color.brand.100": "#FFEDD4",
-    "color.brand.200": "#FFB86A",
-    "color.brand.250": "#FFAB53",
-    "color.brand.300": "#FF8904",
+    "color.brand.200": "#E8713C",
+    "color.brand.250": "#FEAA73",
+    "color.brand.300": "#FE892C",
     "color.brand.400": "#FF6900",
     "color.brand.500": "#CA3500",
     "color.brand.550": "#BB3200",
@@ -685,7 +696,7 @@ window.MorganitePanelData = {
     "color.brand.500-a16": "#CA350029",
     "color.brand.500-a24": "#CA35003D",
     "color.brand.600-a10": "#9F2D001A",
-    "color.brand.300-a10": "#FF89041A"
+    "color.brand.300-a10": "#FE892C1A"
    },
    "semantic": {},
    "dark": {
@@ -694,6 +705,8 @@ window.MorganitePanelData = {
    "notes": [
     "主色 #CA3500 是 shadcn「orange」的亮色 primary（Tailwind orange-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
     "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 orange-800）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，比主色浅一档（明度高 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
+    "协调：同一处的两个品牌色色相差超过 20°，把离主色超过 20° 的档转到离主色 18°，亮度不变（对比度跟着不变）：250 #FFAB53 → #FEAA73；300 #FF8904 → #FE892C",
     "白字对主色 5.22:1"
    ],
    "exceptions": [],
@@ -740,7 +753,7 @@ window.MorganitePanelData = {
    "ladder": {
     "color.brand.50": "#FDF2F8",
     "color.brand.100": "#FCE7F3",
-    "color.brand.200": "#FDA5D5",
+    "color.brand.200": "#E15A99",
     "color.brand.250": "#FD93CD",
     "color.brand.300": "#FB64B6",
     "color.brand.400": "#F6339A",
@@ -763,6 +776,7 @@ window.MorganitePanelData = {
    "notes": [
     "主色 #C6005C 是 shadcn「pink」的亮色 primary（Tailwind pink-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
     "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 pink-800）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，比主色浅一档（明度高 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
     "白字对主色 5.91:1"
    ],
    "exceptions": [],
@@ -803,7 +817,7 @@ window.MorganitePanelData = {
    "ladder": {
     "color.brand.50": "#FEF2F2",
     "color.brand.100": "#FFE2E2",
-    "color.brand.200": "#FFA2A2",
+    "color.brand.200": "#E25651",
     "color.brand.250": "#FF9091",
     "color.brand.300": "#FF6467",
     "color.brand.400": "#FB2C36",
@@ -832,6 +846,7 @@ window.MorganitePanelData = {
    "notes": [
     "主色 #C10007 是 shadcn「red」的亮色 primary（Tailwind red-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
     "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 red-800）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，比主色浅一档（明度高 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
     "白字对主色 6.42:1"
    ],
    "exceptions": [
@@ -886,7 +901,7 @@ window.MorganitePanelData = {
    "ladder": {
     "color.brand.50": "#FFF1F2",
     "color.brand.100": "#FFE4E6",
-    "color.brand.200": "#FFA1AD",
+    "color.brand.200": "#E7586A",
     "color.brand.250": "#FF909F",
     "color.brand.300": "#FF637E",
     "color.brand.400": "#FF2056",
@@ -909,6 +924,7 @@ window.MorganitePanelData = {
    "notes": [
     "主色 #C70036 是 shadcn「rose」的亮色 primary（Tailwind rose-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
     "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 rose-800）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，比主色浅一档（明度高 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
     "白字对主色 6.03:1"
    ],
    "exceptions": [],
@@ -949,7 +965,7 @@ window.MorganitePanelData = {
    "ladder": {
     "color.brand.50": "#F0F9FF",
     "color.brand.100": "#DFF2FE",
-    "color.brand.200": "#74D4FF",
+    "color.brand.200": "#4791C5",
     "color.brand.250": "#5CCDFF",
     "color.brand.300": "#00BCFF",
     "color.brand.400": "#00A6F4",
@@ -971,6 +987,7 @@ window.MorganitePanelData = {
    "notes": [
     "主色 #0069A8 是 shadcn「sky」的亮色 primary（Tailwind sky-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
     "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 sky-800）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，比主色浅一档（明度高 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
     "白字对主色 5.86:1"
    ],
    "exceptions": [],
@@ -993,7 +1010,7 @@ window.MorganitePanelData = {
    "ladder": {
     "color.brand.50": "#F0FDFA",
     "color.brand.100": "#CBFBF1",
-    "color.brand.200": "#46ECD5",
+    "color.brand.200": "#529C91",
     "color.brand.250": "#2EE5CE",
     "color.brand.300": "#00D5BE",
     "color.brand.400": "#00BBA7",
@@ -1015,6 +1032,7 @@ window.MorganitePanelData = {
    "notes": [
     "主色 #00786F 是 shadcn「teal」的亮色 primary（Tailwind teal-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
     "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 teal-800）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，比主色浅一档（明度高 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
     "白字对主色 5.36:1"
    ],
    "exceptions": [],
@@ -1043,7 +1061,7 @@ window.MorganitePanelData = {
    "ladder": {
     "color.brand.50": "#F5F3FF",
     "color.brand.100": "#EDE9FE",
-    "color.brand.200": "#C4B4FF",
+    "color.brand.200": "#915CFD",
     "color.brand.250": "#BBA6FF",
     "color.brand.300": "#A684FF",
     "color.brand.400": "#8E51FF",
@@ -1072,6 +1090,7 @@ window.MorganitePanelData = {
    "notes": [
     "主色 #7008E7 是 shadcn「violet」的亮色 primary（Tailwind violet-700）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
     "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 violet-800）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，比主色浅一档（明度高 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
     "白字对主色 7.3:1"
    ],
    "exceptions": [
@@ -1095,16 +1114,16 @@ window.MorganitePanelData = {
    "ladder": {
     "color.brand.50": "#FEFCE8",
     "color.brand.100": "#FEF9C2",
-    "color.brand.200": "#FFF085",
+    "color.brand.200": "#D39C0F",
     "color.brand.250": "#FFE85F",
     "color.brand.300": "#FFDF20",
     "color.brand.400": "#FFD400",
     "color.brand.500": "#FDC700",
     "color.brand.550": "#F9BF00",
     "color.brand.600": "#F0B100",
-    "color.brand.700": "#A65F00",
-    "color.brand.800": "#733E0A",
-    "color.brand.900": "#432004",
+    "color.brand.700": "#916A00",
+    "color.brand.800": "#624701",
+    "color.brand.900": "#382600",
     "color.brand.500-a16": "#FDC70029",
     "color.brand.500-a24": "#FDC7003D",
     "color.brand.600-a10": "#F0B1001A",
@@ -1130,7 +1149,9 @@ window.MorganitePanelData = {
    },
    "notes": [
     "主色 #FDC700 是 shadcn「yellow」的亮色 primary（Tailwind yellow-400）；其余各档按 Morganite 每档的用途取同色系色阶，规则见 scripts/import-shadcn-palettes.mjs 的 LADDERS",
-    "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 yellow-500）"
+    "暗色沿用同一个主色：Morganite 暗色不换品牌主色（shadcn 原版暗色换成 yellow-500）",
+    "200 档是图表浅品牌色（只给 color.chart.3），不取色阶：照默认颜色的关系从这套色阶算，主色本身很浅、再浅就贴近白底，改成比主色深一档（明度低 0.13）、鲜艳度至多主色的 0.84 倍，规则见 scripts/lib/palette-checks.mjs 的 chartTint",
+    "协调：同一处的两个品牌色色相差超过 20°，把离主色超过 20° 的档转到离主色 6°，亮度不变（对比度跟着不变）：700 #A65F00 → #916A00；800 #733E0A → #624701；900 #432004 → #382600"
    ],
    "exceptions": [
     {

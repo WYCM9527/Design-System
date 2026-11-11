@@ -3,7 +3,7 @@
 :root:where([data-palette="blue"]) {
   --color-brand-50: #EFF6FF;
   --color-brand-100: #DBEAFE;
-  --color-brand-200: #8EC5FF;
+  --color-brand-200: #2C7EFC;
   --color-brand-250: #7CBBFF;
   --color-brand-300: #51A2FF;
   --color-brand-400: #2B7FFF;
@@ -31,7 +31,7 @@
 :root:where([data-palette="purple"]) {
   --color-brand-50: #FAF5FF;
   --color-brand-100: #F3E8FF;
-  --color-brand-200: #DAB2FF;
+  --color-brand-200: #A857EF;
   --color-brand-250: #D3A2FF;
   --color-brand-300: #C27AFF;
   --color-brand-400: #AD46FF;
@@ -59,7 +59,7 @@
 :root:where([data-palette="cyan"]) {
   --color-brand-50: #ECFEFF;
   --color-brand-100: #CEFAFE;
-  --color-brand-200: #53EAFD;
+  --color-brand-200: #4E9BB3;
   --color-brand-250: #37E3FA;
   --color-brand-300: #00D3F2;
   --color-brand-400: #00B8DB;
@@ -80,7 +80,7 @@
 :root:where([data-palette="green"]) {
   --color-brand-50: #F0FDF4;
   --color-brand-100: #DCFCE7;
-  --color-brand-200: #7BF1A8;
+  --color-brand-200: #55A664;
   --color-brand-250: #64EC98;
   --color-brand-300: #05DF72;
   --color-brand-400: #00C950;
@@ -101,7 +101,7 @@
 :root:where([data-palette="citrine"]) {
   --color-brand-50: #FEFCE8;
   --color-brand-100: #FEF9C2;
-  --color-brand-200: #FFF085;
+  --color-brand-200: #DE9C17;
   --color-brand-250: #FFE85F;
   --color-brand-300: #FFDF20;
   --color-brand-400: #FDD713;
@@ -143,11 +143,11 @@
 }
 :root:where([data-palette="amber"]) {
   --color-brand-50: #FFFBEB;
-  --color-brand-100: #FEF3C6;
-  --color-brand-200: #FFD230;
-  --color-brand-250: #FFCB0D;
-  --color-brand-300: #FFB900;
-  --color-brand-400: #FE9A00;
+  --color-brand-100: #FFF0E4;
+  --color-brand-200: #D7813E;
+  --color-brand-250: #FEC794;
+  --color-brand-300: #FFB672;
+  --color-brand-400: #FF9917;
   --color-brand-500: #BB4D00;
   --color-brand-550: #AE4700;
   --color-brand-600: #973C00;
@@ -157,7 +157,7 @@
   --color-brand-500-a16: #BB4D0029;
   --color-brand-500-a24: #BB4D003D;
   --color-brand-600-a10: #973C001A;
-  --color-brand-300-a10: #FFB9001A;
+  --color-brand-300-a10: #FFB6721A;
 }
 :root.dark:where([data-palette="amber"]) {
   --color-text-link: var(--color-brand-400);
@@ -165,7 +165,7 @@
 :root:where([data-palette="emerald"]) {
   --color-brand-50: #ECFDF5;
   --color-brand-100: #D0FAE5;
-  --color-brand-200: #5EE9B5;
+  --color-brand-200: #539E7A;
   --color-brand-250: #47E3AA;
   --color-brand-300: #00D492;
   --color-brand-400: #00BC7D;
@@ -186,7 +186,7 @@
 :root:where([data-palette="fuchsia"]) {
   --color-brand-50: #FDF4FF;
   --color-brand-100: #FAE8FF;
-  --color-brand-200: #F4A8FF;
+  --color-brand-200: #C759D8;
   --color-brand-250: #F297FF;
   --color-brand-300: #ED6AFF;
   --color-brand-400: #E12AFB;
@@ -214,7 +214,7 @@
 :root:where([data-palette="indigo"]) {
   --color-brand-50: #EEF2FF;
   --color-brand-100: #E0E7FF;
-  --color-brand-200: #A3B3FF;
+  --color-brand-200: #6266EF;
   --color-brand-250: #96A6FF;
   --color-brand-300: #7C86FF;
   --color-brand-400: #615FFF;
@@ -242,7 +242,7 @@
 :root:where([data-palette="lime"]) {
   --color-brand-50: #F7FEE7;
   --color-brand-100: #ECFCCA;
-  --color-brand-200: #D8F999;
+  --color-brand-200: #73BB1F;
   --color-brand-250: #CAF778;
   --color-brand-300: #BBF451;
   --color-brand-400: #ABED27;
@@ -276,9 +276,9 @@
 :root:where([data-palette="orange"]) {
   --color-brand-50: #FFF7ED;
   --color-brand-100: #FFEDD4;
-  --color-brand-200: #FFB86A;
-  --color-brand-250: #FFAB53;
-  --color-brand-300: #FF8904;
+  --color-brand-200: #E8713C;
+  --color-brand-250: #FEAA73;
+  --color-brand-300: #FE892C;
   --color-brand-400: #FF6900;
   --color-brand-500: #CA3500;
   --color-brand-550: #BB3200;
@@ -289,7 +289,7 @@
   --color-brand-500-a16: #CA350029;
   --color-brand-500-a24: #CA35003D;
   --color-brand-600-a10: #9F2D001A;
-  --color-brand-300-a10: #FF89041A;
+  --color-brand-300-a10: #FE892C1A;
 }
 :root.dark:where([data-palette="orange"]) {
   --color-text-link: var(--color-brand-400);
@@ -297,7 +297,7 @@
 :root:where([data-palette="pink"]) {
   --color-brand-50: #FDF2F8;
   --color-brand-100: #FCE7F3;
-  --color-brand-200: #FDA5D5;
+  --color-brand-200: #E15A99;
   --color-brand-250: #FD93CD;
   --color-brand-300: #FB64B6;
   --color-brand-400: #F6339A;
@@ -319,7 +319,7 @@
 :root:where([data-palette="red"]) {
   --color-brand-50: #FEF2F2;
   --color-brand-100: #FFE2E2;
-  --color-brand-200: #FFA2A2;
+  --color-brand-200: #E25651;
   --color-brand-250: #FF9091;
   --color-brand-300: #FF6467;
   --color-brand-400: #FB2C36;
@@ -347,7 +347,7 @@
 :root:where([data-palette="rose"]) {
   --color-brand-50: #FFF1F2;
   --color-brand-100: #FFE4E6;
-  --color-brand-200: #FFA1AD;
+  --color-brand-200: #E7586A;
   --color-brand-250: #FF909F;
   --color-brand-300: #FF637E;
   --color-brand-400: #FF2056;
@@ -369,7 +369,7 @@
 :root:where([data-palette="sky"]) {
   --color-brand-50: #F0F9FF;
   --color-brand-100: #DFF2FE;
-  --color-brand-200: #74D4FF;
+  --color-brand-200: #4791C5;
   --color-brand-250: #5CCDFF;
   --color-brand-300: #00BCFF;
   --color-brand-400: #00A6F4;
@@ -390,7 +390,7 @@
 :root:where([data-palette="teal"]) {
   --color-brand-50: #F0FDFA;
   --color-brand-100: #CBFBF1;
-  --color-brand-200: #46ECD5;
+  --color-brand-200: #529C91;
   --color-brand-250: #2EE5CE;
   --color-brand-300: #00D5BE;
   --color-brand-400: #00BBA7;
@@ -411,7 +411,7 @@
 :root:where([data-palette="violet"]) {
   --color-brand-50: #F5F3FF;
   --color-brand-100: #EDE9FE;
-  --color-brand-200: #C4B4FF;
+  --color-brand-200: #915CFD;
   --color-brand-250: #BBA6FF;
   --color-brand-300: #A684FF;
   --color-brand-400: #8E51FF;
@@ -439,16 +439,16 @@
 :root:where([data-palette="yellow"]) {
   --color-brand-50: #FEFCE8;
   --color-brand-100: #FEF9C2;
-  --color-brand-200: #FFF085;
+  --color-brand-200: #D39C0F;
   --color-brand-250: #FFE85F;
   --color-brand-300: #FFDF20;
   --color-brand-400: #FFD400;
   --color-brand-500: #FDC700;
   --color-brand-550: #F9BF00;
   --color-brand-600: #F0B100;
-  --color-brand-700: #A65F00;
-  --color-brand-800: #733E0A;
-  --color-brand-900: #432004;
+  --color-brand-700: #916A00;
+  --color-brand-800: #624701;
+  --color-brand-900: #382600;
   --color-brand-500-a16: #FDC70029;
   --color-brand-500-a24: #FDC7003D;
   --color-brand-600-a10: #F0B1001A;

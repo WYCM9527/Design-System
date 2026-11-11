@@ -1,4 +1,4 @@
-// 颜色计算：OKLCH ↔ sRGB、WCAG 对比度、半透明叠底、OKLab 色差、HSL。调色盘导入与体检用，零依赖。
+// 颜色计算：OKLCH ↔ sRGB（收进色域、只换色相）、WCAG 对比度、半透明叠底、OKLab 色差、HSL。调色盘导入与体检用，零依赖。
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
 
 /** #RRGGBB[AA] → { r, g, b, a }（0–1）。 */
@@ -17,20 +17,48 @@ export function toHex({ r, g, b, a = 1 }) {
 const toLinear = (c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
 const toGamma = (c) => (c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055);
 
-/** OKLCH（L 0–1）→ sRGB。超出色域按通道截断——与浏览器在 sRGB 屏上的显示一致，也是 Tailwind 色值常见的十六进制写法。 */
-export function oklchToRgb([L, C, H]) {
+function oklchToLinear([L, C, H]) {
   const a = C * Math.cos((H * Math.PI) / 180);
   const b = C * Math.sin((H * Math.PI) / 180);
   const l = (L + 0.3963377774 * a + 0.2158037573 * b) ** 3;
   const m = (L - 0.1055613458 * a - 0.0638541728 * b) ** 3;
   const s = (L - 0.0894841775 * a - 1.291485548 * b) ** 3;
-  const lin = [
+  return [
     4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
     -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
     -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s
   ];
-  const [r, g, bl] = lin.map((v) => clamp01(toGamma(clamp01(v))));
-  return { r, g, b: bl, a: 1 };
+}
+
+/** OKLCH（L 0–1）→ sRGB。超出色域按通道截断——与浏览器在 sRGB 屏上的显示一致，也是 Tailwind 色值常见的十六进制写法。 */
+export function oklchToRgb(lch) {
+  const [r, g, b] = oklchToLinear(lch).map((v) => clamp01(toGamma(clamp01(v))));
+  return { r, g, b, a: 1 };
+}
+
+/** 鲜艳度收进 sRGB 色域：明度、色相不变，只把 C 往下降（每次 0.002）到不用截断通道为止——按通道截断会连色相一起变。 */
+export function fitGamut([L, C, H]) {
+  const inside = (c) => oklchToLinear([L, c, H]).every((v) => v >= -5e-4 && v <= 1 + 5e-4);
+  let c = C;
+  while (c > 0 && !inside(c)) c -= 0.002;
+  return [L, Math.max(0, c), H];
+}
+
+/** 只换色相、相对亮度不变（压在任何底上的对比度都不变）：在 OKLCH 明度上二分，鲜艳度沿用原来的（超出色域就收进来），取亮度最接近的十六进制。 */
+export function rotateHue(hex, hue) {
+  const rgb = parseHex(hex);
+  const want = luminance(rgb);
+  const [, C] = rgbToOklch(rgb);
+  let lo = 0, hi = 1, best = null;
+  for (let i = 0; i < 40; i++) {
+    const L = (lo + hi) / 2;
+    const out = toHex(oklchToRgb(fitGamut([L, C, hue])));
+    const y = luminance(parseHex(out));
+    if (!best || Math.abs(y - want) < best.gap) best = { hex: out, gap: Math.abs(y - want) };
+    if (y < want) lo = L;
+    else hi = L;
+  }
+  return best.hex;
 }
 
 export function rgbToOklab({ r, g, b }) {
